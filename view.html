@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RM Studio - Area Clienti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .render-container { position: relative; overflow: hidden; width: 100%; height: 100%; }
+        .watermark {
+            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+            pointer-events: none; user-select: none; z-index: 40;
+        }
+        .watermark-text {
+            color: rgba(255, 255, 255, 0.07); font-size: 3rem; font-weight: 900;
+            letter-spacing: 0.15em; text-transform: uppercase; transform: rotate(-25deg);
+            border: 4px solid rgba(255, 255, 255, 0.04); padding: 12px 24px; white-space: nowrap;
+        }
+    </style>
+</head>
+<body class="bg-[#050508] text-gray-200 min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-3xl bg-[#0b0b0f] border border-gray-900 rounded-3xl p-6 shadow-2xl relative">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <span id="badge" class="bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-purple-500/20">...</span>
+                <h1 id="title" class="text-xl font-bold text-white mt-2">Caricamento in corso...</h1>
+            </div>
+            <span id="price" class="text-lg font-black text-white">€--.--</span>
+        </div>
+
+        <!-- Render Area Dinamica -->
+        <div class="render-container rounded-2xl aspect-video bg-[#020204] mb-6 flex items-center justify-center border border-gray-900/60 overflow-hidden">
+            <!-- Watermark centralizzato -->
+            <div class="watermark" id="watermark">
+                <div class="watermark-text">Anteprima RM Studio</div>
+            </div>
+
+            <!-- 1. CASO VIDEO -->
+            <video id="player-video" class="hidden w-full h-full object-cover rounded-2xl" controls controlslist="nodownload" oncontextmenu="return false;">
+                <source src="" type="video/mp4">
+            </video>
+
+            <!-- 2. CASO CAROSELLO IMMAGINI -->
+            <div id="player-carousel" class="hidden w-full h-full relative flex items-center justify-center">
+                <img id="carousel-img" src="" class="w-full h-full object-cover select-none">
+                <button onclick="prevSlide()" class="absolute left-4 bg-black/60 hover:bg-black/90 p-3 rounded-full text-white z-50"><i class="fa-solid fa-chevron-left"></i></button>
+                <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/90 p-3 rounded-full text-white z-50"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+
+            <!-- 3. CASO HTML INTERATTIVO (IFRAME) -->
+            <iframe id="player-html" class="hidden w-full h-full border-none rounded-2xl z-20" src=""></iframe>
+
+            <!-- 4. CASO LINK / DOCUMENTO -->
+            <div id="player-link" class="hidden text-center p-8 z-30">
+                <div class="w-16 h-16 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xl text-purple-400"></i>
+                </div>
+                <h3 class="text-white font-bold mb-2">Link Esterno / Demo</h3>
+                <p class="text-xs text-gray-400 max-w-sm mx-auto mb-4">Questo contenuto è un'applicazione o risorsa esterna ospitata fuori dal portale di anteprima.</p>
+                <a id="external-link-btn" href="" target="_blank" class="inline-flex items-center gap-2 bg-[#121217] border border-gray-800 px-4 py-2 rounded-xl text-xs hover:border-purple-500 transition-all">Apri Link</a>
+            </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-gray-800/60">
+            <p id="status" class="text-xs text-yellow-400 font-bold"><i class="fa-solid fa-clock animate-pulse"></i> In attesa di sblocco</p>
+            <button id="actionBtn" onclick="handleAction()" class="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white font-bold px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-purple-600/10"></button>
+        </div>
+    </div>
+
+    <script>
+        const supabaseUrl = 'IL_TUO_SUPABASE_URL';
+        const supabaseKey = 'LA_TUA_SUPABASE_ANON_KEY';
+        const supabase = supabaseJS.createClient(supabaseUrl, supabaseKey);
+
+        let videoData = null;
+        let currentSlideIdx = 0;
+        let imagesArray = [];
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            if (!id) return alert("ID non valido");
+
+            await supabase.rpc('increment_views', { video_id: id });
+
+            const { data, error } = await supabase.from('portal_videos').select('*').eq('id', id).single();
+            if (error || !data) return alert("Contenuto non trovato");
+            videoData = data;
+
+            document.getElementById('title').innerText = data.title || "Il tuo Progetto";
+            document.getElementById('badge').innerText = data.portal_type;
+            document.getElementById('price').innerText = `€${parseFloat(data.price_euro).toFixed(2)}`;
+            
+            // RENDERING DINAMICO PER TIPO
+            if (data.portal_type === 'video') {
+                const p = document.getElementById('player-video');
+                p.src = data.content_url;
+                p.classList.remove('hidden');
+            } 
+            else if (data.portal_type === 'carousel') {
+                imagesArray = typeof data.carousel_images === 'string' ? JSON.parse(data.carousel_images) : data.carousel_images;
+                if(imagesArray.length > 0) {
+                    document.getElementById('carousel-img').src = imagesArray[0];
+                    document.getElementById('player-carousel').classList.remove('hidden');
+                }
+            } 
+            else if (data.portal_type === 'html') {
+                const frame = document.getElementById('player-html');
+                frame.src = data.content_url;
+                frame.classList.remove('hidden');
+            } 
+            else if (data.portal_type === 'link') {
+                document.getElementById('external-link-btn').href = data.content_url;
+                document.getElementById('player-link').classList.remove('hidden');
+            }
+
+            // GESTIONE STATO PAGAMENTO / WATERMARK
+            if (data.is_paid === true || data.is_paid === "true") {
+                document.getElementById('watermark').classList.add('hidden');
+                document.getElementById('status').className = "text-xs text-green-400 font-bold";
+                document.getElementById('status').innerHTML = `<i class="fa-solid fa-circle-check"></i> Sbloccato`;
+                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-download"></i> Scarica / Accedi`;
+            } else {
+                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-unlock"></i> Sblocca Ora`;
+            }
+        });
+
+        // Carosello Slide Navigator
+        function nextSlide() {
+            if (imagesArray.length === 0) return;
+            currentSlideIdx = (currentSlideIdx + 1) % imagesArray.length;
+            document.getElementById('carousel-img').src = imagesArray[currentSlideIdx];
+        }
+
+        function prevSlide() {
+            if (imagesArray.length === 0) return;
+            currentSlideIdx = (currentSlideIdx - 1 + imagesArray.length) % imagesArray.length;
+            document.getElementById('carousel-img').src = imagesArray[currentSlideIdx];
+        }
+
+        function handleAction() {
+            if (videoData.is_paid === true || videoData.is_paid === "true") {
+                if (videoData.portal_type === 'carousel') {
+                    // Scarica ZIP o file immagini uno ad uno
+                    alert("Download delle immagini in corso...");
+                    imagesArray.forEach((url, i) => {
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `slide_${i + 1}.jpg`;
+                        a.click();
+                    });
+                } else {
+                    window.open(videoData.content_url, '_blank');
+                }
+            } else {
+                alert(`Reindirizzamento a Stripe per sbloccare la risorsa (€${parseFloat(videoData.price_euro).toFixed(2)})`);
+            }
+        }
+    </script>
+</body>
+</html>

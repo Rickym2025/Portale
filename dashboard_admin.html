@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RM Studio - Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-[#050508] text-gray-200 p-6 md:p-12">
+
+    <div class="max-w-6xl mx-auto">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-10 pb-6 border-b border-gray-900">
+            <div>
+                <h1 class="text-2xl font-black text-white flex items-center gap-2">
+                    <i class="fa-solid fa-gauge-high text-purple-500"></i> AImmobiliare Control Panel
+                </h1>
+                <p class="text-xs text-gray-400 mt-1">Gestione vendite, monitoraggio visualizzazioni e invio file multimediali.</p>
+            </div>
+        </div>
+
+        <!-- SEZIONE CREAZIONE NUOVO PROGETTO -->
+        <div class="bg-[#0b0b10] border border-gray-900 rounded-3xl p-6 mb-10 shadow-2xl">
+            <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-plus text-purple-500"></i> Crea Nuovo Portale Cliente
+            </h2>
+            <form id="create-portal-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Email Cliente</label>
+                        <input type="email" id="form-email" required class="w-full bg-[#111116] border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Titolo Progetto</label>
+                        <input type="text" id="form-title" placeholder="Es. Attico Centro Storico" required class="w-full bg-[#111116] border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Prezzo Concordato (€)</label>
+                        <input type="number" id="form-price" value="39" required class="w-full bg-[#111116] border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
+                    </div>
+                </div>
+
+                <div class="space-y-4 flex flex-col justify-between">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Tipologia di Contenuto</label>
+                        <select id="form-type" class="w-full bg-[#111116] border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500 text-white font-semibold">
+                            <option value="video">Video Singolo (.mp4)</option>
+                            <option value="carousel">Carosello Immagini</option>
+                            <option value="html">Sito / Pagina Web (Link HTML)</option>
+                            <option value="link">Link Esterno / Demo</option>
+                        </select>
+                    </div>
+
+                    <!-- Sezione Dinamica 1: Upload File (Video o Immagini) -->
+                    <div id="file-upload-section" class="bg-[#111116] border-2 border-dashed border-gray-800 rounded-xl p-6 text-center cursor-pointer hover:border-purple-500/50 transition-all">
+                        <input type="file" id="form-file" class="hidden" accept="video/mp4">
+                        <div onclick="document.getElementById('form-file').click()">
+                            <i class="fa-solid fa-cloud-arrow-up text-xl text-purple-400 mb-2"></i>
+                            <span class="block text-xs font-bold text-gray-300" id="file-label-text">Carica File Video (.mp4)</span>
+                            <span class="block text-[10px] text-gray-500 mt-1" id="file-selected-name">Nessun file selezionato</span>
+                        </div>
+                    </div>
+
+                    <!-- Sezione Dinamica 2: Input URL (HTML o Link Esterno) -->
+                    <div id="link-input-section" class="hidden">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1" id="link-label">Inserisci l'URL di destinazione</label>
+                        <input type="url" id="form-url" placeholder="https://..." class="w-full bg-[#111116] border border-gray-800 rounded-xl p-3.5 text-sm focus:outline-none focus:border-purple-500">
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-circle-check"></i> Genera e Invia Portale
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- STATS CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            <div class="bg-[#0b0b10] border border-gray-900 p-5 rounded-2xl">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Incassi Totali</span>
+                <span class="text-2xl font-black text-green-400 mt-1 block" id="stat-revenue">€0.00</span>
+            </div>
+            <div class="bg-[#0b0b10] border border-gray-900 p-5 rounded-2xl">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Conversion Rate</span>
+                <span class="text-2xl font-black text-white mt-1 block" id="stat-conversion">0%</span>
+            </div>
+            <div class="bg-[#0b0b10] border border-gray-900 p-5 rounded-2xl">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Aperture Email</span>
+                <span class="text-2xl font-black text-purple-400 mt-1 block" id="stat-opens">0 / 0</span>
+            </div>
+            <div class="bg-[#0b0b10] border border-gray-900 p-5 rounded-2xl">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Visite Totali</span>
+                <span class="text-2xl font-black text-blue-400 mt-1 block" id="stat-views">0</span>
+            </div>
+        </div>
+
+        <!-- TABELLA CLIENTI -->
+        <div class="bg-[#0b0b10] border border-gray-900 rounded-3xl overflow-hidden shadow-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-950 bg-black/40 text-[9px] uppercase tracking-wider text-gray-400">
+                            <th class="p-4">Dettagli Progetto / Cliente</th>
+                            <th class="p-4">Tipo</th>
+                            <th class="p-4">Prezzo (€)</th>
+                            <th class="p-4">Stato Invio</th>
+                            <th class="p-4">Visualizzazioni</th>
+                            <th class="p-4">Sblocco</th>
+                            <th class="p-4">Link</th>
+                            <th class="p-4 text-right">Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rows-container" class="divide-y divide-gray-900/60 text-sm">
+                        <!-- Generato dinamicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const supabaseUrl = 'IL_TUO_SUPABASE_URL';
+        const supabaseKey = 'LA_TUA_SUPABASE_ANON_KEY';
+        const supabase = supabaseJS.createClient(supabaseUrl, supabaseKey);
+
+        const n8nCreateEndpoint = 'https://la-tua-istanza-n8n/webhook/admin-create-portal';
+        const reminderWebhook = 'https://la-tua-istanza-n8n/webhook/polite-reminder';
+
+        // Gestione cambio campi dinamici nel form
+        document.getElementById('form-type').addEventListener('change', function() {
+            const type = this.value;
+            const fileSection = document.getElementById('file-upload-section');
+            const linkSection = document.getElementById('link-input-section');
+            const fileInput = document.getElementById('form-file');
+
+            if (type === 'video') {
+                fileSection.classList.remove('hidden');
+                linkSection.classList.add('hidden');
+                fileInput.removeAttribute('multiple');
+                fileInput.setAttribute('accept', 'video/mp4');
+                document.getElementById('file-label-text').innerText = "Carica File Video (.mp4)";
+            } else if (type === 'carousel') {
+                fileSection.classList.remove('hidden');
+                linkSection.classList.add('hidden');
+                fileInput.setAttribute('multiple', 'true');
+                fileInput.setAttribute('accept', 'image/*');
+                document.getElementById('file-label-text').innerText = "Carica Immagini Carosello (Seleziona multiple)";
+            } else {
+                fileSection.classList.add('hidden');
+                linkSection.classList.remove('hidden');
+                document.getElementById('link-label').innerText = type === 'html' ? "Inserisci Link URL del file HTML" : "Inserisci Link Esterno / Demo URL";
+            }
+            document.getElementById('file-selected-name').innerText = "Nessun file selezionato";
+            fileInput.value = "";
+        });
+
+        // Mostra nome file selezionato
+        document.getElementById('form-file').addEventListener('change', function() {
+            const files = this.files;
+            if (files.length === 1) {
+                document.getElementById('file-selected-name').innerText = files[0].name;
+            } else if (files.length > 1) {
+                document.getElementById('file-selected-name').innerText = `${files.length} file selezionati`;
+            } else {
+                document.getElementById('file-selected-name').innerText = "Nessun file selezionato";
+            }
+        });
+
+        // Invio form a n8n
+        document.getElementById('create-portal-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.innerText = "Caricamento ed Elaborazione in corso...";
+
+            const type = document.getElementById('form-type').value;
+            const formData = new FormData();
+            formData.append('email', document.getElementById('form-email').value);
+            formData.append('title', document.getElementById('form-title').value);
+            formData.append('price', document.getElementById('form-price').value);
+            formData.append('portal_type', type);
+
+            if (type === 'video' || type === 'carousel') {
+                const fileInput = document.getElementById('form-file');
+                for (let i = 0; i < fileInput.files.length; i++) {
+                    formData.append(`file_${i}`, fileInput.files[i]);
+                }
+            } else {
+                formData.append('external_url', document.getElementById('form-url').value);
+            }
+
+            try {
+                const response = await fetch(n8nCreateEndpoint, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert("Portale creato con successo ed e-mail inviata al cliente!");
+                    document.getElementById('create-portal-form').reset();
+                    document.getElementById('form-type').dispatchEvent(new Event('change'));
+                    loadDashboard();
+                } else {
+                    alert("Si è verificato un errore durante l'upload.");
+                }
+            } catch (err) {
+                alert("Errore di connessione a n8n: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Genera e Invia Portale";
+            }
+        });
+
+        async function loadDashboard() {
+            const { data, error } = await supabase
+                .from('portal_videos')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) return alert("Errore caricamento database: " + error.message);
+
+            let totalRevenue = 0;
+            let totalPaid = 0;
+            let totalViews = 0;
+            let totalOpens = 0;
+            const totalProjects = data.length;
+
+            data.forEach(v => {
+                if (v.is_paid === true || v.is_paid === "true") {
+                    totalRevenue += parseFloat(v.price_euro);
+                    totalPaid++;
+                }
+                totalViews += parseInt(v.views_count || 0);
+                if (v.is_opened) totalOpens++;
+            });
+
+            const conversionRate = totalProjects > 0 ? Math.round((totalPaid / totalProjects) * 100) : 0;
+
+            document.getElementById('stat-revenue').innerText = `€${totalRevenue.toFixed(2)}`;
+            document.getElementById('stat-conversion').innerText = `${conversionRate}%`;
+            document.getElementById('stat-opens').innerText = `${totalOpens} / ${totalProjects}`;
+            document.getElementById('stat-views').innerText = totalViews;
+
+            const container = document.getElementById('rows-container');
+            container.innerHTML = '';
+
+            data.forEach(v => {
+                let icon = "fa-video";
+                if (v.portal_type === 'carousel') icon = "fa-images";
+                else if (v.portal_type === 'html') icon = "fa-code";
+                else if (v.portal_type === 'link') icon = "fa-arrow-up-right-from-square";
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-white/[0.01] transition-colors";
+                tr.innerHTML = `
+                    <td class="p-4">
+                        <input type="text" value="${v.title || ''}" 
+                               onchange="updateField('${v.id}', 'title', this.value)"
+                               class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none font-bold text-white text-sm block w-full mb-1">
+                        
+                        <input type="email" value="${v.client_email}" 
+                               onchange="updateField('${v.id}', 'client_email', this.value)"
+                               class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full">
+                    </td>
+                    <td class="p-4">
+                        <span class="text-xs bg-gray-800 text-gray-300 px-2.5 py-1 rounded-full border border-gray-700 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max">
+                            <i class="fa-solid ${icon}"></i> ${v.portal_type}
+                        </span>
+                    </td>
+                    <td class="p-4">
+                        <input type="number" value="${v.price_euro}" 
+                               onchange="updateField('${v.id}', 'price_euro', this.value)"
+                               class="w-16 bg-[#141419] border border-gray-800 rounded-lg p-1.5 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs">
+                    </td>
+                    <td class="p-4 text-xs">
+                        ${v.is_opened 
+                            ? '<span class="text-green-400 font-bold"><i class="fa-solid fa-envelope-open"></i> Aperta</span>' 
+                            : '<span class="text-gray-500"><i class="fa-solid fa-envelope"></i> Non letta</span>'}
+                    </td>
+                    <td class="p-4 text-xs font-bold text-blue-400">📈 ${v.views_count || 0} visite</td>
+                    <td class="p-4 text-xs">
+                        ${(v.is_paid === true || v.is_paid === "true")
+                            ? '<span class="bg-green-500/10 border border-green-500/20 text-green-400 px-2 py-0.5 rounded font-black uppercase text-[9px]">Sbloccato</span>' 
+                            : '<span class="bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded font-black uppercase text-[9px]">Attesa</span>'}
+                    </td>
+                    <td class="p-4 text-xs">
+                        <a href="./view.html?id=${v.id}" target="_blank" class="text-blue-400 hover:underline">Vedi Portale</a>
+                    </td>
+                    <td class="p-4 text-right">
+                        ${(!(v.is_paid === true || v.is_paid === "true") && !v.followup_sent) ? `
+                            <button onclick="sendFollowup('${v.id}', '${v.client_email}', '${v.title}', ${v.price_euro})"
+                                    class="bg-purple-600/10 hover:bg-purple-600 text-purple-400 hover:text-white border border-purple-500/20 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ml-auto flex items-center gap-1.5">
+                                <i class="fa-solid fa-paper-plane"></i> Invia Follow-Up
+                            </button>
+                        ` : '<span class="text-xs text-gray-500">-</span>'}
+                    </td>
+                `;
+                container.appendChild(tr);
+            });
+        }
+
+        async function updateField(id, field, value) {
+            const updatePayload = {};
+            updatePayload[field] = field === 'price_euro' ? parseFloat(value) : value;
+
+            const { error } = await supabase
+                .from('portal_videos')
+                .update(updatePayload)
+                .eq('id', id);
+
+            if (error) alert("Errore aggiornamento campo: " + error.message);
+        }
+
+        async function sendFollowup(id, email, title, price) {
+            try {
+                const response = await fetch(reminderWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, email, title, price })
+                });
+                if (response.ok) {
+                    await supabase.from('portal_videos').update({ followup_sent: true }).eq('id', id);
+                    alert(`Follow-up inviato con successo a ${email}`);
+                    loadDashboard();
+                } else {
+                    alert("Errore nell'invio dell'e-mail.");
+                }
+            } catch (err) {
+                alert("Errore connessione: " + err.message);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+</html>
