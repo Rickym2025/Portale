@@ -1,0 +1,8 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/dashboard_admin.html" },
+    { "source": "/admin", "destination": "/dashboard_admin.html" },
+    { "source": "/view", "destination": "/view.html" }
+  ]
+}
