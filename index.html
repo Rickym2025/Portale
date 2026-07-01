@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RM Studio - Admin Panel</title>
+    <title>AImmobiliare - Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-[#050508] text-gray-200 p-6 md:p-12">
+<body class="bg-[#050508] text-gray-200 p-6 md:p-12 selection:bg-purple-600 selection:text-white">
 
     <div class="max-w-6xl mx-auto">
         
@@ -16,9 +16,32 @@
         <div class="flex justify-between items-center mb-10 pb-6 border-b border-gray-900">
             <div>
                 <h1 class="text-2xl font-black text-white flex items-center gap-2">
-                    <i class="fa-solid fa-gauge-high text-purple-500"></i> AImmobiliare Control Panel
+                    <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-600/30">
+                        <i class="fa-solid fa-house-laptop text-xs text-white"></i>
+                    </div>
+                    AImmobiliare Control Panel
                 </h1>
-                <p class="text-xs text-gray-400 mt-1">Gestione vendite, monitoraggio visualizzazioni e invio file multimediali.</p>
+                <p class="text-xs text-gray-400 mt-1.5">Gestione vendite, monitoraggio visualizzazioni e invio file multimediali.</p>
+            </div>
+        </div>
+
+        <!-- STATS CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            <div class="bg-[#0b0b10] border border-gray-900 p-5 rounded-2xl shadow-lg">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Incassi Totali</span>
+                <span class="text-2xl font-black text-green-400 mt-1 block" id="stat-revenue">€0.00</span>
+            </div>
+            <div class="bg-[#0b0b10] border border-gray-900 p-5 rounded-2xl shadow-lg">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Conversion Rate</span>
+                <span class="text-2xl font-black text-white mt-1 block" id="stat-conversion">0%</span>
+            </div>
+            <div class="bg-[#0b0b10] border border-gray-900 p-5 rounded-2xl shadow-lg">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Aperture / Invii</span>
+                <span class="text-2xl font-black text-purple-400 mt-1 block" id="stat-opens">0 / 0</span>
+            </div>
+            <div class="bg-[#0b0b10] border border-gray-900 p-5 rounded-2xl shadow-lg">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Visite Totali</span>
+                <span class="text-2xl font-black text-blue-400 mt-1 block" id="stat-views">0</span>
             </div>
         </div>
 
@@ -35,7 +58,7 @@
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Titolo Progetto</label>
-                        <input type="text" id="form-title" placeholder="Es. Attico Centro Storico" required class="w-full bg-[#111116] border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
+                        <input type="text" id="form-title" placeholder="Es. Attico Vista Mare Sanremo" required class="w-full bg-[#111116] border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Prezzo Concordato (€)</label>
@@ -54,8 +77,8 @@
                         </select>
                     </div>
 
-                    <!-- Sezione Dinamica 1: Upload File (Video o Immagini) -->
-                    <div id="file-upload-section" class="bg-[#111116] border-2 border-dashed border-gray-800 rounded-xl p-6 text-center cursor-pointer hover:border-purple-500/50 transition-all">
+                    <!-- Upload File (Video o Immagini) -->
+                    <div id="file-upload-section" class="bg-[#111116] border border-dashed border-gray-800 rounded-xl p-5 text-center cursor-pointer hover:border-purple-500/50 transition-all">
                         <input type="file" id="form-file" class="hidden" accept="video/mp4">
                         <div onclick="document.getElementById('form-file').click()">
                             <i class="fa-solid fa-cloud-arrow-up text-xl text-purple-400 mb-2"></i>
@@ -64,57 +87,36 @@
                         </div>
                     </div>
 
-                    <!-- Sezione Dinamica 2: Input URL (HTML o Link Esterno) -->
+                    <!-- Input URL (HTML o Link Esterno) -->
                     <div id="link-input-section" class="hidden">
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1" id="link-label">Inserisci l'URL di destinazione</label>
                         <input type="url" id="form-url" placeholder="https://..." class="w-full bg-[#111116] border border-gray-800 rounded-xl p-3.5 text-sm focus:outline-none focus:border-purple-500">
                     </div>
 
                     <button type="submit" id="submit-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-circle-check"></i> Genera e Invia Portale
+                        <i class="fa-solid fa-circle-check"></i> Genera Portale (Senza Inviare)
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- STATS CARDS -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-            <div class="bg-[#0b0b10] border border-gray-900 p-5 rounded-2xl">
-                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Incassi Totali</span>
-                <span class="text-2xl font-black text-green-400 mt-1 block" id="stat-revenue">€0.00</span>
-            </div>
-            <div class="bg-[#0b0b10] border border-gray-900 p-5 rounded-2xl">
-                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Conversion Rate</span>
-                <span class="text-2xl font-black text-white mt-1 block" id="stat-conversion">0%</span>
-            </div>
-            <div class="bg-[#0b0b10] border border-gray-900 p-5 rounded-2xl">
-                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Aperture Email</span>
-                <span class="text-2xl font-black text-purple-400 mt-1 block" id="stat-opens">0 / 0</span>
-            </div>
-            <div class="bg-[#0b0b10] border border-gray-900 p-5 rounded-2xl">
-                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Visite Totali</span>
-                <span class="text-2xl font-black text-blue-400 mt-1 block" id="stat-views">0</span>
-            </div>
-        </div>
-
-        <!-- TABELLA CLIENTI -->
+        <!-- TABELLA PORTALE VIDEO -->
         <div class="bg-[#0b0b10] border border-gray-900 rounded-3xl overflow-hidden shadow-2xl">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="border-b border-gray-950 bg-black/40 text-[9px] uppercase tracking-wider text-gray-400">
                             <th class="p-4">Dettagli Progetto / Cliente</th>
-                            <th class="p-4">Tipo</th>
                             <th class="p-4">Prezzo (€)</th>
                             <th class="p-4">Stato Invio</th>
                             <th class="p-4">Visualizzazioni</th>
-                            <th class="p-4">Sblocco</th>
-                            <th class="p-4">Link</th>
-                            <th class="p-4 text-right">Azioni</th>
+                            <th class="p-4">Pagamento</th>
+                            <th class="p-4">Copia Link</th>
+                            <th class="p-4 text-right">Azioni Marketing / Gestione</th>
                         </tr>
                     </thead>
                     <tbody id="rows-container" class="divide-y divide-gray-900/60 text-sm">
-                        <!-- Generato dinamicamente -->
+                        <!-- Generato dinamicamente via JS -->
                     </tbody>
                 </table>
             </div>
@@ -123,12 +125,13 @@
     </div>
 
     <script>
-        const supabaseUrl = 'https://jhijfulhntlhcytbhcly.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ';
+        const supabaseUrl = 'https://jhijfulhntlhcytbhcly.supabase.co'; 
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         const n8nCreateEndpoint = 'https://n8n.rmstudio.app/webhook/admin-create-portal';
-        const reminderWebhook = 'https://n8n.rmstudio.app/webhook/polite-reminder';
+        const n8nFirstEmailWebhook = 'https://n8n.rmstudio.app/webhook/invia-primo-invito';
+        const n8nReminderWebhook = 'https://n8n.rmstudio.app/webhook/polite-reminder';
 
         // Gestione cambio campi dinamici nel form
         document.getElementById('form-type').addEventListener('change', function() {
@@ -175,7 +178,7 @@
             e.preventDefault();
             const btn = document.getElementById('submit-btn');
             btn.disabled = true;
-            btn.innerText = "Caricamento ed Elaborazione in corso...";
+            btn.innerText = "Caricamento in corso...";
 
             const type = document.getElementById('form-type').value;
             const formData = new FormData();
@@ -200,7 +203,7 @@
                 });
 
                 if (response.ok) {
-                    alert("Portale creato con successo ed e-mail inviata al cliente!");
+                    alert("Portale creato con successo!");
                     document.getElementById('create-portal-form').reset();
                     document.getElementById('form-type').dispatchEvent(new Event('change'));
                     loadDashboard();
@@ -211,7 +214,7 @@
                 alert("Errore di connessione a n8n: " + err.message);
             } finally {
                 btn.disabled = false;
-                btn.innerText = "Genera e Invia Portale";
+                btn.innerText = "Genera Portale (Senza Inviare)";
             }
         });
 
@@ -223,6 +226,7 @@
 
             if (error) return alert("Errore caricamento database: " + error.message);
 
+            // Calcolo statistiche
             let totalRevenue = 0;
             let totalPaid = 0;
             let totalViews = 0;
@@ -235,7 +239,7 @@
                     totalPaid++;
                 }
                 totalViews += parseInt(v.views_count || 0);
-                if (v.is_opened) totalOpens++;
+                if (v.is_opened || v.views_count > 0) totalOpens++;
             });
 
             const conversionRate = totalProjects > 0 ? Math.round((totalPaid / totalProjects) * 100) : 0;
@@ -254,6 +258,16 @@
                 else if (v.portal_type === 'html') icon = "fa-code";
                 else if (v.portal_type === 'link') icon = "fa-arrow-up-right-from-square";
 
+                // STATO INVIO COERENTE
+                let statusLabel = '<span class="text-gray-500 font-bold"><i class="fa-solid fa-envelope"></i> Non Inviata</span>';
+                if (v.views_count > 0) {
+                    statusLabel = '<span class="text-blue-400 font-bold"><i class="fa-solid fa-eye animate-pulse"></i> Visualizzato</span>';
+                } else if (v.is_opened) {
+                    statusLabel = '<span class="text-green-400 font-bold"><i class="fa-solid fa-envelope-open"></i> Aperta</span>';
+                } else if (v.first_email_sent) {
+                    statusLabel = '<span class="text-purple-400 font-bold"><i class="fa-solid fa-paper-plane"></i> Inviata</span>';
+                }
+
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-white/[0.01] transition-colors";
                 tr.innerHTML = `
@@ -267,7 +281,7 @@
                                class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full">
                     </td>
                     <td class="p-4">
-                        <span class="text-xs bg-gray-800 text-gray-300 px-2.5 py-1 rounded-full border border-gray-700 uppercase font-semibold text-[9px] flex items-center gap-1.5 w-max">
+                        <span class="text-xs bg-gray-800 text-gray-300 px-2.5 py-1 rounded-full border border-gray-700 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max">
                             <i class="fa-solid ${icon}"></i> ${v.portal_type}
                         </span>
                     </td>
@@ -276,27 +290,42 @@
                                onchange="updateField('${v.id}', 'price_euro', this.value)"
                                class="w-16 bg-[#141419] border border-gray-800 rounded-lg p-1.5 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs">
                     </td>
-                    <td class="p-4 text-xs">
-                        ${v.is_opened 
-                            ? '<span class="text-green-400 font-bold"><i class="fa-solid fa-envelope-open"></i> Aperta</span>' 
-                            : '<span class="text-gray-500"><i class="fa-solid fa-envelope"></i> Non letta</span>'}
-                    </td>
+                    <td class="p-4 text-xs">${statusLabel}</td>
                     <td class="p-4 text-xs font-bold text-blue-400">📈 ${v.views_count || 0} visite</td>
                     <td class="p-4 text-xs">
                         ${(v.is_paid === true || v.is_paid === "true")
-                            ? '<span class="bg-green-500/10 border border-green-500/20 text-green-400 px-2 py-0.5 rounded font-black uppercase text-[9px]">Sbloccato</span>' 
-                            : '<span class="bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded font-black uppercase text-[9px]">Attesa</span>'}
+                            ? '<span class="text-green-400 font-bold"><i class="fa-solid fa-circle-check"></i> Sbloccato</span>' 
+                            : '<span class="text-yellow-500"><i class="fa-solid fa-clock"></i> In Attesa</span>'}
                     </td>
                     <td class="p-4 text-xs">
-                        <a href="./view?id=${v.id}" target="_blank" class="text-blue-400 hover:underline">Vedi Portale</a>
+                        <button onclick="copyToClipboard('${v.id}')" class="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1 bg-purple-500/10 border border-purple-500/20 px-2.5 py-1.5 rounded-lg transition-all active:scale-95">
+                            <i class="fa-solid fa-copy"></i> Copia Link
+                        </button>
                     </td>
                     <td class="p-4 text-right">
-                        ${(!(v.is_paid === true || v.is_paid === "true") && !v.followup_sent) ? `
-                            <button onclick="sendFollowup('${v.id}', '${v.client_email}', '${v.title}', ${v.price_euro})"
-                                    class="bg-purple-600/10 hover:bg-purple-600 text-purple-400 hover:text-white border border-purple-500/20 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ml-auto flex items-center gap-1.5">
-                                <i class="fa-solid fa-paper-plane"></i> Invia Follow-Up
+                        <div class="flex items-center justify-end gap-2">
+                            <!-- INVIO MANUALE PRIMO INVITO -->
+                            ${!v.first_email_sent ? `
+                                <button onclick="sendFirstEmail('${v.id}', '${v.client_email}', '${v.title}', 'cold')" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                    Invia Cold
+                                </button>
+                                <button onclick="sendFirstEmail('${v.id}', '${v.client_email}', '${v.title}', 'formal')" class="bg-purple-600 hover:bg-purple-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all">
+                                    Invia Formal
+                                </button>
+                            ` : ''}
+
+                            <!-- INVIO MANUALE SOLLECITO / REMINDER -->
+                            ${v.first_email_sent && !(v.is_paid === true || v.is_paid === "true") && !v.followup_sent ? `
+                                <button onclick="sendFollowup('${v.id}', '${v.client_email}', '${v.title}', ${v.price_euro})" class="bg-yellow-600 hover:bg-yellow-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1">
+                                    <i class="fa-solid fa-paper-plane"></i> Follow-Up
+                                </button>
+                            ` : ''}
+
+                            <!-- TASTO CANCELLA RIGA -->
+                            <button onclick="deleteRow('${v.id}', '${v.title}')" class="text-gray-500 hover:text-red-500 p-2 hover:bg-red-500/10 rounded-lg transition-all" title="Elimina Progetto">
+                                <i class="fa-solid fa-trash-can"></i>
                             </button>
-                        ` : '<span class="text-xs text-gray-500">-</span>'}
+                        </div>
                     </td>
                 `;
                 container.appendChild(tr);
@@ -315,6 +344,35 @@
             if (error) alert("Errore aggiornamento campo: " + error.message);
         }
 
+        // Funzione per copiare il link pulito con 1 click
+        function copyToClipboard(id) {
+            const clientLink = `${window.location.origin}/view?id=${id}`;
+            navigator.clipboard.writeText(clientLink).then(() => {
+                alert("Link copiato negli appunti!");
+            }).catch(err => {
+                console.error("Errore copia:", err);
+            });
+        }
+
+        // Invia l'email corretta (a freddo o formale)
+        async function sendFirstEmail(id, email, title, email_type) {
+            try {
+                const response = await fetch(n8nFirstEmailWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, email, title, email_type })
+                });
+                if (response.ok) {
+                    alert(`Primo invito (${email_type === 'cold' ? 'A freddo' : 'Formale'}) inviato con successo a ${email}!`);
+                    loadDashboard();
+                } else {
+                    alert("Errore durante l'invio del primo invito.");
+                }
+            } catch (err) {
+                alert("Errore di rete: " + err.message);
+            }
+        }
+
         async function sendFollowup(id, email, title, price) {
             try {
                 const response = await fetch(reminderWebhook, {
@@ -323,14 +381,30 @@
                     body: JSON.stringify({ id, email, title, price })
                 });
                 if (response.ok) {
-                    await supabaseClient.from('portal_videos').update({ followup_sent: true }).eq('id', id);
-                    alert(`Secondo invito inviato a ${email}`);
+                    alert(`Secondo invito inviato con successo a ${email}`);
                     loadDashboard();
                 } else {
-                    alert("Errore invio email.");
+                    alert("Errore invio e-mail.");
                 }
             } catch (err) {
                 alert("Errore connessione: " + err.message);
+            }
+        }
+
+        // Elimina riga ed esegue pulizia
+        async function deleteRow(id, title) {
+            if (!confirm(`Sei sicuro di voler cancellare definitivamente il progetto "${title}"?`)) return;
+
+            const { error } = await supabaseClient
+                .from('portal_videos')
+                .delete()
+                .eq('id', id);
+
+            if (error) {
+                alert("Impossibile eliminare la riga: " + error.message);
+            } else {
+                alert("Progetto eliminato con successo.");
+                loadDashboard();
             }
         }
 
