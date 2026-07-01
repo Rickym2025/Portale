@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Forza l'altezza della pagina escludendo lo scroll del browser */
+        /* Sblocca il layout ad altezza fissa per adattarsi perfettamente ad ogni schermo (Mobile e Desktop) */
         html, body {
             height: 100dvh;
             margin: 0;
@@ -19,22 +19,24 @@
         .player-wrapper { 
             position: relative; 
             overflow: hidden; 
-            transform: translateZ(0); 
+            isolation: isolate; /* Crea un contesto di rendering isolato per Chrome */
+            transform: translate3d(0,0,0); 
             will-change: transform;
+            contain: paint;
         }
         
-        /* 🔒 WATERMARK RM STUDIO OTTIMIZZATO: Diagonale, visibile e accelerato via hardware GPU */
+        /* 🔒 FILIGRANA RM STUDIO DIAGONALE: Copre il video uniformemente senza coprire la scena con blocchi neri */
         .watermark-pattern {
             position: absolute;
             inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='180' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='22' fill='rgba(255,255,255,0.22)' font-family='sans-serif' font-weight='900' text-anchor='middle' dominant-baseline='middle' transform='rotate(-30, 90, 100)'%3ERM STUDIO%3C/text%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='22' fill='rgba(255,255,255,0.18)' font-family='sans-serif' font-weight='900' text-anchor='middle' dominant-baseline='middle' transform='rotate(-35, 100, 100)'%3ERM STUDIO%3C/text%3E%3C/svg%3E");
             pointer-events: none;
             z-index: 20;
             transform: translateZ(0);
             will-change: transform;
         }
 
-        /* 🔒 BLOCCO RIGIDO DOWNLOAD CHROMIUM (Nasconde i tre puntini verticali delle impostazioni) */
+        /* Impedisce il download abusivo tramite i controlli del browser */
         video::-internal-media-controls-download-button { display:none !important; }
         video::-webkit-media-controls-enclosure { overflow:hidden !important; }
         video::-webkit-media-controls-panel { width: calc(100% + 30px) !important; }
@@ -44,27 +46,28 @@
 </head>
 <body class="bg-[#050508] text-gray-200 h-[100dvh] w-screen flex items-center justify-center p-3 md:p-6 overflow-hidden selection:bg-purple-600 selection:text-white">
 
-    <!-- Card principale ad altezza flessibile bloccata entro il 96% dello schermo -->
+    <!-- Card principale reattiva ad altezza bloccata -->
     <div class="w-full max-w-5xl h-full max-h-[96dvh] bg-[#0b0b0f] border border-gray-900 rounded-3xl p-5 md:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden">
         
-        <!-- Header (Altezza fissa) -->
-        <div class="shrink-0 mb-4">
+        <!-- Header (Tutto disposto rigorosamente su un'unica riga) -->
+        <div class="shrink-0 flex flex-wrap items-center gap-3 mb-4 pb-4 border-b border-gray-900/60">
             <span id="badge" class="bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-purple-500/20">Progetto</span>
-            <h1 id="title" class="text-xl md:text-2xl font-black text-white mt-1.5 tracking-tight truncate">Caricamento in corso...</h1>
-            <p class="text-xs text-gray-500 mt-1">
+            <h1 id="title" class="text-lg md:text-xl font-black text-white tracking-tight">Caricamento in corso...</h1>
+            <span class="text-gray-800 hidden md:inline">•</span>
+            <p class="text-xs text-gray-500">
                 Preparato per: <span class="text-purple-400 font-bold" id="client-name">...</span> 
                 <span class="mx-1.5 text-gray-800">•</span> 
                 Inviato il: <span class="text-gray-400" id="sent-date">--/--/----</span>
             </p>
         </div>
 
-        <!-- Render Area Dinamica (Flessibile: si allarga e si restringe per stare in un'unica schermata) -->
+        <!-- Render Area Dinamica (Flessibile in altezza per evitare lo scroll dello schermo) -->
         <div class="player-wrapper flex-1 min-h-0 rounded-2xl bg-[#020204] mb-5 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
             
-            <!-- WATERMARK DIAGONALE FITTO (Z-index elevato) -->
+            <!-- WATERMARK DIAGONALE FITTO (Scompare al pagamento) -->
             <div id="watermark-layer" class="watermark-pattern"></div>
 
-            <!-- 1. VIDEO PLAYER (Con rendering accelerato GPU) -->
+            <!-- 1. VIDEO PLAYER (Con accelerazione hardware attiva per Chrome) -->
             <video id="player-video" 
                    class="hidden w-full h-full object-contain rounded-2xl bg-black" 
                    style="transform: translate3d(0,0,0); backface-visibility: hidden; will-change: transform;"
@@ -89,7 +92,7 @@
 
             <!-- 4. LINK ESTERNO / DEMO -->
             <div id="player-link" class="hidden text-center p-6 z-30">
-                <div class="w-14 h-16 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mx-auto mb-3">
+                <div class="w-14 h-14 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mx-auto mb-3">
                     <i class="fa-solid fa-arrow-up-right-from-square text-lg text-purple-400"></i>
                 </div>
                 <h3 class="text-white text-lg font-bold mb-1">Link Esterno / Demo</h3>
@@ -97,15 +100,11 @@
             </div>
         </div>
 
-        <!-- Footer Actions con Pulsante Gigante ed Evidente (Altezza fissa) -->
-        <div class="shrink-0 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-gray-800/60">
-            <p id="status" class="text-xs text-yellow-400 font-bold flex items-center gap-2">
-                <i class="fa-solid fa-clock animate-pulse"></i> In attesa di sblocco
-            </p>
-            
+        <!-- Footer Actions con Pulsante di Sblocco/Download in Posizione Centrale e Gigante -->
+        <div class="shrink-0 flex items-center justify-center pt-4 border-t border-gray-800/60">
             <button id="actionBtn" onclick="handleAction()" 
-                    class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black px-10 py-4.5 rounded-2xl text-sm md:text-base uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-[0_0_35px_rgba(147,51,234,0.65)] flex items-center justify-center gap-2.5 animate-pulse">
-                <!-- Il testo viene iniettato via JS -->
+                    class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-[0_0_35px_rgba(147,51,234,0.65)] flex items-center justify-center gap-3 animate-pulse">
+                <!-- Il testo e l'icona del lucchetto vengono iniettati via JS -->
             </button>
         </div>
     </div>
@@ -174,16 +173,14 @@
             // GESTIONE STATO PAGAMENTO / WATERMARK
             if (data.is_paid === true || data.is_paid === "true") {
                 document.getElementById('watermark-layer').classList.add('hidden'); // Nasconde la griglia di filigrana
-                document.getElementById('status').className = "text-sm text-green-400 font-bold flex items-center gap-2";
-                document.getElementById('status').innerHTML = `<i class="fa-solid fa-circle-check"></i> Sbloccato e Pronto`;
                 
                 const btn = document.getElementById('actionBtn');
-                btn.innerHTML = `<i class="fa-solid fa-download"></i> Scarica in HD`;
-                btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-10 py-4.5 rounded-2xl text-sm md:text-base uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] hover:shadow-[0_0_40px_rgba(34,197,94,0.6)] flex items-center justify-center gap-2.5";
-                btn.classList.remove('animate-pulse'); // Ferma la pulsazione se pagato
+                btn.innerHTML = `<i class="fa-solid fa-lock-open"></i> Scarica in HD`;
+                btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] hover:shadow-[0_0_40px_rgba(34,197,94,0.6)] flex items-center justify-center gap-3";
+                btn.classList.remove('animate-pulse'); // Rimuove pulsazione se pagato
             } else {
-                // SE NON PAGATO: Mostra Pulsante Pagamento Gigante
-                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-unlock"></i> Download €${formattedPrice}`;
+                // SE NON PAGATO: Mostra Pulsante Pagamento Gigante con Lucchetto Chiuso
+                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-lock"></i> Download €${formattedPrice}`;
             }
         });
 
