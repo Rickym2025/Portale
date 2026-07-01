@@ -19,7 +19,8 @@
 
     <div class="max-w-[98%] mx-auto">
         
-        <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-900">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-10 pb-4 border-b border-gray-900">
             <div>
                 <h1 class="text-2xl font-black text-white flex items-center gap-2">
                     <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-600/30">
@@ -30,7 +31,28 @@
             </div>
         </div>
 
-        <div class="bg-[#121217] border border-zinc-800/80 rounded-3xl p-6 mb-8 shadow-2xl">
+        <!-- STATS CARDS -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            <div class="bg-[#121217] border border-zinc-800/80 p-5 rounded-2xl shadow-xl">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Incassi Totali</span>
+                <span class="text-2xl font-black text-green-400 mt-1 block" id="stat-revenue">€0.00</span>
+            </div>
+            <div class="bg-[#121217] border border-zinc-800/80 p-5 rounded-2xl shadow-xl">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Conversion Rate</span>
+                <span class="text-2xl font-black text-white mt-1 block" id="stat-conversion">0%</span>
+            </div>
+            <div class="bg-[#121217] border border-zinc-800/80 p-5 rounded-2xl shadow-xl">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Aperture / Invii</span>
+                <span class="text-2xl font-black text-purple-400 mt-1 block" id="stat-opens">0 / 0</span>
+            </div>
+            <div class="bg-[#121217] border border-zinc-800/80 p-5 rounded-2xl shadow-xl">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Visite Totali</span>
+                <span class="text-2xl font-black text-blue-400 mt-1 block" id="stat-views">0</span>
+            </div>
+        </div>
+
+        <!-- SEZIONE CREAZIONE NUOVO PROGETTO -->
+        <div class="bg-[#121217] border border-zinc-800/80 rounded-3xl p-6 mb-10 shadow-2xl">
             <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-plus text-purple-500"></i> Crea Nuovo Portale Cliente
             </h2>
@@ -42,7 +64,7 @@
                             <input type="email" id="form-email" required class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Nome Lead / Azienda</label>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Nome Lead / Concessionaria</label>
                             <input type="text" id="form-agency" placeholder="Es. Automobili Rossi" required class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
                         </div>
                     </div>
@@ -88,20 +110,20 @@
             </form>
         </div>
 
-        <!-- TABELLA PORTALE VIDEO (COMPATTA) -->
+        <!-- TABELLA PORTALE VIDEO (COMPATTA E LARGHEZZE RICALIBRATE) -->
         <div class="bg-[#121217] border border-zinc-800/80 rounded-3xl overflow-hidden shadow-2xl">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse min-w-[1100px]">
                     <thead>
                         <tr class="border-b border-gray-950 bg-black/40 text-[9px] uppercase tracking-wider text-gray-400">
-                            <th class="p-4 w-[22%]">Progetto / Cliente</th>
+                            <th class="p-4 w-[24%]">Progetto / Cliente</th>
                             <th class="p-4 w-[8%]">Tipo</th>
                             <th class="p-4 w-[8%]">Prezzo (€)</th>
-                            <th class="p-4 w-[14%]">Stato E-mail</th>
-                            <th class="p-4 w-[10%]">Visite</th>
-                            <th class="p-4 w-[10%]">Pagamento</th>
+                            <th class="p-4 w-[15%]">Stato E-mail</th>
+                            <th class="p-4 w-[8%]">Visite</th>
+                            <th class="p-4 w-[11%]">Pagamento</th>
                             <th class="p-4 w-[10%]">Link</th>
-                            <th class="p-4 w-[18%] text-right">Azioni Marketing</th>
+                            <th class="p-4 w-[16%] text-right">Azioni Marketing</th>
                         </tr>
                     </thead>
                     <tbody id="rows-container" class="divide-y divide-gray-900/60 text-sm">
@@ -123,7 +145,7 @@
         const reminderWebhook = 'https://n8n.rmstudio.app/webhook/polite-reminder';
         const deleteWebhook = 'https://n8n.rmstudio.app/webhook/delete-portal-video';
 
-        // Gestione form (Nasconde l'upload logico per brevità, uguale a prima)
+        // Gestione cambio campi dinamici nel form (Nasconde l'upload logico per brevità)
         document.getElementById('form-type').addEventListener('change', function() {
             const type = this.value;
             const fileSection = document.getElementById('file-upload-section');
@@ -211,6 +233,7 @@
                 else if (v.portal_type === 'html') icon = "fa-code";
                 else if (v.portal_type === 'link') icon = "fa-arrow-up-right-from-square";
 
+                // STATO INVIO COERENTE (Con visualizzato se views_count >= 1)
                 let statusLabel = '<span class="text-gray-500 font-bold text-xs"><i class="fa-solid fa-envelope"></i> Non Inviata</span>';
                 if (v.views_count > 0) {
                     statusLabel = '<span class="text-blue-400 font-bold text-xs"><i class="fa-solid fa-eye animate-pulse"></i> Visualizzato</span>';
@@ -220,11 +243,11 @@
                     statusLabel = '<span class="text-purple-400 font-bold text-xs"><i class="fa-solid fa-paper-plane"></i> Inviata</span>';
                 }
 
-                // Aggiunta della data di invio (se presente)
+                // Data di invio visibile sotto l'etichetta dello stato (Leggibile in text-[11px] e grigio chiaro)
                 if (v.sent_at) {
                     const d = new Date(v.sent_at);
                     const dateStr = `${d.toLocaleDateString('it-IT')} ${d.toLocaleTimeString('it-IT', {hour: '2-digit', minute:'2-digit'})}`;
-                    statusLabel += `<span class="block text-[9px] text-gray-500 mt-1">${dateStr}</span>`;
+                    statusLabel += `<span class="block text-[11px] text-gray-400 mt-1 font-medium">${dateStr}</span>`;
                 }
 
                 const tr = document.createElement('tr');
@@ -238,12 +261,17 @@
                         </div>
                     </td>
                     <td class="p-4"><span class="text-xs bg-[#1c1c24] text-gray-300 px-2.5 py-1 rounded-full border border-zinc-800 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max"><i class="fa-solid ${icon}"></i> ${v.portal_type}</span></td>
-                    <td class="p-4"><input type="number" value="${v.price_euro}" onchange="updateField('${v.id}', 'price_euro', this.value)" class="w-16 bg-[#181820] border border-zinc-800 rounded-lg p-1 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs"></td>
-                    <td class="p-4">${statusLabel}</td>
+                    <td class="p-4"><input type="number" value="${v.price_euro}" onchange="updateField('${v.id}', 'price_euro', this.value)" class="w-16 bg-[#181820] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs"></td>
+                    
+                    <!-- Colonna Stato Invio con No-Wrap per impedire disallineamenti -->
+                    <td class="p-4 whitespace-nowrap">${statusLabel}</td>
+                    
                     <td class="p-4 text-xs font-bold text-blue-400">📈 ${v.views_count || 0} visite</td>
                     <td class="p-4 text-xs">${(v.is_paid === true || v.is_paid === "true") ? '<span class="text-green-400 font-bold"><i class="fa-solid fa-circle-check"></i> Pagato</span>' : '<span class="text-yellow-500"><i class="fa-solid fa-clock"></i> Attesa</span>'}</td>
                     <td class="p-4 text-xs"><button onclick="copyToClipboard('${v.id}')" class="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1 bg-purple-500/10 border border-purple-500/20 px-2.5 py-1.5 rounded-lg transition-all active:scale-95 text-[10px]"><i class="fa-solid fa-copy"></i> Copia</button></td>
-                    <td class="p-4 text-right">
+                    
+                    <!-- Colonna Azioni con No-Wrap e Flex per mantenere l'allineamento orizzontale -->
+                    <td class="p-4 text-right whitespace-nowrap">
                         <div class="flex items-center justify-end gap-1.5 whitespace-nowrap">
                             ${!v.first_email_sent ? `
                                 <button onclick="sendFirstEmail('${v.id}', '${v.client_email}', '${v.title}', 'cold')" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-md text-[10px] font-bold transition-all shadow-sm">Invia Cold</button>
