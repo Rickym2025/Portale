@@ -86,9 +86,11 @@
             const id = params.get('id');
             if (!id) return alert("ID non valido");
 
-            await supabase.rpc('increment_views', { video_id: id });
+            // Incrementa le visualizzazioni in modo asincrono
+            await supabaseClient.rpc('increment_views', { video_id: id });
 
-            const { data, error } = await supabase.from('portal_videos').select('*').eq('id', id).single();
+            // Recupera i dettagli del video
+            const { data, error } = await supabaseClient.from('portal_videos').select('*').eq('id', id).single();
             if (error || !data) return alert("Contenuto non trovato");
             videoData = data;
 
@@ -146,7 +148,6 @@
         function handleAction() {
             if (videoData.is_paid === true || videoData.is_paid === "true") {
                 if (videoData.portal_type === 'carousel') {
-                    // Scarica ZIP o file immagini uno ad uno
                     alert("Download delle immagini in corso...");
                     imagesArray.forEach((url, i) => {
                         const a = document.createElement('a');
