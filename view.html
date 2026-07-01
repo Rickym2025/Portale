@@ -19,10 +19,7 @@
         .player-wrapper { 
             position: relative; 
             overflow: hidden; 
-            isolation: isolate; /* Crea un contesto di rendering isolato per Chrome */
-            transform: translate3d(0,0,0); 
-            will-change: transform;
-            contain: paint;
+            background: #020204;
         }
         
         /* 🔒 FILIGRANA RM STUDIO DIAGONALE: Copre il video uniformemente senza coprire la scena con blocchi neri */
@@ -69,7 +66,7 @@
 
             <!-- 1. VIDEO PLAYER (Con accelerazione hardware attiva per Chrome) -->
             <video id="player-video" 
-                   class="hidden w-full h-full object-contain rounded-2xl bg-black" 
+                   class="hidden w-full h-full object-contain rounded-2xl bg-black"
                    style="transform: translate3d(0,0,0); backface-visibility: hidden; will-change: transform;"
                    preload="auto" 
                    playsinline 
