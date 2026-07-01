@@ -2,56 +2,71 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=no">
     <title>Area Clienti - RM Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .player-wrapper { position: relative; overflow: hidden; }
+        /* Forza l'altezza della pagina escludendo lo scroll del browser */
+        html, body {
+            height: 100dvh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .player-wrapper { 
+            position: relative; 
+            overflow: hidden; 
+            transform: translateZ(0); 
+            will-change: transform;
+        }
         
-        /* 🔒 PROTEZIONE WATERMARK RM STUDIO: Griglia diagonale fitta e visibile per impedire il furto del video */
+        /* 🔒 WATERMARK RM STUDIO OTTIMIZZATO: Diagonale, visibile e accelerato via hardware GPU */
         .watermark-pattern {
             position: absolute;
             inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='22' fill='rgba(255,255,255,0.18)' font-family='sans-serif' font-weight='900' text-anchor='middle' dominant-baseline='middle' transform='rotate(-35, 100, 100)'%3ERM STUDIO%3C/text%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg width='180' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='22' fill='rgba(255,255,255,0.22)' font-family='sans-serif' font-weight='900' text-anchor='middle' dominant-baseline='middle' transform='rotate(-30, 90, 100)'%3ERM STUDIO%3C/text%3E%3C/svg%3E");
             pointer-events: none;
             z-index: 20;
+            transform: translateZ(0);
+            will-change: transform;
         }
 
-        /* Disabilita i controlli di Download nativi dei browser */
+        /* 🔒 BLOCCO RIGIDO DOWNLOAD CHROMIUM (Nasconde i tre puntini verticali delle impostazioni) */
         video::-internal-media-controls-download-button { display:none !important; }
         video::-webkit-media-controls-enclosure { overflow:hidden !important; }
         video::-webkit-media-controls-panel { width: calc(100% + 30px) !important; }
+        video::-webkit-media-controls-settings-button { display: none !important; }
+        video::-webkit-media-controls-overflow-button { display: none !important; }
     </style>
 </head>
-<body class="bg-[#050508] text-gray-200 min-h-screen flex items-center justify-center p-4">
+<body class="bg-[#050508] text-gray-200 h-[100dvh] w-screen flex items-center justify-center p-3 md:p-6 overflow-hidden selection:bg-purple-600 selection:text-white">
 
-    <!-- Allargato a max-w-6xl per una riproduzione video imponente e cinematografica -->
-    <div class="w-full max-w-6xl bg-[#0b0b0f] border border-gray-900 rounded-3xl p-6 md:p-10 shadow-2xl relative">
+    <!-- Card principale ad altezza flessibile bloccata entro il 96% dello schermo -->
+    <div class="w-full max-w-5xl h-full max-h-[96dvh] bg-[#0b0b0f] border border-gray-900 rounded-3xl p-5 md:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden">
         
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <span id="badge" class="bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-purple-500/20">Progetto</span>
-                <h1 id="title" class="text-2xl font-bold text-white mt-2">Caricamento in corso...</h1>
-                <p class="text-sm text-gray-500 mt-1">
-                    Preparato per: <span class="text-purple-400 font-bold" id="client-name">...</span> 
-                    <span class="mx-2 text-gray-700">•</span> 
-                    Inviato il: <span class="text-gray-400" id="sent-date">--/--/----</span>
-                </p>
-            </div>
+        <!-- Header (Altezza fissa) -->
+        <div class="shrink-0 mb-4">
+            <span id="badge" class="bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-purple-500/20">Progetto</span>
+            <h1 id="title" class="text-xl md:text-2xl font-black text-white mt-1.5 tracking-tight truncate">Caricamento in corso...</h1>
+            <p class="text-xs text-gray-500 mt-1">
+                Preparato per: <span class="text-purple-400 font-bold" id="client-name">...</span> 
+                <span class="mx-1.5 text-gray-800">•</span> 
+                Inviato il: <span class="text-gray-400" id="sent-date">--/--/----</span>
+            </p>
         </div>
 
-        <!-- Render Area Dinamica (Fattore di scala ingrandito) -->
-        <div class="player-wrapper rounded-2xl aspect-video bg-[#020204] mb-8 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-2xl">
+        <!-- Render Area Dinamica (Flessibile: si allarga e si restringe per stare in un'unica schermata) -->
+        <div class="player-wrapper flex-1 min-h-0 rounded-2xl bg-[#020204] mb-5 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
             
-            <!-- WATERMARK DIAGONALE FITTO (Scompare automaticamente dopo il pagamento) -->
+            <!-- WATERMARK DIAGONALE FITTO (Z-index elevato) -->
             <div id="watermark-layer" class="watermark-pattern"></div>
 
-            <!-- 1. VIDEO PLAYER (Con forzatura accelerazione hardware GPU tramite CSS per rimuovere i rallentamenti su Chrome) -->
+            <!-- 1. VIDEO PLAYER (Con rendering accelerato GPU) -->
             <video id="player-video" 
-                   class="hidden w-full h-full object-cover rounded-2xl" 
+                   class="hidden w-full h-full object-contain rounded-2xl bg-black" 
                    style="transform: translate3d(0,0,0); backface-visibility: hidden; will-change: transform;"
                    preload="auto" 
                    playsinline 
@@ -63,34 +78,33 @@
             </video>
 
             <!-- 2. CAROSELLO IMMAGINI -->
-            <div id="player-carousel" class="hidden w-full h-full relative flex items-center justify-center">
-                <img id="carousel-img" src="" class="w-full h-full object-cover select-none" oncontextmenu="return false;">
-                <button onclick="prevSlide()" class="absolute left-4 bg-black/60 hover:bg-black/90 p-4 rounded-full text-white z-50"><i class="fa-solid fa-chevron-left"></i></button>
-                <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/90 p-4 rounded-full text-white z-50"><i class="fa-solid fa-chevron-right"></i></button>
+            <div id="player-carousel" class="hidden w-full h-full relative flex items-center justify-center bg-black">
+                <img id="carousel-img" src="" class="w-full h-full object-contain select-none rounded-2xl" oncontextmenu="return false;">
+                <button onclick="prevSlide()" class="absolute left-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-right text-xs"></i></button>
             </div>
 
             <!-- 3. HTML INTERATTIVO (IFRAME) -->
-            <iframe id="player-html" class="hidden w-full h-full border-none rounded-2xl z-20" src=""></iframe>
+            <iframe id="player-html" class="hidden w-full h-full border-none rounded-2xl z-20 bg-black" src=""></iframe>
 
             <!-- 4. LINK ESTERNO / DEMO -->
-            <div id="player-link" class="hidden text-center p-8 z-30">
-                <div class="w-20 h-20 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mx-auto mb-4">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-2xl text-purple-400"></i>
+            <div id="player-link" class="hidden text-center p-6 z-30">
+                <div class="w-14 h-16 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mx-auto mb-3">
+                    <i class="fa-solid fa-arrow-up-right-from-square text-lg text-purple-400"></i>
                 </div>
-                <h3 class="text-white text-xl font-bold mb-2">Link Esterno / Demo</h3>
-                <p class="text-xs text-gray-400 max-w-sm mx-auto mb-4">Questo contenuto è un'applicazione o risorsa esterna ospitata fuori dal portale di anteprima.</p>
-                <a id="external-link-btn" href="" target="_blank" class="inline-flex items-center gap-2 bg-[#121217] border border-gray-800 px-6 py-3 mt-4 rounded-xl text-sm font-bold hover:border-purple-500 transition-all">Apri Progetto</a>
+                <h3 class="text-white text-lg font-bold mb-1">Link Esterno / Demo</h3>
+                <a id="external-link-btn" href="" target="_blank" class="inline-flex items-center gap-2 bg-[#121217] border border-gray-800 px-5 py-2.5 mt-3 rounded-xl text-xs font-bold hover:border-purple-500 transition-all">Apri Progetto</a>
             </div>
         </div>
 
-        <!-- Footer Actions con Pulsante Gigante -->
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 border-t border-gray-800/60">
-            <p id="status" class="text-sm text-yellow-400 font-bold flex items-center gap-2">
+        <!-- Footer Actions con Pulsante Gigante ed Evidente (Altezza fissa) -->
+        <div class="shrink-0 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-gray-800/60">
+            <p id="status" class="text-xs text-yellow-400 font-bold flex items-center gap-2">
                 <i class="fa-solid fa-clock animate-pulse"></i> In attesa di sblocco
             </p>
             
             <button id="actionBtn" onclick="handleAction()" 
-                    class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(147,51,234,0.4)] hover:shadow-[0_0_40px_rgba(147,51,234,0.7)] flex items-center justify-center gap-3 animate-pulse">
+                    class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black px-10 py-4.5 rounded-2xl text-sm md:text-base uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-[0_0_35px_rgba(147,51,234,0.65)] flex items-center justify-center gap-2.5 animate-pulse">
                 <!-- Il testo viene iniettato via JS -->
             </button>
         </div>
@@ -165,11 +179,11 @@
                 
                 const btn = document.getElementById('actionBtn');
                 btn.innerHTML = `<i class="fa-solid fa-download"></i> Scarica in HD`;
-                btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] hover:shadow-[0_0_40px_rgba(34,197,94,0.6)] flex items-center justify-center gap-3";
+                btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-10 py-4.5 rounded-2xl text-sm md:text-base uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] hover:shadow-[0_0_40px_rgba(34,197,94,0.6)] flex items-center justify-center gap-2.5";
                 btn.classList.remove('animate-pulse'); // Ferma la pulsazione se pagato
             } else {
                 // SE NON PAGATO: Mostra Pulsante Pagamento Gigante
-                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-lock-open"></i> Download €${formattedPrice}`;
+                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-unlock"></i> Download €${formattedPrice}`;
             }
         });
 
