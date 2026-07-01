@@ -3,20 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RM Studio - Area Clienti</title>
+    <title>AImmobiliare - Area Clienti</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .render-container { position: relative; overflow: hidden; width: 100%; height: 100%; }
+        .player-wrapper { position: relative; overflow: hidden; }
         .watermark {
             position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-            pointer-events: none; user-select: none; z-index: 40;
+            pointer-events: none; user-select: none; z-index: 10;
         }
         .watermark-text {
-            color: rgba(255, 255, 255, 0.07); font-size: 3rem; font-weight: 900;
+            color: rgba(255, 255, 255, 0.08); font-size: 3rem; font-weight: 900;
             letter-spacing: 0.15em; text-transform: uppercase; transform: rotate(-25deg);
-            border: 4px solid rgba(255, 255, 255, 0.04); padding: 12px 24px; white-space: nowrap;
+            border: 4px solid rgba(255, 255, 255, 0.05); padding: 12px 24px;
+        }
+        
+        /* 🔒 BLOCCO DOWNLOAD CAPILLARE (Chrome / Safari / Firefox) */
+        video::-internal-media-controls-download-button {
+            display:none !important;
+        }
+        video::-webkit-media-controls-enclosure {
+            overflow:hidden !important;
+        }
+        video::-webkit-media-controls-panel {
+            width: calc(100% + 30px) !important; /* Sposta i tre puntini fuori dallo schermo visibile */
         }
     </style>
 </head>
@@ -26,17 +37,23 @@
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
             <div>
-                <span id="badge" class="bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-purple-500/20">...</span>
-                <h1 id="title" class="text-xl font-bold text-white mt-2">Caricamento in corso...</h1>
+                <span id="badge" class="bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-purple-500/20">Real Estate</span>
+                <h1 id="title" class="text-xl font-bold text-white mt-2">Caricamento...</h1>
+                <!-- NOME AZIENDA E DATA INVIO -->
+                <p class="text-xs text-gray-500 mt-1">
+                    Preparato per: <span class="text-purple-400 font-bold" id="client-name">...</span> 
+                    <span class="mx-2">•</span> 
+                    Inviato il: <span class="text-gray-400" id="sent-date">--/--/----</span>
+                </p>
             </div>
             <span id="price" class="text-lg font-black text-white">€--.--</span>
         </div>
 
         <!-- Render Area Dinamica -->
-        <div class="render-container rounded-2xl aspect-video bg-[#020204] mb-6 flex items-center justify-center border border-gray-900/60 overflow-hidden">
+        <div class="player-wrapper rounded-2xl aspect-video bg-[#020204] mb-6 flex items-center justify-center border border-gray-900/60 overflow-hidden">
             <!-- Watermark centralizzato -->
             <div class="watermark" id="watermark">
-                <div class="watermark-text">Anteprima RM Studio</div>
+                <div class="watermark-text">Anteprima Protetta</div>
             </div>
 
             <!-- 1. CASO VIDEO -->
@@ -46,12 +63,12 @@
 
             <!-- 2. CASO CAROSELLO IMMAGINI -->
             <div id="player-carousel" class="hidden w-full h-full relative flex items-center justify-center">
-                <img id="carousel-img" src="" class="w-full h-full object-cover select-none">
+                <img id="carousel-img" src="" class="w-full h-full object-cover select-none" oncontextmenu="return false;">
                 <button onclick="prevSlide()" class="absolute left-4 bg-black/60 hover:bg-black/90 p-3 rounded-full text-white z-50"><i class="fa-solid fa-chevron-left"></i></button>
                 <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/90 p-3 rounded-full text-white z-50"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
 
-            <!-- 3. CASO HTML INTERATTIVO (IFRAME) -->
+            <!-- 3. CASO HTML INTERATTIVO -->
             <iframe id="player-html" class="hidden w-full h-full border-none rounded-2xl z-20" src=""></iframe>
 
             <!-- 4. CASO LINK / DOCUMENTO -->
@@ -68,13 +85,17 @@
         <!-- Footer Actions -->
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-gray-800/60">
             <p id="status" class="text-xs text-yellow-400 font-bold"><i class="fa-solid fa-clock animate-pulse"></i> In attesa di sblocco</p>
-            <button id="actionBtn" onclick="handleAction()" class="w-full sm:w-auto bg-purple-600 hover:bg-purple-700 text-white font-bold px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-purple-600/10"></button>
+            
+            <!-- BOTTONE GLOWING PULSANTE DI STRIPE / DOWNLOAD -->
+            <button id="actionBtn" onclick="handleAction()" 
+                    class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-black px-8 py-4 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:shadow-[0_0_30px_rgba(147,51,234,0.6)] animate-pulse flex items-center justify-center gap-2">
+            </button>
         </div>
     </div>
 
     <script>
-        const supabaseUrl = 'https://jhijfulhntlhcytbhcly.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ';
+        const supabaseUrl = 'https://jhijfulhntlhcytbhcly.supabase.co'; 
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         let videoData = null;
@@ -86,16 +107,26 @@
             const id = params.get('id');
             if (!id) return alert("ID non valido");
 
-            // Incrementa le visualizzazioni in modo asincrono
+            // Incrementa le visualizzazioni
             await supabaseClient.rpc('increment_views', { video_id: id });
 
-            // Recupera i dettagli del video
+            // Recupera dati
             const { data, error } = await supabaseClient.from('portal_videos').select('*').eq('id', id).single();
             if (error || !data) return alert("Contenuto non trovato");
             videoData = data;
 
             document.getElementById('title').innerText = data.title || "Il tuo Progetto";
             document.getElementById('badge').innerText = data.portal_type;
+            document.getElementById('client-name').innerText = data.client_name || "Cliente";
+            
+            // Gestione data di invio formattata
+            if (data.sent_at) {
+                const dateObj = new Date(data.sent_at);
+                document.getElementById('sent-date').innerText = dateObj.toLocaleDateString('it-IT') + ' alle ' + dateObj.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+            } else {
+                document.getElementById('sent-date').innerText = "Non ancora inviato";
+            }
+
             document.getElementById('price').innerText = `€${parseFloat(data.price_euro).toFixed(2)}`;
             
             // RENDERING DINAMICO PER TIPO
@@ -126,9 +157,10 @@
                 document.getElementById('watermark').classList.add('hidden');
                 document.getElementById('status').className = "text-xs text-green-400 font-bold";
                 document.getElementById('status').innerHTML = `<i class="fa-solid fa-circle-check"></i> Sbloccato`;
-                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-download"></i> Scarica / Accedi`;
+                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-download"></i> Scarica in HD`;
+                document.getElementById('actionBtn').classList.remove('animate-pulse'); // Ferma la pulsazione se pagato
             } else {
-                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-unlock"></i> Sblocca Ora`;
+                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-unlock"></i> Download €${parseFloat(data.price_euro).toFixed(2)}`;
             }
         });
 
@@ -159,7 +191,8 @@
                     window.open(videoData.content_url, '_blank');
                 }
             } else {
-                alert(`Reindirizzamento a Stripe per sbloccare la risorsa (€${parseFloat(videoData.price_euro).toFixed(2)})`);
+                alert(`Reindirizzamento al gateway Stripe per sbloccare la risorsa (€${parseFloat(videoData.price_euro).toFixed(2)})`);
+                // n8n riceverà l'ID del video come client_reference_id o nei metadata di Stripe [3]
             }
         }
     </script>
