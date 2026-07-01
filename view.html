@@ -49,8 +49,16 @@
             <!-- WATERMARK DIAGONALE FITTO (Scompare automaticamente dopo il pagamento) -->
             <div id="watermark-layer" class="watermark-pattern"></div>
 
-            <!-- 1. VIDEO PLAYER -->
-            <video id="player-video" class="hidden w-full h-full object-cover rounded-2xl" controls controlslist="nodownload" oncontextmenu="return false;">
+            <!-- 1. VIDEO PLAYER (Con forzatura accelerazione hardware GPU tramite CSS per rimuovere i rallentamenti su Chrome) -->
+            <video id="player-video" 
+                   class="hidden w-full h-full object-cover rounded-2xl" 
+                   style="transform: translate3d(0,0,0); backface-visibility: hidden; will-change: transform;"
+                   preload="auto" 
+                   playsinline 
+                   webkit-playsinline 
+                   controls 
+                   controlslist="nodownload" 
+                   oncontextmenu="return false;">
                 <source src="" type="video/mp4">
             </video>
 
@@ -145,6 +153,10 @@
                 document.getElementById('player-link').classList.remove('hidden');
             }
 
+            // GESTIONE FORMATTAZIONE PREZZO DINAMICO SENZA .00
+            const priceVal = parseFloat(data.price_euro);
+            const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
+
             // GESTIONE STATO PAGAMENTO / WATERMARK
             if (data.is_paid === true || data.is_paid === "true") {
                 document.getElementById('watermark-layer').classList.add('hidden'); // Nasconde la griglia di filigrana
@@ -154,9 +166,10 @@
                 const btn = document.getElementById('actionBtn');
                 btn.innerHTML = `<i class="fa-solid fa-download"></i> Scarica in HD`;
                 btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] hover:shadow-[0_0_40px_rgba(34,197,94,0.6)] flex items-center justify-center gap-3";
-                btn.classList.remove('animate-pulse'); // Rimuove pulsazione se pagato
+                btn.classList.remove('animate-pulse'); // Ferma la pulsazione se pagato
             } else {
-                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-unlock"></i> Download €${parseFloat(data.price_euro).toFixed(2)}`;
+                // SE NON PAGATO: Mostra Pulsante Pagamento Gigante
+                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-lock-open"></i> Download €${formattedPrice}`;
             }
         });
 
@@ -178,16 +191,15 @@
                 if (videoData.portal_type === 'carousel') {
                     alert("Download delle immagini in corso...");
                     imagesArray.forEach((url, i) => {
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = `slide_${i + 1}.jpg`;
-                        a.click();
+                        const a = document.createElement('a'); a.href = url; a.download = `slide_${i + 1}.jpg`; a.click();
                     });
                 } else {
                     window.open(videoData.content_url, '_blank');
                 }
             } else {
-                alert(`Reindirizzamento al gateway Stripe per sbloccare la risorsa (€${parseFloat(videoData.price_euro).toFixed(2)})`);
+                const priceVal = parseFloat(videoData.price_euro);
+                const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
+                alert(`Reindirizzamento al gateway Stripe per sbloccare la risorsa (€${formattedPrice})`);
                 // n8n riceverà l'ID del video come client_reference_id o nei metadata di Stripe [3]
             }
         }
