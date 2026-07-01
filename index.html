@@ -127,8 +127,8 @@
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ';
         const supabase = supabaseJS.createClient(supabaseUrl, supabaseKey);
 
-        const n8nCreateEndpoint = 'https://la-tua-istanza-n8n/webhook/admin-create-portal';
-        const reminderWebhook = 'https://la-tua-istanza-n8n/webhook/polite-reminder';
+        const n8nCreateEndpoint = 'https://n8n.rmstudio.app/webhook/admin-create-portal';
+        const reminderWebhook = 'https://n8n.rmstudio.app/webhook/polite-reminder';
 
         // Gestione cambio campi dinamici nel form
         document.getElementById('form-type').addEventListener('change', function() {
