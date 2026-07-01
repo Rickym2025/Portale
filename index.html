@@ -52,12 +52,18 @@
             </h2>
             <form id="create-portal-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Email Cliente</label>
-                        <input type="email" id="form-email" required class="w-full bg-[#111116] border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Email Cliente</label>
+                            <input type="email" id="form-email" required class="w-full bg-[#111116] border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Nome Lead / Concessionaria</label>
+                            <input type="text" id="form-agency" placeholder="Es. Automobili Rossi" required class="w-full bg-[#111116] border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
+                        </div>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Titolo Progetto</label>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Titolo Progetto (Immobile/Auto/UGC)</label>
                         <input type="text" id="form-title" placeholder="Es. Attico Vista Mare Sanremo" required class="w-full bg-[#111116] border border-gray-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
                     </div>
                     <div>
@@ -94,7 +100,7 @@
                     </div>
 
                     <button type="submit" id="submit-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-circle-check"></i> Genera Portale (Senza Inviare)
+                        <i class="fa-solid fa-circle-check"></i> Salva e Carica Video
                     </button>
                 </div>
             </form>
@@ -107,6 +113,7 @@
                     <thead>
                         <tr class="border-b border-gray-950 bg-black/40 text-[9px] uppercase tracking-wider text-gray-400">
                             <th class="p-4">Dettagli Progetto / Cliente</th>
+                            <th class="p-4">Tipo</th>
                             <th class="p-4">Prezzo (€)</th>
                             <th class="p-4">Stato Invio</th>
                             <th class="p-4">Visualizzazioni</th>
@@ -131,7 +138,8 @@
 
         const n8nCreateEndpoint = 'https://n8n.rmstudio.app/webhook/admin-create-portal';
         const n8nFirstEmailWebhook = 'https://n8n.rmstudio.app/webhook/invia-primo-invito';
-        const n8nReminderWebhook = 'https://n8n.rmstudio.app/webhook/polite-reminder';
+        const reminderWebhook = 'https://n8n.rmstudio.app/webhook/polite-reminder';
+        const deleteWebhook = 'https://n8n.rmstudio.app/webhook/delete-portal-video';
 
         // Gestione cambio campi dinamici nel form
         document.getElementById('form-type').addEventListener('change', function() {
@@ -183,6 +191,7 @@
             const type = document.getElementById('form-type').value;
             const formData = new FormData();
             formData.append('email', document.getElementById('form-email').value);
+            formData.append('client_name', document.getElementById('form-agency').value);
             formData.append('title', document.getElementById('form-title').value);
             formData.append('price', document.getElementById('form-price').value);
             formData.append('portal_type', type);
@@ -214,7 +223,7 @@
                 alert("Errore di connessione a n8n: " + err.message);
             } finally {
                 btn.disabled = false;
-                btn.innerText = "Genera Portale (Senza Inviare)";
+                btn.innerText = "Salva e Carica Video";
             }
         });
 
@@ -226,7 +235,6 @@
 
             if (error) return alert("Errore caricamento database: " + error.message);
 
-            // Calcolo statistiche
             let totalRevenue = 0;
             let totalPaid = 0;
             let totalViews = 0;
@@ -276,9 +284,14 @@
                                onchange="updateField('${v.id}', 'title', this.value)"
                                class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none font-bold text-white text-sm block w-full mb-1">
                         
-                        <input type="email" value="${v.client_email}" 
-                               onchange="updateField('${v.id}', 'client_email', this.value)"
-                               class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full">
+                        <div class="flex items-center gap-2">
+                            <input type="text" value="${v.client_name || 'Cliente'}" 
+                                   onchange="updateField('${v.id}', 'client_name', this.value)"
+                                   class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none text-xs text-purple-400 font-semibold w-1/2">
+                            <input type="email" value="${v.client_email}" 
+                                   onchange="updateField('${v.id}', 'client_email', this.value)"
+                                   class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-1/2">
+                        </div>
                     </td>
                     <td class="p-4">
                         <span class="text-xs bg-gray-800 text-gray-300 px-2.5 py-1 rounded-full border border-gray-700 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max">
@@ -294,17 +307,17 @@
                     <td class="p-4 text-xs font-bold text-blue-400">📈 ${v.views_count || 0} visite</td>
                     <td class="p-4 text-xs">
                         ${(v.is_paid === true || v.is_paid === "true")
-                            ? '<span class="text-green-400 font-bold"><i class="fa-solid fa-circle-check"></i> Sbloccato</span>' 
+                            ? '<span class="text-green-400 font-bold"><i class="fa-solid fa-circle-check"></i> Pagato</span>' 
                             : '<span class="text-yellow-500"><i class="fa-solid fa-clock"></i> In Attesa</span>'}
                     </td>
                     <td class="p-4 text-xs">
-                        <button onclick="copyToClipboard('${v.id}')" class="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1 bg-purple-500/10 border border-purple-500/20 px-2.5 py-1.5 rounded-lg transition-all active:scale-95">
+                        <button onclick="copyToClipboard('${v.id}')" class="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1 bg-purple-500/10 border border-purple-500/20 px-2.5 py-1.5 rounded-lg transition-all active:scale-95 text-xs">
                             <i class="fa-solid fa-copy"></i> Copia Link
                         </button>
                     </td>
                     <td class="p-4 text-right">
                         <div class="flex items-center justify-end gap-2">
-                            <!-- INVIO MANUALE PRIMO INVITO -->
+                            <!-- INVIO MANUALE PRIMO INVITO (Scegli tipo email) -->
                             ${!v.first_email_sent ? `
                                 <button onclick="sendFirstEmail('${v.id}', '${v.client_email}', '${v.title}', 'cold')" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all">
                                     Invia Cold
@@ -321,7 +334,7 @@
                                 </button>
                             ` : ''}
 
-                            <!-- TASTO CANCELLA RIGA -->
+                            <!-- TASTO CANCELLA RIGA + FILE R2 -->
                             <button onclick="deleteRow('${v.id}', '${v.title}')" class="text-gray-500 hover:text-red-500 p-2 hover:bg-red-500/10 rounded-lg transition-all" title="Elimina Progetto">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
@@ -344,7 +357,6 @@
             if (error) alert("Errore aggiornamento campo: " + error.message);
         }
 
-        // Funzione per copiare il link pulito con 1 click
         function copyToClipboard(id) {
             const clientLink = `${window.location.origin}/view?id=${id}`;
             navigator.clipboard.writeText(clientLink).then(() => {
@@ -354,7 +366,6 @@
             });
         }
 
-        // Invia l'email corretta (a freddo o formale)
         async function sendFirstEmail(id, email, title, email_type) {
             try {
                 const response = await fetch(n8nFirstEmailWebhook, {
@@ -391,17 +402,16 @@
             }
         }
 
-        // Elimina riga ed esegue pulizia
         async function deleteRow(id, title) {
             if (!confirm(`Sei sicuro di voler cancellare definitivamente il progetto "${title}" e i relativi file multimediali dal bucket R2?`)) return;
-        
+
             try {
-                const response = await fetch('https://n8n.rmstudio.app/webhook/delete-portal-video', {
+                const response = await fetch(deleteWebhook, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id })
                 });
-        
+
                 if (response.ok) {
                     alert("Progetto e file multimediali eliminati con successo dal server.");
                     loadDashboard();
