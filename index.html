@@ -216,7 +216,7 @@
         });
 
         async function loadDashboard() {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('portal_videos')
                 .select('*')
                 .order('created_at', { ascending: false });
@@ -267,7 +267,7 @@
                                class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full">
                     </td>
                     <td class="p-4">
-                        <span class="text-xs bg-gray-800 text-gray-300 px-2.5 py-1 rounded-full border border-gray-700 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max">
+                        <span class="text-xs bg-gray-800 text-gray-300 px-2.5 py-1 rounded-full border border-gray-700 uppercase font-semibold text-[9px] flex items-center gap-1.5 w-max">
                             <i class="fa-solid ${icon}"></i> ${v.portal_type}
                         </span>
                     </td>
@@ -288,7 +288,7 @@
                             : '<span class="bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded font-black uppercase text-[9px]">Attesa</span>'}
                     </td>
                     <td class="p-4 text-xs">
-                        <a href="./view.html?id=${v.id}" target="_blank" class="text-blue-400 hover:underline">Vedi Portale</a>
+                        <a href="./view?id=${v.id}" target="_blank" class="text-blue-400 hover:underline">Vedi Portale</a>
                     </td>
                     <td class="p-4 text-right">
                         ${(!(v.is_paid === true || v.is_paid === "true") && !v.followup_sent) ? `
@@ -307,7 +307,7 @@
             const updatePayload = {};
             updatePayload[field] = field === 'price_euro' ? parseFloat(value) : value;
 
-            const { error } = await supabase
+            const { error } = await supabaseClient
                 .from('portal_videos')
                 .update(updatePayload)
                 .eq('id', id);
@@ -323,11 +323,11 @@
                     body: JSON.stringify({ id, email, title, price })
                 });
                 if (response.ok) {
-                    await supabase.from('portal_videos').update({ followup_sent: true }).eq('id', id);
-                    alert(`Follow-up inviato con successo a ${email}`);
+                    await supabaseClient.from('portal_videos').update({ followup_sent: true }).eq('id', id);
+                    alert(`Secondo invito inviato a ${email}`);
                     loadDashboard();
                 } else {
-                    alert("Errore nell'invio dell'e-mail.");
+                    alert("Errore invio email.");
                 }
             } catch (err) {
                 alert("Errore connessione: " + err.message);
