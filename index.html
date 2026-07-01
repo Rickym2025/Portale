@@ -32,7 +32,7 @@
         </div>
 
         <!-- STATS CARDS -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
             <div class="bg-[#121217] border border-zinc-800/80 p-5 rounded-2xl shadow-xl">
                 <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Incassi Totali</span>
                 <span class="text-2xl font-black text-green-400 mt-1 block" id="stat-revenue">€0.00</span>
@@ -48,26 +48,6 @@
             <div class="bg-[#121217] border border-zinc-800/80 p-5 rounded-2xl shadow-xl">
                 <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Visite Totali</span>
                 <span class="text-2xl font-black text-blue-400 mt-1 block" id="stat-views">0</span>
-            </div>
-        </div>
-
-        <!-- BARRA FILTRI (RICERCA IN TEMPO REALE) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 bg-[#121217] border border-zinc-800/80 p-4 rounded-2xl shadow-xl">
-            <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Filtra per Nome Lead</label>
-                <input type="text" id="search-name" placeholder="Cerca nome azienda o lead..." oninput="applyFilters()" class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white placeholder-gray-600">
-            </div>
-            <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Filtra per E-mail</label>
-                <input type="text" id="search-email" placeholder="Cerca indirizzo email..." oninput="applyFilters()" class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white placeholder-gray-600">
-            </div>
-            <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Stato Apertura E-mail</label>
-                <select id="filter-status" onchange="applyFilters()" class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white font-semibold">
-                    <option value="all">Tutti i progetti</option>
-                    <option value="opened">Aperte / Visualizzate</option>
-                    <option value="unopened">Non Aperte / Non inviate</option>
-                </select>
             </div>
         </div>
 
@@ -130,21 +110,42 @@
             </form>
         </div>
 
-        <!-- TABELLA PORTALE VIDEO (COMPATTA) -->
+        <!-- BARRA FILTRI SPOSTATA SOTTO IL CARICAMENTO -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 bg-[#121217] border border-zinc-800/80 p-4 rounded-2xl shadow-xl">
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Filtra per Nome Lead</label>
+                <input type="text" id="search-name" placeholder="Cerca nome azienda o lead..." oninput="applyFilters()" class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white placeholder-gray-600">
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Filtra per E-mail</label>
+                <input type="text" id="search-email" placeholder="Cerca indirizzo email..." oninput="applyFilters()" class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white placeholder-gray-600">
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Stato Apertura E-mail</label>
+                <select id="filter-status" onchange="applyFilters()" class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white font-semibold">
+                    <option value="all">Tutti i progetti</option>
+                    <option value="opened">Aperte / Visualizzate</option>
+                    <option value="unopened">Non Aperte / Non inviate</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- TABELLA PORTALE VIDEO (COMPATTA ED EQUILIBRATA) -->
         <div class="bg-[#121217] border border-zinc-800/80 rounded-3xl overflow-hidden shadow-2xl">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse min-w-[1100px]">
                     <thead>
                         <tr class="border-b border-gray-950 bg-black/40 text-[9px] uppercase tracking-wider text-gray-400">
-                            <th class="p-4 w-[24%]">Progetto / Cliente</th>
+                            <!-- Ricalibrate le percentuali delle colonne per rimuovere gli spazi vuoti -->
+                            <th class="p-4 w-[22%]">Cliente / Azienda</th>
+                            <th class="p-4 w-[15%]">Progetto</th>
                             <th class="p-4 w-[8%]">Tipo</th>
                             <th class="p-4 w-[8%]">Prezzo (€)</th>
                             <th class="p-4 w-[8%]">Visite</th>
                             <th class="p-4 w-[11%]">Pagamento</th>
-                            <th class="p-4 w-[10%]">Link</th>
-                            <!-- Ridisposte colonne: Stato E-mail spostata prima di Azioni Marketing -->
-                            <th class="p-4 w-[15%]">Stato E-mail</th>
-                            <th class="p-4 w-[16%] text-right">Azioni Marketing</th>
+                            <th class="p-4 w-[8%]">Link</th>
+                            <th class="p-4 w-[10%]">Stato E-mail</th>
+                            <th class="p-4 w-[10%] text-right">Azioni Marketing</th>
                         </tr>
                     </thead>
                     <tbody id="rows-container" class="divide-y divide-gray-900/60 text-sm">
@@ -166,10 +167,9 @@
         const reminderWebhook = 'https://n8n.rmstudio.app/webhook/polite-reminder';
         const deleteWebhook = 'https://n8n.rmstudio.app/webhook/delete-portal-video';
 
-        // Variabile globale per conservare i progetti scaricati e permettere il filtraggio locale istantaneo
         window.allProjects = [];
 
-        // Gestione cambio campi dinamici nel form (Nasconde l'upload logico per brevità)
+        // Gestione form caricamento dinamico
         document.getElementById('form-type').addEventListener('change', function() {
             const type = this.value;
             const fileSection = document.getElementById('file-upload-section');
@@ -244,7 +244,6 @@
             finally { btn.disabled = false; btn.innerText = "Salva e Carica Progetto"; }
         });
 
-        // Esegue il filtraggio istantaneo lato client (Senza interrogare il DB ad ogni carattere)
         function applyFilters() {
             const searchName = document.getElementById('search-name').value.toLowerCase().trim();
             const searchEmail = document.getElementById('search-email').value.toLowerCase().trim();
@@ -259,7 +258,7 @@
                 if (filterStatus === 'opened') {
                     matchesStatus = hasOpened === true;
                 } else if (filterStatus === 'unopened') {
-                    matchesStatus = hasOpened === false && !v.first_email_sent; // non letta o non inviata
+                    matchesStatus = hasOpened === false && !v.first_email_sent;
                 }
 
                 return matchesName && matchesEmail && matchesStatus;
@@ -272,8 +271,8 @@
             const { data, error } = await supabaseClient.from('portal_videos').select('*').order('created_at', { ascending: false });
             if (error) return alert("Errore caricamento: " + error.message);
 
-            window.allProjects = data; // Conserva i dati originali
-            applyFilters(); // Applica i filtri (che esegue anche il render delle righe)
+            window.allProjects = data;
+            applyFilters();
         }
 
         function renderRows(data) {
@@ -308,7 +307,6 @@
                 else if (v.portal_type === 'html') icon = "fa-code";
                 else if (v.portal_type === 'link') icon = "fa-arrow-up-right-from-square";
 
-                // STATO INVIO COERENTE (Con visualizzato se views_count >= 1)
                 let statusLabel = '<span class="text-gray-500 font-bold text-xs"><i class="fa-solid fa-envelope"></i> Non Inviata</span>';
                 if (v.views_count > 0) {
                     statusLabel = '<span class="text-blue-400 font-bold text-xs"><i class="fa-solid fa-eye animate-pulse"></i> Visualizzato</span>';
@@ -318,7 +316,6 @@
                     statusLabel = '<span class="text-purple-400 font-bold text-xs"><i class="fa-solid fa-paper-plane"></i> Inviata</span>';
                 }
 
-                // Data di invio visibile sotto l'etichetta dello stato (Leggibile in text-[11px] e grigio chiaro)
                 if (v.sent_at) {
                     const d = new Date(v.sent_at);
                     const dateStr = `${d.toLocaleDateString('it-IT')} ${d.toLocaleTimeString('it-IT', {hour: '2-digit', minute:'2-digit'})}`;
@@ -328,23 +325,27 @@
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-[#181820] transition-colors border-b border-zinc-800/40";
                 tr.innerHTML = `
+                    <!-- 1° COLONNA: CLIENTE E EMAIL (AD ALTO CONTRASTO) -->
                     <td class="p-4">
-                        <input type="text" value="${v.title || ''}" onchange="updateField('${v.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none font-bold text-white text-sm block w-full mb-1">
-                        <div class="flex items-center gap-2">
-                            <input type="text" value="${v.client_name || 'Cliente'}" onchange="updateField('${v.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-[11px] text-purple-400 font-semibold w-2/5">
-                            <input type="email" value="${v.client_email}" onchange="updateField('${v.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-[11px] text-gray-400 w-3/5">
-                        </div>
+                        <input type="text" value="${v.client_name || 'Cliente'}" onchange="updateField('${v.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-extrabold text-white text-sm block w-full mb-1">
+                        <input type="email" value="${v.client_email}" onchange="updateField('${v.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full">
                     </td>
+                    
+                    <!-- 2° COLONNA: PROGETTO (SEPARATA) -->
+                    <td class="p-4">
+                        <input type="text" value="${v.title || ''}" onchange="updateField('${v.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none text-sm text-gray-300 font-semibold w-full">
+                    </td>
+                    
                     <td class="p-4"><span class="text-xs bg-[#1c1c24] text-gray-300 px-2.5 py-1 rounded-full border border-zinc-800 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max"><i class="fa-solid ${icon}"></i> ${v.portal_type}</span></td>
                     <td class="p-4"><input type="number" value="${v.price_euro}" onchange="updateField('${v.id}', 'price_euro', this.value)" class="w-16 bg-[#181820] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs"></td>
                     <td class="p-4 text-xs font-bold text-blue-400">📈 ${v.views_count || 0} visite</td>
                     <td class="p-4 text-xs">${(v.is_paid === true || v.is_paid === "true") ? '<span class="text-green-400 font-bold"><i class="fa-solid fa-circle-check"></i> Pagato</span>' : '<span class="text-yellow-500"><i class="fa-solid fa-clock"></i> Attesa</span>'}</td>
                     <td class="p-4 text-xs"><button onclick="copyToClipboard('${v.id}')" class="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1 bg-purple-500/10 border border-purple-500/20 px-2.5 py-1.5 rounded-lg transition-all active:scale-95 text-[10px]"><i class="fa-solid fa-copy"></i> Copia</button></td>
                     
-                    <!-- Colonna Stato Invio con No-Wrap per impedire disallineamenti -->
+                    <!-- 8° COLONNA: STATO E-MAIL (RIPOSIZIONATA TRA LINK E AZIONI) -->
                     <td class="p-4 whitespace-nowrap">${statusLabel}</td>
                     
-                    <!-- Colonna Azioni con No-Wrap e Flex per mantenere l'allineamento orizzontale in fondo -->
+                    <!-- 9° COLONNA: AZIONI -->
                     <td class="p-4 text-right whitespace-nowrap">
                         <div class="flex items-center justify-end gap-1.5 whitespace-nowrap">
                             ${!v.first_email_sent ? `
