@@ -194,7 +194,7 @@
             document.getElementById('carousel-img').src = imagesArray[currentSlideIdx];
         }
 
-        function handleAction() {
+        async function handleAction() {
             if (videoData.is_paid === true || videoData.is_paid === "true") {
                 if (videoData.portal_type === 'carousel') {
                     alert("Download delle immagini in corso...");
@@ -205,10 +205,41 @@
                     window.open(videoData.content_url, '_blank');
                 }
             } else {
-                const priceVal = parseFloat(videoData.price_euro);
-                const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
-                alert(`Reindirizzamento al gateway Stripe per sbloccare la risorsa (€${formattedPrice})`);
-                // n8n riceverà l'ID del video come client_reference_id o nei metadata di Stripe [3]
+                const btn = document.getElementById('actionBtn');
+                const originalText = btn.innerHTML;
+                
+                // Disabilita il bottone ed avvia lo spinner per evitare click multipli
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generazione pagamento...`;
+
+                try {
+                    // Chiamata all'endpoint n8n dedicato alla creazione di sessioni dinamiche
+                    const res = await fetch('https://n8n.rmstudio.app/webhook/crea-sessione-stripe', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            project_id: videoData.id,
+                            email: videoData.client_email,
+                            title: videoData.title,
+                            price: parseFloat(videoData.price_euro)
+                        })
+                    });
+
+                    if (!res.ok) throw new Error("Errore di risposta dal server di pagamento");
+                    const data = await res.json();
+                    
+                    if (data.url) {
+                        // Reindirizza l'utente direttamente al Checkout dinamico di Stripe
+                        window.location.href = data.url;
+                    } else {
+                        throw new Error("URL di pagamento non ricevuto");
+                    }
+                } catch (err) {
+                    alert("Impossibile avviare il gateway di pagamento. Riprova più tardi.");
+                    console.error(err);
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                }
             }
         }
     </script>
