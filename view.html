@@ -208,12 +208,10 @@
                 const btn = document.getElementById('actionBtn');
                 const originalText = btn.innerHTML;
                 
-                // Disabilita il bottone ed avvia lo spinner per evitare click multipli
                 btn.disabled = true;
                 btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generazione pagamento...`;
 
                 try {
-                    // Chiamata all'endpoint n8n dedicato alla creazione di sessioni dinamiche
                     const res = await fetch('https://n8n.rmstudio.app/webhook/crea-sessione-stripe', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -221,21 +219,21 @@
                             project_id: videoData.id,
                             email: videoData.client_email,
                             title: videoData.title,
-                            price: parseFloat(videoData.price_euro)
+                            price: parseFloat(videoData.price_euro),
+                            origin: window.location.origin
                         })
                     });
 
-                    if (!res.ok) throw new Error("Errore di risposta dal server di pagamento");
+                    if (!res.ok) throw new Error("Errore del server n8n");
                     const data = await res.json();
                     
                     if (data.url) {
-                        // Reindirizza l'utente direttamente al Checkout dinamico di Stripe
                         window.location.href = data.url;
                     } else {
                         throw new Error("URL di pagamento non ricevuto");
                     }
                 } catch (err) {
-                    alert("Impossibile avviare il gateway di pagamento. Riprova più tardi.");
+                    alert("Impossibile avviare il pagamento. Riprova più tardi.");
                     console.error(err);
                     btn.disabled = false;
                     btn.innerHTML = originalText;
