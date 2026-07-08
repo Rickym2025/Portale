@@ -8,12 +8,18 @@
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Sblocca il layout ad altezza fissa per adattarsi perfettamente ad ogni schermo (Mobile e Desktop) */
+        /* Base e reset */
         html, body {
-            height: 100dvh;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+        }
+
+        /* 🔒 LOCK DI SICUREZZA AD ALTEZZA FISSA: Solo per schermi Desktop */
+        @media (min-width: 1024px) {
+            html, body {
+                height: 100dvh;
+                overflow: hidden;
+            }
         }
 
         body {
@@ -39,15 +45,28 @@
             z-index: -1;
         }
 
-        /* 🪐 STILE ARCHITETTURALE DEL SISTEMA ORBITALE INLINE (RM STUDIO) */
+        /* 🪐 STILE RESPONSIVO DEL SISTEMA ORBITALE INLINE (RM STUDIO) */
         .orbit-container {
-            position: absolute;
-            top: 24px;
-            left: 24px;
-            width: 320px;
-            height: 320px;
+            /* Su mobile: Si posiziona naturalmente sotto la card, centrato e ridotto */
+            position: relative;
+            margin: 40px auto 20px auto;
+            width: 290px;
+            height: 290px;
             z-index: 50;
             display: block;
+            flex-shrink: 0;
+        }
+
+        /* Su Desktop: Galleggia assolutamente in alto a sinistra */
+        @media (min-width: 1024px) {
+            .orbit-container {
+                position: absolute;
+                top: 24px;
+                left: 24px;
+                margin: 0;
+                width: 320px;
+                height: 320px;
+            }
         }
 
         /* Cerchio dell'anello dell'orbita */
@@ -188,7 +207,6 @@
             overflow: hidden;
             opacity: 0.12;
             user-select: none;
-            /* 🛠️ RIMOSSO IL VECCHIO COSTRUTTO SVG PER EVITARE SDOBBIAMENTI E CONFLITTI CON IL LOGO GENERATO DA JS */
         }
         
         .watermark-logo {
@@ -207,15 +225,11 @@
         video::-webkit-media-controls-overflow-button { display: none !important; }
     </style>
 </head>
-<body class="text-gray-200 h-[100dvh] w-screen flex items-center justify-center p-3 md:p-6 overflow-hidden selection:bg-purple-600 selection:text-white relative">
+<body class="text-gray-200 min-h-[100dvh] w-screen flex flex-col lg:items-center lg:justify-center p-3 md:p-6 overflow-y-auto lg:overflow-hidden selection:bg-purple-600 selection:text-white relative">
 
-    <!-- 🌌 CONTENITORE DINAMICO PER L'ORBITA (Iniezione di codice nativo, senza iframe) -->
-    <div id="ecosystem-orbit-container" class="hidden lg:block orbit-container">
-        <!-- L'HTML del sistema orbitale viene caricato dinamicamente via JS qui dentro -->
-    </div>
-
-    <!-- Card principale del cliente (Recupera l'altezza dello schermo al 100%) -->
-    <div class="w-full max-w-5xl h-full max-h-[96dvh] bg-[#0b0b0f]/95 border border-gray-900/80 backdrop-blur-xl rounded-3xl p-5 md:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-10">
+    <!-- Card principale del cliente (Prende l'altezza dello schermo su Desktop, naturale su Mobile) -->
+    <!-- Su Mobile, l'ecosistema orbitale si posiziona automaticamente sotto questa card all'interno del flusso -->
+    <div class="w-full max-w-5xl h-auto lg:h-full lg:max-h-[96dvh] bg-[#0b0b0f]/95 border border-gray-900/80 backdrop-blur-xl rounded-3xl p-5 md:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-10 shrink-0">
         
         <!-- Header (Logo RM Studio e Dettagli Progetto) -->
         <div class="shrink-0 flex flex-wrap items-center gap-3 mb-4 pb-4 border-b border-gray-900/60 w-full">
@@ -232,8 +246,8 @@
             </p>
         </div>
 
-        <!-- Render Area Dinamica (Flessibile in altezza per evitare lo scroll dello schermo) -->
-        <div class="player-wrapper flex-1 min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
+        <!-- Render Area Dinamica (Flessibile in altezza per evitare lo scroll dello schermo su desktop) -->
+        <div class="player-wrapper flex-1 min-h-[280px] sm:min-h-[350px] lg:min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
             
             <!-- WATERMARK CON LOGO IN DIAGONALE RIPETUTO -->
             <div id="watermark-layer" class="watermark-pattern"></div>
@@ -287,6 +301,12 @@
                 <!-- Il testo e l'icona del lucchetto vengono iniettati via JS -->
             </button>
         </div>
+    </div>
+
+    <!-- 🌌 CONTENITORE DINAMICO PER L'ORBITA -->
+    <!-- Su Desktop si posiziona in alto a sinistra. Su Mobile va sotto la card e permette lo scorrimento -->
+    <div id="ecosystem-orbit-container" class="orbit-container">
+        <!-- L'HTML del sistema orbitale viene caricato dinamicamente via JS qui dentro -->
     </div>
 
     <!-- 🖥️ OVERLAY NATIVO A SCHERMO INTERO PER IL SITO WEB DEL CLIENTE -->
