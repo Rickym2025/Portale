@@ -39,26 +39,26 @@
             z-index: -1;
         }
 
-        /* 🪐 STILE DI RIDIMENSIONAMENTO PER IL SISTEMA ORBITALE (Previene i tagli visivi dell'iframe) */
+        /* 🪐 STILE DI SCALING DESKTOP-TO-WIDGET PER IL SISTEMA ORBITALE (Previene i tagli visivi) */
         .orbit-iframe-container {
             position: absolute;
-            top: 24px;
-            left: 24px;
-            width: 270px;  /* Spazio visivo occupato a schermo */
-            height: 270px; /* Spazio visivo occupato a schermo */
+            top: 16px;
+            left: 16px;
+            width: 240px;  /* Ingombro visivo effettivo a schermo */
+            height: 240px; /* Ingombro visivo effettivo a schermo */
             z-index: 50;
             overflow: hidden;
             pointer-events: none; /* Evita di bloccare i click sullo sfondo */
         }
 
         #ecosystem-orbit {
-            width: 600px;  /* Risoluzione nativa dell'area orbitale per caricare tutti i pianeti */
-            height: 600px;
+            width: 1300px;  /* Carica il template simulando uno schermo desktop gigante */
+            height: 1300px; /* Consente all'orbita di svilupparsi senza sovrapposizioni o collisioni */
             border: none;
             background: transparent;
-            transform: scale(0.45); /* Riduce l'intera pagina del 55% preservando le proporzioni */
+            transform: scale(0.18); /* Riduce la schermata desktop del 82% per farla entrare in 240px */
             transform-origin: top left;
-            pointer-events: auto; /* Mantiene cliccabili i loghi orbitanti dell'ecosistema */
+            pointer-events: auto; /* Mantiene l'interattività dei pianeti cliccabili */
         }
 
         .player-wrapper { 
@@ -102,7 +102,7 @@
 </head>
 <body class="text-gray-200 h-[100dvh] w-screen flex items-center justify-center p-3 md:p-6 overflow-hidden selection:bg-purple-600 selection:text-white relative">
 
-    <!-- 🌌 SOLO IL SISTEMA ORBITALE SOTTOPOSTO A SCALING (Galleggia in alto a sinistra su Desktop, senza cornici) -->
+    <!-- 🌌 SOLO IL SISTEMA ORBITALE DESKTOP RIDOTTO IN ALTA DEFINIZIONE (Galleggia in alto a sinistra, senza tagli) -->
     <div class="hidden lg:block orbit-iframe-container">
         <iframe id="ecosystem-orbit" 
                 src="https://raw.githack.com/Rickym2025/mrstudio/main/public/orbit-template.html" 
