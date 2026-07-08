@@ -177,12 +177,18 @@
         .watermark-pattern {
             position: absolute;
             inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='22' fill='rgba(255,255,255,0.18)' font-family='sans-serif' font-weight='900' text-anchor='middle' dominant-baseline='middle' transform='rotate(-35, 100, 100)'%3ERM STUDIO%3C/text%3E%3C/svg%3E");
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            padding: 20px;
             pointer-events: none;
             z-index: 20;
             overflow: hidden;
             opacity: 0.12;
             user-select: none;
+            /* 🛠️ RIMOSSO IL VECCHIO COSTRUTTO SVG PER EVITARE SDOBBIAMENTI E CONFLITTI CON IL LOGO GENERATO DA JS */
         }
         
         .watermark-logo {
@@ -344,9 +350,7 @@
                 if (!res.ok) throw new Error("Errore fetch GitHub");
                 let html = await res.text();
                 
-                // MANTENIAMO I TAG <STYLE> ORIGINALI! 
-                // Questo preserva perfettamente la formattazione dei fumetti, i colori dei tooltip 
-                // e le logiche di visibilità (opacity: 0 di default e 1 su hover).
+                // Manteniamo intatto lo stile originale per salvaguardare tooltips e nuvolette
                 document.getElementById('ecosystem-orbit-container').innerHTML = html;
             } catch (err) {
                 console.warn("Impossibile caricare l'ecosistema orbitale dinamicamente:", err);
