@@ -61,7 +61,7 @@
             transform-style: preserve-3d;
         }
 
-        /* Ferma la rotazione dell'orbita al passaggio del mouse per facilitare il clic */
+        /* Ferma la rotazione dell'orbita al passaggio del mouse per facilitare l'hover e il clic */
         .orbit-ring:hover {
             animation-play-state: paused;
         }
@@ -344,10 +344,9 @@
                 if (!res.ok) throw new Error("Errore fetch GitHub");
                 let html = await res.text();
                 
-                // Rimuoviamo il tag di style interno al file dell'orbita che potrebbe sovrascrivere o interferire
-                // In questo modo, l'HTML utilizzerà le nostre classi CSS strutturate sopra
-                html = html.replace(/<style>[\s\S]*?<\/style>/gi, '');
-                
+                // MANTENIAMO I TAG <STYLE> ORIGINALI! 
+                // Questo preserva perfettamente la formattazione dei fumetti, i colori dei tooltip 
+                // e le logiche di visibilità (opacity: 0 di default e 1 su hover).
                 document.getElementById('ecosystem-orbit-container').innerHTML = html;
             } catch (err) {
                 console.warn("Impossibile caricare l'ecosistema orbitale dinamicamente:", err);
