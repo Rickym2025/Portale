@@ -22,7 +22,7 @@
             background: #020204;
         }
         
-        /* 🔒 FILIGRANA RM STUDIO DIAGONALE: Copre il video uniformemente senza coprire la scena con blocchi neri */
+        /* 🔒 FILIGRANA RM STUDIO DIAGONALE: Copre il video o il sito uniformemente */
         .watermark-pattern {
             position: absolute;
             inset: 0;
@@ -46,20 +46,36 @@
     <!-- Card principale reattiva ad altezza bloccata -->
     <div class="w-full max-w-5xl h-full max-h-[96dvh] bg-[#0b0b0f] border border-gray-900 rounded-3xl p-5 md:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden">
         
-        <!-- Header (Tutto disposto rigorosamente su un'unica riga) -->
-        <div class="shrink-0 flex flex-wrap items-center gap-3 mb-4 pb-4 border-b border-gray-900/60">
-            <span id="badge" class="bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-purple-500/20">Progetto</span>
-            <h1 id="title" class="text-lg md:text-xl font-black text-white tracking-tight">Caricamento in corso...</h1>
-            <span class="text-gray-800 hidden md:inline">•</span>
-            <p class="text-xs text-gray-500">
-                Preparato per: <span class="text-purple-400 font-bold" id="client-name">...</span> 
-                <span class="mx-1.5 text-gray-800">•</span> 
-                Inviato il: <span class="text-gray-400" id="sent-date">--/--/----</span>
-            </p>
+        <!-- Header con Logo reale, Dettagli e Card Personale Sviluppatore -->
+        <div class="shrink-0 flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-4 border-b border-gray-900/60 w-full">
+            <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-3">
+                    <!-- LOGO RM STUDIO REALE DA GITHUB RAW -->
+                    <a href="https://rmstudio.app/" target="_blank" class="flex items-center mr-1">
+                        <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio Logo" class="h-8 w-auto">
+                    </a>
+                    <span id="badge" class="bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-purple-500/20">Progetto</span>
+                    <h1 id="title" class="text-base md:text-lg font-black text-white tracking-tight">Caricamento in corso...</h1>
+                </div>
+                <p class="text-xs text-gray-500">
+                    Preparato per: <span class="text-purple-400 font-bold" id="client-name">...</span> 
+                    <span class="mx-1.5 text-gray-800">•</span> 
+                    Inviato il: <span class="text-gray-400" id="sent-date">--/--/----</span>
+                </p>
+            </div>
+            
+            <!-- CARD PERSONALE RICCARDO (Fiducia istantanea, ottima per gli psicologi) -->
+            <div class="flex items-center gap-3 bg-zinc-950/80 border border-zinc-900 px-4 py-2 rounded-2xl w-fit">
+                <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/foto_riccardo.jpeg" alt="Riccardo Modena" class="w-8 h-8 rounded-full object-cover border border-purple-500/40">
+                <div class="text-left">
+                    <p class="text-[9px] text-gray-500 uppercase font-bold tracking-wider">Sviluppatore</p>
+                    <p class="text-xs font-bold text-white">Riccardo Modena</p>
+                </div>
+            </div>
         </div>
 
         <!-- Render Area Dinamica (Flessibile in altezza per evitare lo scroll dello schermo) -->
-        <div class="player-wrapper flex-1 min-h-0 rounded-2xl bg-[#020204] mb-5 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
+        <div class="player-wrapper flex-1 min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
             
             <!-- WATERMARK DIAGONALE FITTO (Scompare al pagamento) -->
             <div id="watermark-layer" class="watermark-pattern"></div>
@@ -95,6 +111,22 @@
                 <h3 class="text-white text-lg font-bold mb-1">Link Esterno / Demo</h3>
                 <a id="external-link-btn" href="" target="_blank" class="inline-flex items-center gap-2 bg-[#121217] border border-gray-800 px-5 py-2.5 mt-3 rounded-xl text-xs font-bold hover:border-purple-500 transition-all">Apri Progetto</a>
             </div>
+        </div>
+
+        <!-- Sezione Banner Upsell Ecosistema RM Studio (Appare dinamicamente solo per i siti web) -->
+        <div id="ecosystem-upsell" class="hidden shrink-0 mb-4 p-4 bg-gradient-to-r from-purple-950/20 to-black border border-purple-950/40 rounded-2xl flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                    <i class="fa-solid fa-circle-nodes text-lg"></i>
+                </div>
+                <div class="text-left">
+                    <h4 class="text-xs font-black text-white uppercase tracking-wider">Potenzia il tuo sito con l'Intelligenza Artificiale</h4>
+                    <p class="text-[11px] text-gray-400">Scopri gli assistenti virtuali e l'ecosistema orbitale di RM Studio per far crescere la tua attività.</p>
+                </div>
+            </div>
+            <a href="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/orbit-template.html" target="_blank" class="bg-purple-600/10 hover:bg-purple-600/20 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-4 py-2.5 rounded-xl transition-all uppercase whitespace-nowrap">
+                Esplora Ecosistema
+            </a>
         </div>
 
         <!-- Footer Actions con Pulsante di Sblocco/Download in Posizione Centrale e Gigante -->
@@ -157,10 +189,16 @@
                 const frame = document.getElementById('player-html');
                 frame.src = data.content_url;
                 frame.classList.remove('hidden');
+                
+                // Mostra il banner promozionale dell'Ecosistema solo per i siti web
+                document.getElementById('ecosystem-upsell').classList.remove('hidden');
             } 
             else if (data.portal_type === 'link') {
                 document.getElementById('external-link-btn').href = data.content_url;
                 document.getElementById('player-link').classList.remove('hidden');
+                
+                // Mostra l'ecosistema anche per i link esterni / demo esterne
+                document.getElementById('ecosystem-upsell').classList.remove('hidden');
             }
 
             // GESTIONE FORMATTAZIONE PREZZO DINAMICO SENZA .00
@@ -172,12 +210,19 @@
                 document.getElementById('watermark-layer').classList.add('hidden'); // Nasconde la griglia di filigrana
                 
                 const btn = document.getElementById('actionBtn');
-                btn.innerHTML = `<i class="fa-solid fa-lock-open"></i> Scarica in HD`;
+                
+                // Modifica dinamicamente l'etichetta del pulsante in base alla tipologia di file
+                if (data.portal_type === 'html' || data.portal_type === 'link') {
+                    btn.innerHTML = `<i class="fa-solid fa-globe"></i> Visita il Sito Web`;
+                } else {
+                    btn.innerHTML = `<i class="fa-solid fa-lock-open"></i> Scarica in HD`;
+                }
+                
                 btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] hover:shadow-[0_0_40px_rgba(34,197,94,0.6)] flex items-center justify-center gap-3";
                 btn.classList.remove('animate-pulse'); // Rimuove pulsazione se pagato
             } else {
-                // SE NON PAGATO: Mostra Pulsante Pagamento Gigante con Lucchetto Chiuso
-                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-lock"></i> Download €${formattedPrice}`;
+                // SE NON PAGATO: Mostra Pulsante Pagamento con Lucchetto Chiuso
+                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca Progetto €${formattedPrice}`;
             }
         });
 
