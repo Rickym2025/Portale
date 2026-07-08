@@ -39,26 +39,132 @@
             z-index: -1;
         }
 
-        /* 🪐 STILE DI SCALING DESKTOP-TO-WIDGET PER IL SISTEMA ORBITALE (Previene i tagli visivi) */
-        .orbit-iframe-container {
+        /* 🪐 STILE ARCHITETTURALE DEL SISTEMA ORBITALE INLINE (RM STUDIO) */
+        .orbit-container {
             position: absolute;
-            top: 16px;
-            left: 16px;
-            width: 240px;  /* Ingombro visivo effettivo a schermo */
-            height: 240px; /* Ingombro visivo effettivo a schermo */
+            top: 24px;
+            left: 24px;
+            width: 320px;
+            height: 320px;
             z-index: 50;
-            overflow: hidden;
-            pointer-events: none; /* Evita di bloccare i click sullo sfondo */
+            display: block;
         }
 
-        #ecosystem-orbit {
-            width: 1300px;  /* Carica il template simulando uno schermo desktop gigante */
-            height: 1300px; /* Consente all'orbita di svilupparsi senza sovrapposizioni o collisioni */
-            border: none;
-            background: transparent;
-            transform: scale(0.18); /* Riduce la schermata desktop del 82% per farla entrare in 240px */
-            transform-origin: top left;
-            pointer-events: auto; /* Mantiene l'interattività dei pianeti cliccabili */
+        /* Cerchio dell'anello dell'orbita */
+        .orbit-ring {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border: 1px dashed rgba(147, 51, 234, 0.25); /* Cerchio tratteggiato viola */
+            border-radius: 50%;
+            animation: spin-orbit 55s linear infinite; /* Rotazione continua fluida */
+            transform-style: preserve-3d;
+        }
+
+        /* Ferma la rotazione dell'orbita al passaggio del mouse per facilitare il clic */
+        .orbit-ring:hover {
+            animation-play-state: paused;
+        }
+
+        /* Wrapper dei pianeti (Controruota per tenere i loghi dritti) */
+        .orbit-wrapper {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            transform: translate(-50%, -50%);
+            animation: spin-orbit-reverse 55s linear infinite;
+            transform-style: preserve-3d;
+        }
+
+        .orbit-ring:hover .orbit-wrapper {
+            animation-play-state: paused;
+        }
+
+        .orbit-item {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Pulsante circolare contenitore dei loghi */
+        .orbit-link {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0c !important;
+            border: 1px solid rgba(147, 51, 234, 0.3) !important;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6) !important;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .orbit-link:hover {
+            border-color: #00e5ff !important; /* Luminescenza ciano su hover */
+            transform: scale(1.15);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4) !important;
+        }
+
+        /* Logo interno dei servizi */
+        .orbit-img {
+            width: 28px !important;
+            height: 28px !important;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        /* Foto Centrale (Riccardo Modena) */
+        .orbit-center-photo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #9333ea;
+            box-shadow: 0 0 25px rgba(147, 51, 234, 0.5);
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .orbit-center-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Effetto impulso d'onda sotto la foto centrale */
+        .pulse-ring-element {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            background: rgba(147, 51, 234, 0.08);
+            animation: pulse-ring-anim 2.5s infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Animazioni di rotazione */
+        @keyframes spin-orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spin-orbit-reverse {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(-360deg); }
+        }
+
+        @keyframes pulse-ring-anim {
+            0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.6; }
+            50% { transform: translate(-50%, -50%) scale(1.35); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.6; }
         }
 
         .player-wrapper { 
@@ -71,12 +177,7 @@
         .watermark-pattern {
             position: absolute;
             inset: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 50px;
-            padding: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='22' fill='rgba(255,255,255,0.18)' font-family='sans-serif' font-weight='900' text-anchor='middle' dominant-baseline='middle' transform='rotate(-35, 100, 100)'%3ERM STUDIO%3C/text%3E%3C/svg%3E");
             pointer-events: none;
             z-index: 20;
             overflow: hidden;
@@ -102,13 +203,9 @@
 </head>
 <body class="text-gray-200 h-[100dvh] w-screen flex items-center justify-center p-3 md:p-6 overflow-hidden selection:bg-purple-600 selection:text-white relative">
 
-    <!-- 🌌 SOLO IL SISTEMA ORBITALE DESKTOP RIDOTTO IN ALTA DEFINIZIONE (Galleggia in alto a sinistra, senza tagli) -->
-    <div class="hidden lg:block orbit-iframe-container">
-        <iframe id="ecosystem-orbit" 
-                src="https://raw.githack.com/Rickym2025/mrstudio/main/public/orbit-template.html" 
-                scrolling="no"
-                loading="lazy">
-        </iframe>
+    <!-- 🌌 CONTENITORE DINAMICO PER L'ORBITA (Iniezione di codice nativo, senza iframe) -->
+    <div id="ecosystem-orbit-container" class="hidden lg:block orbit-container">
+        <!-- L'HTML del sistema orbitale viene caricato dinamicamente via JS qui dentro -->
     </div>
 
     <!-- Card principale del cliente (Recupera l'altezza dello schermo al 100%) -->
@@ -239,7 +336,28 @@
         generateWatermarks('watermark-layer', 28);
         generateWatermarks('overlay-watermark', 40);
 
+        // Funzione asincrona per recuperare l'HTML dell'orbita direttamente da GitHub RAW
+        async function loadOrbitalEcosystem() {
+            try {
+                const url = 'https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/orbit-template.html';
+                const res = await fetch(url);
+                if (!res.ok) throw new Error("Errore fetch GitHub");
+                let html = await res.text();
+                
+                // Rimuoviamo il tag di style interno al file dell'orbita che potrebbe sovrascrivere o interferire
+                // In questo modo, l'HTML utilizzerà le nostre classi CSS strutturate sopra
+                html = html.replace(/<style>[\s\S]*?<\/style>/gi, '');
+                
+                document.getElementById('ecosystem-orbit-container').innerHTML = html;
+            } catch (err) {
+                console.warn("Impossibile caricare l'ecosistema orbitale dinamicamente:", err);
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', async () => {
+            // Carica dinamicamente l'ecosistema di RM Studio integrato
+            await loadOrbitalEcosystem();
+
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id');
             if (!id) return alert("ID non valido");
