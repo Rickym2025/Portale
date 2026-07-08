@@ -39,6 +39,28 @@
             z-index: -1;
         }
 
+        /* 🪐 STILE DI RIDIMENSIONAMENTO PER IL SISTEMA ORBITALE (Previene i tagli visivi dell'iframe) */
+        .orbit-iframe-container {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            width: 270px;  /* Spazio visivo occupato a schermo */
+            height: 270px; /* Spazio visivo occupato a schermo */
+            z-index: 50;
+            overflow: hidden;
+            pointer-events: none; /* Evita di bloccare i click sullo sfondo */
+        }
+
+        #ecosystem-orbit {
+            width: 600px;  /* Risoluzione nativa dell'area orbitale per caricare tutti i pianeti */
+            height: 600px;
+            border: none;
+            background: transparent;
+            transform: scale(0.45); /* Riduce l'intera pagina del 55% preservando le proporzioni */
+            transform-origin: top left;
+            pointer-events: auto; /* Mantiene cliccabili i loghi orbitanti dell'ecosistema */
+        }
+
         .player-wrapper { 
             position: relative; 
             overflow: hidden; 
@@ -80,14 +102,14 @@
 </head>
 <body class="text-gray-200 h-[100dvh] w-screen flex items-center justify-center p-3 md:p-6 overflow-hidden selection:bg-purple-600 selection:text-white relative">
 
-    <!-- 🌌 SOLO IL SISTEMA ORBITALE (Puro, senza cornici, scorrimenti o testi, galleggia a sinistra) -->
-    <!-- Visibile solo da tablet in su (md:block) per lasciare spazio al progetto su smartphone -->
-    <iframe id="ecosystem-orbit" 
-            src="https://raw.githack.com/Rickym2025/mrstudio/main/public/orbit-template.html" 
-            class="hidden lg:block absolute top-8 left-8 w-[250px] h-[250px] border-none bg-transparent z-50 overflow-hidden" 
-            scrolling="no"
-            loading="lazy">
-    </iframe>
+    <!-- 🌌 SOLO IL SISTEMA ORBITALE SOTTOPOSTO A SCALING (Galleggia in alto a sinistra su Desktop, senza cornici) -->
+    <div class="hidden lg:block orbit-iframe-container">
+        <iframe id="ecosystem-orbit" 
+                src="https://raw.githack.com/Rickym2025/mrstudio/main/public/orbit-template.html" 
+                scrolling="no"
+                loading="lazy">
+        </iframe>
+    </div>
 
     <!-- Card principale del cliente (Recupera l'altezza dello schermo al 100%) -->
     <div class="w-full max-w-5xl h-full max-h-[96dvh] bg-[#0b0b0f]/95 border border-gray-900/80 backdrop-blur-xl rounded-3xl p-5 md:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-10">
@@ -174,7 +196,7 @@
             </div>
             <div class="flex items-center gap-4">
                 <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:shadow-[0_0_25px_rgba(147,51,234,0.5)]">
-                    <!-- Il testo del lucchetto viene iniettati via JS -->
+                    <!-- Testo iniettato via JS -->
                 </button>
                 <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-4 py-2.5 rounded-xl transition-all">
                     <i class="fa-solid fa-xmark"></i> Esci dall'anteprima
