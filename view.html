@@ -34,7 +34,7 @@
             background-image: url("https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png");
             background-repeat: repeat;
             background-size: 150px auto;
-            opacity: 0.035; /* Calibrato leggermente per essere visibile ma non invasivo */
+            opacity: 0.035; /* Visibile ma non invasivo */
             pointer-events: none;
             z-index: -1;
         }
@@ -80,87 +80,133 @@
 </head>
 <body class="text-gray-200 h-[100dvh] w-screen flex items-center justify-center p-3 md:p-6 overflow-hidden selection:bg-purple-600 selection:text-white">
 
-    <!-- Card principale reattiva ad altezza bloccata -->
-    <div class="w-full max-w-5xl h-full max-h-[96dvh] bg-[#0b0b0f]/95 border border-gray-900/80 backdrop-blur-xl rounded-3xl p-5 md:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-10">
-        
-        <!-- Header (Logo RM Studio e Dettagli Progetto) -->
-        <div class="shrink-0 flex flex-wrap items-center gap-3 mb-4 pb-4 border-b border-gray-900/60 w-full">
-            <a href="https://rmstudio.app/" target="_blank" class="flex items-center">
-                <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio Logo" class="h-8 w-auto">
-            </a>
-            <span id="badge" class="bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-purple-500/20">Progetto</span>
-            <h1 id="title" class="text-base md:text-lg font-black text-white tracking-tight">Caricamento in corso...</h1>
-            <span class="text-gray-800 hidden md:inline">•</span>
-            <p class="text-xs text-gray-500">
-                Preparato per: <span class="text-purple-400 font-bold" id="client-name">...</span> 
-                <span class="mx-1.5 text-gray-800">•</span> 
-                Inviato il: <span class="text-gray-400" id="sent-date">--/--/----</span>
-            </p>
-        </div>
+    <!-- Wrapper Principale Grigliato (Ecosistema a Sinistra + Progetto a Destra) -->
+    <div class="w-full max-w-7xl h-full max-h-[96dvh] flex flex-col md:flex-row gap-6 items-stretch justify-center relative">
 
-        <!-- Render Area Dinamica (Flessibile in altezza per evitare lo scroll dello schermo) -->
-        <div class="player-wrapper flex-1 min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
-            
-            <!-- WATERMARK CON LOGO IN DIAGONALE RIPETUTO -->
-            <div id="watermark-layer" class="watermark-pattern"></div>
-
-            <!-- 1. VIDEO PLAYER (Con accelerazione hardware attiva per Chrome) -->
-            <video id="player-video" 
-                   class="hidden w-full h-full object-contain rounded-2xl bg-black"
-                   style="transform: translate3d(0,0,0); backface-visibility: hidden; will-change: transform;"
-                   preload="auto" 
-                   playsinline 
-                   webkit-playsinline 
-                   controls 
-                   controlslist="nodownload" 
-                   oncontextmenu="return false;">
-                <source src="" type="video/mp4">
-            </video>
-
-            <!-- 2. CAROSELLO IMMAGINI -->
-            <div id="player-carousel" class="hidden w-full h-full relative flex items-center justify-center bg-black">
-                <img id="carousel-img" src="" class="w-full h-full object-contain select-none rounded-2xl" oncontextmenu="return false;">
-                <button onclick="prevSlide()" class="absolute left-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-left text-xs"></i></button>
-                <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-right text-xs"></i></button>
-            </div>
-
-            <!-- 3. HTML INTERATTIVO (IFRAME) -->
-            <iframe id="player-html" class="hidden w-full h-full border-none rounded-2xl z-20 bg-black" src=""></iframe>
-
-            <!-- 4. LINK ESTERNO / DEMO -->
-            <div id="player-link" class="hidden text-center p-6 z-30">
-                <div class="w-14 h-14 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mx-auto mb-3">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-lg text-purple-400"></i>
+        <!-- 🌌 SIDEBAR ECOSISTEMA ORBITALE (Fuori dalla sezione principale, a sinistra) -->
+        <div id="ecosystem-sidebar" class="hidden md:flex w-[320px] bg-[#0b0b0f]/90 border border-gray-900/80 backdrop-blur-xl rounded-3xl p-5 shadow-2xl flex-col justify-between shrink-0">
+            <div>
+                <div class="flex items-center gap-3 pb-3 border-b border-gray-900/60 mb-4">
+                    <div class="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                        <i class="fa-solid fa-circle-nodes text-sm animate-pulse"></i>
+                    </div>
+                    <h4 class="text-xs font-black text-white uppercase tracking-wider">Ecosistema RM Studio</h4>
                 </div>
-                <h3 class="text-white text-lg font-bold mb-1">Link Esterno / Demo</h3>
-                <a id="external-link-btn" href="" target="_blank" class="inline-flex items-center gap-2 bg-[#121217] border border-gray-800 px-5 py-2.5 mt-3 rounded-xl text-xs font-bold hover:border-purple-500 transition-all">Apri Progetto</a>
-            </div>
-        </div>
-
-        <!-- 🌌 ECOSISTEMA ORBITALE (RM Studio) - Sempre visibile e interattivo per fare cross-selling -->
-        <div id="ecosystem-container" class="shrink-0 mb-4 p-4 bg-zinc-950/40 border border-zinc-900 rounded-2xl flex flex-col md:flex-row items-center gap-4 justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
-                    <i class="fa-solid fa-circle-nodes text-lg animate-pulse"></i>
-                </div>
-                <div class="text-left">
-                    <h4 class="text-xs font-black text-white uppercase tracking-wider">Ecosistema Digitale Orbitale RM Studio</h4>
-                    <p class="text-[11px] text-gray-400 mt-0.5">Espandi il tuo business con moduli di Intelligenza Artificiale e assistenti telefonici attivi H24.</p>
-                </div>
+                <p class="text-[11px] text-gray-400 leading-relaxed mb-4">
+                    Tutti i nostri assistenti intelligenti e moduli AI sono progettati per orbitare attorno al tuo business ed integrarsi nativamente con il tuo nuovo sito web.
+                </p>
             </div>
             
-            <!-- Iframe Interattivo dell'Ecosistema orbit-template.html (servito in modalità HTML tramite raw.githack.com) -->
-            <div class="w-full md:w-[320px] h-[160px] bg-[#020204] rounded-xl overflow-hidden border border-gray-900/60 relative">
+            <!-- Iframe del sistema orbitale -->
+            <div class="flex-1 min-h-[220px] bg-[#020204] rounded-2xl overflow-hidden border border-gray-900/60 relative">
+                <!-- Servito in modalità HTML tramite raw.githack.com -->
                 <iframe src="https://raw.githack.com/Rickym2025/mrstudio/main/public/orbit-template.html" class="w-full h-full border-none" loading="lazy"></iframe>
             </div>
+            
+            <div class="pt-4 border-t border-gray-900/60 mt-4 text-center">
+                <a href="https://rmstudio.app/" target="_blank" class="text-[10px] font-black uppercase text-purple-400 tracking-wider hover:underline">Scopri di più &rarr;</a>
+            </div>
         </div>
 
-        <!-- Footer Actions con Pulsante di Sblocco/Download in Posizione Centrale e Gigante -->
-        <div class="shrink-0 flex items-center justify-center pt-4 border-t border-gray-800/60">
-            <button id="actionBtn" onclick="handleAction()" 
-                    class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-[0_0_35px_rgba(147,51,234,0.65)] flex items-center justify-center gap-3 animate-pulse">
-                <!-- Il testo e l'icona del lucchetto vengono iniettati via JS -->
-            </button>
+        <!-- Card principale del cliente (Ora recupera il 100% dell'altezza dello schermo) -->
+        <div class="flex-1 bg-[#0b0b0f]/95 border border-gray-900/80 backdrop-blur-xl rounded-3xl p-5 md:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden">
+            
+            <!-- Header (Logo RM Studio e Dettagli Progetto) -->
+            <div class="shrink-0 flex flex-wrap items-center gap-3 mb-4 pb-4 border-b border-gray-900/60 w-full">
+                <a href="https://rmstudio.app/" target="_blank" class="flex items-center">
+                    <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio Logo" class="h-8 w-auto">
+                </a>
+                <span id="badge" class="bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-purple-500/20">Progetto</span>
+                <h1 id="title" class="text-base md:text-lg font-black text-white tracking-tight">Caricamento in corso...</h1>
+                <span class="text-gray-800 hidden md:inline">•</span>
+                <p class="text-xs text-gray-500">
+                    Preparato per: <span class="text-purple-400 font-bold" id="client-name">...</span> 
+                    <span class="mx-1.5 text-gray-800">•</span> 
+                    Inviato il: <span class="text-gray-400" id="sent-date">--/--/----</span>
+                </p>
+            </div>
+
+            <!-- Render Area Dinamica (Flessibile in altezza per evitare lo scroll dello schermo) -->
+            <div class="player-wrapper flex-1 min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
+                
+                <!-- WATERMARK CON LOGO IN DIAGONALE RIPETUTO -->
+                <div id="watermark-layer" class="watermark-pattern"></div>
+
+                <!-- 1. VIDEO PLAYER -->
+                <video id="player-video" 
+                       class="hidden w-full h-full object-contain rounded-2xl bg-black"
+                       style="transform: translate3d(0,0,0); backface-visibility: hidden; will-change: transform;"
+                       preload="auto" 
+                       playsinline 
+                       webkit-playsinline 
+                       controls 
+                       controlslist="nodownload" 
+                       oncontextmenu="return false;">
+                    <source src="" type="video/mp4">
+                </video>
+
+                <!-- 2. CAROSELLO IMMAGINI -->
+                <div id="player-carousel" class="hidden w-full h-full relative flex items-center justify-center bg-black">
+                    <img id="carousel-img" src="" class="w-full h-full object-contain select-none rounded-2xl" oncontextmenu="return false;">
+                    <button onclick="prevSlide()" class="absolute left-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                    <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-right text-xs"></i></button>
+                </div>
+
+                <!-- 3. CARTELLA ANTEPRIMA SITO WEB (Risolve il problema della finestrella illeggibile) -->
+                <div id="html-preview-container" class="hidden w-full h-full flex flex-col items-center justify-center p-6 text-center z-20 bg-[#020204]">
+                    <div class="w-16 h-16 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-laptop-code text-2xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-white text-lg font-bold mb-1">Sito Web Interattivo Pronto</h3>
+                    <p class="text-xs text-gray-400 max-w-sm mb-5">Abbiamo sviluppato una bozza interattiva del tuo nuovo sito web. Clicca il pulsante qui sotto per provarla ed esplorarla in tempo reale a schermo intero.</p>
+                    <button onclick="openFullscreenWebsite()" class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all active:scale-95 shadow-[0_0_15px_rgba(147,51,234,0.35)]">
+                        <i class="fa-solid fa-expand animate-bounce"></i> Esplora a Schermo Intero
+                    </button>
+                </div>
+
+                <!-- 4. LINK ESTERNO / DEMO -->
+                <div id="player-link" class="hidden text-center p-6 z-30">
+                    <div class="w-14 h-14 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mx-auto mb-3">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-lg text-purple-400"></i>
+                    </div>
+                    <h3 class="text-white text-lg font-bold mb-1">Link Esterno / Demo</h3>
+                    <a id="external-link-btn" href="" target="_blank" class="inline-flex items-center gap-2 bg-[#121217] border border-gray-800 px-5 py-2.5 mt-3 rounded-xl text-xs font-bold hover:border-purple-500 transition-all">Apri Progetto</a>
+                </div>
+            </div>
+
+            <!-- Footer Actions con Pulsante di Sblocco/Download in Posizione Centrale e Gigante -->
+            <div class="shrink-0 flex items-center justify-center pt-4 border-t border-gray-800/60">
+                <button id="actionBtn" onclick="handleAction()" 
+                        class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-[0_0_35px_rgba(147,51,234,0.65)] flex items-center justify-center gap-3 animate-pulse">
+                    <!-- Il testo e l'icona del lucchetto vengono iniettati via JS -->
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 🖥️ OVERLAY NATIVO A SCHERMO INTERO PER IL SITO WEB DEL CLIENTE -->
+    <div id="fullscreen-iframe-overlay" class="hidden fixed inset-0 bg-[#050508] z-[9999] flex flex-col">
+        <!-- Barra di controllo superiore dell'overlay -->
+        <div class="h-16 shrink-0 bg-[#0b0b0f] border-b border-gray-900/80 flex items-center justify-between px-6">
+            <div class="flex items-center gap-3">
+                <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio Logo" class="h-6 w-auto">
+                <span class="text-xs text-gray-400">| Anteprima Interattiva Sito</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:shadow-[0_0_25px_rgba(147,51,234,0.5)]">
+                    <!-- Il testo del lucchetto viene iniettato dinamicamente -->
+                </button>
+                <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-4 py-2.5 rounded-xl transition-all">
+                    <i class="fa-solid fa-xmark"></i> Esci dall'anteprima
+                </button>
+            </div>
+        </div>
+        <!-- Iframe a schermo intero reale -->
+        <div class="flex-1 w-full h-full relative bg-black">
+            <!-- Filigrana di sicurezza fitta sull'overlay (impedisce screenshot senza pagare) -->
+            <div id="overlay-watermark" class="watermark-pattern opacity-[0.06]"></div>
+            <iframe id="fullscreen-iframe" class="w-full h-full border-none bg-black" src=""></iframe>
         </div>
     </div>
 
@@ -175,16 +221,22 @@
         let imagesArray = [];
 
         // Genera dinamicamente la griglia di filigrana interna con i loghi RM Studio ruotati
-        const watermarkLayer = document.getElementById('watermark-layer');
-        if (watermarkLayer) {
-            for (let i = 0; i < 28; i++) {
-                const img = document.createElement('img');
-                img.src = "https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png";
-                img.className = "watermark-logo select-none";
-                img.setAttribute('oncontextmenu', 'return false;');
-                watermarkLayer.appendChild(img);
+        function generateWatermarks(containerId, count) {
+            const layer = document.getElementById(containerId);
+            if (layer) {
+                layer.innerHTML = ""; // Pulisci prima
+                for (let i = 0; i < count; i++) {
+                    const img = document.createElement('img');
+                    img.src = "https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png";
+                    img.className = "watermark-logo select-none";
+                    img.setAttribute('oncontextmenu', 'return false;');
+                    layer.appendChild(img);
+                }
             }
         }
+
+        generateWatermarks('watermark-layer', 28);
+        generateWatermarks('overlay-watermark', 40);
 
         window.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
@@ -223,10 +275,9 @@
                     document.getElementById('player-carousel').classList.remove('hidden');
                 }
             } 
+            // Sito Web: Mostra un contenitore dedicato che incoraggia lo schermo intero
             else if (data.portal_type === 'html') {
-                const frame = document.getElementById('player-html');
-                frame.src = data.content_url;
-                frame.classList.remove('hidden');
+                document.getElementById('html-preview-container').classList.remove('hidden');
             } 
             else if (data.portal_type === 'link') {
                 document.getElementById('external-link-btn').href = data.content_url;
@@ -240,6 +291,7 @@
             // GESTIONE STATO PAGAMENTO / WATERMARK
             if (data.is_paid === true || data.is_paid === "true") {
                 document.getElementById('watermark-layer').classList.add('hidden'); // Nasconde la griglia di filigrana
+                document.getElementById('overlay-watermark').classList.add('hidden'); // Nasconde anche quella in overlay
                 
                 const btn = document.getElementById('actionBtn');
                 
@@ -257,6 +309,33 @@
                 document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca Progetto €${formattedPrice}`;
             }
         });
+
+        // Gestione Anteprima Sito Web a Schermo Intero Reale
+        function openFullscreenWebsite() {
+            if (!videoData) return;
+            const overlay = document.getElementById('fullscreen-iframe-overlay');
+            const iframe = document.getElementById('fullscreen-iframe');
+            
+            iframe.src = videoData.content_url;
+            overlay.classList.remove('hidden');
+
+            // Imposta bottone d'azione nell'overlay
+            const overlayBtn = document.getElementById('overlayActionBtn');
+            const priceVal = parseFloat(videoData.price_euro);
+            const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
+
+            if (videoData.is_paid === true || videoData.is_paid === "true") {
+                document.getElementById('overlay-watermark').classList.add('hidden');
+                overlayBtn.innerHTML = `<i class="fa-solid fa-globe"></i> Visita il Sito`;
+            } else {
+                overlayBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca €${formattedPrice}`;
+            }
+        }
+
+        function closeFullscreenWebsite() {
+            document.getElementById('fullscreen-iframe-overlay').classList.add('hidden');
+            document.getElementById('fullscreen-iframe').src = "";
+        }
 
         // Carosello Slide Navigator
         function nextSlide() {
@@ -283,10 +362,13 @@
                 }
             } else {
                 const btn = document.getElementById('actionBtn');
+                const overlayBtn = document.getElementById('overlayActionBtn');
                 const originalText = btn.innerHTML;
                 
                 btn.disabled = true;
+                overlayBtn.disabled = true;
                 btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generazione pagamento...`;
+                overlayBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Attendi...`;
 
                 try {
                     const res = await fetch('https://n8n.rmstudio.app/webhook/crea-sessione-stripe', {
@@ -313,6 +395,7 @@
                     alert("Impossibile avviare il pagamento. Riprova più tardi.");
                     console.error(err);
                     btn.disabled = false;
+                    overlayBtn.disabled = false;
                     btn.innerHTML = originalText;
                 }
             }
