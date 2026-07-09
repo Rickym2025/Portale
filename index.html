@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AImmobiliare - Admin Panel</title>
+    <title>RM Studio - Control Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -15,12 +15,12 @@
         }
     </style>
 </head>
-<body class="bg-[#060608] text-gray-200 p-4 md:p-8 selection:bg-purple-600 selection:text-white">
+<body class="bg-[#050508] text-gray-200 p-4 md:p-8 selection:bg-purple-600 selection:text-white">
 
     <div class="max-w-[98%] mx-auto">
         
         <!-- Header -->
-        <div class="flex justify-between items-center mb-10 pb-4 border-b border-gray-900">
+        <div class="flex justify-between items-center mb-10 pb-4 border-b border-gray-900/60">
             <div>
                 <h1 class="text-2xl font-black text-white flex items-center gap-2">
                     <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-600/30">
@@ -33,63 +33,74 @@
 
         <!-- STATS CARDS -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-            <div class="bg-[#121217] border border-zinc-800/80 p-5 rounded-2xl shadow-xl">
+            <div class="bg-[#0b0b0f] border border-zinc-900/60 p-5 rounded-2xl shadow-xl">
                 <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Incassi Totali</span>
                 <span class="text-2xl font-black text-green-400 mt-1 block" id="stat-revenue">€0.00</span>
             </div>
-            <div class="bg-[#121217] border border-zinc-800/80 p-5 rounded-2xl shadow-xl">
+            <div class="bg-[#0b0b0f] border border-zinc-900/60 p-5 rounded-2xl shadow-xl">
                 <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Conversion Rate</span>
                 <span class="text-2xl font-black text-white mt-1 block" id="stat-conversion">0%</span>
             </div>
-            <div class="bg-[#121217] border border-zinc-800/80 p-5 rounded-2xl shadow-xl">
+            <div class="bg-[#0b0b0f] border border-zinc-900/60 p-5 rounded-2xl shadow-xl">
                 <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Aperture / Invii</span>
                 <span class="text-2xl font-black text-purple-400 mt-1 block" id="stat-opens">0 / 0</span>
             </div>
-            <div class="bg-[#121217] border border-zinc-800/80 p-5 rounded-2xl shadow-xl">
+            <div class="bg-[#0b0b0f] border border-zinc-900/60 p-5 rounded-2xl shadow-xl">
                 <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Visite Totali</span>
                 <span class="text-2xl font-black text-blue-400 mt-1 block" id="stat-views">0</span>
             </div>
         </div>
 
         <!-- SEZIONE CREAZIONE NUOVO PROGETTO -->
-        <div class="bg-[#121217] border border-zinc-800/80 rounded-3xl p-6 mb-8 shadow-2xl">
+        <div class="bg-[#0b0b0f] border border-zinc-900/60 rounded-3xl p-6 mb-8 shadow-2xl">
             <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-plus text-purple-500"></i> Crea Nuovo Portale Cliente
             </h2>
             <form id="create-portal-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-4">
+                    <!-- RIGA 1: NOME CLIENTE (Unico intero obbligatorio) -->
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Nome Lead / Professionista o Azienda</label>
+                        <input type="text" id="form-agency" placeholder="Es. Dott.ssa Valeria Cortese" required class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3 text-sm text-white outline-none transition-all">
+                    </div>
+
+                    <!-- RIGA 2: CONTATTI (Entrambi opzionali) -->
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Email Cliente</label>
-                            <input type="email" id="form-email" required class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Email Cliente (Facoltativa)</label>
+                            <input type="email" id="form-email" placeholder="Es. studio@rossi.it" class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3 text-sm text-white outline-none transition-all">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Nome Lead / Concessionaria</label>
-                            <input type="text" id="form-agency" placeholder="Es. Automobili Rossi" required class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Telefono Cliente WhatsApp (Facoltativo)</label>
+                            <input type="text" id="form-phone" placeholder="Es. +393401234567" class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3 text-sm text-white outline-none transition-all">
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Titolo Progetto</label>
-                        <input type="text" id="form-title" placeholder="Es. Attico Vista Mare Sanremo" required class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Prezzo Concordato (€)</label>
-                        <input type="number" id="form-price" value="39" required class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500">
+
+                    <!-- RIGA 3: DETTAGLI PROGETTO -->
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="col-span-2">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Titolo Progetto / Servizio</label>
+                            <input type="text" id="form-title" placeholder="Es. Sito Web Professionale d'Autore" required class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3 text-sm text-white outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Prezzo Concordato (€)</label>
+                            <input type="number" id="form-price" value="400" required class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3 text-sm text-white outline-none transition-all">
+                        </div>
                     </div>
                 </div>
 
                 <div class="space-y-4 flex flex-col justify-between">
                     <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Tipologia di Contenuto</label>
-                        <select id="form-type" class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500 text-white font-semibold">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Tipologia di Contenuto</label>
+                        <select id="form-type" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500 text-white font-semibold">
+                            <option value="html">Sito / Pagina Web (Link HTML)</option>
                             <option value="video">Video Singolo (.mp4)</option>
                             <option value="carousel">Carosello Immagini</option>
-                            <option value="html">Sito / Pagina Web (Link HTML)</option>
                             <option value="link">Link Esterno / Demo</option>
                         </select>
                     </div>
 
-                    <div id="file-upload-section" class="bg-[#181820] border-2 border-dashed border-zinc-800 rounded-xl p-5 text-center cursor-pointer hover:border-purple-500/50 transition-all flex flex-col items-center justify-center min-h-[110px]">
+                    <div id="file-upload-section" class="hidden bg-[#15151a] border-2 border-dashed border-zinc-800 rounded-xl p-5 text-center cursor-pointer hover:border-purple-500/50 transition-all flex flex-col items-center justify-center min-h-[110px]">
                         <input type="file" id="form-file" class="hidden" accept="video/mp4">
                         <div onclick="document.getElementById('form-file').click()" class="w-full">
                             <i class="fa-solid fa-cloud-arrow-up text-xl text-purple-400 mb-2" id="upload-icon"></i>
@@ -98,9 +109,9 @@
                         </div>
                     </div>
 
-                    <div id="link-input-section" class="hidden">
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1" id="link-label">URL Destinazione</label>
-                        <input type="url" id="form-url" placeholder="https://..." class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-3.5 text-sm focus:outline-none focus:border-purple-500">
+                    <div id="link-input-section" class="block">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1" id="link-label">URL Destinazione / Slug Sitengine</label>
+                        <input type="url" id="form-url" placeholder="https://sitengine.rmstudio.app/elisa-bovolenta" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm focus:outline-none focus:border-purple-500 text-white">
                     </div>
 
                     <button type="submit" id="submit-btn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
@@ -110,19 +121,19 @@
             </form>
         </div>
 
-        <!-- BARRA FILTRI SPOSTATA SOTTO IL CARICAMENTO -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 bg-[#121217] border border-zinc-800/80 p-4 rounded-2xl shadow-xl">
+        <!-- BARRA FILTRI -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 bg-[#0b0b0f] border border-zinc-900/60 p-4 rounded-2xl shadow-xl">
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Filtra per Nome Lead</label>
-                <input type="text" id="search-name" placeholder="Cerca nome azienda o lead..." oninput="applyFilters()" class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white placeholder-gray-600">
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Filtra per Nome Lead</label>
+                <input type="text" id="search-name" placeholder="Cerca nome azienda o lead..." oninput="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white placeholder-gray-600">
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Filtra per E-mail</label>
-                <input type="text" id="search-email" placeholder="Cerca indirizzo email..." oninput="applyFilters()" class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white placeholder-gray-600">
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Filtra per E-mail o Cellulare</label>
+                <input type="text" id="search-email" placeholder="Cerca indirizzo email o telefono..." oninput="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white placeholder-gray-600">
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Stato Apertura E-mail</label>
-                <select id="filter-status" onchange="applyFilters()" class="w-full bg-[#181820] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white font-semibold">
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Stato Apertura E-mail</label>
+                <select id="filter-status" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white font-semibold">
                     <option value="all">Tutti i progetti</option>
                     <option value="opened">Aperte / Visualizzate</option>
                     <option value="unopened">Non Aperte / Non inviate</option>
@@ -130,22 +141,23 @@
             </div>
         </div>
 
-        <!-- TABELLA PORTALE VIDEO (COMPATTA ED EQUILIBRATA) -->
-        <div class="bg-[#121217] border border-zinc-800/80 rounded-3xl overflow-hidden shadow-2xl">
+        <!-- TABELLA PORTALE VIDEO -->
+        <div class="bg-[#0b0b0f] border border-zinc-900/60 rounded-3xl overflow-hidden shadow-2xl">
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse min-w-[1100px]">
+                <table class="w-full text-left border-collapse min-w-[1200px]">
                     <thead>
-                        <tr class="border-b border-gray-950 bg-black/40 text-[9px] uppercase tracking-wider text-gray-400">
-                            <!-- Ricalibrate le percentuali delle colonne per rimuovere gli spazi vuoti -->
-                            <th class="p-4 w-[22%]">Cliente / Azienda</th>
-                            <th class="p-4 w-[15%]">Progetto</th>
+                        <tr class="border-b border-gray-900 bg-black/40 text-[9px] uppercase tracking-wider text-gray-400">
+                            <th class="p-4 w-[20%]">Cliente / Contatti</th>
+                            <th class="p-4 w-[12%]">Progetto</th>
                             <th class="p-4 w-[8%]">Tipo</th>
-                            <th class="p-4 w-[8%]">Prezzo (€)</th>
+                            <th class="p-4 w-[7%]">Prezzo (€)</th>
                             <th class="p-4 w-[8%]">Visite</th>
-                            <th class="p-4 w-[11%]">Pagamento</th>
-                            <th class="p-4 w-[8%]">Link</th>
-                            <th class="p-4 w-[10%]">Stato E-mail</th>
-                            <th class="p-4 w-[10%] text-right">Azioni Marketing</th>
+                            <th class="p-4 w-[8%]">Stato invio WA</th>
+                            <th class="p-4 w-[8%]">Stato Lettura</th>
+                            <th class="p-4 w-[8%]">Pagamento</th>
+                            <th class="p-4 w-[7%]">Link</th>
+                            <th class="p-4 w-[16%]">Note Operative (Salvataggio automatico)</th>
+                            <th class="p-4 w-[6%] text-right">Azioni</th>
                         </tr>
                     </thead>
                     <tbody id="rows-container" class="divide-y divide-gray-900/60 text-sm">
@@ -163,8 +175,6 @@
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
         const n8nCreateEndpoint = 'https://n8n.rmstudio.app/webhook/admin-create-portal';
-        const n8nFirstEmailWebhook = 'https://n8n.rmstudio.app/webhook/invia-primo-invito';
-        const reminderWebhook = 'https://n8n.rmstudio.app/webhook/polite-reminder';
         const deleteWebhook = 'https://n8n.rmstudio.app/webhook/delete-portal-video';
 
         window.allProjects = [];
@@ -176,25 +186,25 @@
             const linkSection = document.getElementById('link-input-section');
             const fileInput = document.getElementById('form-file');
 
-            fileSection.className = "bg-[#181820] border-2 border-dashed border-zinc-800 rounded-xl p-5 text-center cursor-pointer hover:border-purple-500/50 transition-all flex flex-col items-center justify-center min-h-[110px]";
+            fileSection.className = "bg-[#15151a] border-2 border-dashed border-zinc-800 rounded-xl p-5 text-center cursor-pointer hover:border-purple-500/50 transition-all flex flex-col items-center justify-center min-h-[110px]";
             document.getElementById('upload-icon').className = "fa-solid fa-cloud-arrow-up text-xl text-purple-400 mb-2";
             document.getElementById('file-label-text').className = "block text-xs font-bold text-gray-300";
 
-            if (type === 'video') {
-                fileSection.classList.remove('hidden');
-                linkSection.classList.add('hidden');
-                fileInput.removeAttribute('multiple');
-                fileInput.setAttribute('accept', 'video/mp4');
-                document.getElementById('file-label-text').innerText = "Carica File Video (.mp4)";
-            } else if (type === 'carousel') {
-                fileSection.classList.remove('hidden');
-                linkSection.classList.add('hidden');
-                fileInput.setAttribute('multiple', 'true');
-                fileInput.setAttribute('accept', 'image/*');
-                document.getElementById('file-label-text').innerText = "Carica Immagini Carosello";
-            } else {
+            if (type === 'html' || type === 'link') {
                 fileSection.classList.add('hidden');
                 linkSection.classList.remove('hidden');
+            } else {
+                fileSection.classList.remove('hidden');
+                linkSection.classList.add('hidden');
+                if (type === 'video') {
+                    fileInput.removeAttribute('multiple');
+                    fileInput.setAttribute('accept', 'video/mp4');
+                    document.getElementById('file-label-text').innerText = "Carica File Video (.mp4)";
+                } else if (type === 'carousel') {
+                    fileInput.setAttribute('multiple', 'true');
+                    fileInput.setAttribute('accept', 'image/*');
+                    document.getElementById('file-label-text').innerText = "Carica Immagini Carosello";
+                }
             }
             document.getElementById('file-selected-name').innerText = "Nessun file selezionato";
             fileInput.value = "";
@@ -219,7 +229,8 @@
 
             const type = document.getElementById('form-type').value;
             const formData = new FormData();
-            formData.append('email', document.getElementById('form-email').value);
+            formData.append('email', document.getElementById('form-email').value || '');
+            formData.append('client_phone', document.getElementById('form-phone').value || '');
             formData.append('client_name', document.getElementById('form-agency').value);
             formData.append('title', document.getElementById('form-title').value);
             formData.append('price', document.getElementById('form-price').value);
@@ -251,14 +262,14 @@
 
             const filteredData = window.allProjects.filter(v => {
                 const matchesName = (v.client_name || '').toLowerCase().includes(searchName);
-                const matchesEmail = (v.client_email || '').toLowerCase().includes(searchEmail);
+                const matchesEmail = (v.client_email || '').toLowerCase().includes(searchEmail) || (v.client_phone || '').toLowerCase().includes(searchEmail);
                 
                 const hasOpened = v.is_opened || v.views_count > 0;
                 let matchesStatus = true;
                 if (filterStatus === 'opened') {
                     matchesStatus = hasOpened === true;
                 } else if (filterStatus === 'unopened') {
-                    matchesStatus = hasOpened === false && !v.first_email_sent;
+                    matchesStatus = hasOpened === false;
                 }
 
                 return matchesName && matchesEmail && matchesStatus;
@@ -268,7 +279,7 @@
         }
 
         async function loadDashboard() {
-            const { data, error } = await supabaseClient.from('portal_videos').select('*').order('created_at', { ascending: false });
+            const { data, error } = await supabaseClient.from('portal_videos').select('*').order('sent_at', { ascending: false });
             if (error) return alert("Errore caricamento: " + error.message);
 
             window.allProjects = data;
@@ -302,61 +313,58 @@
             container.innerHTML = '';
 
             data.forEach(v => {
-                let icon = "fa-video";
+                let icon = "fa-code";
                 if (v.portal_type === 'carousel') icon = "fa-images";
-                else if (v.portal_type === 'html') icon = "fa-code";
+                else if (v.portal_type === 'video') icon = "fa-video";
                 else if (v.portal_type === 'link') icon = "fa-arrow-up-right-from-square";
 
-                let statusLabel = '<span class="text-gray-500 font-bold text-xs"><i class="fa-solid fa-envelope"></i> Non Inviata</span>';
-                if (v.views_count > 0) {
-                    statusLabel = '<span class="text-blue-400 font-bold text-xs"><i class="fa-solid fa-eye animate-pulse"></i> Visualizzato</span>';
-                } else if (v.is_opened) {
-                    statusLabel = '<span class="text-green-400 font-bold text-xs"><i class="fa-solid fa-envelope-open"></i> Aperta</span>';
-                } else if (v.first_email_sent) {
-                    statusLabel = '<span class="text-purple-400 font-bold text-xs"><i class="fa-solid fa-paper-plane"></i> Inviata</span>';
-                }
-
-                if (v.sent_at) {
-                    const d = new Date(v.sent_at);
-                    const dateStr = `${d.toLocaleDateString('it-IT')} ${d.toLocaleTimeString('it-IT', {hour: '2-digit', minute:'2-digit'})}`;
-                    statusLabel += `<span class="block text-[11px] text-gray-400 mt-1 font-medium">${dateStr}</span>`;
+                let statusReadLabel = '<span class="text-zinc-500 font-bold text-xs"><i class="fa-solid fa-envelope"></i> No</span>';
+                if (v.is_opened || v.views_count > 0) {
+                    statusReadLabel = '<span class="text-green-400 font-bold text-xs"><i class="fa-solid fa-eye animate-pulse"></i> Sì (Letto)</span>';
                 }
 
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-[#181820] transition-colors border-b border-zinc-800/40";
+                tr.className = "hover:bg-[#101015] transition-colors border-b border-zinc-900/60";
                 tr.innerHTML = `
-                    <!-- 1° COLONNA: CLIENTE E EMAIL (AD ALTO CONTRASTO) -->
+                    <!-- 1° COLONNA: CLIENTE, EMAIL E TELEFONO -->
                     <td class="p-4">
-                        <input type="text" value="${v.client_name || 'Cliente'}" onchange="updateField('${v.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-extrabold text-white text-sm block w-full mb-1">
-                        <input type="email" value="${v.client_email}" onchange="updateField('${v.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full">
+                        <input type="text" value="${v.client_name || 'Cliente'}" onchange="updateField('${v.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none font-extrabold text-white text-sm block w-full mb-1">
+                        <div class="space-y-0.5">
+                            <input type="email" value="${v.client_email || ''}" onchange="updateField('${v.id}', 'client_email', this.value)" placeholder="Inserisci Mail" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 block w-full">
+                            <input type="text" value="${v.client_phone || ''}" onchange="updateField('${v.id}', 'client_phone', this.value)" placeholder="Inserisci Telefono" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none text-xs text-purple-400 font-semibold block w-full">
+                        </div>
                     </td>
                     
-                    <!-- 2° COLONNA: PROGETTO (SEPARATA) -->
+                    <!-- 2° COLONNA: PROGETTO -->
                     <td class="p-4">
-                        <input type="text" value="${v.title || ''}" onchange="updateField('${v.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none text-sm text-gray-300 font-semibold w-full">
+                        <input type="text" value="${v.title || ''}" onchange="updateField('${v.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none text-sm text-gray-300 font-semibold w-full">
                     </td>
                     
-                    <td class="p-4"><span class="text-xs bg-[#1c1c24] text-gray-300 px-2.5 py-1 rounded-full border border-zinc-800 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max"><i class="fa-solid ${icon}"></i> ${v.portal_type}</span></td>
-                    <td class="p-4"><input type="number" value="${v.price_euro}" onchange="updateField('${v.id}', 'price_euro', this.value)" class="w-16 bg-[#181820] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs"></td>
+                    <td class="p-4"><span class="text-xs bg-[#16161f] text-gray-300 px-2.5 py-1 rounded-full border border-zinc-800 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max"><i class="fa-solid ${icon}"></i> ${v.portal_type}</span></td>
+                    <td class="p-4"><input type="number" value="${v.price_euro}" onchange="updateField('${v.id}', 'price_euro', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs"></td>
                     <td class="p-4 text-xs font-bold text-blue-400">📈 ${v.views_count || 0} visite</td>
+                    
+                    <!-- SPUNTA INVIO MANUAL WHATSAPP -->
+                    <td class="p-4">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" ${v.is_whatsapp_sent ? 'checked' : ''} onchange="updateField('${v.id}', 'is_whatsapp_sent', this.checked)" class="w-4 h-4 text-purple-600 bg-zinc-900 border-zinc-800 rounded focus:ring-purple-500 focus:ring-2">
+                            <span class="ml-2 text-xs text-gray-400">Inviato</span>
+                        </label>
+                    </td>
+
+                    <!-- LETTURA EFFETTIVA (AUTOMATICA VIA IS_OPENED) -->
+                    <td class="p-4 whitespace-nowrap">${statusReadLabel}</td>
+
                     <td class="p-4 text-xs">${(v.is_paid === true || v.is_paid === "true") ? '<span class="text-green-400 font-bold"><i class="fa-solid fa-circle-check"></i> Pagato</span>' : '<span class="text-yellow-500"><i class="fa-solid fa-clock"></i> Attesa</span>'}</td>
                     <td class="p-4 text-xs"><button onclick="copyToClipboard('${v.id}')" class="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1 bg-purple-500/10 border border-purple-500/20 px-2.5 py-1.5 rounded-lg transition-all active:scale-95 text-[10px]"><i class="fa-solid fa-copy"></i> Copia</button></td>
                     
-                    <!-- 8° COLONNA: STATO E-MAIL (RIPOSIZIONATA TRA LINK E AZIONI) -->
-                    <td class="p-4 whitespace-nowrap">${statusLabel}</td>
-                    
-                    <!-- 9° COLONNA: AZIONI -->
+                    <!-- COLONNA NOTE INTERATTIVA (SALVATAGGIO AUTOMATICO SU SUPABASE) -->
+                    <td class="p-4">
+                        <textarea onchange="updateField('${v.id}', 'notes', this.value)" placeholder="Aggiungi note sul lead..." class="w-full h-12 bg-transparent text-xs text-zinc-300 placeholder-zinc-700 hover:border-zinc-800 focus:border-purple-500 border border-transparent rounded-lg p-1.5 leading-relaxed focus:outline-none transition-all resize-none">${v.notes || ''}</textarea>
+                    </td>
+
                     <td class="p-4 text-right whitespace-nowrap">
-                        <div class="flex items-center justify-end gap-1.5 whitespace-nowrap">
-                            ${!v.first_email_sent ? `
-                                <button onclick="sendFirstEmail('${v.id}', '${v.client_email}', '${v.title}', 'cold')" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 rounded-md text-[10px] font-bold transition-all shadow-sm">Invia Cold</button>
-                                <button onclick="sendFirstEmail('${v.id}', '${v.client_email}', '${v.title}', 'formal')" class="bg-purple-600 hover:bg-purple-700 text-white px-2.5 py-1.5 rounded-md text-[10px] font-bold transition-all shadow-sm">Invia Formal</button>
-                            ` : ''}
-                            ${v.first_email_sent && !(v.is_paid === true || v.is_paid === "true") && !v.followup_sent ? `
-                                <button onclick="sendFollowup('${v.id}', '${v.client_email}', '${v.title}', ${v.price_euro})" class="bg-yellow-600 hover:bg-yellow-700 text-white px-2.5 py-1.5 rounded-md text-[10px] font-bold transition-all flex items-center gap-1 shadow-sm"><i class="fa-solid fa-paper-plane"></i> Follow-Up</button>
-                            ` : ''}
-                            <button onclick="deleteRow('${v.id}', '${v.title}')" class="text-gray-500 hover:text-red-500 p-2 hover:bg-red-500/10 rounded-md transition-all" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
-                        </div>
+                        <button onclick="deleteRow('${v.id}', '${v.title}')" class="text-gray-500 hover:text-red-500 p-2 hover:bg-red-500/10 rounded-md transition-all" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
                     </td>
                 `;
                 container.appendChild(tr);
@@ -364,33 +372,20 @@
         }
 
         async function updateField(id, field, value) {
-            const payload = {}; payload[field] = field === 'price_euro' ? parseFloat(value) : value;
+            const payload = {}; 
+            payload[field] = field === 'price_euro' ? parseFloat(value) : value;
             const { error } = await supabaseClient.from('portal_videos').update(payload).eq('id', id);
             if (error) alert("Errore aggiornamento: " + error.message);
         }
 
         function copyToClipboard(id) {
-            navigator.clipboard.writeText(`${window.location.origin}/view?id=${id}`).then(() => alert("Copiato!")).catch(e => console.error(e));
-        }
-
-        async function sendFirstEmail(id, email, title, email_type) {
-            try {
-                const res = await fetch(n8nFirstEmailWebhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, email, title, email_type }) });
-                if (res.ok) { alert(`Invio completato!`); loadDashboard(); } else alert("Errore.");
-            } catch (err) { alert(err.message); }
-        }
-
-        async function sendFollowup(id, email, title, price) {
-            try {
-                const res = await fetch(reminderWebhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, email, title, price }) });
-                if (res.ok) { alert(`Follow-up inviato!`); loadDashboard(); } else alert("Errore.");
-            } catch (err) { alert(err.message); }
+            navigator.clipboard.writeText(`https://portale.rmstudio.app/view.html?id=${id}`).then(() => alert("Copiato!")).catch(e => console.error(e));
         }
 
         async function deleteRow(id, title) {
             if (!confirm(`Cancellare definitivamente "${title}" e i suoi file?`)) return;
             try {
-                const res = await fetch(deleteWebhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+                const res = await fetch(deleteWebhook, { method: 'POST', body: JSON.stringify({ id }) });
                 if (res.ok) { alert("Eliminato."); loadDashboard(); } else alert("Errore.");
             } catch (err) { alert(err.message); }
         }
