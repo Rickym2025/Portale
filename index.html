@@ -68,11 +68,11 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Email Cliente (Facoltativa)</label>
-                            <input type="email" id="form-email" placeholder="Es. studio@rossi.it" class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3 text-sm text-white outline-none transition-all">
+                            <input type="email" id="form-email" placeholder="Es. studio@rossi.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500 text-white">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Telefono Cliente WhatsApp (Facoltativo)</label>
-                            <input type="text" id="form-phone" placeholder="Es. +393401234567" class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3 text-sm text-white outline-none transition-all">
+                            <input type="text" id="form-phone" placeholder="Es. +393401234567" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none transition-all">
                         </div>
                     </div>
 
@@ -80,11 +80,11 @@
                     <div class="grid grid-cols-3 gap-4">
                         <div class="col-span-2">
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Titolo Progetto / Servizio</label>
-                            <input type="text" id="form-title" placeholder="Es. Sito Web Professionale d'Autore" required class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3 text-sm text-white outline-none transition-all">
+                            <input type="text" id="form-title" placeholder="Es. Sito Web Professionale d'Autore" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none transition-all">
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Prezzo Concordato (€)</label>
-                            <input type="number" id="form-price" value="400" required class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3 text-sm text-white outline-none transition-all">
+                            <input type="number" id="form-price" value="400" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none transition-all">
                         </div>
                     </div>
                 </div>
@@ -330,17 +330,17 @@
                     <td class="p-4">
                         <input type="text" value="${v.client_name || 'Cliente'}" onchange="updateField('${v.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none font-extrabold text-white text-sm block w-full mb-1">
                         <div class="space-y-0.5">
-                            <input type="email" value="${v.client_email || ''}" onchange="updateField('${v.id}', 'client_email', this.value)" placeholder="Inserisci Mail" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 block w-full">
-                            <input type="text" value="${v.client_phone || ''}" onchange="updateField('${v.id}', 'client_phone', this.value)" placeholder="Inserisci Telefono" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none text-xs text-purple-400 font-semibold block w-full">
+                            <input type="email" value="${v.client_email || ''}" onchange="updateField('${v.id}', 'client_email', this.value)" placeholder="Inserisci Mail" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full">
+                            <input type="text" value="${v.client_phone || ''}" onchange="updateField('${v.id}', 'client_phone', this.value)" placeholder="Inserisci Cellulare" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full">
                         </div>
                     </td>
                     
-                    <!-- 2° COLONNA: PROGETTO -->
+                    <!-- 2° COLONNA: PROGETTO (SEPARATA) -->
                     <td class="p-4">
-                        <input type="text" value="${v.title || ''}" onchange="updateField('${v.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none text-sm text-gray-300 font-semibold w-full">
+                        <input type="text" value="${v.title || ''}" onchange="updateField('${v.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none text-sm text-gray-300 font-semibold w-full">
                     </td>
                     
-                    <td class="p-4"><span class="text-xs bg-[#16161f] text-gray-300 px-2.5 py-1 rounded-full border border-zinc-800 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max"><i class="fa-solid ${icon}"></i> ${v.portal_type}</span></td>
+                    <td class="p-4"><span class="text-xs bg-[#1c1c24] text-gray-300 px-2.5 py-1 rounded-full border border-zinc-800 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max"><i class="fa-solid ${icon}"></i> ${v.portal_type}</span></td>
                     <td class="p-4"><input type="number" value="${v.price_euro}" onchange="updateField('${v.id}', 'price_euro', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs"></td>
                     <td class="p-4 text-xs font-bold text-blue-400">📈 ${v.views_count || 0} visite</td>
                     
@@ -363,8 +363,9 @@
                         <textarea onchange="updateField('${v.id}', 'notes', this.value)" placeholder="Aggiungi note sul lead..." class="w-full h-12 bg-transparent text-xs text-zinc-300 placeholder-zinc-700 hover:border-zinc-800 focus:border-purple-500 border border-transparent rounded-lg p-1.5 leading-relaxed focus:outline-none transition-all resize-none">${v.notes || ''}</textarea>
                     </td>
 
+                    <!-- COLONNA AZIONI CON FIX DEFINTIVO ANTI-APOSTROFO (PASSA SOLO L'ID) -->
                     <td class="p-4 text-right whitespace-nowrap">
-                        <button onclick="deleteRow('${v.id}', '${v.title}')" class="text-gray-500 hover:text-red-500 p-2 hover:bg-red-500/10 rounded-md transition-all" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                        <button onclick="deleteRow('${v.id}')" class="text-gray-500 hover:text-red-500 p-2 hover:bg-red-500/10 rounded-md transition-all" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
                     </td>
                 `;
                 container.appendChild(tr);
@@ -382,10 +383,15 @@
             navigator.clipboard.writeText(`https://portale.rmstudio.app/view.html?id=${id}`).then(() => alert("Copiato!")).catch(e => console.error(e));
         }
 
-        async function deleteRow(id, title) {
+        // FUNZIONE DI ELIMINAZIONE CORRETTA ED IMUNNE DA CARATTERI SPECIALI / APOSTROFI
+        async function deleteRow(id) {
+            // Recupera in modo sicuro l'oggetto dal nostro array locale per mostrare il nome nel prompt
+            const project = window.allProjects.find(v => v.id === id);
+            const title = project ? project.title : "questo progetto";
+            
             if (!confirm(`Cancellare definitivamente "${title}" e i suoi file?`)) return;
             try {
-                const res = await fetch(deleteWebhook, { method: 'POST', body: JSON.stringify({ id }) });
+                const res = await fetch(deleteWebhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
                 if (res.ok) { alert("Eliminato."); loadDashboard(); } else alert("Errore.");
             } catch (err) { alert(err.message); }
         }
