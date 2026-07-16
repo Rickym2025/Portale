@@ -386,7 +386,19 @@
             if (!id) return alert("ID non valido");
 
             // Incrementa le visualizzazioni sul database in modo asincrono
-            await supabaseClient.rpc('increment_views', { video_id: id });
+            const { data: currentData } = await supabaseClient
+                .from('portal_videos')
+                .select('views_count')
+                .eq('id', id)
+                .single();
+            
+            if (currentData) {
+                const newCount = (currentData.views_count || 0) + 1;
+                await supabaseClient
+                    .from('portal_videos')
+                    .update({ views_count: newCount, is_opened: true })
+                    .eq('id', id);
+            }
 
             // Recupera dati del record
             const { data, error } = await supabaseClient.from('portal_videos').select('*').eq('id', id).single();
