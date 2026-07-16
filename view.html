@@ -25,14 +25,14 @@
         body {
             position: relative;
             background-color: #030306;
-            /* 🌈 GRADIENTI RADIALI AMBIENTALI: Sfuma angoli viola, rosa e ciano per dare colore allo sfondo */
+            /* 🌈 GRADIENTI RADIALI AMBIENTALI */
             background-image: 
                 radial-gradient(circle at 10% 10%, rgba(147, 51, 234, 0.22) 0%, transparent 45%),
                 radial-gradient(circle at 90% 90%, rgba(219, 39, 119, 0.18) 0%, transparent 45%),
                 radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
         }
 
-        /* 🔒 PATTERN DI SFONDO DIAGONALE DEL LOGO RM STUDIO SU TUTTA LA PAGINA */
+        /* 🔒 PATTERN DI SFONDO DIAGONALE DEL LOGO RM STUDIO */
         body::before {
             content: "";
             position: absolute;
@@ -40,14 +40,13 @@
             background-image: url("https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png");
             background-repeat: repeat;
             background-size: 150px auto;
-            opacity: 0.035; /* Finitura elegante per dare trama allo sfondo */
+            opacity: 0.035;
             pointer-events: none;
             z-index: -1;
         }
 
-        /* 🪐 STILE RESPONSIVO DEL SISTEMA ORBITALE INLINE (RM STUDIO) */
+        /* 🪐 STILE RESPONSIVO DEL SISTEMA ORBITALE INLINE */
         .orbit-container {
-            /* Su mobile: Si posiziona naturalmente sotto la card, centrato e ridotto */
             position: relative;
             margin: 40px auto 20px auto;
             width: 290px;
@@ -57,7 +56,6 @@
             flex-shrink: 0;
         }
 
-        /* Su Desktop: Galleggia assolutamente in alto a sinistra */
         @media (min-width: 1024px) {
             .orbit-container {
                 position: absolute;
@@ -69,23 +67,20 @@
             }
         }
 
-        /* Cerchio dell'anello dell'orbita */
         .orbit-ring {
             position: relative;
             width: 100%;
             height: 100%;
-            border: 1px dashed rgba(147, 51, 234, 0.25); /* Cerchio tratteggiato viola */
+            border: 1px dashed rgba(147, 51, 234, 0.25);
             border-radius: 50%;
-            animation: spin-orbit 55s linear infinite; /* Rotazione continua fluida */
+            animation: spin-orbit 55s linear infinite;
             transform-style: preserve-3d;
         }
 
-        /* Ferma la rotazione dell'orbita al passaggio del mouse per facilitare l'hover e il clic */
         .orbit-ring:hover {
             animation-play-state: paused;
         }
 
-        /* Wrapper dei pianeti (Controruota per tenere i loghi dritti) */
         .orbit-wrapper {
             position: absolute;
             width: 50px;
@@ -105,7 +100,6 @@
             height: 100%;
         }
 
-        /* Pulsante circolare contenitore dei loghi */
         .orbit-link {
             display: flex !important;
             align-items: center;
@@ -120,12 +114,11 @@
         }
 
         .orbit-link:hover {
-            border-color: #00e5ff !important; /* Luminescenza ciano su hover */
+            border-color: #00e5ff !important;
             transform: scale(1.15);
             box-shadow: 0 0 15px rgba(0, 229, 255, 0.4) !important;
         }
 
-        /* Logo interno dei servizi */
         .orbit-img {
             width: 28px !important;
             height: 28px !important;
@@ -133,7 +126,6 @@
             border-radius: 50%;
         }
 
-        /* Foto Centrale (Riccardo Modena) */
         .orbit-center-photo {
             position: absolute;
             top: 50%;
@@ -154,7 +146,6 @@
             object-fit: cover;
         }
 
-        /* Effetto impulso d'onda sotto la foto centrale */
         .pulse-ring-element {
             position: absolute;
             top: 50%;
@@ -169,7 +160,6 @@
             pointer-events: none;
         }
 
-        /* Animazioni di rotazione */
         @keyframes spin-orbit {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
@@ -192,7 +182,7 @@
             background: #020204;
         }
         
-        /* 🔒 FILIGRANA RM STUDIO DIAGONALE INTERNA SUL PLAYER: Scompare solo dopo il pagamento */
+        /* 🔒 FILIGRANA RM STUDIO DIAGONALE INTERNA */
         .watermark-pattern {
             position: absolute;
             inset: 0;
@@ -217,7 +207,6 @@
             will-change: transform;
         }
 
-        /* Impedisce il download abusivo tramite i controlli del browser */
         video::-internal-media-controls-download-button { display:none !important; }
         video::-webkit-media-controls-enclosure { overflow:hidden !important; }
         video::-webkit-media-controls-panel { width: calc(100% + 30px) !important; }
@@ -227,11 +216,9 @@
 </head>
 <body class="text-gray-200 min-h-[100dvh] w-screen flex flex-col lg:items-center lg:justify-center p-3 md:p-6 overflow-y-auto lg:overflow-hidden selection:bg-purple-600 selection:text-white relative">
 
-    <!-- Card principale del cliente (Prende l'altezza dello schermo su Desktop, naturale su Mobile) -->
-    <!-- Su Mobile, l'ecosistema orbitale si posiziona automaticamente sotto questa card all'interno del flusso -->
     <div class="w-full max-w-5xl h-auto lg:h-full lg:max-h-[96dvh] bg-[#0b0b0f]/95 border border-gray-900/80 backdrop-blur-xl rounded-3xl p-5 md:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-10 shrink-0">
         
-        <!-- Header (Logo RM Studio e Dettagli Progetto) -->
+        <!-- Header -->
         <div class="shrink-0 flex flex-wrap items-center gap-3 mb-4 pb-4 border-b border-gray-900/60 w-full">
             <a href="https://rmstudio.app/" target="_blank" class="flex items-center">
                 <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio Logo" class="h-8 w-auto">
@@ -246,7 +233,7 @@
             </p>
         </div>
 
-        <!-- Render Area Dinamica (Flessibile in altezza per evitare lo scroll dello schermo su desktop) -->
+        <!-- Render Area Dinamica -->
         <div class="player-wrapper flex-1 min-h-[280px] sm:min-h-[350px] lg:min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
             
             <!-- WATERMARK CON LOGO IN DIAGONALE RIPETUTO -->
@@ -272,7 +259,7 @@
                 <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-right text-xs"></i></button>
             </div>
 
-            <!-- 3. CARTELLA ANTEPRIMA SITO WEB (Visualizzazione a Schermo Intero Reale) -->
+            <!-- 3. CARTELLA ANTEPRIMA SITO WEB -->
             <div id="html-preview-container" class="hidden w-full h-full flex flex-col items-center justify-center p-6 text-center z-20 bg-[#020204]">
                 <div class="w-16 h-16 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4">
                     <i class="fa-solid fa-laptop-code text-2xl text-purple-400"></i>
@@ -294,20 +281,16 @@
             </div>
         </div>
 
-        <!-- Footer Actions con Pulsante di Sblocco/Download in Posizione Centrale e Gigante -->
+        <!-- Footer Actions -->
         <div class="shrink-0 flex items-center justify-center pt-4 border-t border-gray-800/60">
             <button id="actionBtn" onclick="handleAction()" 
                     class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-[0_0_35px_rgba(147,51,234,0.65)] flex items-center justify-center gap-3 animate-pulse">
-                <!-- Il testo e l'icona del lucchetto vengono iniettati via JS -->
             </button>
         </div>
     </div>
 
     <!-- 🌌 CONTENITORE DINAMICO PER L'ORBITA -->
-    <!-- Su Desktop si posiziona in alto a sinistra. Su Mobile va sotto la card e permette lo scorrimento -->
-    <div id="ecosystem-orbit-container" class="orbit-container">
-        <!-- L'HTML del sistema orbitale viene caricato dinamicamente via JS qui dentro -->
-    </div>
+    <div id="ecosystem-orbit-container" class="orbit-container"></div>
 
     <!-- 🖥️ OVERLAY NATIVO A SCHERMO INTERO PER IL SITO WEB DEL CLIENTE -->
     <div id="fullscreen-iframe-overlay" class="hidden fixed inset-0 bg-[#050508] z-[9999] flex flex-col">
@@ -319,7 +302,6 @@
             </div>
             <div class="flex items-center gap-4">
                 <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:shadow-[0_0_25px_rgba(147,51,234,0.5)]">
-                    <!-- Testo iniettato via JS -->
                 </button>
                 <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-4 py-2.5 rounded-xl transition-all">
                     <i class="fa-solid fa-xmark"></i> Esci dall'anteprima
@@ -328,14 +310,13 @@
         </div>
         <!-- Iframe a schermo intero reale -->
         <div class="flex-1 w-full h-full relative bg-black">
-            <!-- Filigrana di sicurezza fitta sull'overlay (impedisce screenshot senza pagare) -->
+            <!-- Filigrana di sicurezza fitta sull'overlay -->
             <div id="overlay-watermark" class="watermark-pattern opacity-[0.06]"></div>
             <iframe id="fullscreen-iframe" class="w-full h-full border-none bg-black" src=""></iframe>
         </div>
     </div>
 
     <script>
-        // Sostituisci con le tue reali chiavi di Supabase
         const supabaseUrl = 'https://jhijfulhntlhcytbhcly.supabase.co'; 
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
@@ -344,11 +325,10 @@
         let currentSlideIdx = 0;
         let imagesArray = [];
 
-        // Genera dinamicamente la griglia di filigrana interna con i loghi RM Studio ruotati
         function generateWatermarks(containerId, count) {
             const layer = document.getElementById(containerId);
             if (layer) {
-                layer.innerHTML = ""; // Pulisci prima
+                layer.innerHTML = ""; 
                 for (let i = 0; i < count; i++) {
                     const img = document.createElement('img');
                     img.src = "https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png";
@@ -362,15 +342,12 @@
         generateWatermarks('watermark-layer', 28);
         generateWatermarks('overlay-watermark', 40);
 
-        // Funzione asincrona per recuperare l'HTML dell'orbita direttamente da GitHub RAW
         async function loadOrbitalEcosystem() {
             try {
                 const url = 'https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/orbit-template.html';
                 const res = await fetch(url);
                 if (!res.ok) throw new Error("Errore fetch GitHub");
                 let html = await res.text();
-                
-                // Manteniamo intatto lo stile originale per salvaguardare tooltips e nuvolette
                 document.getElementById('ecosystem-orbit-container').innerHTML = html;
             } catch (err) {
                 console.warn("Impossibile caricare l'ecosistema orbitale dinamicamente:", err);
@@ -378,20 +355,19 @@
         }
 
         window.addEventListener('DOMContentLoaded', async () => {
-            // Carica dinamicamente l'ecosistema di RM Studio integrato
             await loadOrbitalEcosystem();
 
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id');
             if (!id) return alert("ID non valido");
 
-            // Incrementa le visualizzazioni sul database in modo asincrono
+            // ⚡ TRACCIAMENTO DIRETTO, REALE E IMMUNE DA CANCELLAZIONI DI RETE DEL BROWSER
             const { data: currentData } = await supabaseClient
                 .from('portal_videos')
                 .select('views_count')
                 .eq('id', id)
                 .single();
-            
+
             if (currentData) {
                 const newCount = (currentData.views_count || 0) + 1;
                 await supabaseClient
@@ -429,27 +405,27 @@
                     document.getElementById('player-carousel').classList.remove('hidden');
                 }
             } 
-            // Sito Web: Mostra un contenitore dedicato che incoraggia lo schermo intero
+            // ⚡ SITO WEB INTERATTIVO: Bypassa il secondo click e si avvia in full-screen automatico
             else if (data.portal_type === 'html') {
                 document.getElementById('html-preview-container').classList.remove('hidden');
+                openFullscreenWebsite(); // Avvio immediato a schermo intero
             } 
             else if (data.portal_type === 'link') {
                 document.getElementById('external-link-btn').href = data.content_url;
                 document.getElementById('player-link').classList.remove('hidden');
             }
 
-            // GESTIONE FORMATTAZIONE PREZZO DINAMICO SENZA .00
+            // Formattazione prezzo dinamico
             const priceVal = parseFloat(data.price_euro);
             const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
 
             // GESTIONE STATO PAGAMENTO / WATERMARK
             if (data.is_paid === true || data.is_paid === "true") {
-                document.getElementById('watermark-layer').classList.add('hidden'); // Nasconde la griglia di filigrana
-                document.getElementById('overlay-watermark').classList.add('hidden'); // Nasconde anche quella in overlay
+                document.getElementById('watermark-layer').classList.add('hidden'); 
+                document.getElementById('overlay-watermark').classList.add('hidden'); 
                 
                 const btn = document.getElementById('actionBtn');
                 
-                // Testo dinamico in base al tipo di progetto
                 if (data.portal_type === 'html' || data.portal_type === 'link') {
                     btn.innerHTML = `<i class="fa-solid fa-globe"></i> Visita il Sito Web`;
                 } else {
@@ -457,9 +433,8 @@
                 }
                 
                 btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] hover:shadow-[0_0_40px_rgba(34,197,94,0.6)] flex items-center justify-center gap-3";
-                btn.classList.remove('animate-pulse'); // Rimuove pulsazione se pagato
+                btn.classList.remove('animate-pulse'); 
             } else {
-                // Se non pagato, mostra il pulsante di sblocco
                 document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca Progetto €${formattedPrice}`;
             }
         });
@@ -473,7 +448,6 @@
             iframe.src = videoData.content_url;
             overlay.classList.remove('hidden');
 
-            // Imposta bottone d'azione nell'overlay
             const overlayBtn = document.getElementById('overlayActionBtn');
             const priceVal = parseFloat(videoData.price_euro);
             const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
@@ -491,7 +465,6 @@
             document.getElementById('fullscreen-iframe').src = "";
         }
 
-        // Carosello Slide Navigator
         function nextSlide() {
             if (imagesArray.length === 0) return;
             currentSlideIdx = (currentSlideIdx + 1) % imagesArray.length;
