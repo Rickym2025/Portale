@@ -377,38 +377,31 @@
             navigator.clipboard.writeText(`https://portale.rmstudio.app/view.html?id=${id}`).then(() => alert("Copiato!")).catch(e => console.error(e));
         }
 
-        // FUNZIONE DI ELIMINAZIONE CORRETTA ED IMUNNE DA CARATTERI SPECIALI / APOSTROFI
-        async function deleteRow(id) {
-            const project = window.allProjects.find(v => v.id === id);
-            const title = project ? project.title : "questo progetto";
-            
-            if (!confirm(`Cancellare definitivamente "${title}" e i suoi file?`)) return;
-            try {
-                // 1. Elimina direttamente la riga da Supabase
-                const { error: dbError } = await supabaseClient.from('portal_videos').delete().eq('id', id);
-                if (dbError) {
-                    alert("Errore eliminazione riga DB: " + dbError.message);
-                    return;
-                }
-
-                // 2. Chiama l'n8n webhook per cancellare i file associati (R2, ecc.)
-                const res = await fetch(deleteWebhook, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify({ id }) 
-                });
+        // Sostituisci la vecchia funzione deleteRow con questa:
+            async function deleteRow(id) {
+                const project = window.allProjects.find(v => v.id === id);
+                const title = project ? project.title : "questo progetto";
                 
-                if (res.ok) { 
-                    alert("Progetto e file eliminati con successo."); 
-                    loadDashboard(); 
-                } else {
-                    alert("Riga DB eliminata, ma si è verificato un errore nella pulizia dei file su n8n.");
-                    loadDashboard();
+                if (!confirm(`Cancellare definitivamente "${title}" e i suoi file?`)) return;
+                try {
+                    // ⚡ Inviamo la richiesta a n8n. Sarà n8n a leggere i file, cancellare la riga da Supabase e poi pulire R2.
+                    const res = await fetch(deleteWebhook, { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json' }, 
+                        body: JSON.stringify({ id }) 
+                    });
+                    
+                    if (res.ok) { 
+                        alert("Progetto e file eliminati con successo."); 
+                        loadDashboard(); 
+                    } else {
+                        alert("Si è verificato un errore durante l'eliminazione.");
+                        loadDashboard();
+                    }
+                } catch (err) { 
+                    alert("Errore: " + err.message); 
                 }
-            } catch (err) { 
-                alert("Errore: " + err.message); 
             }
-        }
 
         window.addEventListener('DOMContentLoaded', loadDashboard);
     </script>
