@@ -402,7 +402,24 @@
                     alert("Errore: " + err.message); 
                 }
             }
-
+        // 🌌 SOTTOSCRIZIONE IN TEMPO REALE (Supabase Realtime)
+        // Ascolta qualsiasi modifica (Inserimento, Aggiornamento, Cancellazione) e ricarica i dati al volo
+        supabaseClient
+            .channel('realtime_portal_changes')
+            .on(
+                'postgres_changes', 
+                { 
+                    event: '*', 
+                    schema: 'public', 
+                    table: 'portal_videos' 
+                }, 
+                (payload) => {
+                    console.log("Modifica rilevata nel DB, aggiorno il pannello...", payload);
+                    loadDashboard(); // Ricarica la tabella e riapplica i filtri all'istante!
+                }
+            )
+            .subscribe();
+        
         window.addEventListener('DOMContentLoaded', loadDashboard);
     </script>
 </body>
