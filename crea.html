@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore Rapido - RM Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #050508;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(147, 51, 234, 0.15) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(219, 39, 119, 0.12) 0%, transparent 45%);
+        }
+    </style>
+</head>
+<body class="text-gray-200 min-h-screen p-4 md:p-8 flex flex-col justify-between selection:bg-purple-600 selection:text-white">
+
+    <div class="max-w-5xl w-full mx-auto flex-grow flex flex-col justify-center py-6">
+        
+        <!-- Header di Navigazione -->
+        <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-900/60 w-full shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-600/30">
+                    <i class="fa-solid fa-wand-magic-sparkles text-xs text-white"></i>
+                </div>
+                <h1 class="text-xl font-black text-white">Generatore Rapido Sito Web AI</h1>
+            </div>
+            <a href="index.html" class="text-xs font-bold text-gray-400 hover:text-white bg-zinc-900/80 border border-zinc-800/60 px-4 py-2.5 rounded-xl transition-all flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Torna alla Dashboard
+            </a>
+        </div>
+
+        <!-- Box Centrale -->
+        <div class="bg-[#0b0b0f]/90 border border-zinc-900/60 p-6 md:p-10 rounded-[32px] shadow-2xl backdrop-blur-xl flex-grow flex flex-col justify-between">
+            
+            <form id="admin-generate-form" class="space-y-6 flex-grow flex flex-col justify-between">
+                
+                <div class="space-y-6">
+                    <!-- Numero WhatsApp -->
+                    <div class="max-w-md text-left">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-2">Numero WhatsApp del Lead (Con prefisso, es: +39351...)</label>
+                        <div class="relative flex items-center">
+                            <i class="fa-solid fa-phone absolute left-4 text-xs text-gray-500"></i>
+                            <input 
+                                type="text" 
+                                id="admin-phone" 
+                                required 
+                                placeholder="Es: +393515505854" 
+                                class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3.5 pl-10 text-sm text-white outline-none transition-all"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Area JSON con validatore e altezza fissa estensibile -->
+                    <div class="text-left flex-grow flex flex-col">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-2">Incolla il JSON Strutturato del Lead</label>
+                        <textarea 
+                            id="admin-json" 
+                            required 
+                            rows="22" 
+                            placeholder='Incolla qui il JSON... Es: &#10;{&#10;  "nome_cliente": "Dott. Federico Toschetti",&#10;  "slug": "federico-toschetti",&#10;  "template_id": 9,&#10;  "site_data": { ... }&#10;}' 
+                            class="w-full h-[550px] min-h-[400px] bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-2xl p-5 text-xs font-mono text-green-400 outline-none transition-all resize-y leading-relaxed shadow-inner"
+                        ></textarea>
+                    </div>
+
+                    <!-- Box di errore sintattico in tempo reale -->
+                    <div id="error-box" class="hidden bg-red-500/10 border border-red-500/20 p-4 rounded-xl text-xs text-red-400 font-mono leading-relaxed text-left">
+                        {/* Errori mostrati qui via JS */}
+                    </div>
+                </div>
+
+                <!-- Bottone di Iniezione -->
+                <div class="pt-4 border-t border-gray-900/60">
+                    <button 
+                        type="submit" 
+                        id="generate-btn" 
+                        class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black py-4 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(147,51,234,0.25)] flex items-center justify-center gap-2"
+                    >
+                        <i class="fa-solid fa-bolt"></i> Carica & Genera Bozza AI
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-900/60 py-6 text-center text-xs text-zinc-500 font-mono shrink-0">
+        © 2026 RM Studio • SiteEngine Pro Generator
+    </footer>
+
+    <script>
+        const n8nQuickGenerateEndpoint = 'https://n8n.rmstudio.app/webhook/omnia-quick-generate';
+
+        const jsonField = document.getElementById('admin-json');
+        const errorBox = document.getElementById('error-box');
+
+        // Validatore sintattico in tempo reale mentre scrivi o incolli
+        jsonField.addEventListener('input', () => {
+            const val = jsonField.value.trim();
+            if (!val) {
+                errorBox.classList.add('hidden');
+                return;
+            }
+            try {
+                const parsed = JSON.parse(val);
+                if (!parsed.nome_cliente) throw new Error("Manca il campo 'nome_cliente' alla radice del JSON.");
+                if (!parsed.slug) throw new Error("Manca il campo 'slug' alla radice del JSON.");
+                
+                errorBox.classList.add('hidden'); // Nessun errore
+            } catch (err) {
+                errorBox.innerText = "⚠️ Errore di sintassi JSON: " + err.message;
+                errorBox.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('admin-generate-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('generate-btn');
+            const jsonValue = jsonField.value.trim();
+            
+            // Verifica finale prima dell'invio
+            try {
+                const parsedData = JSON.parse(jsonValue);
+                if (!parsedData.nome_cliente || !parsedData.slug) {
+                    throw new Error("Campi 'nome_cliente' o 'slug' mancanti alla radice.");
+                }
+
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Elaborazione e iniezione in corso...`;
+
+                const phoneValue = document.getElementById('admin-phone').value.replace(/[^0-9+]/g, '');
+
+                const response = await fetch(n8nQuickGenerateEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        phone: phoneValue,
+                        nome_cliente: parsedData.nome_cliente,
+                        slug: parsedData.slug,
+                        template_id: parsedData.template_id || 7,
+                        site_data: parsedData.site_data
+                    }),
+                });
+
+                if (response.ok) {
+                    alert("Dati inviati a n8n con successo! Controlla l'alert su Telegram.");
+                    document.getElementById('admin-generate-form').reset();
+                    errorBox.classList.add('hidden');
+                } else {
+                    alert("Errore durante l'invio dei dati a n8n.");
+                }
+            } catch (err) {
+                alert("Impossibile procedere: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-bolt"></i> Carica & Genera Bozza AI`;
+            }
+        });
+    </script>
+</body>
+</html>
