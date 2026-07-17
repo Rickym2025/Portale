@@ -58,7 +58,7 @@
             </h2>
             <form id="create-portal-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-4">
-                    <!-- ROME LEAD -->
+                    <!-- NOME LEAD -->
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Nome Lead / Professionista o Azienda</label>
                         <input type="text" id="form-agency" placeholder="Es. Dott.ssa Valeria Cortese" required class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3 text-sm text-white outline-none transition-all">
@@ -147,6 +147,8 @@
                 <table class="w-full text-left border-collapse min-w-[1200px]">
                     <thead>
                         <tr class="border-b border-gray-900 bg-black/40 text-[9px] uppercase tracking-wider text-gray-400">
+                            {/* ⚡ Colonne riproporzionate per evitare ritagli di testo */}
+                            <th class="p-4 w-[4%] text-center">#</th>
                             <th class="p-4 w-[16%]">Cliente / Contatti</th>
                             <th class="p-4 w-[18%]">Progetto</th>
                             <th class="p-4 w-[8%]">Tipo</th>
@@ -312,7 +314,7 @@
             const container = document.getElementById('rows-container');
             container.innerHTML = '';
 
-            data.forEach(v => {
+            data.forEach((v, index) => {
                 let icon = "fa-code";
                 if (v.portal_type === 'carousel') icon = "fa-images";
                 else if (v.portal_type === 'video') icon = "fa-video";
@@ -326,6 +328,9 @@
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-[#101015] transition-colors border-b border-zinc-900/60";
                 tr.innerHTML = `
+                    {/* ⚡ COLONNA PROGRESSIVA INIZIALE */}
+                    <td class="p-4 text-center font-mono text-xs text-gray-500 font-bold">${index + 1}</td>
+
                     <td class="p-4">
                         <input type="text" value="${v.client_name || 'Cliente'}" onchange="updateField('${v.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none font-extrabold text-white text-sm block w-full mb-1">
                         <div class="space-y-0.5">
@@ -377,31 +382,31 @@
             navigator.clipboard.writeText(`https://portale.rmstudio.app/view.html?id=${id}`).then(() => alert("Copiato!")).catch(e => console.error(e));
         }
 
-        // Sostituisci la vecchia funzione deleteRow con questa:
-            async function deleteRow(id) {
-                const project = window.allProjects.find(v => v.id === id);
-                const title = project ? project.title : "questo progetto";
+        async function deleteRow(id) {
+            const project = window.allProjects.find(v => v.id === id);
+            const title = project ? project.title : "questo progetto";
+            
+            if (!confirm(`Cancellare definitivamente "${title}" e i suoi file?`)) return;
+            try {
+                // ⚡ Chiamata corretta verso il webhook n8n di eliminazione asincrona
+                const res = await fetch(deleteWebhook, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ id }) 
+                });
                 
-                if (!confirm(`Cancellare definitivamente "${title}" e i suoi file?`)) return;
-                try {
-                    // ⚡ Inviamo la richiesta a n8n. Sarà n8n a leggere i file, cancellare la riga da Supabase e poi pulire R2.
-                    const res = await fetch(deleteWebhook, { 
-                        method: 'POST', 
-                        headers: { 'Content-Type': 'application/json' }, 
-                        body: JSON.stringify({ id }) 
-                    });
-                    
-                    if (res.ok) { 
-                        alert("Progetto e file eliminati con successo."); 
-                        loadDashboard(); 
-                    } else {
-                        alert("Si è verificato un errore durante l'eliminazione.");
-                        loadDashboard();
-                    }
-                } catch (err) { 
-                    alert("Errore: " + err.message); 
+                if (res.ok) { 
+                    alert("Progetto e file eliminati con successo."); 
+                    loadDashboard(); 
+                } else {
+                    alert("Si è verificato un errore durante l'eliminazione.");
+                    loadDashboard();
                 }
+            } catch (err) { 
+                alert("Errore: " + err.message); 
             }
+        }
+
         // 🌌 SOTTOSCRIZIONE IN TEMPO REALE (Supabase Realtime)
         // Ascolta qualsiasi modifica (Inserimento, Aggiornamento, Cancellazione) e ricarica i dati al volo
         supabaseClient
