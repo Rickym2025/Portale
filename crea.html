@@ -17,7 +17,7 @@
 </head>
 <body class="text-gray-200 min-h-screen p-4 md:p-8 flex flex-col justify-between selection:bg-purple-600 selection:text-white">
 
-    <div class="max-w-5xl w-full mx-auto flex-grow flex flex-col justify-center py-6">
+    <div class="max-w-[98%] w-full mx-auto flex-grow flex flex-col justify-center py-6">
         
         <!-- Header di Navigazione -->
         <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-900/60 w-full shrink-0">
@@ -27,62 +27,101 @@
                 </div>
                 <h1 class="text-xl font-black text-white">Generatore Rapido Sito Web AI</h1>
             </div>
-            <a href="index.html" class="text-xs font-bold text-gray-400 hover:text-white bg-zinc-900/80 border border-zinc-800/60 px-4 py-2.5 rounded-xl transition-all flex items-center gap-2">
+            <a href="index.html" class="text-xs font-bold text-gray-400 hover:text-white bg-zinc-900/80 border border-zinc-800/60 px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 active:scale-95">
                 <i class="fa-solid fa-arrow-left"></i> Torna alla Dashboard
             </a>
         </div>
 
-        <!-- Box Centrale -->
-        <div class="bg-[#0b0b0f]/90 border border-zinc-900/60 p-6 md:p-10 rounded-[32px] shadow-2xl backdrop-blur-xl flex-grow flex flex-col justify-between">
+        <!-- Layout Split in due colonne -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start flex-grow">
             
-            <form id="admin-generate-form" class="space-y-6 flex-grow flex flex-col justify-between">
-                
-                <div class="space-y-6">
-                    <!-- Numero WhatsApp -->
-                    <div class="max-w-md text-left">
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-2">Numero WhatsApp del Lead (Con prefisso, es: +39351...)</label>
-                        <div class="relative flex items-center">
-                            <i class="fa-solid fa-phone absolute left-4 text-xs text-gray-500"></i>
-                            <input 
-                                type="text" 
-                                id="admin-phone" 
-                                required 
-                                placeholder="Es: +393515505854" 
-                                class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3.5 pl-10 text-sm text-white outline-none transition-all"
-                            >
+            <!-- Colonna Sinistra: Form di Inserimento JSON -->
+            <div class="lg:col-span-8 bg-[#0b0b0f]/90 border border-zinc-900/60 p-6 md:p-8 rounded-[32px] shadow-2xl backdrop-blur-xl h-full flex flex-col justify-between">
+                <form id="admin-generate-form" class="space-y-6 flex-grow flex flex-col justify-between">
+                    <div class="space-y-6">
+                        <!-- Numero WhatsApp -->
+                        <div class="max-w-md text-left">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-2">Numero WhatsApp del Lead (Con prefisso, es: +39351...)</label>
+                            <div class="relative flex items-center">
+                                <i class="fa-solid fa-phone absolute left-4 text-xs text-gray-500"></i>
+                                <input 
+                                    type="text" 
+                                    id="admin-phone" 
+                                    required 
+                                    placeholder="Es: +393515505854" 
+                                    class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3.5 pl-10 text-sm text-white outline-none transition-all"
+                                >
+                            </div>
                         </div>
+
+                        <!-- Area JSON -->
+                        <div class="text-left flex-grow flex flex-col">
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-2">Incolla il JSON Strutturato del Lead</label>
+                            <textarea 
+                                id="admin-json" 
+                                required 
+                                rows="22" 
+                                placeholder='Incolla qui il JSON... Es: &#10;{&#10;  "nome_cliente": "Dott. Federico Toschetti",&#10;  "slug": "federico-toschetti",&#10;  "template_id": 9,&#10;  "site_data": { ... }&#10;}' 
+                                class="w-full h-[550px] min-h-[400px] bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-2xl p-5 text-xs font-mono text-green-400 outline-none transition-all resize-y leading-relaxed shadow-inner animate-none"
+                            ></textarea>
+                        </div>
+
+                        <!-- Box di errore in tempo reale -->
+                        <div id="error-box" class="hidden bg-red-500/10 border border-red-500/20 p-4 rounded-xl text-xs text-red-400 font-mono leading-relaxed text-left"></div>
                     </div>
 
-                    <!-- Area JSON con validatore e altezza fissa estensibile -->
-                    <div class="text-left flex-grow flex flex-col">
-                        <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-2">Incolla il JSON Strutturato del Lead</label>
-                        <textarea 
-                            id="admin-json" 
-                            required 
-                            rows="22" 
-                            placeholder='Incolla qui il JSON... Es: &#10;{&#10;  "nome_cliente": "Dott. Federico Toschetti",&#10;  "slug": "federico-toschetti",&#10;  "template_id": 9,&#10;  "site_data": { ... }&#10;}' 
-                            class="w-full h-[550px] min-h-[400px] bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-2xl p-5 text-xs font-mono text-green-400 outline-none transition-all resize-y leading-relaxed shadow-inner"
-                        ></textarea>
+                    <div class="pt-4 border-t border-gray-900/60">
+                        <button 
+                            type="submit" 
+                            id="generate-btn" 
+                            class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black py-4 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(147,51,234,0.25)] flex items-center justify-center gap-2"
+                        >
+                            <i class="fa-solid fa-bolt"></i> Carica & Genera Bozza AI
+                        </button>
                     </div>
+                </form>
+            </div>
 
-                    <!-- Box di errore sintattico in tempo reale -->
-                    <div id="error-box" class="hidden bg-red-500/10 border border-red-500/20 p-4 rounded-xl text-xs text-red-400 font-mono leading-relaxed text-left">
-                        {/* Errori mostrati qui via JS */}
-                    </div>
+            <!-- Colonna Destra: Pannello Utility Rapido (Developer Tools) -->
+            <div class="lg:col-span-4 bg-[#0b0b0f]/60 border border-zinc-900/80 p-6 rounded-[32px] backdrop-blur-xl space-y-6 text-left shadow-xl">
+                <div>
+                    <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-screwdriver-wrench text-purple-400"></i>
+                        Strumenti di Sviluppo
+                    </h3>
+                    <p class="text-[11px] text-gray-500 mt-1">Utility rapide per velocizzare la scrittura dei JSON e l&apos;allineamento delle AI di RM Studio.</p>
                 </div>
 
-                <!-- Bottone di Iniezione -->
-                <div class="pt-4 border-t border-gray-900/60">
-                    <button 
-                        type="submit" 
-                        id="generate-btn" 
-                        class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black py-4 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(147,51,234,0.25)] flex items-center justify-center gap-2"
-                    >
-                        <i class="fa-solid fa-bolt"></i> Carica & Genera Bozza AI
-                    </button>
-                </div>
+                <div class="space-y-4">
+                    <!-- BOTTONE 1: COPIA TEMPLATE FEDERICO TOSCHETTI -->
+                    <div class="bg-[#121217] border border-zinc-850 p-4 rounded-2xl space-y-3">
+                        <span class="text-[9px] font-mono text-cyan-400 uppercase tracking-widest font-black block">Template di Riferimento</span>
+                        <h4 class="text-xs font-bold text-white leading-tight">Template Federico Toschetti</h4>
+                        <p class="text-[11px] text-gray-400 leading-normal">Copia il modello JSON completo e corretto di Federico, comprensivo di recensioni, blog posts ed immagini reali su R2.</p>
+                        <button 
+                            id="btn-copy-template" 
+                            onclick="copyTemplateJSON()" 
+                            class="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-extrabold text-[10px] uppercase tracking-wider py-2.5 px-4 rounded-xl transition-all border border-zinc-800 flex items-center justify-center gap-1.5"
+                        >
+                            <i class="fa-solid fa-copy"></i> Copia Template JSON
+                        </button>
+                    </div>
 
-            </form>
+                    <!-- BOTTONE 2: COPIA PROMPT ALLINEAMENTO COGNITIVO -->
+                    <div class="bg-[#121217] border border-zinc-850 p-4 rounded-2xl space-y-3">
+                        <span class="text-[9px] font-mono text-purple-400 uppercase tracking-widest font-black block">Allineamento Sessioni AI</span>
+                        <h4 class="text-xs font-bold text-white leading-tight">Prompt di Allineamento Cognitivo</h4>
+                        <p class="text-[11px] text-gray-400 leading-normal">Incolla questo prompt all&apos;inizio della prossima chat per riallineare all&apos;istante l&apos;IA su tutte le modifiche strutturali.</p>
+                        <button 
+                            id="btn-copy-prompt" 
+                            onclick="copyAlignmentPrompt()" 
+                            class="w-full bg-purple-500/10 hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 font-extrabold text-[10px] uppercase tracking-wider py-2.5 px-4 rounded-xl transition-all border border-purple-500/20 flex items-center justify-center gap-1.5"
+                        >
+                            <i class="fa-solid fa-brain"></i> Copia Prompt Allineamento
+                        </button>
+                    </div>
+                </div>
+            </div>
 
         </div>
 
@@ -99,7 +138,7 @@
         const jsonField = document.getElementById('admin-json');
         const errorBox = document.getElementById('error-box');
 
-        // Validatore sintattico in tempo reale mentre scrivi o incolli
+        // Validatore sintattico in tempo reale
         jsonField.addEventListener('input', () => {
             const val = jsonField.value.trim();
             if (!val) {
@@ -111,7 +150,7 @@
                 if (!parsed.nome_cliente) throw new Error("Manca il campo 'nome_cliente' alla radice del JSON.");
                 if (!parsed.slug) throw new Error("Manca il campo 'slug' alla radice del JSON.");
                 
-                errorBox.classList.add('hidden'); // Nessun errore
+                errorBox.classList.add('hidden');
             } catch (err) {
                 errorBox.innerText = "⚠️ Errore di sintassi JSON: " + err.message;
                 errorBox.classList.remove('hidden');
@@ -123,7 +162,6 @@
             const btn = document.getElementById('generate-btn');
             const jsonValue = jsonField.value.trim();
             
-            // Verifica finale prima dell'invio
             try {
                 const parsedData = JSON.parse(jsonValue);
                 if (!parsedData.nome_cliente || !parsedData.slug) {
@@ -131,7 +169,7 @@
                 }
 
                 btn.disabled = true;
-                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Elaborazione e iniezione in corso...`;
+                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Iniezione e generazione in corso...`;
 
                 const phoneValue = document.getElementById('admin-phone').value.replace(/[^0-9+]/g, '');
 
@@ -161,6 +199,124 @@
                 btn.innerHTML = `<i class="fa-solid fa-bolt"></i> Carica & Genera Bozza AI`;
             }
         });
+
+        // 📋 FUNZIONE 1: COPIA IL JSON DI TOSCHETTI CON NOMI IMMAGINI CORRETTI
+        function copyTemplateJSON() {
+            const template = {
+              "nome_cliente": "Dott. Federico Toschetti",
+              "slug": "federico-toschetti",
+              "template_id": 9,
+              "site_data": {
+                "old_domain": "federicotoschetti.com",
+                "whatsapp_custom_hook": "Dottore, ho seguito il suo splendido lavoro terapeutico di pittura con i malati di SLA per la CIDAS e ho letto l'articolo su Il Resto del Carlino. Ho provato a visitare il suo sito personale ad Adria, ma risulta offline con errore DNS...",
+                "gallery_subtitle": "Rassegna Stampa & Studio",
+                "gallery_title": "Spazi di Ascolto e Progetti Clinici",
+                "gallery_description": "Gli estratti dei nostri progetti terapeutici per le gravi fragilità recensiti dalla stampa locale, e i dettagli dello studio professionale ad Adria, strutturato per garantire un ambiente intimo, sicuro e protetto.",
+                "hero": {
+                  "headline": "Ritrova la stabilità e la sicurezza anche nei momenti di massima crisi",
+                  "subheadline": "Sostegno psicologico clinico, elaborazione del trauma e gestione degli stati di stress acuto ad Adria e online. Un percorso strutturato con protocolli scientifici per riprendere in mano il tuo sentiero di vita.",
+                  "cta1": "Richiedi un Primo Colloquio",
+                  "cta2": "Scopri il mio Metodo"
+                },
+                "servizi": [
+                  {
+                    "titolo": "Sostegno e Psicologia dell'Emergenza",
+                    "description": "Interventi mirati per l'elaborazione e il superamento di eventi critici, traumi personali o lutti improvvisi. Utilizzo di protocolli clinici focalizzati sulla disattivazione dell'ansia acuta e sul recupero della resilienza."
+                  },
+                  {
+                    "titolo": "Prevenzione Burnout & Stress Lavorativo",
+                    "description": "Percorsi dedicati a professionisti esposti ad alto carico emotivo, soccorritori e lavoratori in crisi, per prevenire la compassion fatigue, gestire lo stress e ritrovare l'equilibrio professionale."
+                  },
+                  {
+                    "titolo": "Primo Soccorso Psicologico Individuale",
+                    "description": "Sessioni attive focalizzate sulla gestione degli attacchi di panico improvvisi e degli stati d'ansia generalizzata, fornendo una vera e propria 'cassetta degli attrezzi' comunicativa ed emotiva."
+                  }
+                ],
+                "social_proof": "Laureato all'Università di Padova nel 2009. Psicologo esperto con oltre dieci anni di attività sul campo nella gestione delle emergenze, del supporto domiciliare alle fragilità e degli stati di crisi. Autore del Mini Manuale di Primo Soccorso Psicologico.",
+                "brand_color": "#1E3F20",
+                "email": "federico.toschetti@gmail.com",
+                "indirizzo": "Vicolo Guglielmo Marconi 1, 45011 Adria (RO)",
+                "telefono": "+393515505854",
+                "piva": "IT01234567890",
+                "foto_profilo": "https://immagini.rmstudio.app/federico_toschetti/profilo.jpg",
+                "immagine_studio": "https://immagini.rmstudio.app/federico_toschetti/google_maps.jpg",
+                "pianificazione": "Si consiglia la prenotazione del colloquio conoscitivo",
+                "accessibilita": {
+                  "bagno_sedia_a_rotelle": true,
+                  "ingresso_sedia_a_rotelle": true,
+                  "parcheggio_sedia_a_rotelle": true
+                },
+                "toilette": true,
+                "orari": {
+                  "lunedi": "14:00 - 20:00",
+                  "martedi": "14:00 - 20:00",
+                  "mercoledi": "14:00 - 20:00",
+                  "giovedi": "14:00 - 20:00",
+                  "venerdi": "14:00 - 20:00",
+                  "sabato": "Chiuso",
+                  "domenica": "Chiuso"
+                },
+                "galleria": [
+                  "https://immagini.rmstudio.app/federico_toschetti/articolo.png",
+                  "https://immagini.rmstudio.app/federico_toschetti/google_maps.jpg",
+                  "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800",
+                  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800"
+                ],
+                "recensioni": [
+                  {
+                    "autore": "Gianluca M.",
+                    "testo": "Dopo un evento personale molto traumatico, il Dott. Toschetti mi ha aiutato a rielaborare l'accaduto in pochissime sedute. Un professionista straordinario, concreto, empatico e focalizzato sulla soluzione del dolore.",
+                    "ruolo": "Paziente Clinico"
+                  },
+                  {
+                    "autore": "Sara P.",
+                    "testo": "Ho seguito un suo percorso sul burnout lavorativo. La sua esperienza sul campo nell'ambito delle emergenze si sente tutta: sa esattamente come farti ritrovare stabilità emotiva quando ti sembra di crollare.",
+                    "ruolo": "Professionista Sanitaria"
+                  },
+                  {
+                    "autore": "Matteo T.",
+                    "testo": "Gli attacchi di panico mi bloccavano la vita. Con le sue sessioni ho imparato a gestire l'ansia acuta grazie a strumenti pratici di primo soccorso psicologico che uso ancora oggi.",
+                    "ruolo": "Paziente Clinico"
+                  }
+                ],
+                "blog_posts": [
+                  {
+                    "title": "La pittura per sognare e per combattere la SLA: l'arteterapia",
+                    "slug": "pittura-sognare-combattere-sla-arteterapia",
+                    "created_at": "16/07/2026",
+                    "excerpt": "Come l'espressione artistica materica e la psicologia clinica lavorano insieme per restituire voce, dignità ed emozioni a chi affronta la malattia.",
+                    "content": "La pittura rappresenta un canale comunicativo straordinario, specialmente quando la parola o il movimento vengono compromessi da gravi patologie neurodegenerative come la Sclerosi Laterale Amiotrofica (SLA).\nNell'ambito delle attività cliniche e di integrazione socio-sanitaria, l'uso di quadri materici guidati permette ai pazienti di esprimersi, commuoversi e comunicare la propria forza al mondo esterno, andando oltre i limiti fisici imposti dalla malattia.\nQuesto approccio terapeutico attivo, di cui ho avuto il privilegio di parlare anche sulle pagine de Il Resto del Carlino, dimostra come l'arte possa riaccendere i colori della speranza anche nei contesti di massima fragilità.",
+                    "cover_image": "https://immagini.rmstudio.app/federico_toschetti/articolo.png"
+                  },
+                  {
+                    "title": "Primo Soccorso Psicologico: come gestire un attacco di panico",
+                    "slug": "primo-soccorso-psicologico-gestire-attacco-panico",
+                    "created_at": "12/07/2026",
+                    "excerpt": "Cosa fare quando l'ansia supera il livello di guardia e ci si sente mancare il fiato. Una guida prima basata sui protocolli di emergenza.",
+                    "content": "Un attacco di panico è una risposta d'emergenza biologica ed emotiva che si innesca quando la mente percepisce una minaccia eccessiva.\nIl primo passo per disattivarlo consiste nel riprendere il controllo del ritmo respiratorio (tecnica del respiro quadrato) e riallineare i sensi con lo spazio fisico circostante. Nel nostro studio ad Adria insegniamo a decodificare questi segnali d'allarme, trasformando la paura in una risorsa controllabile attraverso strumenti clinici di primo soccorso psicologico pratici e accessibili.",
+                    "cover_image": "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=800"
+                  }
+                ]
+              }
+            };
+
+            navigator.clipboard.writeText(JSON.stringify(template, null, 2)).then(() => {
+                const btn = document.getElementById('btn-copy-template');
+                btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Copiato!`;
+                setTimeout(() => { btn.innerHTML = `<i class="fa-solid fa-copy"></i> Copia Template JSON`; }, 2000);
+            });
+        }
+
+        // 📋 FUNZIONE 2: COPIA IL PROMPT DI ALLINEAMENTO COGNITIVO STRATEGICO
+        function copyAlignmentPrompt() {
+            const prompt = `# PROMPT DI ALLINEAMENTO COGNITIVO • RM STUDIO\n\nCiao! Siamo allineati e pronti a ripartire. Ecco le specifiche attuali su cui siamo agganciati:\n\n1. **Infrastruttura Unificata:** Ogni sito d'autore vive interamente dentro la singola riga \`omnia_sites.site_data\` (S1), inclusi i post del blog (array \`blog_posts\`) e le recensioni (array \`recensioni\`).\n2. **Logica Blog Ibrida:** Le pagine \`/blog\` e \`/blog/[postSlug]\` leggono ed uniscono dinamicamente sia gli articoli pre-caricati nel JSON (\`blog_posts\`) sia i post scritti dal vivo dai clienti via pannello \`/admin\` (tabella \`omnia_posts\`), rimuovendo i duplicati per slug.\n3. **Cancellazione Incrociata Sincrona:** Il webhook di eliminazione del portale (\`delete-portal-video\`) è impostato per eliminare contemporaneamente sia la riga di tracciamento del portale in S2 (\`portal_videos\`) sia la riga del sito nel costruttore in S1 (\`omnia_sites\`) usando lo slug estratto, per poi procedere asincronamente con la cancellazione dei file fisici R2.\n4. **Risoluzione Attrito view.html:** I siti vengono aperti automaticamente ed istantaneamente a schermo intero tramite iframe nativo protetto non appena il cliente atterra sul link di tracciamento (\`view?id=...\`), incrementando all'istante le visite in database direttamente via \`supabaseClient.update\` per prevenire le race condition.\n\nProcediamo con i prossimi sviluppi in conformità a queste regole d'ingegneria stabilite.`;
+
+            navigator.clipboard.writeText(prompt).then(() => {
+                const btn = document.getElementById('btn-copy-prompt');
+                btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Copiato!`;
+                setTimeout(() => { btn.innerHTML = `<i class="fa-solid fa-brain"></i> Copia Prompt Allineamento`; }, 2000);
+            });
+        }
     </script>
 </body>
 </html>
