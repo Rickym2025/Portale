@@ -383,7 +383,15 @@
 
         async function updateField(id, field, value) {
             const payload = {}; 
-            payload[field] = field === 'price_euro' ? parseFloat(value) : value;
+            
+            if (field === 'price_euro') {
+                payload[field] = parseFloat(value);
+            } else if (field === 'views_count') {
+                payload[field] = parseInt(value, 10); // ⚡ Converte in numero intero per il DB
+            } else {
+                payload[field] = value;
+            }
+            
             const { error } = await supabaseClient.from('portal_videos').update(payload).eq('id', id);
             if (error) alert("Errore aggiornamento: " + error.message);
         }
