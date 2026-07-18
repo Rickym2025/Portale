@@ -348,7 +348,14 @@
                     
                     <td class="p-4"><span class="text-xs bg-[#1c1c24] text-gray-300 px-2.5 py-1 rounded-full border border-zinc-800 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max"><i class="fa-solid ${icon}"></i> ${v.portal_type}</span></td>
                     <td class="p-4"><input type="number" value="${v.price_euro}" onchange="updateField('${v.id}', 'price_euro', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs"></td>
-                    <td class="p-4 text-xs font-bold text-blue-400">📈 ${v.views_count || 0} visite</td>
+                    <td class="p-4">
+                        <input 
+                            type="number" 
+                            value="${v.views_count || 0}" 
+                            onchange="updateField('${v.id}', 'views_count', this.value)" 
+                            class="w-16 bg-[#15151a] border border-zinc-850 rounded-lg p-1.5 text-center font-bold text-blue-400 focus:border-purple-500 focus:outline-none text-xs"
+                        >
+                    </td>
                     
                     <td class="p-4">
                         <label class="relative inline-flex items-center cursor-pointer">
