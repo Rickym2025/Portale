@@ -3,11 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RM Studio - Control Panel</title>
+    <title>RM Studio & Vision UGC — Control Center</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS & Supabase SDK -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['"Plus Jakarta Sans"', 'sans-serif'],
+              body: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              v: { 50: '#faf5ff', 400: '#c084fc', 500: '#a855f7', 600: '#9333ea', 700: '#7c3aed' },
+              fx: '#e040fb',
+              ink: '#050508',
+            }
+          }
+        }
+      }
+    </script>
     <style>
+        .glass {
+            background: rgba(11, 11, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+        .grad-text {
+            background: linear-gradient(135deg, #c084fc 0%, #e040fb 60%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
         .upload-success-glow {
             border-color: #22c55e !important;
             background-color: rgba(34, 197, 94, 0.04) !important;
@@ -15,29 +49,64 @@
         }
     </style>
 </head>
-<body class="bg-[#050508] text-gray-200 p-4 md:p-8 selection:bg-purple-600 selection:text-white">
+<body class="bg-[#050508] text-gray-200 font-body min-h-screen selection:bg-purple-600 selection:text-white p-4 md:p-8">
 
-    <div class="max-w-[98%] mx-auto">
-        
-        <!-- Header -->
-
-        <div class="flex justify-between items-center mb-10 pb-4 border-b border-gray-900/60">
-            <div>
-                <h1 class="text-2xl font-black text-white flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-600/30">
-                        <i class="fa-solid fa-house-laptop text-xs text-white"></i>
-                    </div>
-                    RM Studio - Control Panel
-                </h1>
-            </div>
-            <!-- ⚡ NUOVO PULSANTE DI COLLEGAMENTO AL GENERATORE RAPIDO -->
-            <a href="crea.html" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] flex items-center gap-2 active:scale-95">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> Crea Sito Web AI
-            </a>
+  <!-- ==================== SCHERMATA LOGIN UNIFICATA ==================== -->
+  <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md">
+    <div class="glass p-8 rounded-3xl max-w-md w-full mx-4 text-center border border-zinc-800 shadow-2xl">
+      <div class="mb-6">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 mx-auto flex items-center justify-center shadow-lg shadow-purple-600/30 mb-4">
+            <i class="fa-solid fa-lock text-2xl text-white"></i>
         </div>
+        <h2 class="text-2xl font-display font-extrabold text-white">Accesso Riservato</h2>
+        <p class="text-xs text-gray-400 mt-2">Inserisci la chiave d'accesso per sbloccare il Control Center unificato.</p>
+      </div>
+      <input type="password" id="admin-password" placeholder="Inserisci Password / API Key..." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl px-4 py-3 text-center text-white outline-none focus:border-purple-500 transition-all mb-4 text-sm">
+      <button onclick="saveAuthAndLoad()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-purple-600/30 active:scale-95 text-xs uppercase tracking-wider">
+        Accedi alla Dashboard
+      </button>
+    </div>
+  </div>
 
-        <!-- STATS CARDS -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+  <!-- ==================== CONTENUTO PRINCIPALE ==================== -->
+  <div id="main-content" class="hidden max-w-[98%] mx-auto">
+    
+    <!-- HEADER CENTRALE CON SWITCHER TAB -->
+    <header class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-6 border-b border-zinc-900/80">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-display font-black text-white flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-600/30">
+                <i class="fa-solid fa-sliders text-sm text-white"></i>
+            </div>
+            RM Studio & Vision <span class="grad-text">Control Center</span>
+        </h1>
+      </div>
+
+      <!-- SWITCHER TAB PRINCIPALE -->
+      <div class="flex items-center gap-2 bg-[#0b0b0f] p-1.5 rounded-2xl border border-zinc-800">
+        <button id="btn-tab-rm" onclick="switchTab('rm-studio')" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-purple-600 text-white shadow-lg shadow-purple-600/30">
+            <i class="fa-solid fa-house-laptop"></i> RM Studio Portali
+        </button>
+        <button id="btn-tab-vision" onclick="switchTab('vision-ugc')" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-gray-400 hover:text-white hover:bg-white/5">
+            <i class="fa-solid fa-clapperboard"></i> Vision UGC
+        </button>
+      </div>
+
+      <!-- PULSANTI D'AZIONE GLOBALI -->
+      <div class="flex items-center gap-3">
+        <a href="crea.html" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-purple-600/20 flex items-center gap-2 active:scale-95">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Crea Sito AI
+        </a>
+        <button onclick="logout()" class="border border-zinc-800 hover:bg-zinc-900 text-gray-400 hover:text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all">
+            <i class="fa-solid fa-right-from-bracket"></i> Esci
+        </button>
+      </div>
+    </header>
+
+    <!-- ==================== SCHEDA 1: RM STUDIO PORTALI ==================== -->
+    <div id="tab-rm-studio">
+        <!-- STATS CARDS RM STUDIO -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div class="bg-[#0b0b0f] border border-zinc-900/60 p-5 rounded-2xl shadow-xl">
                 <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Incassi Totali</span>
                 <span class="text-2xl font-black text-green-400 mt-1 block" id="stat-revenue">€0.00</span>
@@ -56,39 +125,36 @@
             </div>
         </div>
 
-        <!-- SEZIONE CREAZIONE NUOVO PROGETTO -->
+        <!-- FORM CREAZIONE NUOVO PORTALE -->
         <div class="bg-[#0b0b0f] border border-zinc-900/60 rounded-3xl p-6 mb-8 shadow-2xl">
             <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
                 <i class="fa-solid fa-plus text-purple-500"></i> Crea Nuovo Portale Cliente
             </h2>
             <form id="create-portal-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-4">
-                    <!-- ROME LEAD -->
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Nome Lead / Professionista o Azienda</label>
                         <input type="text" id="form-agency" placeholder="Es. Dott.ssa Valeria Cortese" required class="w-full bg-[#15151a] border border-zinc-800 focus:border-purple-500 rounded-xl p-3 text-sm text-white outline-none transition-all">
                     </div>
 
-                    <!-- CONTATTI -->
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Email Cliente (Facoltativa)</label>
                             <input type="email" id="form-email" placeholder="Es. studio@rossi.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-purple-500 text-white">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Telefono Cliente WhatsApp (Facoltativo)</label>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Telefono WhatsApp (Facoltativo)</label>
                             <input type="text" id="form-phone" placeholder="Es. +393401234567" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none transition-all">
                         </div>
                     </div>
 
-                    <!-- DETTAGLI PROGETTO -->
                     <div class="grid grid-cols-3 gap-4">
                         <div class="col-span-2">
                             <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Titolo Progetto / Servizio</label>
                             <input type="text" id="form-title" placeholder="Es. Sito Web Professionale d'Autore" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none transition-all">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Prezzo Concordato (€)</label>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">Prezzo (€)</label>
                             <input type="number" id="form-price" value="400" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none transition-all">
                         </div>
                     </div>
@@ -126,7 +192,7 @@
             </form>
         </div>
 
-        <!-- BARRA FILTRI -->
+        <!-- FILTRI TABELLA -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 bg-[#0b0b0f] border border-zinc-900/60 p-4 rounded-2xl shadow-xl">
             <div>
                 <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">Filtra per Nome Lead</label>
@@ -146,7 +212,7 @@
             </div>
         </div>
 
-        <!-- TABELLA PORTALE VIDEO -->
+        <!-- TABELLA PORTALE RM STUDIO -->
         <div class="bg-[#0b0b0f] border border-zinc-900/60 rounded-3xl overflow-hidden shadow-2xl">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse min-w-[1200px]">
@@ -162,7 +228,7 @@
                             <th class="p-4 w-[8%]">Stato Lettura</th>
                             <th class="p-4 w-[8%]">Pagamento</th>
                             <th class="p-4 w-[7%]">Link</th>
-                            <th class="p-4 w-[16%]">Note Operative (Salvataggio automatico)</th>
+                            <th class="p-4 w-[16%]">Note Operative</th>
                             <th class="p-4 w-[6%] text-right">Azioni</th>
                         </tr>
                     </thead>
@@ -172,277 +238,573 @@
                 </table>
             </div>
         </div>
+    </div>
+
+
+    <!-- ==================== SCHEDA 2: VISION UGC ==================== -->
+    <div id="tab-vision-ugc" class="hidden">
+        
+        <!-- STATS CARDS VISION UGC -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-[#0b0b0f] border border-zinc-900/60 p-5 rounded-2xl shadow-xl">
+                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Progetti Totali</p>
+                <p id="stat-vision-total" class="text-2xl font-display font-black mt-1 text-white">0</p>
+            </div>
+            <div class="bg-[#0b0b0f] border border-zinc-900/60 p-5 rounded-2xl shadow-xl">
+                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest text-purple-400">Da Pagare</p>
+                <p id="stat-vision-unpaid" class="text-2xl font-display font-black mt-1 text-purple-400">0</p>
+            </div>
+            <div class="bg-[#0b0b0f] border border-zinc-900/60 p-5 rounded-2xl shadow-xl">
+                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest text-emerald-400">Pagati</p>
+                <p id="stat-vision-paid" class="text-2xl font-display font-black mt-1 text-emerald-400">0</p>
+            </div>
+            <div class="bg-[#0b0b0f] border border-zinc-900/60 p-5 rounded-2xl shadow-xl">
+                <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest text-blue-400">Conversion Rate</p>
+                <p id="stat-vision-cr" class="text-2xl font-display font-black mt-1 text-blue-400">0%</p>
+            </div>
+        </div>
+
+        <!-- TABELLA VISION UGC -->
+        <div class="bg-[#0b0b0f] border border-zinc-900/60 rounded-3xl overflow-hidden shadow-2xl">
+            <div class="p-6 border-b border-zinc-900 flex flex-wrap items-center justify-between gap-4">
+                <div>
+                    <h3 class="font-display font-bold text-lg text-white">Scuderia Progetti Vision UGC</h3>
+                    <p class="text-xs text-gray-400">Gestisci la scuderia, genera token e invia le mail ai clienti.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="openNewProjectModal()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-md">
+                        + Nuovo Progetto UGC
+                    </button>
+                    <button onclick="fetchProjects()" class="text-xs bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 px-3 py-2 rounded-xl transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate"></i> Ricarica Dati
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-black/40 text-[9px] font-bold uppercase tracking-wider text-gray-400 border-b border-zinc-900">
+                            <th class="p-4">Cliente / ID</th>
+                            <th class="p-4">Titolo Video</th>
+                            <th class="p-4">Prezzo</th>
+                            <th class="p-4">Stato</th>
+                            <th class="p-4">Token</th>
+                            <th class="p-4 text-right">Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody id="projects-table" class="divide-y divide-zinc-900 text-sm">
+                        <!-- Righe caricate dinamicamente via API -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
     </div>
 
-    <script>
-        const supabaseUrl = 'https://jhijfulhntlhcytbhcly.supabase.co'; 
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ'; 
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+  </div>
 
-        const n8nCreateEndpoint = 'https://n8n.rmstudio.app/webhook/admin-create-portal';
-        const deleteWebhook = 'https://n8n.rmstudio.app/webhook/delete-portal-video';
 
-        window.allProjects = [];
+  <!-- ==================== MODALE NUOVO PROGETTO VISION UGC ==================== -->
+  <div id="new-project-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+    <div class="glass p-8 rounded-3xl max-w-lg w-full border border-zinc-800 shadow-2xl">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-display font-bold text-white">Crea Nuovo Progetto Vision UGC</h3>
+        <button onclick="closeNewProjectModal()" class="text-gray-400 hover:text-white text-xl font-bold">&times;</button>
+      </div>
+      
+      <form id="project-form" onsubmit="handleCreateProject(event)" class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">ID Cliente (univoco)</label>
+            <input type="text" id="p-client-id" required placeholder="mario-rossi" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl px-4 py-2.5 text-white outline-none focus:border-purple-500 text-sm">
+          </div>
+          <div>
+            <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Nome Cliente</label>
+            <input type="text" id="p-nome" required placeholder="Mario Rossi" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl px-4 py-2.5 text-white outline-none focus:border-purple-500 text-sm">
+          </div>
+        </div>
 
-        // Gestione form caricamento dinamico
-        document.getElementById('form-type').addEventListener('change', function() {
-            const type = this.value;
-            const fileSection = document.getElementById('file-upload-section');
-            const linkSection = document.getElementById('link-input-section');
+        <div>
+          <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Email Cliente</label>
+          <input type="email" id="p-email" required placeholder="mario@azienda.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl px-4 py-2.5 text-white outline-none focus:border-purple-500 text-sm">
+        </div>
+
+        <div>
+          <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Titolo Video</label>
+          <input type="text" id="p-titolo" required placeholder="Video UGC Recensione Swatch" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl px-4 py-2.5 text-white outline-none focus:border-purple-500 text-sm">
+        </div>
+
+        <div>
+          <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">URL Video S3/Cloudflare R2</label>
+          <input type="url" id="p-s3" required placeholder="https://pub-89945f8350374b50818d716fdc3c108b.r2.dev/..." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl px-4 py-2.5 text-white outline-none focus:border-purple-500 text-sm">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Prezzo (€)</label>
+            <input type="number" id="p-prezzo" required placeholder="49" value="49" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl px-4 py-2.5 text-white outline-none focus:border-purple-500 text-sm">
+          </div>
+          <div>
+            <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Token (Generato Auto)</label>
+            <input type="text" id="p-token" readonly class="w-full bg-[#1f1f26] border border-zinc-800 rounded-xl px-4 py-2.5 text-gray-400 outline-none text-sm cursor-not-allowed">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Link di Pagamento Stripe</label>
+          <input type="url" id="p-stripe" placeholder="https://buy.stripe.com/..." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl px-4 py-2.5 text-white outline-none focus:border-purple-500 text-sm">
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-3 rounded-xl hover:opacity-90 transition shadow-lg shadow-purple-600/30 text-xs uppercase tracking-wider mt-6">
+          Registra Progetto e Salva su Sheet
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ==================== SCRIPT LOGICA UNIFICATA ==================== -->
+  <script>
+    // CONFIGURAZIONI SUPABASE ED N8N
+    const supabaseUrl = 'https://jhijfulhntlhcytbhcly.supabase.co'; 
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ'; 
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+    const n8nCreateEndpoint = 'https://n8n.rmstudio.app/webhook/admin-create-portal';
+    const deleteWebhook = 'https://n8n.rmstudio.app/webhook/delete-portal-video';
+    const N8N_VISION_URL = 'https://n8n.rmstudio.app/webhook/vision-admin';
+
+    window.allProjects = [];
+    let authToken = localStorage.getItem('unified_admin_pass') || '';
+
+    // INIZIALIZZAZIONE ALLA CARICA
+    window.addEventListener('DOMContentLoaded', () => {
+        if (authToken) {
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+            loadDashboard();
+        }
+    });
+
+    // SISTEMA AUTENTICAZIONE UNIFICATO
+    function saveAuthAndLoad() {
+        const p = document.getElementById('admin-password').value.trim();
+        if (!p) return alert("Inserisci una password valida.");
+        localStorage.setItem('unified_admin_pass', p);
+        authToken = p;
+        document.getElementById('auth-screen').classList.add('hidden');
+        document.getElementById('main-content').classList.remove('hidden');
+        loadDashboard();
+    }
+
+    function logout() {
+        localStorage.removeItem('unified_admin_pass');
+        location.reload();
+    }
+
+    // GESTIONE SWITCHER TAB
+    function switchTab(tab) {
+        const rmTab = document.getElementById('tab-rm-studio');
+        const visionTab = document.getElementById('tab-vision-ugc');
+        const btnRm = document.getElementById('btn-tab-rm');
+        const btnVision = document.getElementById('btn-tab-vision');
+
+        if (tab === 'rm-studio') {
+            rmTab.classList.remove('hidden');
+            visionTab.classList.add('hidden');
+            btnRm.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-purple-600 text-white shadow-lg shadow-purple-600/30";
+            btnVision.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-gray-400 hover:text-white hover:bg-white/5";
+        } else {
+            rmTab.classList.add('hidden');
+            visionTab.classList.remove('hidden');
+            btnVision.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-purple-600 text-white shadow-lg shadow-purple-600/30";
+            btnRm.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-gray-400 hover:text-white hover:bg-white/5";
+            fetchProjects(); // Carica dati Vision UGC
+        }
+    }
+
+    /* ==========================================================================
+       LOGICA LOGICA SCHEDA 1: RM STUDIO PORTALI (SUPABASE)
+       ========================================================================== */
+    
+    document.getElementById('form-type').addEventListener('change', function() {
+        const type = this.value;
+        const fileSection = document.getElementById('file-upload-section');
+        const linkSection = document.getElementById('link-input-section');
+        const fileInput = document.getElementById('form-file');
+
+        fileSection.className = "bg-[#15151a] border-2 border-dashed border-zinc-800 rounded-xl p-5 text-center cursor-pointer hover:border-purple-500/50 transition-all flex flex-col items-center justify-center min-h-[110px]";
+        document.getElementById('upload-icon').className = "fa-solid fa-cloud-arrow-up text-xl text-purple-400 mb-2";
+        document.getElementById('file-label-text').className = "block text-xs font-bold text-gray-300";
+
+        if (type === 'html' || type === 'link') {
+            fileSection.classList.add('hidden');
+            linkSection.classList.remove('hidden');
+        } else {
+            fileSection.classList.remove('hidden');
+            linkSection.classList.add('hidden');
+            if (type === 'video') {
+                fileInput.removeAttribute('multiple');
+                fileInput.setAttribute('accept', 'video/mp4');
+                document.getElementById('file-label-text').innerText = "Carica File Video (.mp4)";
+            } else if (type === 'carousel') {
+                fileInput.setAttribute('multiple', 'true');
+                fileInput.setAttribute('accept', 'image/*');
+                document.getElementById('file-label-text').innerText = "Carica Immagini Carosello";
+            }
+        }
+        document.getElementById('file-selected-name').innerText = "Nessun file selezionato";
+        fileInput.value = "";
+    });
+
+    document.getElementById('form-file').addEventListener('change', function(e) {
+        const files = this.files;
+        if (files.length > 0) {
+            document.getElementById('file-upload-section').classList.add('upload-success-glow');
+            document.getElementById('upload-icon').className = "fa-solid fa-circle-check text-xl text-green-400 mb-2";
+            document.getElementById('file-label-text').className = "block text-xs font-black text-green-400 uppercase";
+            document.getElementById('file-label-text').innerText = "File Caricato!";
+            document.getElementById('file-selected-name').innerText = files.length === 1 ? files[0].name : `${files.length} file pronti`;
+        }
+    });
+
+    document.getElementById('create-portal-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true;
+        btn.innerText = "Caricamento in corso...";
+
+        const type = document.getElementById('form-type').value;
+        const formData = new FormData();
+        formData.append('email', document.getElementById('form-email').value || '');
+        formData.append('client_phone', document.getElementById('form-phone').value || '');
+        formData.append('client_name', document.getElementById('form-agency').value);
+        formData.append('title', document.getElementById('form-title').value);
+        formData.append('price', document.getElementById('form-price').value);
+        formData.append('portal_type', type);
+
+        if (type === 'video' || type === 'carousel') {
             const fileInput = document.getElementById('form-file');
+            for (let i = 0; i < fileInput.files.length; i++) { formData.append(`file_${i}`, fileInput.files[i]); }
+        } else {
+            formData.append('external_url', document.getElementById('form-url').value);
+        }
 
-            fileSection.className = "bg-[#15151a] border-2 border-dashed border-zinc-800 rounded-xl p-5 text-center cursor-pointer hover:border-purple-500/50 transition-all flex flex-col items-center justify-center min-h-[110px]";
-            document.getElementById('upload-icon').className = "fa-solid fa-cloud-arrow-up text-xl text-purple-400 mb-2";
-            document.getElementById('file-label-text').className = "block text-xs font-bold text-gray-300";
+        try {
+            const response = await fetch(n8nCreateEndpoint, { method: 'POST', body: formData });
+            if (response.ok) {
+                alert("Progetto creato con successo!");
+                document.getElementById('create-portal-form').reset();
+                document.getElementById('file-upload-section').classList.remove('upload-success-glow');
+                loadDashboard();
+            } else alert("Errore durante l'upload.");
+        } catch (err) { alert("Errore: " + err.message); } 
+        finally { btn.disabled = false; btn.innerText = "Salva e Carica Progetto"; }
+    });
 
-            if (type === 'html' || type === 'link') {
-                fileSection.classList.add('hidden');
-                linkSection.classList.remove('hidden');
-            } else {
-                fileSection.classList.remove('hidden');
-                linkSection.classList.add('hidden');
-                if (type === 'video') {
-                    fileInput.removeAttribute('multiple');
-                    fileInput.setAttribute('accept', 'video/mp4');
-                    document.getElementById('file-label-text').innerText = "Carica File Video (.mp4)";
-                } else if (type === 'carousel') {
-                    fileInput.setAttribute('multiple', 'true');
-                    fileInput.setAttribute('accept', 'image/*');
-                    document.getElementById('file-label-text').innerText = "Carica Immagini Carosello";
-                }
-            }
-            document.getElementById('file-selected-name').innerText = "Nessun file selezionato";
-            fileInput.value = "";
+    function applyFilters() {
+        const searchName = document.getElementById('search-name').value.toLowerCase().trim();
+        const searchEmail = document.getElementById('search-email').value.toLowerCase().trim();
+        const filterStatus = document.getElementById('filter-status').value;
+
+        const filteredData = window.allProjects.filter(v => {
+            const matchesName = (v.client_name || '').toLowerCase().includes(searchName);
+            const matchesEmail = (v.client_email || '').toLowerCase().includes(searchEmail) || (v.client_phone || '').toLowerCase().includes(searchEmail);
+            
+            const hasOpened = v.is_opened || v.views_count > 0;
+            let matchesStatus = true;
+            if (filterStatus === 'opened') matchesStatus = hasOpened === true;
+            else if (filterStatus === 'unopened') matchesStatus = hasOpened === false;
+
+            return matchesName && matchesEmail && matchesStatus;
         });
 
-        document.getElementById('form-file').addEventListener('change', function(e) {
-            const files = this.files;
-            if (files.length > 0) {
-                document.getElementById('file-upload-section').classList.add('upload-success-glow');
-                document.getElementById('upload-icon').className = "fa-solid fa-circle-check text-xl text-green-400 mb-2";
-                document.getElementById('file-label-text').className = "block text-xs font-black text-green-400 uppercase";
-                document.getElementById('file-label-text').innerText = "File Caricato!";
-                document.getElementById('file-selected-name').innerText = files.length === 1 ? files[0].name : `${files.length} file pronti`;
+        renderRows(filteredData);
+    }
+
+    async function loadDashboard() {
+        const { data, error } = await supabaseClient.from('portal_videos').select('*').order('sent_at', { ascending: false });
+        if (error) return alert("Errore caricamento Supabase: " + error.message);
+
+        window.allProjects = data;
+        applyFilters();
+    }
+
+    function renderRows(data) {
+        let totalRevenue = 0, totalPaid = 0, totalViews = 0, totalOpens = 0;
+        const totalProjects = data.length;
+
+        data.forEach(v => {
+            if (v.is_paid === true || v.is_paid === "true") {
+                totalRevenue += parseFloat(v.price_euro || 0);
+                totalPaid++;
             }
+            totalViews += parseInt(v.views_count || 0);
+            if (v.is_opened || v.views_count > 0) totalOpens++;
         });
 
-        document.getElementById('create-portal-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('submit-btn');
-            btn.disabled = true;
-            btn.innerText = "Caricamento in corso...";
+        const conversionRate = totalProjects > 0 ? Math.round((totalPaid / totalProjects) * 100) : 0;
 
-            const type = document.getElementById('form-type').value;
-            const formData = new FormData();
-            formData.append('email', document.getElementById('form-email').value || '');
-            formData.append('client_phone', document.getElementById('form-phone').value || '');
-            formData.append('client_name', document.getElementById('form-agency').value);
-            formData.append('title', document.getElementById('form-title').value);
-            formData.append('price', document.getElementById('form-price').value);
-            formData.append('portal_type', type);
+        document.getElementById('stat-revenue').innerText = `€${totalRevenue.toFixed(2)}`;
+        document.getElementById('stat-conversion').innerText = `${conversionRate}%`;
+        document.getElementById('stat-opens').innerText = `${totalOpens} / ${totalProjects}`;
+        document.getElementById('stat-views').innerText = totalViews;
 
-            if (type === 'video' || type === 'carousel') {
-                const fileInput = document.getElementById('form-file');
-                for (let i = 0; i < fileInput.files.length; i++) { formData.append(`file_${i}`, fileInput.files[i]); }
-            } else {
-                formData.append('external_url', document.getElementById('form-url').value);
+        const container = document.getElementById('rows-container');
+        container.innerHTML = '';
+
+        data.forEach((v) => {
+            let icon = "fa-code";
+            if (v.portal_type === 'carousel') icon = "fa-images";
+            else if (v.portal_type === 'video') icon = "fa-video";
+            else if (v.portal_type === 'link') icon = "fa-arrow-up-right-from-square";
+
+            let statusReadLabel = '<span class="text-zinc-500 font-bold text-xs"><i class="fa-solid fa-envelope"></i> No</span>';
+            if (v.is_opened || v.views_count > 0) {
+                statusReadLabel = '<span class="text-green-400 font-bold text-xs"><i class="fa-solid fa-eye animate-pulse"></i> Sì (Letto)</span>';
             }
 
-            try {
-                const response = await fetch(n8nCreateEndpoint, { method: 'POST', body: formData });
-                if (response.ok) {
-                    alert("Progetto creato con successo!");
-                    document.getElementById('create-portal-form').reset();
-                    document.getElementById('file-upload-section').classList.remove('upload-success-glow');
-                    loadDashboard();
-                } else alert("Errore durante l'upload.");
-            } catch (err) { alert("Errore: " + err.message); } 
-            finally { btn.disabled = false; btn.innerText = "Salva e Carica Progetto"; }
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-[#101015] transition-colors border-b border-zinc-900/60";
+            tr.innerHTML = `
+                <td class="p-4 text-center font-mono text-xs text-gray-500 font-bold">#${v.id ? v.id.substring(0, 4).toUpperCase() : '---'}</td>
+                <td class="p-4">
+                    <input type="text" value="${v.client_name || 'Cliente'}" onchange="updateField('${v.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none font-extrabold text-white text-sm block w-full mb-1">
+                    <div class="space-y-0.5">
+                        <input type="email" value="${v.client_email || ''}" onchange="updateField('${v.id}', 'client_email', this.value)" placeholder="Inserisci Mail" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full">
+                        <input type="text" value="${v.client_phone || ''}" onchange="updateField('${v.id}', 'client_phone', this.value)" placeholder="Inserisci Cellulare" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full">
+                    </div>
+                </td>
+                <td class="p-4">
+                    <input type="text" value="${v.title || ''}" onchange="updateField('${v.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none text-sm text-gray-300 font-semibold w-full">
+                </td>
+                <td class="p-4"><span class="text-xs bg-[#1c1c24] text-gray-300 px-2.5 py-1 rounded-full border border-zinc-800 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max"><i class="fa-solid ${icon}"></i> ${v.portal_type}</span></td>
+                <td class="p-4"><input type="number" value="${v.price_euro}" onchange="updateField('${v.id}', 'price_euro', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs"></td>
+                <td class="p-4">
+                    <input type="number" value="${v.views_count || 0}" onchange="updateField('${v.id}', 'views_count', this.value)" class="w-16 bg-[#15151a] border border-zinc-850 rounded-lg p-1.5 text-center font-bold text-blue-400 focus:border-purple-500 focus:outline-none text-xs">
+                </td>
+                <td class="p-4">
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" ${v.is_whatsapp_sent ? 'checked' : ''} onchange="updateField('${v.id}', 'is_whatsapp_sent', this.checked)" class="w-4 h-4 text-purple-600 bg-zinc-900 border-zinc-800 rounded focus:ring-purple-500">
+                        <span class="ml-2 text-xs text-gray-400">Inviato</span>
+                    </label>
+                </td>
+                <td class="p-4 whitespace-nowrap">${statusReadLabel}</td>
+                <td class="p-4 text-xs">${(v.is_paid === true || v.is_paid === "true") ? '<span class="text-green-400 font-bold"><i class="fa-solid fa-circle-check"></i> Pagato</span>' : '<span class="text-yellow-500"><i class="fa-solid fa-clock"></i> Attesa</span>'}</td>
+                <td class="p-4 text-xs"><button onclick="copyPortalLink('${v.id}')" class="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1 bg-purple-500/10 border border-purple-500/20 px-2.5 py-1.5 rounded-lg transition-all active:scale-95 text-[10px]"><i class="fa-solid fa-copy"></i> Copia</button></td>
+                <td class="p-4">
+                    <textarea onchange="updateField('${v.id}', 'notes', this.value)" placeholder="Aggiungi note..." class="w-full h-12 bg-transparent text-xs text-zinc-300 placeholder-zinc-700 hover:border-zinc-800 focus:border-purple-500 border border-transparent rounded-lg p-1.5 leading-relaxed focus:outline-none transition-all resize-none">${v.notes || ''}</textarea>
+                </td>
+                <td class="p-4 text-right whitespace-nowrap">
+                    <button onclick="deleteRow('${v.id}')" class="text-gray-500 hover:text-red-500 p-2 hover:bg-red-500/10 rounded-md transition-all" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                </td>
+            `;
+            container.appendChild(tr);
         });
+    }
 
-        function applyFilters() {
-            const searchName = document.getElementById('search-name').value.toLowerCase().trim();
-            const searchEmail = document.getElementById('search-email').value.toLowerCase().trim();
-            const filterStatus = document.getElementById('filter-status').value;
-
-            const filteredData = window.allProjects.filter(v => {
-                const matchesName = (v.client_name || '').toLowerCase().includes(searchName);
-                const matchesEmail = (v.client_email || '').toLowerCase().includes(searchEmail) || (v.client_phone || '').toLowerCase().includes(searchEmail);
-                
-                const hasOpened = v.is_opened || v.views_count > 0;
-                let matchesStatus = true;
-                if (filterStatus === 'opened') {
-                    matchesStatus = hasOpened === true;
-                } else if (filterStatus === 'unopened') {
-                    matchesStatus = hasOpened === false;
-                }
-
-                return matchesName && matchesEmail && matchesStatus;
-            });
-
-            renderRows(filteredData);
-        }
-
-        async function loadDashboard() {
-            const { data, error } = await supabaseClient.from('portal_videos').select('*').order('sent_at', { ascending: false });
-            if (error) return alert("Errore caricamento: " + error.message);
-
-            window.allProjects = data;
-            applyFilters();
-        }
-
-        function renderRows(data) {
-            let totalRevenue = 0;
-            let totalPaid = 0;
-            let totalViews = 0;
-            let totalOpens = 0;
-            const totalProjects = data.length;
-
-            data.forEach(v => {
-                if (v.is_paid === true || v.is_paid === "true") {
-                    totalRevenue += parseFloat(v.price_euro);
-                    totalPaid++;
-                }
-                totalViews += parseInt(v.views_count || 0);
-                if (v.is_opened || v.views_count > 0) totalOpens++;
-            });
-
-            const conversionRate = totalProjects > 0 ? Math.round((totalPaid / totalProjects) * 100) : 0;
-
-            document.getElementById('stat-revenue').innerText = `€${totalRevenue.toFixed(2)}`;
-            document.getElementById('stat-conversion').innerText = `${conversionRate}%`;
-            document.getElementById('stat-opens').innerText = `${totalOpens} / ${totalProjects}`;
-            document.getElementById('stat-views').innerText = totalViews;
-
-            const container = document.getElementById('rows-container');
-            container.innerHTML = '';
-
-            data.forEach((v, index) => {
-                let icon = "fa-code";
-                if (v.portal_type === 'carousel') icon = "fa-images";
-                else if (v.portal_type === 'video') icon = "fa-video";
-                else if (v.portal_type === 'link') icon = "fa-arrow-up-right-from-square";
-
-                let statusReadLabel = '<span class="text-zinc-500 font-bold text-xs"><i class="fa-solid fa-envelope"></i> No</span>';
-                if (v.is_opened || v.views_count > 0) {
-                    statusReadLabel = '<span class="text-green-400 font-bold text-xs"><i class="fa-solid fa-eye animate-pulse"></i> Sì (Letto)</span>';
-                }
-
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-[#101015] transition-colors border-b border-zinc-900/60";
-                tr.innerHTML = `
-                    <td class="p-4 text-center font-mono text-xs text-gray-500 font-bold">#${v.id ? v.id.substring(0, 4).toUpperCase() : '---'}</td>
-
-                    <td class="p-4">
-                        <input type="text" value="${v.client_name || 'Cliente'}" onchange="updateField('${v.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none font-extrabold text-white text-sm block w-full mb-1">
-                        <div class="space-y-0.5">
-                            <input type="email" value="${v.client_email || ''}" onchange="updateField('${v.id}', 'client_email', this.value)" placeholder="Inserisci Mail" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full">
-                            <input type="text" value="${v.client_phone || ''}" onchange="updateField('${v.id}', 'client_phone', this.value)" placeholder="Inserisci Cellulare" class="bg-transparent border-b border-transparent hover:border-zinc-800 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full">
-                        </div>
-                    </td>
-                    
-                    <td class="p-4">
-                        <input type="text" value="${v.title || ''}" onchange="updateField('${v.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-gray-800 focus:border-purple-500 focus:outline-none text-sm text-gray-300 font-semibold w-full">
-                    </td>
-                    
-                    <td class="p-4"><span class="text-xs bg-[#1c1c24] text-gray-300 px-2.5 py-1 rounded-full border border-zinc-800 uppercase font-semibold text-[8px] flex items-center gap-1.5 w-max"><i class="fa-solid ${icon}"></i> ${v.portal_type}</span></td>
-                    <td class="p-4"><input type="number" value="${v.price_euro}" onchange="updateField('${v.id}', 'price_euro', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs"></td>
-                    <td class="p-4">
-                        <input 
-                            type="number" 
-                            value="${v.views_count || 0}" 
-                            onchange="updateField('${v.id}', 'views_count', this.value)" 
-                            class="w-16 bg-[#15151a] border border-zinc-850 rounded-lg p-1.5 text-center font-bold text-blue-400 focus:border-purple-500 focus:outline-none text-xs"
-                        >
-                    </td>
-                    
-                    <td class="p-4">
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" ${v.is_whatsapp_sent ? 'checked' : ''} onchange="updateField('${v.id}', 'is_whatsapp_sent', this.checked)" class="w-4 h-4 text-purple-600 bg-zinc-900 border-zinc-800 rounded focus:ring-purple-500 focus:ring-2">
-                            <span class="ml-2 text-xs text-gray-400">Inviato</span>
-                        </label>
-                    </td>
-
-                    <td class="p-4 whitespace-nowrap">${statusReadLabel}</td>
-
-                    <td class="p-4 text-xs">${(v.is_paid === true || v.is_paid === "true") ? '<span class="text-green-400 font-bold"><i class="fa-solid fa-circle-check"></i> Pagato</span>' : '<span class="text-yellow-500"><i class="fa-solid fa-clock"></i> Attesa</span>'}</td>
-                    <td class="p-4 text-xs"><button onclick="copyToClipboard('${v.id}')" class="text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1 bg-purple-500/10 border border-purple-500/20 px-2.5 py-1.5 rounded-lg transition-all active:scale-95 text-[10px]"><i class="fa-solid fa-copy"></i> Copia</button></td>
-                    
-                    <td class="p-4">
-                        <textarea onchange="updateField('${v.id}', 'notes', this.value)" placeholder="Aggiungi note sul lead..." class="w-full h-12 bg-transparent text-xs text-zinc-300 placeholder-zinc-700 hover:border-zinc-800 focus:border-purple-500 border border-transparent rounded-lg p-1.5 leading-relaxed focus:outline-none transition-all resize-none">${v.notes || ''}</textarea>
-                    </td>
-
-                    <td class="p-4 text-right whitespace-nowrap">
-                        <button onclick="deleteRow('${v.id}')" class="text-gray-500 hover:text-red-500 p-2 hover:bg-red-500/10 rounded-md transition-all" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
-                    </td>
-                `;
-                container.appendChild(tr);
-            });
-        }
-
-        async function updateField(id, field, value) {
-            const payload = {}; 
-            
-            if (field === 'price_euro') {
-                payload[field] = parseFloat(value);
-            } else if (field === 'views_count') {
-                payload[field] = parseInt(value, 10); // ⚡ Converte in numero intero per il DB
-            } else {
-                payload[field] = value;
-            }
-            
-            const { error } = await supabaseClient.from('portal_videos').update(payload).eq('id', id);
-            if (error) alert("Errore aggiornamento: " + error.message);
-        }
-
-        function copyToClipboard(id) {
-            navigator.clipboard.writeText(`https://portale.rmstudio.app/view.html?id=${id}`).then(() => alert("Copiato!")).catch(e => console.error(e));
-        }
-
-        async function deleteRow(id) {
-            const project = window.allProjects.find(v => v.id === id);
-            const title = project ? project.title : "questo progetto";
-            
-            if (!confirm(`Cancellare definitivamente "${title}" e i suoi file?`)) return;
-            try {
-                const res = await fetch(deleteWebhook, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify({ id }) 
-                });
-                
-                if (res.ok) { 
-                    alert("Progetto e file eliminati con successo."); 
-                    loadDashboard(); 
-                } else {
-                    alert("Si è verificato un errore durante l'eliminazione.");
-                    loadDashboard();
-                }
-            } catch (err) { 
-                alert("Errore: " + err.message); 
-            }
-        }
-
-        // 🌌 SOTTOSCRIZIONE IN TEMPO REALE (Supabase Realtime)
-        // Ascolta qualsiasi modifica (Inserimento, Aggiornamento, Cancellazione) e ricarica i dati al volo
-        supabaseClient
-            .channel('realtime_portal_changes')
-            .on(
-                'postgres_changes', 
-                { 
-                    event: '*', 
-                    schema: 'public', 
-                    table: 'portal_videos' 
-                }, 
-                (payload) => {
-                    console.log("Modifica rilevata nel DB, aggiorno il pannello...", payload);
-                    loadDashboard(); // Ricarica la tabella e riapplica i filtri all'istante!
-                }
-            )
-            .subscribe();
+    async function updateField(id, field, value) {
+        const payload = {}; 
+        if (field === 'price_euro') payload[field] = parseFloat(value);
+        else if (field === 'views_count') payload[field] = parseInt(value, 10);
+        else payload[field] = value;
         
-        window.addEventListener('DOMContentLoaded', loadDashboard);
-    </script>
+        const { error } = await supabaseClient.from('portal_videos').update(payload).eq('id', id);
+        if (error) alert("Errore aggiornamento: " + error.message);
+    }
+
+    function copyPortalLink(id) {
+        navigator.clipboard.writeText(`https://portale.rmstudio.app/view.html?id=${id}`)
+            .then(() => alert("Link Portale Copiato!"))
+            .catch(e => console.error(e));
+    }
+
+    async function deleteRow(id) {
+        const project = window.allProjects.find(v => v.id === id);
+        const title = project ? project.title : "questo progetto";
+        
+        if (!confirm(`Cancellare definitivamente "${title}" e i suoi file?`)) return;
+        try {
+            const res = await fetch(deleteWebhook, { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ id }) 
+            });
+            if (res.ok) { alert("Progetto eliminato."); loadDashboard(); } 
+            else { alert("Errore durante l'eliminazione."); loadDashboard(); }
+        } catch (err) { alert("Errore: " + err.message); }
+    }
+
+    // Sottoscrizione Realtime Supabase
+    supabaseClient
+        .channel('realtime_portal_changes')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'portal_videos' }, () => {
+            loadDashboard();
+        })
+        .subscribe();
+
+
+    /* ==========================================================================
+       LOGICA SCHEDA 2: VISION UGC (N8N / GOOGLE SHEETS)
+       ========================================================================== */
+
+    function generateSecureToken() {
+        return 'v_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    }
+
+    function openNewProjectModal() {
+        document.getElementById('p-token').value = generateSecureToken();
+        document.getElementById('new-project-modal').classList.remove('hidden');
+        document.getElementById('new-project-modal').classList.add('flex');
+    }
+
+    function closeNewProjectModal() {
+        document.getElementById('new-project-modal').classList.remove('flex');
+        document.getElementById('new-project-modal').classList.add('hidden');
+    }
+
+    async function fetchProjects() {
+        try {
+            const res = await fetch(`${N8N_VISION_URL}?action=read`, {
+                headers: { 'Authorization': authToken }
+            });
+            if (res.status === 401 || res.status === 403) {
+                alert('Password non corretta. Effettua nuovamente il login.');
+                logout();
+                return;
+            }
+            const data = await res.json();
+            renderVisionTable(data);
+        } catch (err) {
+            console.error(err);
+            alert('Errore nel recupero dei progetti Vision UGC.');
+        }
+    }
+
+    function renderVisionTable(projects) {
+        const tbody = document.getElementById('projects-table');
+        tbody.innerHTML = '';
+
+        if (!Array.isArray(projects) || projects.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">Nessun progetto trovato nel Google Sheet.</td></tr>`;
+            return;
+        }
+
+        let paid = 0, unpaid = 0;
+
+        projects.forEach((p, index) => {
+            const stato = (p.stato || 'da_pagare').toLowerCase().trim();
+            const isPaid = stato === 'pagato';
+            if (isPaid) paid++; else unpaid++;
+
+            const previewUrl = `${window.location.origin}/vision-preview?token=${p.token}`;
+
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-white/[0.01] transition duration-150 border-b border-zinc-900';
+            tr.innerHTML = `
+                <td class="p-4">
+                    <div class="font-bold text-white">${p.nome_cliente || 'No name'}</div>
+                    <div class="text-xs text-gray-400">${p.client_id || 'No ID'} · ${p.email_cliente || ''}</div>
+                </td>
+                <td class="p-4 max-w-[200px] truncate" title="${p.titolo_video}">${p.titolo_video || '-'}</td>
+                <td class="p-4 font-semibold text-emerald-400">€${p.prezzo || '49'}</td>
+                <td class="p-4">
+                    <button onclick="toggleStatus('${p.client_id}', '${p.stato}', ${index + 2})" class="px-3 py-1.5 rounded-full text-xs font-bold transition ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-purple-500/10 text-purple-400 border border-purple-500/20'}">
+                    ${isPaid ? '✓ Pagato' : '● Da pagare'}
+                    </button>
+                </td>
+                <td class="p-4">
+                    <span class="text-xs font-mono bg-white/5 border border-white/10 px-2 py-1 rounded text-gray-300" title="${p.token}">${p.token ? p.token.substring(0,8) + '...' : '-'}</span>
+                </td>
+                <td class="p-4 text-right space-x-1 flex justify-end gap-1">
+                    <button onclick="copyFilenameToClipboard('${p.client_id}', '${p.titolo_video}')" class="bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 text-emerald-400 text-xs px-3 py-1.5 rounded-lg transition" title="Copia nome file per Google Drive">📁 Nome File</button>
+                    <button onclick="copyTextToClipboard('${previewUrl}', 'Magic Link copiato!')" class="bg-white/5 border border-white/10 hover:bg-white/10 text-xs px-3 py-1.5 rounded-lg transition" title="Copia Magic Link">🔗 Link</button>
+                    <button onclick="sendNotification('${p.client_id}', ${index + 2})" class="bg-purple-600/20 border border-purple-500/30 hover:bg-purple-600/40 text-purple-300 text-xs px-3 py-1.5 rounded-lg transition" title="Invia Email con Resend">✉️ Invia Mail</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        const total = projects.length;
+        document.getElementById('stat-vision-total').textContent = total;
+        document.getElementById('stat-vision-unpaid').textContent = unpaid;
+        document.getElementById('stat-vision-paid').textContent = paid;
+        document.getElementById('stat-vision-cr').textContent = total > 0 ? Math.round((paid / total) * 100) + '%' : '0%';
+    }
+
+    async function handleCreateProject(e) {
+        e.preventDefault();
+        const payload = {
+            action: 'create',
+            client_id: document.getElementById('p-client-id').value.trim(),
+            nome_cliente: document.getElementById('p-nome').value.trim(),
+            email_cliente: document.getElementById('p-email').value.trim(),
+            titolo_video: document.getElementById('p-titolo').value.trim(),
+            s3_url: document.getElementById('p-s3').value.trim(),
+            prezzo: document.getElementById('p-prezzo').value.trim(),
+            stato: 'da_pagare',
+            token: document.getElementById('p-token').value.trim(),
+            stripe_link: document.getElementById('p-stripe').value.trim()
+        };
+
+        try {
+            const res = await fetch(N8N_VISION_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': authToken },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                alert('Progetto registrato correttamente nel database!');
+                document.getElementById('project-form').reset();
+                closeNewProjectModal();
+                fetchProjects();
+            } else throw new Error();
+        } catch { alert('Errore durante il salvataggio del progetto.'); }
+    }
+
+    async function toggleStatus(clientId, currentStatus, rowNumber) {
+        const newStatus = (currentStatus.toLowerCase().trim() === 'pagato') ? 'da_pagare' : 'pagato';
+        if (!confirm(`Vuoi cambiare lo stato del cliente ${clientId} in "${newStatus}"?`)) return;
+
+        try {
+            const res = await fetch(N8N_VISION_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': authToken },
+                body: JSON.stringify({ action: 'update_status', client_id: clientId, stato: newStatus, row: rowNumber })
+            });
+            if (res.ok) fetchProjects();
+            else throw new Error();
+        } catch { alert('Impossibile aggiornare lo stato del progetto.'); }
+    }
+
+    async function sendNotification(clientId, rowNumber) {
+        if (!confirm(`Vuoi inviare l'email di notifica a ${clientId} via Resend?`)) return;
+
+        try {
+            const res = await fetch(N8N_VISION_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': authToken },
+                body: JSON.stringify({ action: 'send_email', client_id: clientId, row: rowNumber, origin: window.location.origin })
+            });
+            if (res.ok) alert('Email inviata con successo via Resend!');
+            else throw new Error();
+        } catch { alert('Errore durante l\'invio dell\'email.'); }
+    }
+
+    function copyFilenameToClipboard(clientId, title) {
+        if (!clientId || !title) return alert('Attenzione: ID cliente o Titolo mancanti.');
+        const cleanTitle = title.replace(/[\\/:*?"<>|]/g, "").trim();
+        const filename = `${clientId.trim()}##${cleanTitle}.mp4`;
+        copyTextToClipboard(filename, `Nome file copiato!\n\n${filename}`);
+    }
+
+    function copyTextToClipboard(text, alertMessage) {
+        navigator.clipboard.writeText(text).then(() => {
+            if (alertMessage) alert(alertMessage);
+        }).catch(err => console.error('Errore copia:', err));
+    }
+  </script>
 </body>
 </html>
