@@ -666,19 +666,31 @@
 
     async function fetchProjects() {
         try {
-            const res = await fetch(`${N8N_VISION_URL}?action=read`, {
-                headers: { 'Authorization': authToken }
+            // Invia una chiamata POST con action: "read"
+            const res = await fetch(N8N_VISION_URL, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': authToken 
+                },
+                body: JSON.stringify({ action: 'read' })
             });
+    
             if (res.status === 401 || res.status === 403) {
-                alert('Password non corretta. Effettua nuovamente il login.');
+                alert('Password errata! Assicurati di inserire la password impostata nel nodo "Valida Password" di n8n.');
                 logout();
                 return;
             }
+    
+            if (!res.ok) {
+                throw new Error(`Errore HTTP ${res.status}`);
+            }
+    
             const data = await res.json();
             renderVisionTable(data);
         } catch (err) {
-            console.error(err);
-            alert('Errore nel recupero dei progetti Vision UGC.');
+            console.error("Dettaglio Errore:", err);
+            alert('Errore nel recupero dei progetti: ' + err.message);
         }
     }
 
