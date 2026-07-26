@@ -630,18 +630,37 @@
     }
 
     function toggleRMInputFields() {
-        const type = document.getElementById('rm-type').value;
-        const fileSec = document.getElementById('rm-file-section');
-        const linkSec = document.getElementById('rm-link-section');
-
-        if (type === 'html' || type === 'link') {
-            fileSec.classList.add('hidden');
-            linkSec.classList.remove('hidden');
-        } else {
-            fileSec.classList.remove('hidden');
-            linkSec.classList.add('hidden');
+            const type = document.getElementById('rm-type').value;
+            const fileSec = document.getElementById('rm-file-section');
+            const linkSec = document.getElementById('rm-link-section');
+            const fileInput = document.getElementById('rm-file');
+        
+            if (type === 'html' || type === 'link') {
+                fileSec.classList.add('hidden');
+                linkSec.classList.remove('hidden');
+            } else {
+                fileSec.classList.remove('hidden');
+                linkSec.classList.add('hidden');
+                
+                if (type === 'carousel') {
+                    fileInput.setAttribute('multiple', 'true');
+                    fileInput.setAttribute('accept', 'image/*');
+                } else {
+                    fileInput.removeAttribute('multiple');
+                    fileInput.setAttribute('accept', 'video/mp4');
+                }
+            }
         }
-    }
+        
+        // Mostra il numero di file o il nome del file selezionato
+        document.getElementById('rm-file').addEventListener('change', function() {
+            const files = this.files;
+            if (files.length > 0) {
+                document.getElementById('rm-file-section').classList.add('upload-success-glow');
+                const label = files.length === 1 ? files[0].name : `${files.length} immagini selezionate`;
+                alert(`Pronto al caricamento: ${label}`);
+            }
+        });
 
     async function handleCreateRM(e) {
         e.preventDefault();
