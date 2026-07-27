@@ -14,7 +14,10 @@ function applyFilters() {
 
     const filtered = window.allProjects.filter(p => {
         if (fType !== 'all' && p.portal_type !== fType) return false;
-        const nameMatch = (p.client_name || '').toLowerCase().includes(fName) || (p.title || '').toLowerCase().includes(fName);
+        
+        const nameMatch = (p.client_name || '').toLowerCase().includes(fName) || 
+                          (p.client_email || '').toLowerCase().includes(fName) || 
+                          (p.title || '').toLowerCase().includes(fName);
         if (!nameMatch) return false;
 
         const isPaid = p.is_paid === true || p.is_paid === "true";
@@ -46,41 +49,78 @@ function renderMasterTable(data) {
     container.innerHTML = '';
 
     if (data.length === 0) {
-        container.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-gray-500 font-semibold">Nessun progetto trovato.</td></tr>`;
+        container.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-gray-500 font-semibold">Nessun progetto trovato.</td></tr>`;
         return;
     }
 
     data.forEach(p => {
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-[#101015] transition border-b border-zinc-900";
+        tr.className = "hover:bg-[#101015] transition border-b border-zinc-900/80";
 
         const isPaid = p.is_paid === true || p.is_paid === "true";
         const isRead = p.is_opened || (p.views_count || 0) > 0;
 
         tr.innerHTML = `
-            <td class="p-4">
-                <span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">${p.portal_type || 'html'}</span>
-                <span class="font-mono text-[10px] text-gray-500 block mt-1 font-bold">#${p.id ? p.id.substring(0, 6) : '-'}</span>
+            <!-- TIPO E ID -->
+            <td class="p-4 text-center">
+                <span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>
+                <span class="font-mono text-[10px] text-gray-500 block mt-1 font-bold">#${p.id ? p.id.substring(0, 4).toUpperCase() : '---'}</span>
             </td>
+
+            <!-- CLIENTE, EMAIL, TELEFONO EDITABILI -->
             <td class="p-4">
-                <div class="font-bold text-white text-sm">${p.client_name || 'Cliente'}</div>
-                <div class="text-xs text-gray-400">${p.client_email || ''} ${p.client_phone ? '· ' + p.client_phone : ''}</div>
+                <input type="text" value="${p.client_name || ''}" placeholder="Nome Cliente" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-bold text-white text-sm block w-full mb-1">
+                <div class="space-y-0.5">
+                    <input type="email" value="${p.client_email || ''}" placeholder="Inserisci Mail" onchange="updateSupabaseField('${p.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block">
+                    <input type="text" value="${p.client_phone || ''}" placeholder="Inserisci Telefono" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block">
+                </div>
             </td>
-            <td class="p-4 font-semibold text-gray-200 text-xs">${p.title || '-'}</td>
-            <td class="p-4 font-bold text-purple-400 text-xs">€${parseFloat(p.price_euro || 0).toFixed(2)}</td>
+
+            <!-- TITOLO PROGETTO EDITABILE -->
+            <td class="p-4">
+                <input type="text" value="${p.title || ''}" placeholder="Titolo Progetto" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-300 font-semibold w-full">
+            </td>
+
+            <!-- PREZZO EDITABILE -->
+            <td class="p-4">
+                <input type="number" value="${p.price_euro || 0}" onchange="updateSupabaseField('${p.id}', 'price_euro', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs">
+            </td>
+
+            <!-- VISITE EDITABILI -->
+            <td class="p-4">
+                <input type="number" value="${p.views_count || 0}" onchange="updateSupabaseField('${p.id}', 'views_count', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-blue-400 focus:border-purple-500 focus:outline-none text-xs">
+            </td>
+
+            <!-- SPUNTA WA INVIATO EDITABILE -->
+            <td class="p-4">
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" ${p.is_whatsapp_sent ? 'checked' : ''} onchange="updateSupabaseField('${p.id}', 'is_whatsapp_sent', this.checked)" class="w-4 h-4 text-purple-600 bg-zinc-900 border-zinc-800 rounded focus:ring-purple-500">
+                    <span class="ml-2 text-xs text-gray-400">Inviato</span>
+                </label>
+            </td>
+
+            <!-- STATO LETTURA -->
+            <td class="p-4 whitespace-nowrap">
+                ${isRead ? '<span class="text-green-400 font-bold text-xs"><i class="fa-solid fa-eye animate-pulse"></i> Letto</span>' : '<span class="text-zinc-500 font-bold text-xs"><i class="fa-solid fa-envelope"></i> No</span>'}
+            </td>
+
+            <!-- PAGAMENTO TOGGLE -->
             <td class="p-4">
                 <button onclick="togglePayment('${p.id}', ${isPaid})" class="px-2.5 py-1 rounded-full text-[10px] font-bold transition ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
                     ${isPaid ? '✓ Pagato' : '● Attesa'}
                 </button>
             </td>
-            <td class="p-4 text-xs font-mono">
-                ${isRead ? '<span class="text-green-400 font-bold"><i class="fa-solid fa-eye"></i> Letto</span>' : '<span class="text-gray-500"><i class="fa-solid fa-envelope"></i> No</span>'}
-                <span class="text-gray-500 text-[10px] block">(${p.views_count || 0} visite)</span>
+
+            <!-- NOTE OPERATIVE EDITABILI CON AUTO-SAVE -->
+            <td class="p-4">
+                <textarea onchange="updateSupabaseField('${p.id}', 'notes', this.value)" placeholder="Aggiungi note..." class="w-full h-12 bg-transparent text-xs text-zinc-300 placeholder-zinc-700 hover:border-zinc-800 focus:border-purple-500 border border-transparent rounded-lg p-1.5 leading-relaxed focus:outline-none transition-all resize-none">${p.notes || ''}</textarea>
             </td>
+
+            <!-- AZIONI RAPIDE (1-CLICK) -->
             <td class="p-4 text-right flex items-center justify-end gap-1.5 whitespace-nowrap">
-                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2.5 py-1 rounded-lg text-[10px] font-bold transition" title="Copy WA 1-Click"><i class="fa-brands fa-whatsapp"></i> WA</button>
-                <button onclick="openMessageModal('${p.id}', 'email')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2.5 py-1 rounded-lg text-[10px] font-bold transition" title="Copy Email 1-Click"><i class="fa-solid fa-envelope"></i> Email</button>
-                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition" title="Copy WA"><i class="fa-brands fa-whatsapp"></i> WA</button>
+                <button onclick="openMessageModal('${p.id}', 'email')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition" title="Copy Email"><i class="fa-solid fa-envelope"></i> Mail</button>
+                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1.5 rounded transition" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
             </td>
         `;
         container.appendChild(tr);
