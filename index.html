@@ -3,735 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RM Control Center — Unified Hub</title>
-    
+    <title>RM Studio — Master Command Center</title>
+
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Tailwind CSS & Supabase SDK -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              display: ['"Plus Jakarta Sans"', 'sans-serif'],
-              body: ['Inter', 'sans-serif'],
-            },
-            colors: {
-              v: { 50: '#faf5ff', 400: '#c084fc', 500: '#a855f7', 600: '#9333ea', 700: '#7c3aed' },
-              fx: '#e040fb',
-            }
-          }
-        }
-      }
-    </script>
-    <style>
-        .glass {
-            background: rgba(11, 11, 15, 0.85);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .grad-text {
-            background: linear-gradient(135deg, #c084fc 0%, #e040fb 60%, #818cf8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .upload-success-glow {
-            border-color: #22c55e !important;
-            background-color: rgba(34, 197, 94, 0.04) !important;
-            box-shadow: 0 0 15px rgba(34, 197, 94, 0.15) !important;
-        }
-    </style>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-[#050508] text-gray-200 font-body min-h-screen selection:bg-purple-600 selection:text-white p-4 md:p-8">
+<body class="bg-[#050508] text-gray-200 font-body min-h-screen selection:bg-purple-600 selection:text-white flex">
 
-  <!-- ==================== SCHERMATA BLOCCO DI SICUREZZA TOTALE ==================== -->
+  <!-- LOCK SCREEN -->
   <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#050508]/98 backdrop-blur-xl">
     <div class="glass p-8 rounded-3xl max-w-md w-full mx-4 text-center border border-zinc-800 shadow-2xl">
       <div class="mb-6">
         <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 mx-auto flex items-center justify-center shadow-lg shadow-purple-600/30 mb-4">
             <i class="fa-solid fa-shield-halved text-2xl text-white"></i>
         </div>
-        <h2 class="text-2xl font-display font-extrabold text-white">Accesso Riservato</h2>
-        <p class="text-xs text-gray-400 mt-2">Inserisci la password per sbloccare la Dashboard Unificata.</p>
+        <h2 class="text-2xl font-display font-extrabold text-white">RM Control Center</h2>
+        <p class="text-xs text-gray-400 mt-2">Inserisci la chiave d'accesso per sbloccare l'hub.</p>
       </div>
-      
       <form onsubmit="handleLoginSubmit(event)">
           <input type="password" id="admin-password" placeholder="Inserisci Password..." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl px-4 py-3.5 text-center text-white outline-none focus:border-purple-500 transition-all mb-4 text-sm font-semibold">
-          <button type="submit" id="login-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-purple-600/30 active:scale-95 text-xs uppercase tracking-wider flex items-center justify-center gap-2">
-            <i class="fa-solid fa-key"></i> Sblocca Control Center
+          <button type="submit" id="login-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-purple-600/30 text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+            <i class="fa-solid fa-key"></i> Sblocca Ecosistema
           </button>
       </form>
     </div>
   </div>
 
-
-  <!-- ==================== CONTENUTO DASHBOARD UNIFICATA ==================== -->
-  <!-- Nascosto di default: visibile SOLTANTO dopo l'autenticazione valida -->
-  <div id="main-content" class="hidden max-w-[98%] mx-auto">
+  <!-- MAIN DASHBOARD SYSTEM -->
+  <div id="main-content" class="hidden flex-1 flex flex-col md:flex-row min-h-screen">
     
-    <!-- HEADER -->
-    <header class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 pb-6 border-b border-zinc-900">
+    <!-- SIDEBAR DI NAVIGAZIONE -->
+    <aside class="w-full md:w-64 bg-[#08080c] border-r border-zinc-900 p-6 flex flex-col justify-between">
       <div>
-        <h1 class="text-2xl md:text-3xl font-display font-black text-white flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-600/30">
-                <i class="fa-solid fa-layer-group text-sm text-white"></i>
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center shadow-md shadow-purple-600/30">
+            <i class="fa-solid fa-sliders text-xs text-white"></i>
+          </div>
+          <span class="font-display font-black text-white text-lg tracking-tight">RM STUDIO</span>
+        </div>
+
+        <nav class="space-y-1.5 text-xs font-semibold">
+          <button onclick="switchTab('master')" id="nav-master" class="w-full px-4 py-3 rounded-xl flex items-center gap-3 bg-purple-600 text-white shadow-lg shadow-purple-600/20">
+            <i class="fa-solid fa-layer-group"></i> Master Hub
+          </button>
+          <button onclick="switchTab('outreach')" id="nav-outreach" class="w-full px-4 py-3 rounded-xl flex items-center gap-3 text-gray-400 hover:bg-white/5 hover:text-white transition">
+            <i class="fa-solid fa-paper-plane text-purple-400"></i> Cold Outreach
+          </button>
+          
+          <div class="pt-4 pb-2 text-[10px] uppercase font-bold text-gray-600 tracking-wider">Dev & Quick Links</div>
+          <a href="https://n8n.rmstudio.app" target="_blank" class="w-full px-4 py-2.5 rounded-xl flex items-center gap-3 text-gray-400 hover:bg-white/5 hover:text-white transition">
+            <i class="fa-solid fa-diagram-project text-orange-400"></i> n8n Workflows
+          </a>
+          <a href="https://dashboard.stripe.com" target="_blank" class="w-full px-4 py-2.5 rounded-xl flex items-center gap-3 text-gray-400 hover:bg-white/5 hover:text-white transition">
+            <i class="fa-solid fa-credit-card text-indigo-400"></i> Stripe Dashboard
+          </a>
+          <a href="https://supabase.com" target="_blank" class="w-full px-4 py-2.5 rounded-xl flex items-center gap-3 text-gray-400 hover:bg-white/5 hover:text-white transition">
+            <i class="fa-solid fa-database text-emerald-400"></i> Supabase Console
+          </a>
+        </nav>
+      </div>
+
+      <button onclick="logout()" class="w-full px-4 py-3 rounded-xl flex items-center gap-3 text-gray-500 hover:text-red-400 hover:bg-red-500/10 text-xs font-bold transition">
+        <i class="fa-solid fa-right-from-bracket"></i> Disconnetti
+      </button>
+    </aside>
+
+    <!-- CONTENT AREA -->
+    <main class="flex-1 p-6 md:p-10 overflow-y-auto">
+      
+      <!-- TAB 1: MASTER HUB -->
+      <section id="tab-master">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+            <div>
+              <h1 class="text-2xl font-display font-black text-white">Master <span class="grad-text">Command Center</span></h1>
+              <p class="text-xs text-gray-400 mt-1">Gestisci vendite, consegne, visite e file inviati in tempo reale.</p>
             </div>
-            RM Studio & Vision — <span class="grad-text">Master Hub</span>
-        </h1>
-        <p class="text-xs text-gray-400 mt-1">Pannello unico di controllo per tutti i progetti, vendite e file del tuo ecosistema.</p>
-      </div>
+            <div class="flex items-center gap-3">
+              <button onclick="openCreationModal()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-purple-600/20">
+                  + Nuovo Progetto
+              </button>
+            </div>
+        </header>
 
-      <!-- PULSANTI D'AZIONE -->
-      <div class="flex items-center gap-3 flex-wrap">
-        <button onclick="openCreationModal()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-purple-600/20 flex items-center gap-2 active:scale-95">
-            <i class="fa-solid fa-plus"></i> Nuovo Progetto
-        </button>
-        <a href="crea.html" class="bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all flex items-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> Crea Sito AI
-        </a>
-        <button onclick="logout()" class="border border-zinc-800 hover:bg-zinc-900 text-gray-400 hover:text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2">
-            <i class="fa-solid fa-right-from-bracket"></i> Esci
-        </button>
-      </div>
-    </header>
+        <!-- STATS -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-[#0b0b0f] border border-zinc-900 p-5 rounded-2xl shadow-xl">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Incassi Totali Cumulati</span>
+                <span class="text-2xl font-black text-green-400 mt-1 block" id="stat-revenue">€0.00</span>
+            </div>
+            <div class="bg-[#0b0b0f] border border-zinc-900 p-5 rounded-2xl shadow-xl">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Progetti Attivi</span>
+                <span class="text-2xl font-black text-white mt-1 block" id="stat-total">0</span>
+            </div>
+            <div class="bg-[#0b0b0f] border border-zinc-900 p-5 rounded-2xl shadow-xl">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Pagati / In Attesa</span>
+                <span class="text-2xl font-black text-purple-400 mt-1 block" id="stat-ratio">0 / 0</span>
+            </div>
+            <div class="bg-[#0b0b0f] border border-zinc-900 p-5 rounded-2xl shadow-xl">
+                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Conversion Rate</span>
+                <span class="text-2xl font-black text-blue-400 mt-1 block" id="stat-cr">0%</span>
+            </div>
+        </div>
 
-    <!-- STATS CARDS UNIFICATE -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
-        <div class="bg-[#0b0b0f] border border-zinc-900/80 p-5 rounded-2xl shadow-xl">
-            <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Incassi Totali Cumulati</span>
-            <span class="text-2xl font-black text-green-400 mt-1 block" id="stat-revenue">€0.00</span>
+        <!-- FILTRI -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">PRODOTTO / TIPO</label>
+                <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs text-white outline-none focus:border-purple-500 font-semibold">
+                    <option value="all">Tutti i Prodotti</option>
+                    <option value="html">Siti Sitengine</option>
+                    <option value="video">Video Walkthrough</option>
+                    <option value="vision">Vision UGC Video</option>
+                    <option value="carousel">Caroselli Immagini</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">CERCA CLIENTE</label>
+                <input type="text" id="filter-name" placeholder="Nome azienda o lead..." oninput="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs text-white outline-none focus:border-purple-500">
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">STATO PAGAMENTO</label>
+                <select id="filter-paid" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs text-white outline-none focus:border-purple-500 font-semibold">
+                    <option value="all">Tutti gli stati</option>
+                    <option value="paid">✓ Pagati</option>
+                    <option value="unpaid">● Attesa Pagamento</option>
+                </select>
+            </div>
         </div>
-        <div class="bg-[#0b0b0f] border border-zinc-900/80 p-5 rounded-2xl shadow-xl">
-            <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Progetti Totali</span>
-            <span class="text-2xl font-black text-white mt-1 block" id="stat-total-projects">0</span>
-        </div>
-        <div class="bg-[#0b0b0f] border border-zinc-900/80 p-5 rounded-2xl shadow-xl">
-            <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Pagati vs Attesa</span>
-            <span class="text-2xl font-black text-purple-400 mt-1 block" id="stat-paid-ratio">0 / 0</span>
-        </div>
-        <div class="bg-[#0b0b0f] border border-zinc-900/80 p-5 rounded-2xl shadow-xl">
-            <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Conversion Rate Globale</span>
-            <span class="text-2xl font-black text-blue-400 mt-1 block" id="stat-conversion">0%</span>
-        </div>
-    </div>
 
-    <!-- FILTRI E RICERCA UNIFICATA -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8 bg-[#0b0b0f] border border-zinc-900/80 p-4 rounded-2xl shadow-xl">
-        <div>
-            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">SISTEMA TARGET</label>
-            <select id="filter-system" onchange="applyUnifiedFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white font-semibold">
-                <option value="all">🌐 Tutti i Sistemi (RM + Vision)</option>
-                <option value="rm">🌐 Solo RM Studio Portali</option>
-                <option value="vision">🎬 Solo Vision UGC</option>
-            </select>
+        <!-- MASTER TABLE -->
+        <div class="bg-[#0b0b0f] border border-zinc-900 rounded-3xl overflow-hidden shadow-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[1000px]">
+                    <thead>
+                        <tr class="border-b border-zinc-900 bg-black/40 text-[9px] uppercase tracking-wider text-gray-400">
+                            <th class="p-4">Tipo / ID</th>
+                            <th class="p-4">Cliente / Contatti</th>
+                            <th class="p-4">Progetto / Titolo</th>
+                            <th class="p-4">Prezzo</th>
+                            <th class="p-4">Pagamento</th>
+                            <th class="p-4">Visite / Status</th>
+                            <th class="p-4 text-right">Azioni Rapide (1-Click)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="master-table-body" class="divide-y divide-zinc-900 text-sm">
+                        <!-- Caricato da app.js -->
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div>
-            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">FILTRA PER CLIENTE / NOME</label>
-            <input type="text" id="filter-name" placeholder="Cerca cliente o nome azienda..." oninput="applyUnifiedFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white placeholder-gray-600">
-        </div>
-        <div>
-            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">FILTRA PER EMAIL / TELEFONO</label>
-            <input type="text" id="filter-contact" placeholder="Cerca email o telefono..." oninput="applyUnifiedFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white placeholder-gray-600">
-        </div>
-        <div>
-            <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1.5">STATO PAGAMENTO</label>
-            <select id="filter-paid" onchange="applyUnifiedFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs focus:outline-none focus:border-purple-500 text-white font-semibold">
-                <option value="all">Tutti gli stati</option>
-                <option value="paid">✓ Soltanto Pagati</option>
-                <option value="unpaid">● In Attesa di Pagamento</option>
-            </select>
-        </div>
-    </div>
+      </section>
 
-    <!-- MASTER TABLE UNIFICATA -->
-    <div class="bg-[#0b0b0f] border border-zinc-900/80 rounded-3xl overflow-hidden shadow-2xl">
-        <div class="p-5 border-b border-zinc-900 flex justify-between items-center">
-            <h3 class="font-display font-bold text-base text-white flex items-center gap-2">
-                <i class="fa-solid fa-list-check text-purple-500"></i> Progetti e File Inviati
-            </h3>
-            <button onclick="loadAllUnifiedData()" class="text-xs bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
-                <i class="fa-solid fa-rotate"></i> Aggiorna
-            </button>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse min-w-[1100px]">
-                <thead>
-                    <tr class="border-b border-zinc-900 bg-black/40 text-[9px] uppercase tracking-wider text-gray-400">
-                        <th class="p-4 w-[12%]">Sistema / ID</th>
-                        <th class="p-4 w-[20%]">Cliente & Contatti</th>
-                        <th class="p-4 w-[22%]">Progetto / Titolo Video</th>
-                        <th class="p-4 w-[10%]">Prezzo (€)</th>
-                        <th class="p-4 w-[12%]">Stato Pagamento</th>
-                        <th class="p-4 w-[10%]">Metriche / Token</th>
-                        <th class="p-4 w-[14%] text-right">Azioni Rapide</th>
-                    </tr>
-                </thead>
-                <tbody id="master-rows-container" class="divide-y divide-zinc-900 text-sm">
-                    <!-- Generato dinamicamente via JS -->
-                </tbody>
-            </table>
-        </div>
-    </div>
+      <!-- TAB 2: COLD OUTREACH HUB -->
+      <section id="tab-outreach" class="hidden">
+        <header class="mb-8">
+          <h1 class="text-2xl font-display font-black text-white">Cold Outreach & <span class="grad-text">Generatore Rapido</span></h1>
+          <p class="text-xs text-gray-400 mt-1">Genera al volo link speculativi con copy WhatsApp/Email pronto all'uso.</p>
+        </header>
 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-[#0b0b0f] border border-zinc-900 p-6 rounded-3xl">
+                <h3 class="font-bold text-white mb-4 text-sm flex items-center gap-2"><i class="fa-solid fa-bolt text-purple-400"></i> Generatore Speculativo Sitengine</h3>
+                <a href="crea.html" target="_blank" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider block text-center transition">
+                    Apri Generatore AI Sito Web
+                </a>
+            </div>
+        </div>
+      </section>
+
+    </main>
   </div>
 
-
-  <!-- ==================== MODALE CREAZIONE PROGETTO UNIFICATA ==================== -->
+  <!-- MODALE CREAZIONE PROGETTO -->
   <div id="creation-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
-    <div class="glass p-8 rounded-3xl max-w-xl w-full border border-zinc-800 shadow-2xl max-h-[90vh] overflow-y-auto">
+    <div class="glass p-8 rounded-3xl max-w-lg w-full border border-zinc-800 shadow-2xl">
       <div class="flex justify-between items-center mb-6">
-        <h3 class="text-xl font-display font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-plus-circle text-purple-500"></i> Crea Progetto
-        </h3>
+        <h3 class="text-xl font-display font-bold text-white">Crea Nuovo Progetto</h3>
         <button onclick="closeCreationModal()" class="text-gray-400 hover:text-white text-xl font-bold">&times;</button>
       </div>
 
-      <div class="mb-6">
-          <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2">Seleziona Sistema Destinazione</label>
-          <div class="grid grid-cols-2 gap-3">
-              <button type="button" id="type-btn-rm" onclick="setCreationType('rm')" class="p-3 rounded-xl border border-purple-500 bg-purple-500/20 text-white font-bold text-xs flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-house-laptop"></i> RM Studio Portale
-              </button>
-              <button type="button" id="type-btn-vision" onclick="setCreationType('vision')" class="p-3 rounded-xl border border-zinc-800 bg-[#15151a] text-gray-400 font-bold text-xs flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-clapperboard"></i> Vision UGC Video
-              </button>
-          </div>
-      </div>
-
-      <!-- FORM RM STUDIO -->
-      <form id="form-rm-studio" onsubmit="handleCreateRM(event)" class="space-y-4">
-          <div>
-              <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Nome Cliente / Azienda</label>
-              <input type="text" id="rm-client-name" required placeholder="Es. Dott.ssa Valeria Cortese" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
-          </div>
-          <div class="grid grid-cols-2 gap-4">
-              <div>
-                  <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Email Cliente</label>
-                  <input type="email" id="rm-email" placeholder="studio@rossi.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
-              </div>
-              <div>
-                  <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Telefono WhatsApp</label>
-                  <input type="text" id="rm-phone" placeholder="+393401234567" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
-              </div>
-          </div>
-          <div class="grid grid-cols-3 gap-4">
-              <div class="col-span-2">
-                  <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Titolo Progetto</label>
-                  <input type="text" id="rm-title" required placeholder="Sito Web Professionale d'Autore" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
-              </div>
-              <div>
-                  <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Prezzo (€)</label>
-                  <input type="number" id="rm-price" value="400" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
-              </div>
-          </div>
-          <div>
-              <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">Tipo Contenuto</label>
-              <select id="rm-type" onchange="toggleRMInputFields()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white font-semibold outline-none focus:border-purple-500">
-                  <option value="html">Sito / Pagina Web (Link HTML)</option>
-                  <option value="video">Video Singolo (.mp4)</option>
-                  <option value="carousel">Carosello Immagini</option>
-                  <option value="link">Link Esterno / Demo</option>
-              </select>
-          </div>
-          <div id="rm-file-section" class="hidden border-2 border-dashed border-zinc-800 rounded-xl p-4 text-center cursor-pointer hover:border-purple-500/50 transition-all">
-              <input type="file" id="rm-file" class="hidden">
-              <div onclick="document.getElementById('rm-file').click()">
-                  <i class="fa-solid fa-cloud-arrow-up text-lg text-purple-400 mb-1"></i>
-                  <span class="block text-xs font-bold text-gray-300">Carica File</span>
-              </div>
-          </div>
-          <div id="rm-link-section">
-              <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1">URL Destinazione / Sitengine</label>
-              <input type="url" id="rm-url" placeholder="https://sitengine.rmstudio.app/demo" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
-          </div>
-          <button type="submit" id="btn-submit-rm" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all mt-4">
-              Salva Portale RM Studio
-          </button>
-      </form>
-
-      <!-- FORM VISION UGC -->
-      <form id="form-vision-ugc" onsubmit="handleCreateVision(event)" class="space-y-4 hidden">
-          <div class="grid grid-cols-2 gap-4">
-              <div>
-                  <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">ID Cliente (univoco)</label>
-                  <input type="text" id="v-client-id" required placeholder="mario-rossi" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-white outline-none focus:border-purple-500 text-sm">
-              </div>
-              <div>
-                  <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Nome Cliente</label>
-                  <input type="text" id="v-nome" required placeholder="Mario Rossi" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-white outline-none focus:border-purple-500 text-sm">
-              </div>
-          </div>
-          <div>
-              <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Email Cliente</label>
-              <input type="email" id="v-email" required placeholder="mario@azienda.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-white outline-none focus:border-purple-500 text-sm">
-          </div>
-          <div>
-              <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Titolo Video</label>
-              <input type="text" id="v-titolo" required placeholder="Video UGC Recensione Swatch" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-white outline-none focus:border-purple-500 text-sm">
-          </div>
-          <div>
-              <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">URL Video S3 / Cloudflare R2</label>
-              <input type="url" id="v-s3" required placeholder="https://pub-...r2.dev/..." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-white outline-none focus:border-purple-500 text-sm">
-          </div>
-          <div class="grid grid-cols-2 gap-4">
-              <div>
-                  <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Prezzo (€)</label>
-                  <input type="number" id="v-prezzo" required value="49" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-white outline-none focus:border-purple-500 text-sm">
-              </div>
-              <div>
-                  <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Token Auto</label>
-                  <input type="text" id="v-token" readonly class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-gray-400 outline-none text-sm cursor-not-allowed">
-              </div>
-          </div>
-          <div>
-              <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Link Stripe (Facoltativo)</label>
-              <input type="url" id="v-stripe" placeholder="https://buy.stripe.com/..." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-white outline-none focus:border-purple-500 text-sm">
-          </div>
-          <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all mt-4">
-              Salva Progetto Vision UGC
-          </button>
+      <form id="create-project-form" onsubmit="handleCreateSubmit(event)" class="space-y-4">
+        <div>
+            <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Nome Lead / Professionista</label>
+            <input type="text" id="c-name" required placeholder="Dott.ssa Valeria Cortese" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Email</label>
+                <input type="email" id="c-email" placeholder="studio@rossi.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Telefono / WhatsApp</label>
+                <input type="text" id="c-phone" placeholder="+393401234567" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
+            </div>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+            <div class="col-span-2">
+                <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Titolo Progetto</label>
+                <input type="text" id="c-title" required placeholder="Sito Web Professionale" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Prezzo (€)</label>
+                <input type="number" id="c-price" value="400" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
+            </div>
+        </div>
+        <div>
+            <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Tipologia Contenuto</label>
+            <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+                <option value="html">Sito / Pagina Web (Link HTML)</option>
+                <option value="video">Video Singolo (.mp4)</option>
+                <option value="vision">Vision UGC Video</option>
+                <option value="carousel">Carosello Immagini</option>
+            </select>
+        </div>
+        <div id="file-upload-box" class="hidden border-2 border-dashed border-zinc-800 rounded-xl p-4 text-center cursor-pointer hover:border-purple-500/50">
+            <input type="file" id="c-file" class="hidden">
+            <div onclick="document.getElementById('c-file').click()">
+                <i class="fa-solid fa-cloud-arrow-up text-lg text-purple-400 mb-1"></i>
+                <span class="block text-xs font-bold text-gray-300">Carica File Media</span>
+            </div>
+        </div>
+        <div id="link-input-box">
+            <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">URL / Link Esterno</label>
+            <input type="url" id="c-url" placeholder="https://sitengine.rmstudio.app/demo" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
+        </div>
+        <button type="submit" id="c-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider mt-4">
+            Salva e Registra Progetto
+        </button>
       </form>
     </div>
   </div>
 
+  <!-- MODALE MESSAGGI PRONTI WA/EMAIL -->
+  <div id="copy-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
+    <div class="glass p-8 rounded-3xl max-w-lg w-full border border-zinc-800 shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-display font-bold text-white flex items-center gap-2"><i class="fa-solid fa-comment-dots text-purple-400"></i> Copy Pronto da Inviare</h3>
+        <button onclick="closeCopyModal()" class="text-gray-400 hover:text-white text-xl font-bold">&times;</button>
+      </div>
+      <textarea id="copy-text-area" readonly class="w-full h-48 bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-xs text-gray-200 outline-none resize-none font-mono mb-4 leading-relaxed"></textarea>
+      <div class="flex gap-3">
+          <button onclick="executeCopyText()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-xs transition">
+            <i class="fa-solid fa-copy"></i> Copia Testo
+          </button>
+          <a id="copy-wa-direct-link" target="_blank" href="#" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-xs text-center transition flex items-center justify-center gap-2">
+            <i class="fa-brands fa-whatsapp"></i> Apri WhatsApp
+          </a>
+      </div>
+    </div>
+  </div>
 
-  <!-- ==================== LOGICA UNIFICATA E SICUREZZA ==================== -->
-  <script>
-    const supabaseUrl = 'https://jhijfulhntlhcytbhcly.supabase.co'; 
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ'; 
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
-    const n8nCreateEndpoint = 'https://n8n.rmstudio.app/webhook/admin-create-portal';
-    const deleteWebhook = 'https://n8n.rmstudio.app/webhook/delete-portal-video';
-    const N8N_VISION_URL = 'https://n8n.rmstudio.app/webhook/vision-admin';
-
-    let authToken = localStorage.getItem('unified_admin_pass') || '';
-    window.allCombinedProjects = [];
-
-    // AUTO-START SICUREZZA
-    window.addEventListener('DOMContentLoaded', () => {
-        if (authToken) {
-            verifyAndInit();
-        }
-    });
-
-    async function handleLoginSubmit(e) {
-        e.preventDefault();
-        const btn = document.getElementById('login-btn');
-        const pwdInput = document.getElementById('admin-password');
-        const pass = pwdInput.value.trim();
-
-        if (!pass) return alert("Inserisci la password.");
-
-        btn.disabled = true;
-        btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Verifica in corso...`;
-
-        authToken = pass;
-        const success = await loadAllUnifiedData();
-
-        if (success) {
-            localStorage.setItem('unified_admin_pass', pass);
-            document.getElementById('auth-screen').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-        } else {
-            alert("Password non corretta o server non raggiungibile.");
-            btn.disabled = false;
-            btn.innerHTML = `<i class="fa-solid fa-key"></i> Sblocca Control Center`;
-        }
-    }
-
-    async function verifyAndInit() {
-        const success = await loadAllUnifiedData();
-        if (success) {
-            document.getElementById('auth-screen').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
-        } else {
-            logout();
-        }
-    }
-
-    function logout() {
-        localStorage.removeItem('unified_admin_pass');
-        location.reload();
-    }
-
-    // CARICAMENTO ED UNIFICAZIONE DATI
-    async function loadAllUnifiedData() {
-        try {
-            // 1. Carica Supabase (RM Studio)
-            const { data: rmData, error: rmError } = await supabaseClient
-                .from('portal_videos')
-                .select('*')
-                .order('sent_at', { ascending: false });
-
-            if (rmError) console.error("Errore Supabase:", rmError);
-
-            // 2. Carica n8n / Google Sheets (Vision UGC)
-            let visionData = [];
-            const res = await fetch(N8N_VISION_URL, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': authToken 
-                },
-                body: JSON.stringify({ action: 'read' })
-            });
-
-            if (res.status === 401 || res.status === 403) {
-                return false; // Password Sbagliata
-            }
-
-            if (res.ok) {
-                visionData = await res.json();
-            }
-
-            // 3. Normalizza in un unico array di progetti
-            const normalizedRM = (rmData || []).map(v => ({
-                source: 'rm',
-                id: v.id,
-                client_name: v.client_name || 'Cliente RM',
-                client_email: v.client_email || '',
-                client_phone: v.client_phone || '',
-                title: v.title || 'Senza Titolo',
-                price: parseFloat(v.price_euro || 0),
-                portal_type: v.portal_type || 'html',
-                is_paid: v.is_paid === true || v.is_paid === "true",
-                views_count: v.views_count || 0,
-                is_opened: v.is_opened || v.views_count > 0,
-                is_whatsapp_sent: v.is_whatsapp_sent || false,
-                notes: v.notes || '',
-                raw: v
-            }));
-
-            const normalizedVision = (Array.isArray(visionData) ? visionData : []).map((v, index) => ({
-                source: 'vision',
-                id: v.client_id || `v-${index}`,
-                client_name: v.nome_cliente || 'Cliente Vision',
-                client_email: v.email_cliente || '',
-                client_phone: '',
-                title: v.titolo_video || 'Video UGC',
-                price: parseFloat(v.prezzo || 49),
-                portal_type: 'video_ugc',
-                is_paid: (v.stato || '').toLowerCase().trim() === 'pagato',
-                token: v.token || '',
-                stripe_link: v.stripe_link || '',
-                s3_url: v.s3_url || '',
-                rowNumber: index + 2,
-                raw: v
-            }));
-
-            window.allCombinedProjects = [...normalizedRM, ...normalizedVision];
-            applyUnifiedFilters();
-            return true;
-
-        } catch (err) {
-            console.error("Errore generale caricamento:", err);
-            return false;
-        }
-    }
-
-    // FILTRI E RENDER
-    function applyUnifiedFilters() {
-        const filterSys = document.getElementById('filter-system').value;
-        const filterName = document.getElementById('filter-name').value.toLowerCase().trim();
-        const filterContact = document.getElementById('filter-contact').value.toLowerCase().trim();
-        const filterPaid = document.getElementById('filter-paid').value;
-
-        const filtered = window.allCombinedProjects.filter(item => {
-            if (filterSys !== 'all' && item.source !== filterSys) return false;
-            
-            const matchesName = item.client_name.toLowerCase().includes(filterName);
-            const matchesContact = item.client_email.toLowerCase().includes(filterContact) || item.client_phone.toLowerCase().includes(filterContact);
-            if (!matchesName || !matchesContact) return false;
-
-            if (filterPaid === 'paid' && !item.is_paid) return false;
-            if (filterPaid === 'unpaid' && item.is_paid) return false;
-
-            return true;
-        });
-
-        renderMasterTable(filtered);
-    }
-
-    function renderMasterTable(data) {
-        let totalRev = 0, totalPaid = 0, totalProjects = data.length;
-
-        data.forEach(p => {
-            if (p.is_paid) {
-                totalRev += p.price;
-                totalPaid++;
-            }
-        });
-
-        const convRate = totalProjects > 0 ? Math.round((totalPaid / totalProjects) * 100) : 0;
-
-        document.getElementById('stat-revenue').innerText = `€${totalRev.toFixed(2)}`;
-        document.getElementById('stat-total-projects').innerText = totalProjects;
-        document.getElementById('stat-paid-ratio').innerText = `${totalPaid} / ${totalProjects}`;
-        document.getElementById('stat-conversion').innerText = `${convRate}%`;
-
-        const container = document.getElementById('master-rows-container');
-        container.innerHTML = '';
-
-        if (data.length === 0) {
-            container.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-gray-500 font-semibold">Nessun progetto trovato.</td></tr>`;
-            return;
-        }
-
-        data.forEach(p => {
-            const tr = document.createElement('tr');
-            tr.className = "hover:bg-[#101015] transition-colors border-b border-zinc-900/80";
-
-            let systemBadge = p.source === 'rm' 
-                ? `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[9px] font-bold px-2 py-0.5 rounded-full">🌐 RM Studio</span>`
-                : `<span class="bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[9px] font-bold px-2 py-0.5 rounded-full">🎬 Vision UGC</span>`;
-
-            let linkBtn = p.source === 'rm'
-                ? `<button onclick="copyPortalLink('${p.id}')" class="text-purple-400 hover:text-purple-300 bg-purple-500/10 border border-purple-500/20 px-2.5 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1" title="Copia Link Portale"><i class="fa-solid fa-link"></i> Link</button>`
-                : `<button onclick="copyVisionLink('${p.token}')" class="text-pink-400 hover:text-pink-300 bg-pink-500/10 border border-pink-500/20 px-2.5 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1" title="Copia Magic Link Vision"><i class="fa-solid fa-link"></i> Link</button>`;
-
-            let actionGroup = '';
-            if (p.source === 'vision') {
-                actionGroup = `
-                    <button onclick="copyFilenameToClipboard('${p.id}', '${p.title}')" class="text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 px-2 py-1 rounded-lg text-[10px]" title="Nome File Drive">📁 File</button>
-                    <button onclick="sendVisionNotification('${p.id}', ${p.rowNumber})" class="text-purple-300 bg-purple-600/20 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-[10px]" title="Invia Mail Resend">✉️ Mail</button>
-                `;
-            } else {
-                actionGroup = `
-                    <button onclick="deleteRow('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
-                `;
-            }
-
-            tr.innerHTML = `
-                <td class="p-4">
-                    <div class="mb-1">${systemBadge}</div>
-                    <span class="font-mono text-[10px] text-gray-500 block font-bold">#${p.id.substring(0, 8)}</span>
-                </td>
-                <td class="p-4">
-                    <div class="font-bold text-white text-sm">${p.client_name}</div>
-                    <div class="text-xs text-gray-400">${p.client_email || ''} ${p.client_phone ? '· ' + p.client_phone : ''}</div>
-                </td>
-                <td class="p-4">
-                    <div class="font-semibold text-gray-200 text-xs">${p.title}</div>
-                    <span class="text-[9px] uppercase font-bold text-gray-500">${p.portal_type}</span>
-                </td>
-                <td class="p-4 font-bold text-purple-400 text-xs">€${p.price.toFixed(2)}</td>
-                <td class="p-4">
-                    <button onclick="togglePaymentStatus('${p.source}', '${p.id}', ${p.is_paid}, ${p.rowNumber || 0})" class="px-2.5 py-1 rounded-full text-[10px] font-bold transition ${p.is_paid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
-                        ${p.is_paid ? '✓ Pagato' : '● Attesa'}
-                    </button>
-                </td>
-                <td class="p-4 text-xs font-mono text-gray-400">
-                    ${p.source === 'rm' ? `<span class="text-blue-400 font-bold">${p.views_count} viste</span>` : `<span title="${p.token}">${p.token ? p.token.substring(0, 6) + '...' : '-'}</span>`}
-                </td>
-                <td class="p-4 text-right flex items-center justify-end gap-1.5 whitespace-nowrap">
-                    ${linkBtn}
-                    ${actionGroup}
-                </td>
-            `;
-            container.appendChild(tr);
-        });
-    }
-
-    // AZIONI DI MODIFICA STATO
-    async function togglePaymentStatus(source, id, currentPaid, rowNumber) {
-        const newPaid = !currentPaid;
-        if (source === 'rm') {
-            const { error } = await supabaseClient.from('portal_videos').update({ is_paid: newPaid }).eq('id', id);
-            if (error) alert("Errore aggiornamento: " + error.message);
-            else loadAllUnifiedData();
-        } else {
-            const newStato = newPaid ? 'pagato' : 'da_pagare';
-            try {
-                const res = await fetch(N8N_VISION_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': authToken },
-                    body: JSON.stringify({ action: 'update_status', client_id: id, stato: newStato, row: rowNumber })
-                });
-                if (res.ok) loadAllUnifiedData();
-                else alert("Errore aggiornamento Vision.");
-            } catch { alert("Errore di rete."); }
-        }
-    }
-
-    // AZIONI UTILI
-    function copyPortalLink(id) {
-        navigator.clipboard.writeText(`https://portale.rmstudio.app/view.html?id=${id}`).then(() => alert("Link Portale RM Copiato!"));
-    }
-
-    function copyVisionLink(token) {
-        navigator.clipboard.writeText(`${window.location.origin}/vision-preview?token=${token}`).then(() => alert("Magic Link Vision Copiato!"));
-    }
-
-    function copyFilenameToClipboard(clientId, title) {
-        const cleanTitle = title.replace(/[\\/:*?"<>|]/g, "").trim();
-        const filename = `${clientId.trim()}##${cleanTitle}.mp4`;
-        navigator.clipboard.writeText(filename).then(() => alert(`Nome file copiato per Google Drive:\n\n${filename}`));
-    }
-
-    async function sendVisionNotification(clientId, rowNumber) {
-        if (!confirm(`Inviare e-mail di notifica a ${clientId}?`)) return;
-        try {
-            const res = await fetch(N8N_VISION_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': authToken },
-                body: JSON.stringify({ action: 'send_email', client_id: clientId, row: rowNumber, origin: window.location.origin })
-            });
-            if (res.ok) alert("Email inviata con successo!");
-            else alert("Errore invio email.");
-        } catch { alert("Errore di rete."); }
-    }
-
-    async function deleteRow(id) {
-        if (!confirm("Cancellare definitivamente questo progetto?")) return;
-        try {
-            const res = await fetch(deleteWebhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
-            if (res.ok) loadAllUnifiedData();
-            else alert("Errore eliminazione.");
-        } catch (err) { alert("Errore: " + err.message); }
-    }
-
-
-    // MODALE CREAZIONE PROGETTI UNIFICATA
-    function openCreationModal() {
-        document.getElementById('creation-modal').classList.remove('hidden');
-        document.getElementById('creation-modal').classList.add('flex');
-        document.getElementById('v-token').value = 'v_' + Math.random().toString(36).substring(2, 15);
-    }
-
-    function closeCreationModal() {
-        document.getElementById('creation-modal').classList.remove('flex');
-        document.getElementById('creation-modal').classList.add('hidden');
-    }
-
-    function setCreationType(type) {
-        const btnRm = document.getElementById('type-btn-rm');
-        const btnVision = document.getElementById('type-btn-vision');
-        const formRm = document.getElementById('form-rm-studio');
-        const formVision = document.getElementById('form-vision-ugc');
-
-        if (type === 'rm') {
-            btnRm.className = "p-3 rounded-xl border border-purple-500 bg-purple-500/20 text-white font-bold text-xs flex items-center justify-center gap-2";
-            btnVision.className = "p-3 rounded-xl border border-zinc-800 bg-[#15151a] text-gray-400 font-bold text-xs flex items-center justify-center gap-2";
-            formRm.classList.remove('hidden');
-            formVision.classList.add('hidden');
-        } else {
-            btnVision.className = "p-3 rounded-xl border border-purple-500 bg-purple-500/20 text-white font-bold text-xs flex items-center justify-center gap-2";
-            btnRm.className = "p-3 rounded-xl border border-zinc-800 bg-[#15151a] text-gray-400 font-bold text-xs flex items-center justify-center gap-2";
-            formVision.classList.remove('hidden');
-            formRm.classList.add('hidden');
-        }
-    }
-
-    function toggleRMInputFields() {
-            const type = document.getElementById('rm-type').value;
-            const fileSec = document.getElementById('rm-file-section');
-            const linkSec = document.getElementById('rm-link-section');
-            const fileInput = document.getElementById('rm-file');
-        
-            if (type === 'html' || type === 'link') {
-                fileSec.classList.add('hidden');
-                linkSec.classList.remove('hidden');
-            } else {
-                fileSec.classList.remove('hidden');
-                linkSec.classList.add('hidden');
-                
-                if (type === 'carousel') {
-                    fileInput.setAttribute('multiple', 'true');
-                    fileInput.setAttribute('accept', 'image/*');
-                } else {
-                    fileInput.removeAttribute('multiple');
-                    fileInput.setAttribute('accept', 'video/mp4');
-                }
-            }
-        }
-        
-        // Mostra il numero di file o il nome del file selezionato
-        document.getElementById('rm-file').addEventListener('change', function() {
-            const files = this.files;
-            if (files.length > 0) {
-                document.getElementById('rm-file-section').classList.add('upload-success-glow');
-                const label = files.length === 1 ? files[0].name : `${files.length} immagini selezionate`;
-                alert(`Pronto al caricamento: ${label}`);
-            }
-        });
-
-    async function handleCreateRM(e) {
-        e.preventDefault();
-        const btn = document.getElementById('btn-submit-rm');
-        btn.disabled = true;
-        btn.innerText = "Salvataggio in corso...";
-
-        const formData = new FormData();
-        formData.append('client_name', document.getElementById('rm-client-name').value);
-        formData.append('email', document.getElementById('rm-email').value || '');
-        formData.append('client_phone', document.getElementById('rm-phone').value || '');
-        formData.append('title', document.getElementById('rm-title').value);
-        formData.append('price', document.getElementById('rm-price').value);
-        const type = document.getElementById('rm-type').value;
-        formData.append('portal_type', type);
-
-        if (type === 'video' || type === 'carousel') {
-            const fileInput = document.getElementById('rm-file');
-            for (let i = 0; i < fileInput.files.length; i++) { formData.append(`file_${i}`, fileInput.files[i]); }
-        } else {
-            formData.append('external_url', document.getElementById('rm-url').value);
-        }
-
-        try {
-            const res = await fetch(n8nCreateEndpoint, { method: 'POST', body: formData });
-            if (res.ok) {
-                alert("Portale RM Studio creato!");
-                closeCreationModal();
-                loadAllUnifiedData();
-            } else alert("Errore creazione.");
-        } catch (err) { alert("Errore: " + err.message); }
-        finally { btn.disabled = false; btn.innerText = "Salva Portale RM Studio"; }
-    }
-
-    async function handleCreateVision(e) {
-        e.preventDefault();
-        const payload = {
-            action: 'create',
-            client_id: document.getElementById('v-client-id').value.trim(),
-            nome_cliente: document.getElementById('v-nome').value.trim(),
-            email_cliente: document.getElementById('v-email').value.trim(),
-            titolo_video: document.getElementById('v-titolo').value.trim(),
-            s3_url: document.getElementById('v-s3').value.trim(),
-            prezzo: document.getElementById('v-prezzo').value.trim(),
-            stato: 'da_pagare',
-            token: document.getElementById('v-token').value.trim(),
-            stripe_link: document.getElementById('v-stripe').value.trim()
-        };
-
-        try {
-            const res = await fetch(N8N_VISION_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': authToken },
-                body: JSON.stringify(payload)
-            });
-
-            if (res.ok) {
-                alert("Progetto Vision UGC Creato!");
-                closeCreationModal();
-                loadAllUnifiedData();
-            } else alert("Errore durante il salvataggio.");
-        } catch { alert("Errore di rete."); }
-    }
-
-    // Realtime Supabase
-    supabaseClient
-        .channel('realtime_portal_changes')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'portal_videos' }, () => {
-            loadAllUnifiedData();
-        })
-        .subscribe();
-  </script>
+  <!-- Scripts Modularizzati -->
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/copy-templates.js"></script>
+  <script src="js/supabase-api.js"></script>
+  <script src="js/n8n-api.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
