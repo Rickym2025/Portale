@@ -15,9 +15,9 @@ function toggleSidebar() {
     sidebar.classList.toggle('sidebar-collapsed');
 
     if (sidebar.classList.contains('sidebar-collapsed')) {
-        icon.className = 'fa-solid fa-chevron-right';
+        if (icon) icon.className = 'fa-solid fa-chevron-right';
     } else {
-        icon.className = 'fa-solid fa-chevron-left';
+        if (icon) icon.className = 'fa-solid fa-chevron-left';
     }
 }
 
@@ -77,14 +77,14 @@ function renderMasterTable(data) {
         const isRead = views > 0;
         const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
 
-        let typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
+        let typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
 
         const portalViewUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
 
         // Pulsante Pitch Jingle SOLTANTO se letto (visite > 0) e non ancora pagato
         let closingPitchBtn = '';
         if (isRead && !isPaid) {
-            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-3 py-1.5 rounded-lg text-xs font-black transition animate-pulse" title="Pitch Chiusura Jingle"><i class="fa-solid fa-fire"></i> Pitch Jingle</button>`;
+            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2 py-1 rounded-lg text-[9px] font-black transition animate-pulse" title="Pitch Chiusura Jingle"><i class="fa-solid fa-fire"></i> Pitch Jingle</button>`;
         }
 
         tr.innerHTML = `
@@ -94,7 +94,7 @@ function renderMasterTable(data) {
                 <span class="font-mono text-xs text-gray-400 block mt-1 font-bold">#${p.id ? p.id.substring(0, 4).toUpperCase() : '---'}</span>
             </td>
 
-            <!-- CLIENTE, EMAIL, TELEFONO EDITABILI (FONT 16PX BASE) -->
+            <!-- CLIENTE, EMAIL, TELEFONO EDITABILI (FONT LARGE) -->
             <td class="p-4">
                 <input type="text" value="${p.client_name || ''}" placeholder="Nome Cliente" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-extrabold text-white text-base block w-full mb-1">
                 <div class="space-y-1">
@@ -147,11 +147,11 @@ function renderMasterTable(data) {
             </td>
 
             <!-- AZIONI RAPIDE -->
-            <td class="p-4 text-right flex items-center justify-end gap-2 whitespace-nowrap">
+            <td class="p-4 text-right flex items-center justify-end gap-1.5 whitespace-nowrap">
                 ${closingPitchBtn}
-                <button onclick="sendResendDirectEmail('${p.id}', '${p.client_email || ''}', '${p.client_name || ''}', '${p.title || ''}', '${portalViewUrl}')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Invia Mail con Resend"><i class="fa-solid fa-paper-plane"></i> Mail</button>
-                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-3 py-1.5 rounded-lg text-xs font-bold transition" title="Copy WA"><i class="fa-brands fa-whatsapp"></i> WA</button>
-                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1.5 rounded transition" title="Elimina"><i class="fa-solid fa-trash-can text-sm"></i></button>
+                <button onclick="sendResendDirectEmail('${p.id}', '${p.client_email || ''}', '${p.client_name || ''}', '${p.title || ''}', '${portalViewUrl}')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Invia Mail con Resend"><i class="fa-solid fa-paper-plane"></i> Mail</button>
+                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2.5 py-1.5 rounded-lg text-xs font-bold transition" title="Copy WA"><i class="fa-brands fa-whatsapp"></i> WA</button>
+                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1.5 rounded transition" title="Elimina Progetto"><i class="fa-solid fa-trash-can text-sm"></i></button>
             </td>
         `;
         container.appendChild(tr);
@@ -217,13 +217,24 @@ function openClosingPitchModal(projectId) {
     document.getElementById('copy-modal').classList.add('flex');
 }
 
+// APERTURA MODALE RAPIDA DA SIDEBAR
+function quickOpenCreate(typeKey) {
+    const select = document.getElementById('c-type');
+    if (select) {
+        select.value = typeKey;
+        toggleModalFields();
+    }
+    openCreationModal();
+}
+
 async function togglePayment(id, current) {
     await updateSupabaseField(id, 'is_paid', !current);
     loadMasterData();
 }
 
+// CANCELLAZIONE DEFINITIVA TRAMITE N8N WEBHOOK
 async function handleDelete(id) {
-    if (!confirm("Eliminare definitivamente questo progetto e tutte le sue risorse da tutti i database?")) return;
+    if (!confirm("Eliminare definitivamente questo progetto e tutte le sue risorse da tutti i server e database?")) return;
     
     try {
         const ok = await triggerN8NDelete(id);
@@ -321,3 +332,43 @@ async function handleCreateSubmit(e) {
     btn.disabled = false;
     btn.innerText = "Salva e Registra Progetto";
 }
+
+// RIDIMENSIONAMENTO TRASCINABILE DELLA SIDEBAR
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.getElementById('sidebar');
+    const resizer = document.getElementById('resizer');
+    
+    if (!sidebar || !resizer) return;
+
+    const savedWidth = localStorage.getItem('sidebar_width');
+    if (savedWidth) {
+        sidebar.style.width = `${savedWidth}px`;
+    }
+
+    let x = 0;
+    let w = 0;
+
+    const mouseDownHandler = (e) => {
+        x = e.clientX;
+        w = sidebar.getBoundingClientRect().width;
+
+        resizer.classList.add('resizing');
+        document.addEventListener('mousemove', mouseMoveHandler);
+        document.addEventListener('mouseup', mouseUpHandler);
+    };
+
+    const mouseMoveHandler = (e) => {
+        const dx = e.clientX - x;
+        const newWidth = Math.min(Math.max(w + dx, 220), 480);
+        sidebar.style.width = `${newWidth}px`;
+        localStorage.setItem('sidebar_width', newWidth);
+    };
+
+    const mouseUpHandler = () => {
+        resizer.classList.remove('resizing');
+        document.removeEventListener('mousemove', mouseMoveHandler);
+        document.removeEventListener('mouseup', mouseUpHandler);
+    };
+
+    resizer.addEventListener('mousedown', mouseDownHandler);
+});
