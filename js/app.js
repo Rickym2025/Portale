@@ -1,4 +1,81 @@
 window.allProjects = [];
+// VARIABILE PER MEMORIZZARE I RISTORANTI DA GOOGLE SHEETS
+window.sheetPendingRestaurants = [];
+
+// CARICA I RISTORANTI DA ELABORARE DAL FOGLIO GOOGLE
+async function fetchPendingRestaurantsFromSheet() {
+    const select = document.getElementById('c-sheet-restaurant');
+    if (!select) return;
+
+    select.innerHTML = `<option value="">Caricamento dal Foglio Google in corso...</option>`;
+
+    try {
+        const res = await fetch('https://n8n.rmstudio.app/webhook/get-pending-restaurants');
+        const data = await res.json();
+
+        if (data.success && data.restaurants && data.restaurants.length > 0) {
+            window.sheetPendingRestaurants = data.restaurants;
+            let optionsHtml = `<option value="">-- Seleziona un Ristorante dal Foglio (${data.restaurants.length} pronti) --</option>`;
+            
+            data.restaurants.forEach((r, idx) => {
+                optionsHtml += `<option value="${idx}">${r.nome} (${r.sito})</option>`;
+            });
+
+            select.innerHTML = optionsHtml;
+        } else {
+            select.innerHTML = `<option value="">Tutti i ristoranti del foglio sono stati elaborati! 🎉</option>`;
+        }
+    } catch (err) {
+        select.innerHTML = `<option value="">Errore caricamento dal Foglio Google</option>`;
+    }
+}
+
+// AUTO-COMPILA I CAMPI QUANDO SELEZIONI UN RISTORANTE DAL MENU A TENDINA
+function onRestaurantSelectedFromSheet() {
+    const idx = document.getElementById('c-sheet-restaurant').value;
+    if (idx === "" || !window.sheetPendingRestaurants[idx]) return;
+
+    const selected = window.sheetPendingRestaurants[idx];
+
+    if (selected.nome) document.getElementById('c-name').value = selected.nome;
+    if (selected.sito) document.getElementById('c-url').value = selected.sito;
+    if (selected.telefono) document.getElementById('c-phone').value = selected.telefono;
+    
+    document.getElementById('c-title').value = "Smart Experience Page";
+    document.getElementById('c-price').value = 390;
+}
+
+// AGGIORNA toggleModalFields PER MOSTRARE IL SELETTORE
+function toggleModalFields() {
+    const t = document.getElementById('c-type').value;
+    const titleInput = document.getElementById('c-title');
+
+    if (titleInput) {
+        if (t === 'experience') {
+            titleInput.value = "Smart Experience Page";
+            fetchPendingRestaurantsFromSheet(); // ⚡ Carica la lista dal Foglio Google
+        } else if (t === 'html') {
+            titleInput.value = "Sito Web";
+        } else if (t === 'vision') {
+            titleInput.value = "Vision UGC Video";
+        } else if (t === 'video') {
+            titleInput.value = "HomeTour Video";
+        } else if (t === 'voice_ai') {
+            titleInput.value = "Voice AI Assistente";
+        } else if (t === 'license') {
+            titleInput.value = "Licenza Software";
+        }
+    }
+
+    const sheetBox = document.getElementById('experience-sheet-select-box');
+    if (sheetBox) sheetBox.classList.toggle('hidden', t !== 'experience');
+
+    const fileBox = document.getElementById('file-upload-box');
+    const linkBox = document.getElementById('link-input-box');
+    
+    if (fileBox) fileBox.classList.toggle('hidden', t === 'html' || t === 'link' || t === 'experience');
+    if (linkBox) linkBox.classList.toggle('hidden', t !== 'html' && t !== 'link' && t !== 'experience');
+}
 
 // Funzione Helper per calcolare i giorni trascorsi
 function getDaysAgo(dateStr) {
