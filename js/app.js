@@ -223,10 +223,21 @@ async function togglePayment(id, current) {
 }
 
 async function handleDelete(id) {
-    if (!confirm("Eliminare definitivamente questo progetto?")) return;
-    const ok = await triggerN8NDelete(id);
-    if (ok) loadMasterData();
-    else alert("Errore eliminazione.");
+    if (!confirm("Sei sicuro di voler eliminare definitivamente questo progetto dal Portale?")) return;
+    
+    try {
+        const { error } = await supabaseClient
+            .from('portal_videos')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+
+        alert("🗑️ Progetto eliminato con successo!");
+        await loadMasterData(); // Ricarica la tabella in tempo reale
+    } catch (err) {
+        alert("Errore durante l'eliminazione: " + err.message);
+    }
 }
 
 function switchTab(tab) {
