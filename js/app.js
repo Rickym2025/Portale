@@ -1,5 +1,17 @@
 window.allProjects = [];
 
+// Funzione Helper per calcolare i giorni trascorsi
+function getDaysAgo(dateStr) {
+    if (!dateStr) return null;
+    const past = new Date(dateStr);
+    const now = new Date();
+    const diffTime = Math.abs(now - past);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) return "Oggi";
+    if (diffDays === 1) return "1 gg fa";
+    return `${diffDays} gg fa`;
+}
+
 async function loadMasterData() {
     const data = await fetchSupabaseProjects();
     window.allProjects = data;
@@ -7,7 +19,7 @@ async function loadMasterData() {
     return true;
 }
 
-// TOGGLE COLLAPSE SIDEBAR
+// TOGGLE CONTRAZIONE SIDEBAR IN ICON RAIL
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const icon = document.getElementById('sidebar-icon');
@@ -16,8 +28,10 @@ function toggleSidebar() {
 
     if (sidebar.classList.contains('sidebar-collapsed')) {
         if (icon) icon.className = 'fa-solid fa-chevron-right';
+        localStorage.setItem('sidebar_collapsed', 'true');
     } else {
         if (icon) icon.className = 'fa-solid fa-chevron-left';
+        localStorage.setItem('sidebar_collapsed', 'false');
     }
 }
 
@@ -72,19 +86,27 @@ function renderMasterTable(data) {
         tr.className = "hover:bg-[#101015] transition border-b border-zinc-900/80";
 
         const isPaid = p.is_paid === true || p.is_paid === "true";
-        // ⚡ CORREZIONE RIGIDA: È "Letto" SOLTANTO SE LE VISITE SONO MAGGIORI DI 0
         const views = parseInt(p.views_count || 0);
+        
+        // ⚡ CORREZIONE RIGIDA: È "Letto" SOLTANTO SE LE VISITE SONO > 0
         const isRead = views > 0;
         const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
 
-        let typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
+        // Calcolo date e giorni trascorsi
+        const sendDateFormatted = p.sent_at ? new Date(p.sent_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
+        const sendDaysAgo = getDaysAgo(p.sent_at);
+        
+        const openDateFormatted = p.updated_at ? new Date(p.updated_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
+        const openDaysAgo = getDaysAgo(p.updated_at);
+
+        let typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
 
         const portalViewUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
 
         // Pulsante Pitch Jingle SOLTANTO se letto (visite > 0) e non ancora pagato
         let closingPitchBtn = '';
         if (isRead && !isPaid) {
-            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2 py-1 rounded-lg text-[9px] font-black transition animate-pulse" title="Pitch Chiusura Jingle"><i class="fa-solid fa-fire"></i> Pitch Jingle</button>`;
+            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2.5 py-1.5 rounded-lg text-xs font-black transition animate-pulse" title="Pitch Chiusura Jingle"><i class="fa-solid fa-fire"></i> Pitch Jingle</button>`;
         }
 
         tr.innerHTML = `
@@ -94,7 +116,7 @@ function renderMasterTable(data) {
                 <span class="font-mono text-xs text-gray-400 block mt-1 font-bold">#${p.id ? p.id.substring(0, 4).toUpperCase() : '---'}</span>
             </td>
 
-            <!-- CLIENTE, EMAIL, TELEFONO EDITABILI (FONT LARGE) -->
+            <!-- CLIENTE, EMAIL, TELEFONO EDITABILI -->
             <td class="p-4">
                 <input type="text" value="${p.client_name || ''}" placeholder="Nome Cliente" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-extrabold text-white text-base block w-full mb-1">
                 <div class="space-y-1">
@@ -126,11 +148,14 @@ function renderMasterTable(data) {
                 </label>
             </td>
 
-            <!-- STATO LETTURA / EMAIL INVIATA -->
-            <td class="p-4 whitespace-nowrap">
+            <!-- STATO LETTURA, DATE E GIORNI TRANSCORSI -->
+            <td class="p-4 text-xs whitespace-nowrap">
                 <div class="space-y-1">
-                    ${isRead ? '<span class="text-green-400 font-extrabold text-xs block"><i class="fa-solid fa-eye animate-pulse"></i> Letto ('+views+')</span>' : '<span class="text-zinc-500 font-bold text-xs block"><i class="fa-solid fa-eye-slash"></i> Non letto</span>'}
-                    ${emailSent ? '<span class="text-purple-400 text-xs font-bold block"><i class="fa-solid fa-paper-plane"></i> Mail Inviata</span>' : ''}
+                    ${emailSent ? `<div class="text-purple-400 font-bold"><i class="fa-solid fa-paper-plane"></i> Inviata ${sendDateFormatted || ''} <span class="text-gray-500 font-normal">(${sendDaysAgo || ''})</span></div>` : ''}
+                    ${isRead 
+                        ? `<div class="text-green-400 font-extrabold"><i class="fa-solid fa-eye animate-pulse"></i> Letta (${views}v) ${openDateFormatted ? openDateFormatted : ''} <span class="text-emerald-500 font-bold">(${openDaysAgo || 'Oggi'})</span></div>` 
+                        : `<div class="text-zinc-500 font-bold"><i class="fa-solid fa-eye-slash"></i> Non ancora letta</div>`
+                    }
                 </div>
             </td>
 
@@ -333,16 +358,21 @@ async function handleCreateSubmit(e) {
     btn.innerText = "Salva e Registra Progetto";
 }
 
-// RIDIMENSIONAMENTO TRASCINABILE DELLA SIDEBAR
+// LOGICA RIDIMENSIONAMENTO TRASCINABILE SIDEBAR CON SNAP COMPATTO (<100px)
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const resizer = document.getElementById('resizer');
     
     if (!sidebar || !resizer) return;
 
-    const savedWidth = localStorage.getItem('sidebar_width');
-    if (savedWidth) {
-        sidebar.style.width = `${savedWidth}px`;
+    const isCollapsed = localStorage.getItem('sidebar_collapsed') === 'true';
+    if (isCollapsed) {
+        sidebar.classList.add('sidebar-collapsed');
+    } else {
+        const savedWidth = localStorage.getItem('sidebar_width');
+        if (savedWidth) {
+            sidebar.style.width = `${savedWidth}px`;
+        }
     }
 
     let x = 0;
@@ -359,9 +389,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const mouseMoveHandler = (e) => {
         const dx = e.clientX - x;
-        const newWidth = Math.min(Math.max(w + dx, 220), 480);
-        sidebar.style.width = `${newWidth}px`;
-        localStorage.setItem('sidebar_width', newWidth);
+        let newWidth = w + dx;
+
+        // Se trascini sotto i 120px, passa automaticamente in modalità Icon-Rail
+        if (newWidth < 120) {
+            sidebar.classList.add('sidebar-collapsed');
+            localStorage.setItem('sidebar_collapsed', 'true');
+        } else {
+            sidebar.classList.remove('sidebar-collapsed');
+            newWidth = Math.min(Math.max(newWidth, 220), 480);
+            sidebar.style.width = `${newWidth}px`;
+            localStorage.setItem('sidebar_width', newWidth);
+            localStorage.setItem('sidebar_collapsed', 'false');
+        }
     };
 
     const mouseUpHandler = () => {
