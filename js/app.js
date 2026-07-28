@@ -291,8 +291,9 @@ function toggleModalFields() {
 async function handleCreateSubmit(e) {
     e.preventDefault();
     const btn = document.getElementById('c-btn');
+    const originalText = btn.innerText;
     btn.disabled = true;
-    btn.innerText = "Salvataggio in corso...";
+    btn.innerText = "Analisi AI del Ristorante in corso (può richiedere 20s)...";
 
     const type = document.getElementById('c-type').value;
 
@@ -301,7 +302,7 @@ async function handleCreateSubmit(e) {
         if (!siteUrl) {
             alert("Inserisci l'URL del sito del ristorante nel campo Destinazione.");
             btn.disabled = false;
-            btn.innerText = "Salva e Registra Progetto";
+            btn.innerText = originalText;
             return;
         }
 
@@ -316,23 +317,35 @@ async function handleCreateSubmit(e) {
                 })
             });
 
-            const data = await res.json();
+            if (!res.ok) {
+                throw new Error(`Il server n8n ha risposto con codice ${res.status}`);
+            }
+
+            const text = await res.text();
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (pErr) {
+                throw new Error("Risposta del server non valida. Verifica che il workflow n8n sia ATTIVO.");
+            }
+
             if (data.success) {
                 alert("✨ Smart Experience Page generata con successo!");
                 closeCreationModal();
-                loadMasterData();
+                await loadMasterData();
             } else {
-                throw new Error("Errore durante la generazione n8n.");
+                throw new Error(data.message || "Errore sconosciuto durante la generazione.");
             }
         } catch (err) {
-            alert("Errore generazione: " + err.message);
+            alert("⚠️ " + err.message);
         } finally {
             btn.disabled = false;
-            btn.innerText = "Salva e Registra Progetto";
+            btn.innerText = originalText;
         }
         return;
     }
 
+    // Altri tipi di progetto standard
     const fd = new FormData();
     fd.append('client_name', document.getElementById('c-name').value);
     fd.append('email', document.getElementById('c-email').value || '');
@@ -352,10 +365,11 @@ async function handleCreateSubmit(e) {
     if (ok) {
         alert("Progetto registrato con successo!");
         closeCreationModal();
-        loadMasterData();
+        await loadMasterData();
     } else alert("Errore creazione.");
+    
     btn.disabled = false;
-    btn.innerText = "Salva e Registra Progetto";
+    btn.innerText = originalText;
 }
 
 // LOGICA RIDIMENSIONAMENTO TRASCINABILE SIDEBAR CON SNAP COMPATTO (<100px)
