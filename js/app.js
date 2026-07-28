@@ -79,6 +79,12 @@ function renderMasterTable(data) {
 
         const portalViewUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
 
+        // Se la proposta è stata letta/aperta ma non ancora pagata, attiva il Pitch di Chiusura
+        let closingPitchBtn = '';
+        if (isRead && !isPaid) {
+            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2 py-1 rounded-lg text-[9px] font-black transition animate-pulse" title="Pitch Chiusura Jingle"><i class="fa-solid fa-fire"></i> Pitch Jingle</button>`;
+        }
+
         tr.innerHTML = `
             <!-- TIPO E ID -->
             <td class="p-4 text-center">
@@ -138,12 +144,12 @@ function renderMasterTable(data) {
                 <textarea onchange="updateSupabaseField('${p.id}', 'notes', this.value)" placeholder="Aggiungi note..." class="w-full h-12 bg-transparent text-xs text-zinc-300 placeholder-zinc-700 hover:border-zinc-800 focus:border-purple-500 border border-transparent rounded-lg p-1.5 leading-relaxed focus:outline-none transition-all resize-none">${p.notes || ''}</textarea>
             </td>
 
-            <!-- AZIONI RAPIDE (WA + EMAIL DIRECT RESEND + COPY + DELETE) -->
+            <!-- AZIONI RAPIDE -->
             <td class="p-4 text-right flex items-center justify-end gap-1.5 whitespace-nowrap">
-                <button onclick="sendResendDirectEmail('${p.id}', '${p.client_email || ''}', '${p.client_name || ''}', '${p.title || ''}', '${portalViewUrl}')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition flex items-center gap-1" title="Invia Mail Subito con Resend"><i class="fa-solid fa-paper-plane"></i> Direct Mail</button>
-                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition" title="Copy WA"><i class="fa-brands fa-whatsapp"></i> WA</button>
-                <button onclick="openMessageModal('${p.id}', 'email')" class="bg-blue-600/20 text-blue-300 border border-blue-500/30 hover:bg-blue-600/40 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition" title="Copy Testo Mail"><i class="fa-solid fa-copy"></i> Copy</button>
-                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1.5 rounded transition" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                ${closingPitchBtn}
+                <button onclick="sendResendDirectEmail('${p.id}', '${p.client_email || ''}', '${p.client_name || ''}', '${p.title || ''}', '${portalViewUrl}')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1.5 rounded-lg text-[10px] font-bold transition flex items-center gap-1" title="Invia Mail con Resend"><i class="fa-solid fa-paper-plane"></i> Mail</button>
+                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2 py-1.5 rounded-lg text-[10px] font-bold transition" title="Copy WA"><i class="fa-brands fa-whatsapp"></i> WA</button>
+                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded transition" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
             </td>
         `;
         container.appendChild(tr);
@@ -183,6 +189,32 @@ async function sendResendDirectEmail(projectId, clientEmail, clientName, title, 
     }
 }
 
+// GENERATORE PITCH DI CHIUSURA CON LEVA JINGLE (FF EDIZIONI)
+function openClosingPitchModal(projectId) {
+    const project = window.allProjects.find(p => p.id === projectId);
+    if (!project) return;
+
+    const name = project.client_name || 'Titolare';
+    const title = project.title || 'il vostro locale';
+    const portalUrl = `https://portale.rmstudio.app/view?id=${project.id}`;
+    const phone = project.client_phone ? project.client_phone.replace(/\D/g, '') : '';
+
+    const text = `Ciao ${name}! 👋\n\nHo visto che hai avuto modo di esplorare l'anteprima della Smart Experience Page creata per ${title}.\n\nCi tenevo a dirti che, sbloccandola questa settimana per metterla online sul vostro dominio, **includiamo GRATIS nei 390€ un Jingle Audio d'Autore personalizzato (valore 150€)** realizzato dal nostro studio musicale FF Edizioni, pronto da usare per le vostre Stories e Reel Instagram! 🎵🍷\n\nPuoi rivedere l'anteprima e sbloccarla qui:\n${portalUrl}\n\nResto a disposizione!`;
+
+    document.getElementById('copy-text-area').value = text;
+    
+    const waBtn = document.getElementById('copy-wa-direct-link');
+    if (phone) {
+        waBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+        waBtn.classList.remove('hidden');
+    } else {
+        waBtn.classList.add('hidden');
+    }
+
+    document.getElementById('copy-modal').classList.remove('hidden');
+    document.getElementById('copy-modal').classList.add('flex');
+}
+
 async function togglePayment(id, current) {
     await updateSupabaseField(id, 'is_paid', !current);
     loadMasterData();
@@ -217,7 +249,6 @@ async function handleCreateSubmit(e) {
 
     const type = document.getElementById('c-type').value;
 
-    // SE È SMART EXPERIENCE PAGE RISTORANTI: Chiama lo Scraper/Generatore n8n
     if (type === 'experience') {
         const siteUrl = document.getElementById('c-url').value;
         if (!siteUrl) {
@@ -255,7 +286,6 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // Per gli altri tipi di progetto standard
     const fd = new FormData();
     fd.append('client_name', document.getElementById('c-name').value);
     fd.append('email', document.getElementById('c-email').value || '');
