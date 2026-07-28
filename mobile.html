@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RM Studio — Mobile Sales Pistol</title>
+    <title>RM Studio — Mobile Sales Engine</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -31,7 +31,7 @@
 <body class="p-4 min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white">
 
     <!-- HEADER MOBILE -->
-    <header class="flex items-center justify-between pb-4 border-b border-zinc-900 mb-4">
+    <header class="flex items-center justify-between pb-3 border-b border-zinc-900 mb-4">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-600/30">
                 <i class="fa-solid fa-bolt text-lg text-white"></i>
@@ -46,21 +46,47 @@
         </a>
     </header>
 
-    <!-- SELEZIONE SAAS E FORM DINAMICO -->
     <main class="flex-1 space-y-4">
         
+        <!-- 💡 GUIDA DINAMICA PER SETTORE -->
+        <div class="bg-purple-950/40 border border-purple-500/30 p-3.5 rounded-2xl space-y-2">
+            <label class="block text-xs font-extrabold uppercase text-purple-300 flex items-center justify-between">
+                <span>💡 Che settore stai visitando ora?</span>
+                <i class="fa-solid fa-lightbulb text-amber-400"></i>
+            </label>
+            <select id="sector-advisor" onchange="adviseSaasBySector()" class="w-full bg-[#151520] border border-purple-500/40 rounded-xl p-2.5 text-xs text-white font-bold outline-none">
+                <option value="">-- Seleziona il Settore del Cliente --</option>
+                <option value="ristorante">🍷 Ristorante / Bar / Pizzeria</option>
+                <option value="hotel">🏨 Hotel / B&B / Resort</option>
+                <option value="evento">🎵 Matrimoni / Eventi / Regali (FF Edizioni)</option>
+                <option value="auto">🏎️ Concessionaria Auto / Moto</option>
+                <option value="immobile">🏠 Agenzia Immobiliare</option>
+                <option value="medico">🦷 Studio Medico / Dentista</option>
+                <option value="legale">⚖️ Studio Legale / Avvocato</option>
+                <option value="palestra">🏋️ Palestra / Centro Fitness</option>
+                <option value="ecommerce">📦 E-Commerce / Brand Prodotto</option>
+            </select>
+            <p id="advisor-tip" class="text-[11px] text-purple-200/80 leading-relaxed hidden italic pt-1"></p>
+        </div>
+
+        <!-- SELEZIONE SAAS -->
         <div>
             <label class="block text-xs font-black uppercase tracking-wider text-gray-400 mb-2">
-                1. Scegli il SaaS per il Lead davanti a te:
+                Scegli il Prodotto da Proporre:
             </label>
 
-            <!-- SELETTORE SAAS CON NOMI UFFICIALI E ICONE -->
             <div class="grid grid-cols-2 gap-2">
                 
                 <button type="button" onclick="selectSaas('experience')" id="card-experience" class="saas-card selected p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
                     <span class="text-xl">🍷</span>
                     <span class="font-extrabold text-white text-xs">Experience</span>
                     <span class="text-[9px] text-gray-400 font-bold">Smart Page Ristoranti</span>
+                </button>
+
+                <button type="button" onclick="selectSaas('ff_edizioni')" id="card-ff_edizioni" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-xl">🎵</span>
+                    <span class="font-extrabold text-white text-xs">FF Edizioni</span>
+                    <span class="text-[9px] text-amber-400 font-bold">Jingle & Canzoni Custom</span>
                 </button>
 
                 <button type="button" onclick="selectSaas('nexus')" id="card-nexus" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
@@ -87,16 +113,16 @@
                     <span class="text-[9px] text-gray-400 font-bold">Video Immobili & Auto</span>
                 </button>
 
-                <button type="button" onclick="selectSaas('voice_ai')" id="card-voice_ai" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                <button type="button" onclick="selectSaas('voice_ai')" id="card-voice_ai" class="saas-card col-span-2 p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
                     <span class="text-xl">📞</span>
-                    <span class="font-extrabold text-white text-xs">Voice AI H24</span>
-                    <span class="text-[9px] text-gray-400 font-bold">Dentis / Lexis / C24</span>
+                    <span class="font-extrabold text-white text-xs">Voice AI H24 (Dentis / Lexis / Concierge24)</span>
+                    <span class="text-[9px] text-gray-400 font-bold">Receptionist Telefonica Parlante</span>
                 </button>
 
             </div>
         </div>
 
-        <!-- LINK APERTURA LANDING UFFICIALE -->
+        <!-- LANDING PAGE UFFICIALE -->
         <div class="flex justify-between items-center bg-zinc-900/60 border border-zinc-800 px-3.5 py-2 rounded-xl text-xs">
             <span class="text-gray-400 font-semibold" id="saas-desc-label">Smart Page Ristoranti</span>
             <a id="saas-landing-link" href="https://experience.rmstudio.app" target="_blank" class="text-purple-400 font-bold hover:underline flex items-center gap-1 text-xs">
@@ -104,34 +130,29 @@
             </a>
         </div>
 
-        <!-- CONTENITORE INPUT DINAMICI IN BASE AL SAAS SELEZIONATO -->
+        <!-- FORM DINAMICO -->
         <div class="space-y-3 bg-[#0e0e14] border border-zinc-800 p-4 rounded-2xl">
-            
             <div class="flex items-center justify-between border-b border-zinc-800 pb-2">
                 <label class="text-xs font-black uppercase tracking-wider text-purple-400" id="saas-form-title">
                     Dati Generazione Experience:
                 </label>
             </div>
 
-            <!-- CAMPO 1: SITO WEB O LINK PRODOTTO -->
             <div id="box-url">
                 <label class="block text-[11px] font-bold text-gray-400 mb-1" id="lbl-url">URL Sito Web Cliente:</label>
                 <input type="url" id="inp-url" placeholder="https://www.ristorante.it" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-purple-500 font-mono">
             </div>
 
-            <!-- CAMPO 2: NOME CLIENTE / AZIENDA -->
             <div id="box-name">
                 <label class="block text-[11px] font-bold text-gray-400 mb-1" id="lbl-name">Nome Attività / Titolare:</label>
                 <input type="text" id="inp-name" placeholder="Es. Osteria dal Conte" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
             </div>
 
-            <!-- CAMPO 3: CITTA (USATO DA SITEENGINE) -->
             <div id="box-city" class="hidden">
                 <label class="block text-[11px] font-bold text-gray-400 mb-1">Città del Professionista:</label>
                 <input type="text" id="inp-city" placeholder="Es. Ariano nel Polesine (RO)" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
             </div>
 
-            <!-- CAMPO 4: SETTORE PROFESSIONISTA (DROPDOWN SITEENGINE / VOICE AI) -->
             <div id="box-category" class="hidden">
                 <label class="block text-[11px] font-bold text-gray-400 mb-1">Settore / Categoria:</label>
                 <select id="inp-category" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-purple-500 font-bold">
@@ -143,20 +164,16 @@
                 </select>
             </div>
 
-            <!-- CAMPO 5: TELEFONO WHATSAPP / TEST SANDBOX -->
             <div id="box-phone">
                 <label class="block text-[11px] font-bold text-gray-400 mb-1" id="lbl-phone">Cellulare WhatsApp:</label>
                 <input type="tel" id="inp-phone" placeholder="+393401234567" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
             </div>
-
         </div>
 
-        <!-- BOTTONE GENERAZIONE DEMO -->
         <button id="m-submit-btn" onclick="generateMobileDemo()" class="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-black py-4 rounded-2xl text-xs uppercase tracking-wider shadow-xl shadow-purple-600/30 transition active:scale-95 flex items-center justify-center gap-2">
             <i class="fa-solid fa-wand-magic-sparkles text-base"></i> GENERA DEMO IN TEMPO REALE
         </button>
 
-        <!-- ESITO RISULTATO DEMO (NASCOSTO INIZIALMENTE) -->
         <div id="m-result-box" class="hidden bg-[#0c140c] border-2 border-emerald-500/50 p-4 rounded-2xl space-y-3">
             <div class="flex items-center gap-2 text-emerald-400 font-black text-xs">
                 <i class="fa-solid fa-circle-check animate-bounce text-sm"></i> DEMO PRONTA ALL'USO!
@@ -178,7 +195,6 @@
     </footer>
 
     <script>
-        // CONFIGURAZIONI DINAMICHE PER CIASCUN SAAS
         const SAAS_CONFIG = {
             experience: {
                 title: "Dati Smart Experience Page:",
@@ -187,9 +203,18 @@
                 desc: "Smart Page Ristoranti",
                 showUrl: true, lblUrl: "URL Sito Web Ristorante:",
                 showName: true, lblName: "Nome Ristorante / Titolare:",
-                showCity: false,
-                showCategory: false,
+                showCity: false, showCategory: false,
                 showPhone: true, lblPhone: "Telefono WhatsApp Ristorante:"
+            },
+            ff_edizioni: {
+                title: "Dati Jingle & Canzoni FF Edizioni:",
+                endpoint: "https://n8n.rmstudio.app/webhook/omnia-quick-generate",
+                landing: "https://ff-edizioni.rmstudio.app",
+                desc: "Jingle Pubblicitari & Canzoni d'Autore",
+                showUrl: true, lblUrl: "Link Social o Sito Attività/Sposi:",
+                showName: true, lblName: "Nome Brand / Nome Sposi:",
+                showCity: false, showCategory: false,
+                showPhone: true, lblPhone: "Telefono Referente:"
             },
             nexus: {
                 title: "Dati NexusAI Sales Overlay:",
@@ -198,19 +223,17 @@
                 desc: "AI Sales Overlay Chatbot",
                 showUrl: true, lblUrl: "URL Sito Web del Cliente:",
                 showName: true, lblName: "Nome Azienda / Brand:",
-                showCity: false,
-                showCategory: false,
-                showPhone: true, lblPhone: "Telefono Referente (opzionale):"
+                showCity: false, showCategory: false,
+                showPhone: true, lblPhone: "Telefono Referente:"
             },
             sitengine: {
                 title: "Dati SiteEngine Pro Landing:",
                 endpoint: "https://n8n.rmstudio.app/webhook/omnia-quick-generate",
                 landing: "https://sitengine.rmstudio.app",
                 desc: "Landing Page Professionisti",
-                showUrl: true, lblUrl: "Vecchio Sito o Link Social (opzionale):",
+                showUrl: true, lblUrl: "Vecchio Sito o Link Social:",
                 showName: true, lblName: "Nome e Cognome Professionista:",
-                showCity: true,
-                showCategory: true,
+                showCity: true, showCategory: true,
                 showPhone: true, lblPhone: "Telefono Professionista:"
             },
             vision: {
@@ -220,8 +243,7 @@
                 desc: "Video Influencer AI per E-Commerce",
                 showUrl: true, lblUrl: "Link Prodotto / E-Commerce:",
                 showName: true, lblName: "Nome Prodotto / Brand:",
-                showCity: false,
-                showCategory: false,
+                showCity: false, showCategory: false,
                 showPhone: true, lblPhone: "Telefono Referente:"
             },
             hometour: {
@@ -231,41 +253,75 @@
                 desc: "Video Regia AI Immobili & Auto",
                 showUrl: true, lblUrl: "Link Annuncio Immobile o Auto:",
                 showName: true, lblName: "Nome Agenzia / Concessionaria:",
-                showCity: false,
-                showCategory: false,
+                showCity: false, showCategory: false,
                 showPhone: true, lblPhone: "Telefono Agente:"
             },
             voice_ai: {
-                title: "Dati Test Voice AI (Dentis / Lexis):",
+                title: "Dati Test Voice AI (Dentis / Lexis / Concierge):",
                 endpoint: "https://n8n.rmstudio.app/webhook/dentis-creator",
                 landing: "https://dentis.rmstudio.app",
                 desc: "Receptionist Telefonica Vocale H24",
-                showUrl: true, lblUrl: "Sito Web Clinica / Studio Legale:",
-                showName: true, lblName: "Nome Studio / Dottore:",
-                showCity: false,
-                showCategory: true,
-                showPhone: true, lblPhone: "Cellulare del Medico per Test Chiamata:"
+                showUrl: true, lblUrl: "Sito Web Clinica / Studio / Hotel:",
+                showName: true, lblName: "Nome Studio / Dottore / Hotel:",
+                showCity: false, showCategory: true,
+                showPhone: true, lblPhone: "Cellulare del Titolare per Test Chiamata:"
             }
         };
 
         let currentSaasKey = 'experience';
+
+        // 💡 GUIDA AUTOMATICA AL SETTORE
+        function adviseSaasBySector() {
+            const sector = document.getElementById('sector-advisor').value;
+            const tipEl = document.getElementById('advisor-tip');
+            
+            if (!sector) {
+                tipEl.classList.add('hidden');
+                return;
+            }
+
+            tipEl.classList.remove('hidden');
+
+            if (sector === 'ristorante') {
+                selectSaas('experience');
+                tipEl.innerHTML = "👉 <b>Consigliato:</b> Smart Experience Page. 🎵 <i>Leva FF Edizioni:</i> regala un Jingle per le Stories Instagram come bonus di chiusura!";
+            } else if (sector === 'hotel') {
+                selectSaas('voice_ai');
+                tipEl.innerHTML = "👉 <b>Consigliato:</b> Concierge24 Vocale H24 per check-in e turisti multilingua. 🎵 <i>Leva FF Edizioni:</i> Inno d'accoglienza personalizzato.";
+            } else if (sector === 'evento') {
+                selectSaas('ff_edizioni');
+                tipEl.innerHTML = "👉 <b>Consigliato:</b> FF Edizioni Canzone d'Autore Inedita su misura per la storia degli sposi o regalo unico!";
+            } else if (sector === 'auto') {
+                selectSaas('hometour');
+                tipEl.innerHTML = "👉 <b>Consigliato:</b> DriveMotion per video auto con cambio sfondo magico.";
+            } else if (sector === 'immobile') {
+                selectSaas('hometour');
+                tipEl.innerHTML = "👉 <b>Consigliato:</b> HomeTour per trasformare le foto piatte dell'immobile in video cinematici 3D.";
+            } else if (sector === 'medico' || sector === 'legale') {
+                selectSaas('voice_ai');
+                tipEl.innerHTML = "👉 <b>Consigliato:</b> Dentis / Lexis per azzerare le chiamate perse e fissare appuntamenti su Google Calendar.";
+            } else if (sector === 'palestra') {
+                selectSaas('nexus');
+                tipEl.innerHTML = "👉 <b>Consigliato:</b> NexusAI Chatbot. 🎵 <i>Leva FF Edizioni:</i> Inno motivazionale della palestra da mettere nei Reel!";
+            } else if (sector === 'ecommerce') {
+                selectSaas('vision');
+                tipEl.innerHTML = "👉 <b>Consigliato:</b> Vision UGC per creare video TikTok/Reels con la modella virtuale Camila in 24 ore.";
+            }
+        }
 
         function selectSaas(key) {
             currentSaasKey = key;
             const cfg = SAAS_CONFIG[key];
             if (!cfg) return;
 
-            // Seleziona la card
             document.querySelectorAll('.saas-card').forEach(c => c.classList.remove('selected'));
             const card = document.getElementById(`card-${key}`);
             if (card) card.classList.add('selected');
 
-            // Aggiorna etichette e link alla landing
             document.getElementById('saas-form-title').innerText = cfg.title;
             document.getElementById('saas-desc-label').innerText = cfg.desc;
             document.getElementById('saas-landing-link').href = cfg.landing;
 
-            // Mostra/Nasconde i campi in modo dinamico
             document.getElementById('box-url').classList.toggle('hidden', !cfg.showUrl);
             if (cfg.lblUrl) document.getElementById('lbl-url').innerText = cfg.lblUrl;
 
@@ -287,7 +343,7 @@
             const category = document.getElementById('inp-category').value;
             const phone = document.getElementById('inp-phone').value.trim();
 
-            if (cfg.showUrl && !siteUrl && currentSaasKey !== 'sitengine') {
+            if (cfg.showUrl && !siteUrl && currentSaasKey !== 'sitengine' && currentSaasKey !== 'ff_edizioni') {
                 return alert("Inserisci l'URL per procedere con la generazione.");
             }
 
