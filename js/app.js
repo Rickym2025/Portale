@@ -1,8 +1,7 @@
 window.allProjects = [];
-// VARIABILE PER MEMORIZZARE I RISTORANTI DA GOOGLE SHEETS
 window.sheetPendingRestaurants = [];
 
-// CARICA I RISTORANTI DA ELABORARE DAL FOGLIO GOOGLE
+// 1. CARICA I RISTORANTI DA ELABORARE DAL FOGLIO GOOGLE
 async function fetchPendingRestaurantsFromSheet() {
     const select = document.getElementById('c-sheet-restaurant');
     if (!select) return;
@@ -10,15 +9,23 @@ async function fetchPendingRestaurantsFromSheet() {
     select.innerHTML = `<option value="">Caricamento dal Foglio Google in corso...</option>`;
 
     try {
+        console.log("Richiesta ristoranti a n8n...");
         const res = await fetch('https://n8n.rmstudio.app/webhook/get-pending-restaurants');
+        
+        if (!res.ok) {
+            select.innerHTML = `<option value="">Verifica che il workflow get-pending-restaurants sia ATTIVO su n8n!</option>`;
+            return;
+        }
+
         const data = await res.json();
+        console.log("Dati ricevuti da Google Sheet:", data);
 
         if (data.success && data.restaurants && data.restaurants.length > 0) {
             window.sheetPendingRestaurants = data.restaurants;
-            let optionsHtml = `<option value="">-- Seleziona un Ristorante dal Foglio (${data.restaurants.length} pronti) --</option>`;
+            let optionsHtml = `<option value="">-- Seleziona un Ristorante dal Sheet (${data.restaurants.length} pronti) --</option>`;
             
             data.restaurants.forEach((r, idx) => {
-                optionsHtml += `<option value="${idx}">${r.nome} (${r.sito})</option>`;
+                optionsHtml += `<option value="${idx}">${r.nome || 'Senza Nome'} (${r.sito || 'Nessun Sito'})</option>`;
             });
 
             select.innerHTML = optionsHtml;
@@ -26,11 +33,12 @@ async function fetchPendingRestaurantsFromSheet() {
             select.innerHTML = `<option value="">Tutti i ristoranti del foglio sono stati elaborati! 🎉</option>`;
         }
     } catch (err) {
-        select.innerHTML = `<option value="">Errore caricamento dal Foglio Google</option>`;
+        console.error("Errore fetch sheet:", err);
+        select.innerHTML = `<option value="">Errore di connessione col Foglio Google</option>`;
     }
 }
 
-// AUTO-COMPILA I CAMPI QUANDO SELEZIONI UN RISTORANTE DAL MENU A TENDINA
+// 2. AUTO-COMPILAZIONE DEI CAMPI ALLA SELEZIONE DAL MENU A TENDINA
 function onRestaurantSelectedFromSheet() {
     const idx = document.getElementById('c-sheet-restaurant').value;
     if (idx === "" || !window.sheetPendingRestaurants[idx]) return;
@@ -45,7 +53,7 @@ function onRestaurantSelectedFromSheet() {
     document.getElementById('c-price').value = 390;
 }
 
-// AGGIORNA toggleModalFields PER MOSTRARE IL SELETTORE
+// 3. GESTIONE VISIBILITÀ CAMPI E TITOLI NELLA MODALE
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
     const titleInput = document.getElementById('c-title');
@@ -77,7 +85,7 @@ function toggleModalFields() {
     if (linkBox) linkBox.classList.toggle('hidden', t !== 'html' && t !== 'link' && t !== 'experience');
 }
 
-// Funzione Helper per calcolare i giorni trascorsi
+// Helper per calcolare i giorni trascorsi
 function getDaysAgo(dateStr) {
     if (!dateStr) return null;
     const past = new Date(dateStr);
@@ -164,6 +172,8 @@ function renderMasterTable(data) {
 
         const isPaid = p.is_paid === true || p.is_paid === "true";
         const views = parseInt(p.views_count || 0);
+        
+        // ⚡ CORREZIONE RIGIDA: È "Letto" SOLTANTO SE LE VISITE SONO > 0
         const isRead = views > 0;
         const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
 
@@ -173,21 +183,23 @@ function renderMasterTable(data) {
         const openDateFormatted = p.updated_at ? new Date(p.updated_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const openDaysAgo = getDaysAgo(p.updated_at);
 
-        let typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
+        let typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
 
         const portalViewUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
 
         let closingPitchBtn = '';
         if (isRead && !isPaid) {
-            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2 py-1 rounded-lg text-[9px] font-black transition animate-pulse" title="Pitch Chiusura Jingle"><i class="fa-solid fa-fire"></i> Pitch Jingle</button>`;
+            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2.5 py-1.5 rounded-lg text-xs font-black transition animate-pulse" title="Pitch Chiusura Jingle"><i class="fa-solid fa-fire"></i> Pitch Jingle</button>`;
         }
 
         tr.innerHTML = `
+            <!-- TIPO E ID -->
             <td class="p-4 text-center">
                 ${typeBadge}
                 <span class="font-mono text-xs text-gray-400 block mt-1 font-bold">#${p.id ? p.id.substring(0, 4).toUpperCase() : '---'}</span>
             </td>
 
+            <!-- CLIENTE, EMAIL, TELEFONO EDITABILI -->
             <td class="p-4">
                 <input type="text" value="${p.client_name || ''}" placeholder="Nome Cliente" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-extrabold text-white text-base block w-full mb-1">
                 <div class="space-y-1">
@@ -196,25 +208,29 @@ function renderMasterTable(data) {
                 </div>
             </td>
 
+            <!-- TITOLO PROGETTO EDITABILE -->
             <td class="p-4">
                 <input type="text" value="${p.title || ''}" placeholder="Titolo Progetto" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-sm text-gray-200 font-bold w-full">
             </td>
 
-            <!-- ⚡ COLONNA RIPRISTINATA: LINK AL PROGETTO (VIEW / EXTERNAL) -->
+            <!-- ⚡ COLONNA RIPRISTINATA: LINK AL PROGETTO -->
             <td class="p-4">
                 <a href="${p.content_url || portalViewUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-purple-400 border border-zinc-800 px-3 py-1.5 rounded-lg text-xs font-bold transition truncate max-w-[130px]">
                     <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Apri Link
                 </a>
             </td>
 
+            <!-- PREZZO EDITABILE -->
             <td class="p-4">
                 <input type="number" value="${p.price_euro || 0}" onchange="updateSupabaseField('${p.id}', 'price_euro', this.value)" class="w-20 bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-center font-black text-purple-400 focus:border-purple-500 focus:outline-none text-sm">
             </td>
 
+            <!-- VISITE EDITABILI -->
             <td class="p-4">
                 <input type="number" value="${views}" onchange="updateSupabaseField('${p.id}', 'views_count', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-center font-bold text-blue-400 focus:border-purple-500 focus:outline-none text-sm">
             </td>
 
+            <!-- SPUNTA WA INVIATO EDITABILE -->
             <td class="p-4">
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" ${p.is_whatsapp_sent ? 'checked' : ''} onchange="updateSupabaseField('${p.id}', 'is_whatsapp_sent', this.checked)" class="w-4 h-4 text-purple-600 bg-zinc-900 border-zinc-800 rounded focus:ring-purple-500">
@@ -222,6 +238,7 @@ function renderMasterTable(data) {
                 </label>
             </td>
 
+            <!-- STATO LETTURA, DATE E GIORNI TRANSCORSI -->
             <td class="p-4 text-xs whitespace-nowrap">
                 <div class="space-y-1">
                     ${emailSent ? `<div class="text-purple-400 font-bold"><i class="fa-solid fa-paper-plane"></i> Inviata ${sendDateFormatted || ''} <span class="text-gray-500 font-normal">(${sendDaysAgo || ''})</span></div>` : ''}
@@ -232,12 +249,14 @@ function renderMasterTable(data) {
                 </div>
             </td>
 
+            <!-- PAGAMENTO TOGGLE -->
             <td class="p-4">
                 <button onclick="togglePayment('${p.id}', ${isPaid})" class="px-3 py-1.5 rounded-full text-xs font-bold transition ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
                     ${isPaid ? '✓ Pagato' : '● Attesa'}
                 </button>
             </td>
 
+            <!-- AZIONI RAPIDE -->
             <td class="p-4 text-right flex items-center justify-end gap-1.5 whitespace-nowrap">
                 ${closingPitchBtn}
                 <button onclick="sendResendDirectEmail('${p.id}', '${p.client_email || ''}', '${p.client_name || ''}', '${p.title || ''}', '${portalViewUrl}')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Invia Mail con Resend"><i class="fa-solid fa-paper-plane"></i> Mail</button>
@@ -345,36 +364,15 @@ function switchTab(tab) {
     document.getElementById('tab-outreach').classList.toggle('hidden', tab !== 'outreach');
 }
 
-function openCreationModal() { document.getElementById('creation-modal').classList.remove('hidden'); document.getElementById('creation-modal').classList.add('flex'); }
-function closeCreationModal() { document.getElementById('creation-modal').classList.remove('flex'); document.getElementById('creation-modal').classList.add('hidden'); }
+function openCreationModal() { 
+    document.getElementById('creation-modal').classList.remove('hidden'); 
+    document.getElementById('creation-modal').classList.add('flex'); 
+    toggleModalFields(); // ⚡ Invocazione automatica controllo campi e caricamento Sheet
+}
 
-function toggleModalFields() {
-    const t = document.getElementById('c-type').value;
-    const titleInput = document.getElementById('c-title');
-
-    // Imposta automaticamente il Titolo del Progetto in base al SaaS selezionato
-    if (titleInput) {
-        if (t === 'experience') {
-            titleInput.value = "Smart Experience Page";
-        } else if (t === 'html') {
-            titleInput.value = "Sito Web";
-        } else if (t === 'vision') {
-            titleInput.value = "Vision UGC Video";
-        } else if (t === 'video') {
-            titleInput.value = "HomeTour Video";
-        } else if (t === 'voice_ai') {
-            titleInput.value = "Voice AI Assistente";
-        } else if (t === 'license') {
-            titleInput.value = "Licenza Software";
-        }
-    }
-
-    // Gestione visibilità campi
-    const fileBox = document.getElementById('file-upload-box');
-    const linkBox = document.getElementById('link-input-box');
-    
-    if (fileBox) fileBox.classList.toggle('hidden', t === 'html' || t === 'link' || t === 'experience');
-    if (linkBox) linkBox.classList.toggle('hidden', t !== 'html' && t !== 'link' && t !== 'experience');
+function closeCreationModal() { 
+    document.getElementById('creation-modal').classList.remove('flex'); 
+    document.getElementById('creation-modal').classList.add('hidden'); 
 }
 
 async function handleCreateSubmit(e) {
@@ -434,7 +432,6 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // Altri tipi di progetto standard
     const fd = new FormData();
     fd.append('client_name', document.getElementById('c-name').value);
     fd.append('email', document.getElementById('c-email').value || '');
@@ -461,7 +458,7 @@ async function handleCreateSubmit(e) {
     btn.innerText = originalText;
 }
 
-// LOGICA RIDIMENSIONAMENTO TRASCINABILE SIDEBAR CON SNAP COMPATTO (<100px)
+// RIDIMENSIONAMENTO TRASCINABILE SIDEBAR CON SNAP COMPATTO (<120px)
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const resizer = document.getElementById('resizer');
@@ -494,7 +491,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const dx = e.clientX - x;
         let newWidth = w + dx;
 
-        // Se trascini sotto i 120px, passa automaticamente in modalità Icon-Rail
         if (newWidth < 120) {
             sidebar.classList.add('sidebar-collapsed');
             localStorage.setItem('sidebar_collapsed', 'true');
