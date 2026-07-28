@@ -27,6 +27,22 @@
     display: none !important;
 }
 
+/* Sidebar resizable handle */
+#resizer {
+    width: 4px;
+    cursor: col-resize;
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: background-color 0.2s;
+}
+#resizer:hover, #resizer.resizing {
+    background-color: #9333ea;
+}
+
+/* Font e dimensioni */
+.sidebar-item {
+    font-size: 14px !important;
+}
+
 /* Scrollbar personalizzata dark */
 ::-webkit-scrollbar {
     width: 5px;
