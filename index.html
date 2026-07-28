@@ -13,10 +13,37 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="css/styles.css">
+
+    <style>
+        /* Sidebar resizable handle */
+        #resizer {
+            width: 5px;
+            cursor: col-resize;
+            background-color: rgba(255, 255, 255, 0.05);
+            transition: background-color 0.2s;
+            z-index: 40;
+        }
+        #resizer:hover, #resizer.resizing {
+            background-color: #9333ea;
+        }
+
+        /* Override stili per massima leggibilità */
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+        }
+        .font-display {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .glass {
+            background: rgba(11, 11, 15, 0.95);
+            backdrop-filter: blur(16px);
+        }
+    </style>
 </head>
 <body class="bg-[#050508] text-gray-200 font-body min-h-screen selection:bg-purple-600 selection:text-white flex overflow-x-hidden">
 
-  <!-- LOCK SCREEN -->
+  <!-- LOCK SCREEN DI AUTENTICAZIONE -->
   <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#050508]/98 backdrop-blur-xl">
     <div class="glass p-8 rounded-3xl max-w-md w-full mx-4 text-center border border-zinc-800 shadow-2xl">
       <div class="mb-6">
@@ -24,188 +51,138 @@
             <i class="fa-solid fa-shield-halved text-2xl text-white"></i>
         </div>
         <h2 class="text-2xl font-display font-extrabold text-white">RM Control Center</h2>
-        <p class="text-xs text-gray-400 mt-2">Inserisci la password per accedere al Command Center.</p>
+        <p class="text-sm text-gray-400 mt-2">Inserisci la password per accedere al Master Hub.</p>
       </div>
       <form onsubmit="handleLoginSubmit(event)">
-          <input type="password" id="admin-password" placeholder="Inserisci Password..." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl px-4 py-3.5 text-center text-white outline-none focus:border-purple-500 transition-all mb-4 text-sm font-semibold">
-          <button type="submit" id="login-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-purple-600/30 text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+          <input type="password" id="admin-password" placeholder="Inserisci Password..." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl px-4 py-3.5 text-center text-white outline-none focus:border-purple-500 transition-all mb-4 text-base font-semibold">
+          <button type="submit" id="login-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-purple-600/30 text-sm uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95">
             <i class="fa-solid fa-key"></i> Sblocca Ecosistema
           </button>
       </form>
     </div>
   </div>
 
-  <!-- MAIN DASHBOARD -->
+  <!-- MAIN DASHBOARD CONTAINER -->
   <div id="main-content" class="hidden flex-1 flex w-full min-h-screen relative">
     
-    <!-- SIDEBAR RICHIUDIBILE -->
-    <aside id="sidebar" class="w-64 bg-[#08080c] border-r border-zinc-900/80 p-4 flex flex-col justify-between transition-all duration-300 relative z-30 shrink-0">
+    <!-- SIDEBAR RIDIMENSIONABILE A SINISTRA -->
+    <aside id="sidebar" class="w-72 bg-[#08080c] border-r border-zinc-900/80 p-4 flex flex-col justify-between relative z-30 shrink-0 select-none" style="min-width: 220px; max-width: 480px;">
       
-      <!-- CONTENUTO SIDEBAR -->
-      <div class="overflow-y-auto max-h-screen">
-        <!-- HEADER SIDEBAR CON TOGGLE -->
-        <div class="flex items-center justify-between mb-6 pb-2 border-b border-zinc-900/80">
-          <div class="flex items-center gap-3 sidebar-text">
-            <div class="w-8 h-8 rounded-lg bg-purple-600 flex items-center justify-center shadow-md shadow-purple-600/30">
-              <i class="fa-solid fa-sliders text-xs text-white"></i>
+      <div class="overflow-y-auto max-h-screen space-y-6">
+        <!-- HEADER SIDEBAR -->
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-900/80">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-600/30">
+              <i class="fa-solid fa-sliders text-base text-white"></i>
             </div>
-            <span class="font-display font-black text-white text-base tracking-tight">RM STUDIO</span>
+            <span class="font-display font-black text-white text-lg tracking-tight">RM STUDIO</span>
           </div>
-          <!-- PULSANTE CONTRAZIONE SIDEBAR -->
-          <button onclick="toggleSidebar()" class="w-7 h-7 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-gray-400 hover:text-white flex items-center justify-center text-xs transition" title="Espandi/Riduci Sidebar">
-            <i id="sidebar-icon" class="fa-solid fa-chevron-left"></i>
-          </button>
         </div>
 
-        <nav class="space-y-1.5 text-xs font-semibold">
-          <button onclick="switchTab('master')" id="nav-master" class="w-full px-3 py-2.5 rounded-xl flex items-center gap-3 bg-purple-600 text-white shadow-lg shadow-purple-600/20">
-            <i class="fa-solid fa-layer-group text-sm"></i> <span class="sidebar-text">Master Hub</span>
-          </button>
-          <button onclick="switchTab('outreach')" id="nav-outreach" class="w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-gray-400 hover:bg-white/5 hover:text-white transition">
-            <i class="fa-solid fa-paper-plane text-purple-400 text-sm"></i> <span class="sidebar-text">Cold Outreach</span>
+        <!-- PANNELLI NAVIGAZIONE -->
+        <nav class="space-y-2">
+          <div class="text-xs uppercase font-bold text-gray-500 tracking-wider mb-2">Pannelli</div>
+          
+          <button onclick="switchTab('master')" id="nav-master" class="w-full px-3.5 py-3 rounded-xl flex items-center gap-3 bg-purple-600 text-white font-extrabold text-sm shadow-lg shadow-purple-600/20 transition">
+            <i class="fa-solid fa-layer-group text-base"></i> Master Command Hub
           </button>
           
-          <!-- SEZIONE SUPABASE MULTI-ACCOUNT -->
-          <div class="pt-4 pb-1 sidebar-text text-[9px] uppercase font-bold text-gray-600 tracking-wider flex items-center justify-between">
-            <span>Supabase Projects</span> <i class="fa-solid fa-database text-[10px]"></i>
-          </div>
-          
-          <div class="space-y-1 text-[11px] sidebar-text">
-            <!-- Account 1 -->
-            <details class="group">
-                <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-400 font-medium flex items-center justify-between">
-                    <span class="truncate">modena.riccardo@...</span>
-                    <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
-                </summary>
-                <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1">
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-gray-400 hover:text-purple-400">⚡ VeloMotion</a>
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-gray-400 hover:text-purple-400">🌐 Website-Builder (S1)</a>
-                </div>
-            </details>
-
-            <!-- Account 2 -->
-            <details class="group">
-                <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-400 font-medium flex items-center justify-between">
-                    <span class="truncate">labottegadeldelta@...</span>
-                    <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
-                </summary>
-                <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1">
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-gray-400 hover:text-purple-400">🏋️ Ares Gym</a>
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-gray-400 hover:text-purple-400">☀️ Free Energy</a>
-                </div>
-            </details>
-
-            <!-- Account 3 -->
-            <details class="group">
-                <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-400 font-medium flex items-center justify-between">
-                    <span class="truncate">assistente.turismo@...</span>
-                    <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
-                </summary>
-                <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1">
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-gray-400 hover:text-purple-400">🏨 Concierge24</a>
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-gray-400 hover:text-purple-400">🤖 NexusAI</a>
-                </div>
-            </details>
-
-            <!-- Account 4 -->
-            <details class="group">
-                <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-400 font-medium flex items-center justify-between">
-                    <span class="truncate">smartai.riccardo@...</span>
-                    <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
-                </summary>
-                <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1">
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-gray-400 hover:text-purple-400">🦷 Dentis</a>
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-gray-400 hover:text-purple-400">📦 Portale-Video (S2)</a>
-                </div>
-            </details>
-          </div>
-
-          <!-- SEZIONE GITHUB REPOSITORIES -->
-          <div class="pt-4 pb-1 sidebar-text text-[9px] uppercase font-bold text-gray-600 tracking-wider flex items-center justify-between">
-            <span>GitHub Repos</span> <i class="fa-brands fa-github text-[11px]"></i>
-          </div>
-
-          <details class="group sidebar-text">
-            <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-400 font-medium flex items-center justify-between text-[11px]">
-                <span>Rickym2025 (15 Repo)</span>
-                <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
-            </summary>
-            <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 max-h-48 overflow-y-auto text-[10px]">
-                <a href="https://github.com/Rickym2025/Portale" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">📦 Portale</a>
-                <a href="https://github.com/Rickym2025/site-engine" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🌐 site-engine</a>
-                <a href="https://github.com/Rickym2025/vision" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🎬 vision</a>
-                <a href="https://github.com/Rickym2025/free-energy" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">☀️ free-energy</a>
-                <a href="https://github.com/Rickym2025/Dentis" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🦷 Dentis</a>
-                <a href="https://github.com/Rickym2025/Lexis" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">⚖️ Lexis</a>
-                <a href="https://github.com/Rickym2025/VeloMotion" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">⚡ VeloMotion</a>
-                <a href="https://github.com/Rickym2025/nexus" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🤖 nexus</a>
-                <a href="https://github.com/Rickym2025/OmniaStudio" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🔒 OmniaStudio</a>
-                <a href="https://github.com/Rickym2025/HomeTour" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🏠 HomeTour</a>
-                <a href="https://github.com/Rickym2025/DriveMotion" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🏎️ DriveMotion</a>
-                <a href="https://github.com/Rickym2025/concierge24pro" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🏨 concierge24pro</a>
-                <a href="https://github.com/Rickym2025/fausto-fusetti-links" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🎵 fausto-fusetti</a>
-                <a href="https://github.com/Rickym2025/mrstudio" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🏢 mrstudio</a>
-            </div>
-          </details>
-
-          <!-- DEVS LINKS -->
-          <div class="pt-4 pb-1 sidebar-text text-[9px] uppercase font-bold text-gray-600 tracking-wider">Automazioni</div>
-          <a href="https://n8n.rmstudio.app" target="_blank" class="w-full px-2 py-1.5 rounded-lg flex items-center gap-2.5 text-gray-400 hover:text-white text-[11px] transition">
-            <i class="fa-solid fa-diagram-project text-orange-400"></i> <span class="sidebar-text">n8n Engine</span>
-          </a>
-          <a href="https://dashboard.stripe.com" target="_blank" class="w-full px-2 py-1.5 rounded-lg flex items-center gap-2.5 text-gray-400 hover:text-white text-[11px] transition">
-            <i class="fa-solid fa-credit-card text-indigo-400"></i> <span class="sidebar-text">Stripe Master</span>
-          </a>
+          <button onclick="switchTab('outreach')" id="nav-outreach" class="w-full px-3.5 py-3 rounded-xl flex items-center gap-3 text-gray-300 hover:bg-white/5 hover:text-white font-bold text-sm transition">
+            <i class="fa-solid fa-paper-plane text-purple-400 text-base"></i> Cold Outreach Hub
+          </button>
         </nav>
+
+        <!-- ⚡ CREA NUOVO PROGETTO RAPIDO PER SAAS -->
+        <div class="pt-3 border-t border-zinc-900/80">
+          <div class="text-xs uppercase font-bold text-purple-400 tracking-wider mb-3 flex items-center justify-between">
+            <span>+ Nuovo Progetto Rapido</span>
+            <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+          </div>
+          
+          <div class="space-y-1.5 font-semibold">
+            <button onclick="quickOpenCreate('experience')" class="w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-sm font-bold">
+              <span>🍷</span> Smart Experience Page
+            </button>
+            <button onclick="quickOpenCreate('html')" class="w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-gray-200 hover:bg-blue-600/20 hover:text-white border border-transparent hover:border-blue-500/30 transition text-sm font-bold">
+              <span>🌐</span> SiteEngine Pro (Siti)
+            </button>
+            <button onclick="quickOpenCreate('vision')" class="w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-gray-200 hover:bg-pink-600/20 hover:text-white border border-transparent hover:border-pink-500/30 transition text-sm font-bold">
+              <span>🎬</span> Vision UGC Video
+            </button>
+            <button onclick="quickOpenCreate('video')" class="w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-gray-200 hover:bg-emerald-600/20 hover:text-white border border-transparent hover:border-emerald-500/30 transition text-sm font-bold">
+              <span>🏠</span> HomeTour / DriveMotion
+            </button>
+            <button onclick="quickOpenCreate('voice_ai')" class="w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-sm font-bold">
+              <span>📞</span> Voice AI (Dentis/Lexis)
+            </button>
+            <button onclick="quickOpenCreate('license')" class="w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-sm font-bold">
+              <span>🔑</span> Licenze (Velo/Omnia)
+            </button>
+          </div>
+        </div>
+
+        <!-- UTILITY AUTOMAZIONI & STRIPE -->
+        <div class="pt-3 border-t border-zinc-900/80 space-y-1">
+          <div class="text-xs uppercase font-bold text-gray-500 tracking-wider mb-2">Automazioni</div>
+          <a href="https://n8n.rmstudio.app" target="_blank" class="w-full px-3 py-2 rounded-lg flex items-center gap-3 text-gray-300 hover:text-white text-xs font-semibold transition">
+            <i class="fa-solid fa-diagram-project text-orange-400"></i> n8n Engine
+          </a>
+          <a href="https://dashboard.stripe.com" target="_blank" class="w-full px-3 py-2 rounded-lg flex items-center gap-3 text-gray-300 hover:text-white text-xs font-semibold transition">
+            <i class="fa-solid fa-credit-card text-indigo-400"></i> Stripe Master
+          </a>
+        </div>
       </div>
 
-      <button onclick="logout()" class="w-full px-3 py-2.5 rounded-xl flex items-center gap-3 text-gray-500 hover:text-red-400 hover:bg-red-500/10 text-xs font-bold transition mt-4">
-        <i class="fa-solid fa-right-from-bracket"></i> <span class="sidebar-text">Disconnetti</span>
+      <button onclick="logout()" class="w-full px-3.5 py-3 rounded-xl flex items-center gap-3 text-gray-400 hover:text-red-400 hover:bg-red-500/10 text-xs font-bold transition mt-4">
+        <i class="fa-solid fa-right-from-bracket"></i> Disconnetti
       </button>
     </aside>
 
-    <!-- CONTENT AREA -->
+    <!-- MANIGLIA PER TRASCINARE LA LARGHEZZA SIDEBAR -->
+    <div id="resizer"></div>
+
+    <!-- CONTENT AREA PRINCIPALE -->
     <main class="flex-1 p-6 md:p-8 overflow-y-auto min-w-0">
       
       <!-- TAB 1: MASTER HUB -->
       <section id="tab-master">
         <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
             <div>
-              <h1 class="text-2xl font-display font-black text-white">Master <span class="grad-text">Command Center</span></h1>
-              <p class="text-xs text-gray-400 mt-1">Gestisci tutti i 12 prodotti dell'ecosistema RM Studio in tempo reale.</p>
+              <h1 class="text-2xl md:text-3xl font-display font-black text-white">Master <span class="grad-text">Command Center</span></h1>
+              <p class="text-sm text-gray-400 mt-1">Gestisci le proposte e i pagamenti di tutti i SaaS RM Studio in tempo reale.</p>
             </div>
             <div class="flex items-center gap-3">
-              <button onclick="openCreationModal()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-purple-600/20 active:scale-95">
+              <button onclick="openCreationModal()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-purple-600/20 active:scale-95">
                   + Nuovo Progetto
               </button>
             </div>
         </header>
 
-        <!-- STATS -->
+        <!-- STATS PRINCIPALI -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div class="bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
-                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Incassi Totali</span>
-                <span class="text-2xl font-black text-green-400 mt-1 block" id="stat-revenue">€0.00</span>
+                <span class="text-gray-400 text-xs uppercase font-bold tracking-widest block">Incassi Totali</span>
+                <span class="text-2xl md:text-3xl font-black text-green-400 mt-1 block" id="stat-revenue">€0.00</span>
             </div>
             <div class="bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
-                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Progetti Attivi</span>
-                <span class="text-2xl font-black text-white mt-1 block" id="stat-total">0</span>
+                <span class="text-gray-400 text-xs uppercase font-bold tracking-widest block">Progetti Attivi</span>
+                <span class="text-2xl md:text-3xl font-black text-white mt-1 block" id="stat-total">0</span>
             </div>
             <div class="bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
-                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Pagati / In Attesa</span>
-                <span class="text-2xl font-black text-purple-400 mt-1 block" id="stat-ratio">0 / 0</span>
+                <span class="text-gray-400 text-xs uppercase font-bold tracking-widest block">Pagati / In Attesa</span>
+                <span class="text-2xl md:text-3xl font-black text-purple-400 mt-1 block" id="stat-ratio">0 / 0</span>
             </div>
             <div class="bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
-                <span class="text-gray-400 text-[10px] uppercase font-bold tracking-widest block">Conversion Rate</span>
-                <span class="text-2xl font-black text-blue-400 mt-1 block" id="stat-cr">0%</span>
+                <span class="text-gray-400 text-xs uppercase font-bold tracking-widest block">Conversion Rate</span>
+                <span class="text-2xl md:text-3xl font-black text-blue-400 mt-1 block" id="stat-cr">0%</span>
             </div>
         </div>
 
-        <!-- FILTRI PRODOTTI E SISTEMI -->
+        <!-- FILTRI PRODOTTI -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">PRODOTTO / CATEGORIA</label>
-                <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs text-white outline-none focus:border-purple-500 font-semibold">
+                <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">PRODOTTO / CATEGORIA</label>
+                <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
                     <option value="all">Tutti i Prodotti</option>
                     <option value="experience">🍷 Smart Experience Page (Ristoranti)</option>
                     <option value="html">🌐 SiteEngine Pro (Siti Web)</option>
@@ -218,12 +195,12 @@
                 </select>
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">CERCA CLIENTE O LEAD</label>
-                <input type="text" id="filter-name" placeholder="Cerca nome, email o azienda..." oninput="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs text-white outline-none focus:border-purple-500">
+                <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">CERCA CLIENTE O LEAD</label>
+                <input type="text" id="filter-name" placeholder="Cerca nome, email o azienda..." oninput="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-semibold">
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">STATO PAGAMENTO</label>
-                <select id="filter-paid" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs text-white outline-none focus:border-purple-500 font-semibold">
+                <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">STATO PAGAMENTO</label>
+                <select id="filter-paid" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
                     <option value="all">Tutti gli stati</option>
                     <option value="paid">✓ Pagati</option>
                     <option value="unpaid">● In Attesa di Pagamento</option>
@@ -234,23 +211,23 @@
         <!-- MASTER TABLE -->
         <div class="bg-[#0b0b0f] border border-zinc-900 rounded-3xl overflow-hidden shadow-2xl">
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse min-w-[1250px]">
+                <table class="w-full text-left border-collapse min-w-[1300px]">
                     <thead>
-                        <tr class="border-b border-zinc-900 bg-black/40 text-[9px] uppercase tracking-wider text-gray-400">
-                            <th class="p-4 w-[8%] text-center">Prodotto / ID</th>
-                            <th class="p-4 w-[18%]">Cliente / Contatti (Editabile)</th>
+                        <tr class="border-b border-zinc-900 bg-black/40 text-xs uppercase tracking-wider text-gray-400 font-extrabold">
+                            <th class="p-4 w-[8%] text-center">Tipo / ID</th>
+                            <th class="p-4 w-[20%]">Cliente / Contatti (Editabile)</th>
                             <th class="p-4 w-[18%]">Progetto / Titolo (Editabile)</th>
-                            <th class="p-4 w-[7%]">Prezzo (€)</th>
+                            <th class="p-4 w-[8%]">Prezzo (€)</th>
                             <th class="p-4 w-[7%]">Visite</th>
-                            <th class="p-4 w-[8%]">WA Inviato</th>
-                            <th class="p-4 w-[8%]">Stato Lettura</th>
+                            <th class="p-4 w-[7%]">WA</th>
+                            <th class="p-4 w-[10%]">Stato Lettura</th>
                             <th class="p-4 w-[8%]">Pagamento</th>
-                            <th class="p-4 w-[16%]">Note Operative (Auto-Save)</th>
-                            <th class="p-4 w-[12%] text-right">Azioni Rapide (1-Click)</th>
+                            <th class="p-4 w-[14%]">Note Operative</th>
+                            <th class="p-4 w-[14%] text-right">Azioni Rapide</th>
                         </tr>
                     </thead>
                     <tbody id="master-table-body" class="divide-y divide-zinc-900 text-sm">
-                        <!-- Caricato dinamicamente -->
+                        <!-- Caricato dinamicamente via JS -->
                     </tbody>
                 </table>
             </div>
@@ -260,14 +237,14 @@
       <!-- TAB 2: COLD OUTREACH HUB -->
       <section id="tab-outreach" class="hidden">
         <header class="mb-8">
-          <h1 class="text-2xl font-display font-black text-white">Cold Outreach & <span class="grad-text">Generatore Rapido</span></h1>
-          <p class="text-xs text-gray-400 mt-1">Genera bozze speculative e inviale a freddo su WhatsApp/Email.</p>
+          <h1 class="text-2xl md:text-3xl font-display font-black text-white">Cold Outreach & <span class="grad-text">Generatore Rapido</span></h1>
+          <p class="text-sm text-gray-400 mt-1">Genera bozze speculative e inviale a freddo su WhatsApp/Email.</p>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-[#0b0b0f] border border-zinc-900 p-6 rounded-3xl">
-                <h3 class="font-bold text-white mb-4 text-sm flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> Generatore AI Sitengine Pro</h3>
-                <a href="crea.html" target="_blank" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider block text-center transition">
+                <h3 class="font-bold text-white mb-4 text-base flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> Generatore AI Sitengine Pro</h3>
+                <a href="crea.html" target="_blank" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider block text-center transition">
                     Apri Generatore AI Sito Web
                 </a>
             </div>
@@ -287,32 +264,32 @@
 
       <form id="create-project-form" onsubmit="handleCreateSubmit(event)" class="space-y-4">
         <div>
-            <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Nome Cliente / Azienda</label>
-            <input type="text" id="c-name" required placeholder="Es. Dott.ssa Valeria Cortese" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
+            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Nome Cliente / Azienda</label>
+            <input type="text" id="c-name" required placeholder="Es. Osteria dal Conte" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
         </div>
         <div class="grid grid-cols-2 gap-4">
             <div>
-                <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Email</label>
-                <input type="email" id="c-email" placeholder="studio@rossi.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
+                <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Email</label>
+                <input type="email" id="c-email" placeholder="info@ristorante.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Telefono / WhatsApp</label>
-                <input type="text" id="c-phone" placeholder="+393401234567" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
+                <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Telefono / WhatsApp</label>
+                <input type="text" id="c-phone" placeholder="+393401234567" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
             </div>
         </div>
         <div class="grid grid-cols-3 gap-4">
             <div class="col-span-2">
-                <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Titolo Servizio / Progetto</label>
-                <input type="text" id="c-title" required placeholder="Sito Web Professionale d'Autore" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
+                <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Titolo Servizio / Progetto</label>
+                <input type="text" id="c-title" required placeholder="Smart Experience Page" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
             </div>
             <div>
-                <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Prezzo (€)</label>
-                <input type="number" id="c-price" value="400" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
+                <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prezzo (€)</label>
+                <input type="number" id="c-price" value="390" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold text-purple-400">
             </div>
         </div>
         <div>
-            <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">Prodotto Ecosistema</label>
-            <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prodotto Ecosistema</label>
+            <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold">
                 <option value="experience">🍷 Smart Experience Page (Ristoranti)</option>
                 <option value="html">🌐 SiteEngine Pro (Sito Web / Link HTML)</option>
                 <option value="vision">🎬 Vision UGC Video</option>
@@ -329,29 +306,29 @@
             </div>
         </div>
         <div id="link-input-box">
-            <label class="block text-[10px] font-bold uppercase text-gray-400 mb-1">URL Destinazione / Slug</label>
-            <input type="url" id="c-url" placeholder="https://sitengine.rmstudio.app/elisa-bovolenta" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500">
+            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">URL Destinazione / Sito Web Cliente</label>
+            <input type="url" id="c-url" placeholder="https://www.osteriadelconte.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
         </div>
-        <button type="submit" id="c-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider mt-4 shadow-lg shadow-purple-600/30">
+        <button type="submit" id="c-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-4 rounded-xl text-xs uppercase tracking-wider mt-4 shadow-lg shadow-purple-600/30 active:scale-95 transition">
             Salva e Registra Progetto
         </button>
       </form>
     </div>
   </div>
 
-  <!-- MODALE MESSAGGI PRONTI WA/EMAIL -->
+  <!-- MODALE MESSAGGI PRONTI WA / EMAIL -->
   <div id="copy-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
     <div class="glass p-8 rounded-3xl max-w-lg w-full border border-zinc-800 shadow-2xl">
       <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-display font-bold text-white flex items-center gap-2"><i class="fa-solid fa-comment-dots text-purple-400"></i> Copy Pronto da Inviare</h3>
         <button onclick="closeCopyModal()" class="text-gray-400 hover:text-white text-xl font-bold">&times;</button>
       </div>
-      <textarea id="copy-text-area" readonly class="w-full h-48 bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-xs text-gray-200 outline-none resize-none font-mono mb-4 leading-relaxed"></textarea>
+      <textarea id="copy-text-area" readonly class="w-full h-48 bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-gray-200 outline-none resize-none font-mono mb-4 leading-relaxed"></textarea>
       <div class="flex gap-3">
-          <button onclick="executeCopyText()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl text-xs transition">
+          <button onclick="executeCopyText()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-xl text-xs transition">
             <i class="fa-solid fa-copy"></i> Copia Testo
           </button>
-          <a id="copy-wa-direct-link" target="_blank" href="#" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl text-xs text-center transition flex items-center justify-center gap-2">
+          <a id="copy-wa-direct-link" target="_blank" href="#" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl text-xs text-center transition flex items-center justify-center gap-2">
             <i class="fa-brands fa-whatsapp"></i> Apri WhatsApp
           </a>
       </div>
