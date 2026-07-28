@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RM Studio — Mobile Lead Engine</title>
+    <title>RM Studio — Mobile Sales Pistol</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,114 +17,153 @@
             -webkit-tap-highlight-color: transparent;
         }
         .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .category-card {
+        .saas-card {
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .category-card.selected {
+        .saas-card.selected {
             border-color: #a855f7 !important;
-            background: rgba(168, 85, 247, 0.15) !important;
+            background: rgba(168, 85, 247, 0.18) !important;
             transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.35);
         }
     </style>
 </head>
 <body class="p-4 min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white">
 
     <!-- HEADER MOBILE -->
-    <header class="flex items-center justify-between pb-4 border-b border-zinc-900 mb-5">
+    <header class="flex items-center justify-between pb-4 border-b border-zinc-900 mb-4">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-600/30">
                 <i class="fa-solid fa-bolt text-lg text-white"></i>
             </div>
             <div>
-                <h1 class="font-display font-black text-white text-lg leading-tight">Mobile Sales Engine</h1>
-                <span class="text-xs text-purple-400 font-bold">RM Studio Live Demo</span>
+                <h1 class="font-display font-black text-white text-base leading-tight">Mobile Lead Pistol</h1>
+                <span class="text-xs text-purple-400 font-bold">RM Studio Ecosystem</span>
             </div>
         </div>
-        <a href="index.html" class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 text-gray-400 flex items-center justify-center text-xs font-bold">
+        <a href="index.html" class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 text-gray-400 flex items-center justify-center text-xs font-bold" title="Master Hub Desktop">
             <i class="fa-solid fa-desktop"></i>
         </a>
     </header>
 
-    <!-- FORM SELEZIONE E GENERAZIONE -->
-    <main class="flex-1 space-y-5">
+    <!-- SELEZIONE SAAS E FORM DINAMICO -->
+    <main class="flex-1 space-y-4">
         
         <div>
-            <label class="block text-xs font-black uppercase tracking-wider text-gray-400 mb-2.5">
-                1. Seleziona la Categoria del Lead:
+            <label class="block text-xs font-black uppercase tracking-wider text-gray-400 mb-2">
+                1. Scegli il SaaS per il Lead davanti a te:
             </label>
 
-            <div class="grid grid-cols-2 gap-2.5">
-                <button type="button" onclick="selectCategory('experience', 'https://n8n.rmstudio.app/webhook/omnia-taste-generate', 'Smart Experience Page')" id="cat-experience" class="category-card selected p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-2xl">🍷</span>
-                    <span class="font-extrabold text-white text-sm">Ristoranti</span>
-                    <span class="text-[10px] text-gray-400 font-medium">Experience Page</span>
+            <!-- SELETTORE SAAS CON NOMI UFFICIALI E ICONE -->
+            <div class="grid grid-cols-2 gap-2">
+                
+                <button type="button" onclick="selectSaas('experience')" id="card-experience" class="saas-card selected p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-xl">🍷</span>
+                    <span class="font-extrabold text-white text-xs">Experience</span>
+                    <span class="text-[9px] text-gray-400 font-bold">Smart Page Ristoranti</span>
                 </button>
 
-                <button type="button" onclick="selectCategory('html', 'https://n8n.rmstudio.app/webhook/omnia-quick-generate', 'Sito Web Pro')" id="cat-html" class="category-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-2xl">🌐</span>
-                    <span class="font-extrabold text-white text-sm">Sito Web Pro</span>
-                    <span class="text-[10px] text-gray-400 font-medium">SiteEngine AI</span>
+                <button type="button" onclick="selectSaas('nexus')" id="card-nexus" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-xl">🤖</span>
+                    <span class="font-extrabold text-white text-xs">NexusAI</span>
+                    <span class="text-[9px] text-gray-400 font-bold">Sales Overlay Chatbot</span>
                 </button>
 
-                <button type="button" onclick="selectCategory('vision', 'https://n8n.rmstudio.app/webhook/vision-creator', 'Vision UGC Video')" id="cat-vision" class="category-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-2xl">🎬</span>
-                    <span class="font-extrabold text-white text-sm">E-commerce</span>
-                    <span class="text-[10px] text-gray-400 font-medium">Vision UGC Video</span>
+                <button type="button" onclick="selectSaas('sitengine')" id="card-sitengine" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-xl">🌐</span>
+                    <span class="font-extrabold text-white text-xs">SiteEngine Pro</span>
+                    <span class="text-[9px] text-gray-400 font-bold">Landing Professionisti</span>
                 </button>
 
-                <button type="button" onclick="selectCategory('video', 'https://n8n.rmstudio.app/webhook/hometour-creator', 'Video Immobiliare/Auto')" id="cat-video" class="category-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-2xl">🏠</span>
-                    <span class="font-extrabold text-white text-sm">Auto / Immobile</span>
-                    <span class="text-[10px] text-gray-400 font-medium">HomeTour & Drive</span>
+                <button type="button" onclick="selectSaas('vision')" id="card-vision" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-xl">🎬</span>
+                    <span class="font-extrabold text-white text-xs">Vision UGC</span>
+                    <span class="text-[9px] text-gray-400 font-bold">Video Influencer AI</span>
                 </button>
 
-                <button type="button" onclick="selectCategory('voice_ai', 'https://n8n.rmstudio.app/webhook/dentis-creator', 'Voice AI Receptionist')" id="cat-voice_ai" class="category-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-2xl">📞</span>
-                    <span class="font-extrabold text-white text-sm">Dentisti / Legali</span>
-                    <span class="text-[10px] text-gray-400 font-medium">Voice AI H24</span>
+                <button type="button" onclick="selectSaas('hometour')" id="card-hometour" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-xl">🏠</span>
+                    <span class="font-extrabold text-white text-xs">HomeTour / Drive</span>
+                    <span class="text-[9px] text-gray-400 font-bold">Video Immobili & Auto</span>
                 </button>
 
-                <button type="button" onclick="selectCategory('chatbot', 'https://n8n.rmstudio.app/webhook/chatbot-creator', 'NexusAI Bot')" id="cat-chatbot" class="category-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-2xl">💬</span>
-                    <span class="font-extrabold text-white text-sm">Sito Generico</span>
-                    <span class="text-[10px] text-gray-400 font-medium">Nexus Chatbot</span>
+                <button type="button" onclick="selectSaas('voice_ai')" id="card-voice_ai" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-xl">📞</span>
+                    <span class="font-extrabold text-white text-xs">Voice AI H24</span>
+                    <span class="text-[9px] text-gray-400 font-bold">Dentis / Lexis / C24</span>
                 </button>
+
             </div>
         </div>
 
-        <!-- INPUT DATI LEAD -->
+        <!-- LINK APERTURA LANDING UFFICIALE -->
+        <div class="flex justify-between items-center bg-zinc-900/60 border border-zinc-800 px-3.5 py-2 rounded-xl text-xs">
+            <span class="text-gray-400 font-semibold" id="saas-desc-label">Smart Page Ristoranti</span>
+            <a id="saas-landing-link" href="https://experience.rmstudio.app" target="_blank" class="text-purple-400 font-bold hover:underline flex items-center gap-1 text-xs">
+                <span>🔗 Apri Landing</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+        </div>
+
+        <!-- CONTENITORE INPUT DINAMICI IN BASE AL SAAS SELEZIONATO -->
         <div class="space-y-3 bg-[#0e0e14] border border-zinc-800 p-4 rounded-2xl">
-            <label class="block text-xs font-black uppercase tracking-wider text-purple-400">
-                2. Dati del Lead davanti a te:
-            </label>
-
-            <div>
-                <input type="text" id="m-name" placeholder="Nome Attività o Titolare..." class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold">
+            
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-2">
+                <label class="text-xs font-black uppercase tracking-wider text-purple-400" id="saas-form-title">
+                    Dati Generazione Experience:
+                </label>
             </div>
 
-            <div>
-                <input type="url" id="m-url" placeholder="Sito Web del cliente (https://...)" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-mono text-xs">
+            <!-- CAMPO 1: SITO WEB O LINK PRODOTTO -->
+            <div id="box-url">
+                <label class="block text-[11px] font-bold text-gray-400 mb-1" id="lbl-url">URL Sito Web Cliente:</label>
+                <input type="url" id="inp-url" placeholder="https://www.ristorante.it" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-purple-500 font-mono">
             </div>
 
-            <div>
-                <input type="tel" id="m-phone" placeholder="Cellulare WhatsApp (opzionale)..." class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold">
+            <!-- CAMPO 2: NOME CLIENTE / AZIENDA -->
+            <div id="box-name">
+                <label class="block text-[11px] font-bold text-gray-400 mb-1" id="lbl-name">Nome Attività / Titolare:</label>
+                <input type="text" id="inp-name" placeholder="Es. Osteria dal Conte" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
             </div>
+
+            <!-- CAMPO 3: CITTA (USATO DA SITEENGINE) -->
+            <div id="box-city" class="hidden">
+                <label class="block text-[11px] font-bold text-gray-400 mb-1">Città del Professionista:</label>
+                <input type="text" id="inp-city" placeholder="Es. Ariano nel Polesine (RO)" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
+            </div>
+
+            <!-- CAMPO 4: SETTORE PROFESSIONISTA (DROPDOWN SITEENGINE / VOICE AI) -->
+            <div id="box-category" class="hidden">
+                <label class="block text-[11px] font-bold text-gray-400 mb-1">Settore / Categoria:</label>
+                <select id="inp-category" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-purple-500 font-bold">
+                    <option value="psicologo">🧠 Psicologo / Terapeuta</option>
+                    <option value="dentista">🦷 Studio Dentistico (Dentis)</option>
+                    <option value="legale">⚖️ Studio Legale (Lexis)</option>
+                    <option value="hotel">🏨 Hotel / B&B (Concierge24)</option>
+                    <option value="consulente">💼 Consulente / Azienda</option>
+                </select>
+            </div>
+
+            <!-- CAMPO 5: TELEFONO WHATSAPP / TEST SANDBOX -->
+            <div id="box-phone">
+                <label class="block text-[11px] font-bold text-gray-400 mb-1" id="lbl-phone">Cellulare WhatsApp:</label>
+                <input type="tel" id="inp-phone" placeholder="+393401234567" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
+            </div>
+
         </div>
 
-        <!-- BOTTONE AZIONE GENERAZIONE -->
-        <button id="m-submit-btn" onclick="generateMobileDemo()" class="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-black py-4 rounded-2xl text-sm uppercase tracking-wider shadow-xl shadow-purple-600/30 transition active:scale-95 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> GENERA DEMO IN TEMPO REALE
+        <!-- BOTTONE GENERAZIONE DEMO -->
+        <button id="m-submit-btn" onclick="generateMobileDemo()" class="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-black py-4 rounded-2xl text-xs uppercase tracking-wider shadow-xl shadow-purple-600/30 transition active:scale-95 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles text-base"></i> GENERA DEMO IN TEMPO REALE
         </button>
 
-        <!-- RISULTATO ANTEPRIMA (NASCOSTO INIZIALMENTE) -->
+        <!-- ESITO RISULTATO DEMO (NASCOSTO INIZIALMENTE) -->
         <div id="m-result-box" class="hidden bg-[#0c140c] border-2 border-emerald-500/50 p-4 rounded-2xl space-y-3">
-            <div class="flex items-center gap-2 text-emerald-400 font-black text-sm">
-                <i class="fa-solid fa-circle-check animate-bounce"></i> DEMO PRONTA ALL'USO!
+            <div class="flex items-center gap-2 text-emerald-400 font-black text-xs">
+                <i class="fa-solid fa-circle-check animate-bounce text-sm"></i> DEMO PRONTA ALL'USO!
             </div>
             
             <a id="m-wa-link" href="#" target="_blank" class="w-full bg-emerald-600 text-white font-black py-3.5 rounded-xl text-xs uppercase tracking-wider text-center block transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2">
-                <i class="fa-brands fa-whatsapp text-lg"></i> Invia Ora su WhatsApp
+                <i class="fa-brands fa-whatsapp text-base"></i> Invia Ora su WhatsApp
             </a>
 
             <a id="m-portal-link" href="#" target="_blank" class="w-full bg-purple-600 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider text-center block transition flex items-center justify-center gap-2">
@@ -139,42 +178,136 @@
     </footer>
 
     <script>
-        let currentType = 'experience';
-        let currentEndpoint = 'https://n8n.rmstudio.app/webhook/omnia-taste-generate';
-        let currentTitle = 'Smart Experience Page';
+        // CONFIGURAZIONI DINAMICHE PER CIASCUN SAAS
+        const SAAS_CONFIG = {
+            experience: {
+                title: "Dati Smart Experience Page:",
+                endpoint: "https://n8n.rmstudio.app/webhook/omnia-taste-generate",
+                landing: "https://experience.rmstudio.app",
+                desc: "Smart Page Ristoranti",
+                showUrl: true, lblUrl: "URL Sito Web Ristorante:",
+                showName: true, lblName: "Nome Ristorante / Titolare:",
+                showCity: false,
+                showCategory: false,
+                showPhone: true, lblPhone: "Telefono WhatsApp Ristorante:"
+            },
+            nexus: {
+                title: "Dati NexusAI Sales Overlay:",
+                endpoint: "https://n8n.rmstudio.app/webhook/chatbot-creator",
+                landing: "https://nexus.rmstudio.app",
+                desc: "AI Sales Overlay Chatbot",
+                showUrl: true, lblUrl: "URL Sito Web del Cliente:",
+                showName: true, lblName: "Nome Azienda / Brand:",
+                showCity: false,
+                showCategory: false,
+                showPhone: true, lblPhone: "Telefono Referente (opzionale):"
+            },
+            sitengine: {
+                title: "Dati SiteEngine Pro Landing:",
+                endpoint: "https://n8n.rmstudio.app/webhook/omnia-quick-generate",
+                landing: "https://sitengine.rmstudio.app",
+                desc: "Landing Page Professionisti",
+                showUrl: true, lblUrl: "Vecchio Sito o Link Social (opzionale):",
+                showName: true, lblName: "Nome e Cognome Professionista:",
+                showCity: true,
+                showCategory: true,
+                showPhone: true, lblPhone: "Telefono Professionista:"
+            },
+            vision: {
+                title: "Dati Vision UGC Video:",
+                endpoint: "https://n8n.rmstudio.app/webhook/vision-creator",
+                landing: "https://vision.rmstudio.app",
+                desc: "Video Influencer AI per E-Commerce",
+                showUrl: true, lblUrl: "Link Prodotto / E-Commerce:",
+                showName: true, lblName: "Nome Prodotto / Brand:",
+                showCity: false,
+                showCategory: false,
+                showPhone: true, lblPhone: "Telefono Referente:"
+            },
+            hometour: {
+                title: "Dati HomeTour / DriveMotion:",
+                endpoint: "https://n8n.rmstudio.app/webhook/hometour-creator",
+                landing: "https://hometour.rmstudio.app",
+                desc: "Video Regia AI Immobili & Auto",
+                showUrl: true, lblUrl: "Link Annuncio Immobile o Auto:",
+                showName: true, lblName: "Nome Agenzia / Concessionaria:",
+                showCity: false,
+                showCategory: false,
+                showPhone: true, lblPhone: "Telefono Agente:"
+            },
+            voice_ai: {
+                title: "Dati Test Voice AI (Dentis / Lexis):",
+                endpoint: "https://n8n.rmstudio.app/webhook/dentis-creator",
+                landing: "https://dentis.rmstudio.app",
+                desc: "Receptionist Telefonica Vocale H24",
+                showUrl: true, lblUrl: "Sito Web Clinica / Studio Legale:",
+                showName: true, lblName: "Nome Studio / Dottore:",
+                showCity: false,
+                showCategory: true,
+                showPhone: true, lblPhone: "Cellulare del Medico per Test Chiamata:"
+            }
+        };
 
-        function selectCategory(type, endpoint, title) {
-            currentType = type;
-            currentEndpoint = endpoint;
-            currentTitle = title;
+        let currentSaasKey = 'experience';
 
-            document.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
-            const selectedCard = document.getElementById(`cat-${type}`);
-            if (selectedCard) selectedCard.classList.add('selected');
+        function selectSaas(key) {
+            currentSaasKey = key;
+            const cfg = SAAS_CONFIG[key];
+            if (!cfg) return;
+
+            // Seleziona la card
+            document.querySelectorAll('.saas-card').forEach(c => c.classList.remove('selected'));
+            const card = document.getElementById(`card-${key}`);
+            if (card) card.classList.add('selected');
+
+            // Aggiorna etichette e link alla landing
+            document.getElementById('saas-form-title').innerText = cfg.title;
+            document.getElementById('saas-desc-label').innerText = cfg.desc;
+            document.getElementById('saas-landing-link').href = cfg.landing;
+
+            // Mostra/Nasconde i campi in modo dinamico
+            document.getElementById('box-url').classList.toggle('hidden', !cfg.showUrl);
+            if (cfg.lblUrl) document.getElementById('lbl-url').innerText = cfg.lblUrl;
+
+            document.getElementById('box-name').classList.toggle('hidden', !cfg.showName);
+            if (cfg.lblName) document.getElementById('lbl-name').innerText = cfg.lblName;
+
+            document.getElementById('box-city').classList.toggle('hidden', !cfg.showCity);
+            document.getElementById('box-category').classList.toggle('hidden', !cfg.showCategory);
+
+            document.getElementById('box-phone').classList.toggle('hidden', !cfg.showPhone);
+            if (cfg.lblPhone) document.getElementById('lbl-phone').innerText = cfg.lblPhone;
         }
 
         async function generateMobileDemo() {
-            const siteUrl = document.getElementById('m-url').value.trim();
-            const name = document.getElementById('m-name').value.trim();
-            const phone = document.getElementById('m-phone').value.trim();
+            const cfg = SAAS_CONFIG[currentSaasKey];
+            const siteUrl = document.getElementById('inp-url').value.trim();
+            const name = document.getElementById('inp-name').value.trim();
+            const city = document.getElementById('inp-city').value.trim();
+            const category = document.getElementById('inp-category').value;
+            const phone = document.getElementById('inp-phone').value.trim();
 
-            if (!siteUrl) return alert("Inserisci l'URL del sito del cliente per procedere.");
+            if (cfg.showUrl && !siteUrl && currentSaasKey !== 'sitengine') {
+                return alert("Inserisci l'URL per procedere con la generazione.");
+            }
 
             const btn = document.getElementById('m-submit-btn');
             const originalText = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generazione AI in corso (15s)...`;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generazione ${currentSaasKey.toUpperCase()} in corso (15s)...`;
 
             try {
-                const res = await fetch(currentEndpoint, {
+                const res = await fetch(cfg.endpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         site_url: siteUrl,
                         nome_ristorante: name,
                         nome_cliente: name,
+                        citta: city,
+                        settore: category,
                         phone: phone,
-                        title: currentTitle
+                        title: cfg.desc
                     })
                 });
 
@@ -187,7 +320,7 @@
 
                     portalBtn.href = data.portal_link;
 
-                    const textWa = `Ciao ${name || 'Titolare'}! Ho creato per voi un'anteprima interattiva dimostrativa. Puoi provarla qui: ${data.portal_link}`;
+                    const textWa = `Ciao ${name || 'Titolare'}! Ho creato per voi un'anteprima interattiva dimostrativa di ${cfg.desc}. Puoi provarla qui: ${data.portal_link}`;
                     const cleanPhone = phone ? phone.replace(/\D/g, '') : '';
                     waBtn.href = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(textWa)}` : `https://wa.me/?text=${encodeURIComponent(textWa)}`;
 
