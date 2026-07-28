@@ -368,6 +368,18 @@
       </div>
 
       <form id="create-project-form" onsubmit="handleCreateSubmit(event)" class="space-y-4">
+        
+        <!-- ⚡ SELETTORE RISTORANTE DA FOGLIO GOOGLE (VISIBILE SOLO PER EXPERIENCE PAGE) -->
+        <div id="experience-sheet-select-box" class="hidden p-3.5 bg-purple-950/30 border border-purple-500/30 rounded-2xl">
+            <label class="block text-xs font-extrabold uppercase text-purple-300 mb-1.5 flex items-center justify-between">
+                <span>📊 Seleziona da Foglio Google Experience</span>
+                <i class="fa-solid fa-table text-purple-400"></i>
+            </label>
+            <select id="c-sheet-restaurant" onchange="onRestaurantSelectedFromSheet()" class="w-full bg-[#15151a] border border-purple-500/40 rounded-xl p-3 text-sm text-white font-bold outline-none focus:border-purple-400">
+                <option value="">-- Caricamento ristoranti da elaborare... --</option>
+            </select>
+        </div>
+
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Nome Cliente / Azienda</label>
             <input type="text" id="c-name" required placeholder="Es. Osteria dal Conte" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
