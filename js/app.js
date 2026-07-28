@@ -63,7 +63,7 @@ function renderMasterTable(data) {
     container.innerHTML = '';
 
     if (data.length === 0) {
-        container.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-gray-500 font-semibold">Nessun progetto trovato.</td></tr>`;
+        container.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-gray-400 font-semibold text-base">Nessun progetto trovato.</td></tr>`;
         return;
     }
 
@@ -72,48 +72,50 @@ function renderMasterTable(data) {
         tr.className = "hover:bg-[#101015] transition border-b border-zinc-900/80";
 
         const isPaid = p.is_paid === true || p.is_paid === "true";
-        const isRead = p.is_opened || (p.views_count || 0) > 0;
+        // ⚡ CORREZIONE RIGIDA: È "Letto" SOLTANTO SE LE VISITE SONO MAGGIORI DI 0
+        const views = parseInt(p.views_count || 0);
+        const isRead = views > 0;
         const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
 
-        let typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
+        let typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
 
         const portalViewUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
 
-        // Se la proposta è stata letta/aperta ma non ancora pagata, attiva il Pitch di Chiusura
+        // Pulsante Pitch Jingle SOLTANTO se letto (visite > 0) e non ancora pagato
         let closingPitchBtn = '';
         if (isRead && !isPaid) {
-            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2 py-1 rounded-lg text-[9px] font-black transition animate-pulse" title="Pitch Chiusura Jingle"><i class="fa-solid fa-fire"></i> Pitch Jingle</button>`;
+            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-3 py-1.5 rounded-lg text-xs font-black transition animate-pulse" title="Pitch Chiusura Jingle"><i class="fa-solid fa-fire"></i> Pitch Jingle</button>`;
         }
 
         tr.innerHTML = `
             <!-- TIPO E ID -->
             <td class="p-4 text-center">
                 ${typeBadge}
-                <span class="font-mono text-[10px] text-gray-500 block mt-1 font-bold">#${p.id ? p.id.substring(0, 4).toUpperCase() : '---'}</span>
+                <span class="font-mono text-xs text-gray-400 block mt-1 font-bold">#${p.id ? p.id.substring(0, 4).toUpperCase() : '---'}</span>
             </td>
 
-            <!-- CLIENTE, EMAIL, TELEFONO EDITABILI -->
+            <!-- CLIENTE, EMAIL, TELEFONO EDITABILI (FONT 16PX BASE) -->
             <td class="p-4">
-                <input type="text" value="${p.client_name || ''}" placeholder="Nome Cliente" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-bold text-white text-sm block w-full mb-1">
-                <div class="space-y-0.5">
-                    <input type="email" value="${p.client_email || ''}" placeholder="Inserisci Mail" onchange="updateSupabaseField('${p.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block">
-                    <input type="text" value="${p.client_phone || ''}" placeholder="Inserisci Telefono" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block">
+                <input type="text" value="${p.client_name || ''}" placeholder="Nome Cliente" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-extrabold text-white text-base block w-full mb-1">
+                <div class="space-y-1">
+                    <input type="email" value="${p.client_email || ''}" placeholder="Inserisci Mail" onchange="updateSupabaseField('${p.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-300 w-full block">
+                    <input type="text" value="${p.client_phone || ''}" placeholder="Inserisci Telefono" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-300 w-full block">
                 </div>
             </td>
 
             <!-- TITOLO PROGETTO EDITABILE -->
             <td class="p-4">
-                <input type="text" value="${p.title || ''}" placeholder="Titolo Progetto" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-300 font-semibold w-full">
+                <input type="text" value="${p.title || ''}" placeholder="Titolo Progetto" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-sm text-gray-200 font-bold w-full">
             </td>
 
             <!-- PREZZO EDITABILE -->
             <td class="p-4">
-                <input type="number" value="${p.price_euro || 0}" onchange="updateSupabaseField('${p.id}', 'price_euro', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-purple-400 focus:border-purple-500 focus:outline-none text-xs">
+                <input type="number" value="${p.price_euro || 0}" onchange="updateSupabaseField('${p.id}', 'price_euro', this.value)" class="w-20 bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-center font-black text-purple-400 focus:border-purple-500 focus:outline-none text-sm">
             </td>
 
             <!-- VISITE EDITABILI -->
             <td class="p-4">
-                <input type="number" value="${p.views_count || 0}" onchange="updateSupabaseField('${p.id}', 'views_count', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-blue-400 focus:border-purple-500 focus:outline-none text-xs">
+                <input type="number" value="${views}" onchange="updateSupabaseField('${p.id}', 'views_count', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-center font-bold text-blue-400 focus:border-purple-500 focus:outline-none text-sm">
             </td>
 
             <!-- SPUNTA WA INVIATO EDITABILE -->
@@ -127,14 +129,14 @@ function renderMasterTable(data) {
             <!-- STATO LETTURA / EMAIL INVIATA -->
             <td class="p-4 whitespace-nowrap">
                 <div class="space-y-1">
-                    ${isRead ? '<span class="text-green-400 font-bold text-xs block"><i class="fa-solid fa-eye animate-pulse"></i> Letto</span>' : '<span class="text-zinc-500 font-bold text-xs block"><i class="fa-solid fa-eye-slash"></i> Non letto</span>'}
-                    ${emailSent ? '<span class="text-purple-400 text-[10px] font-bold block"><i class="fa-solid fa-paper-plane"></i> Mail Inviata</span>' : ''}
+                    ${isRead ? '<span class="text-green-400 font-extrabold text-xs block"><i class="fa-solid fa-eye animate-pulse"></i> Letto ('+views+')</span>' : '<span class="text-zinc-500 font-bold text-xs block"><i class="fa-solid fa-eye-slash"></i> Non letto</span>'}
+                    ${emailSent ? '<span class="text-purple-400 text-xs font-bold block"><i class="fa-solid fa-paper-plane"></i> Mail Inviata</span>' : ''}
                 </div>
             </td>
 
             <!-- PAGAMENTO TOGGLE -->
             <td class="p-4">
-                <button onclick="togglePayment('${p.id}', ${isPaid})" class="px-2.5 py-1 rounded-full text-[10px] font-bold transition ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
+                <button onclick="togglePayment('${p.id}', ${isPaid})" class="px-3 py-1.5 rounded-full text-xs font-bold transition ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
                     ${isPaid ? '✓ Pagato' : '● Attesa'}
                 </button>
             </td>
@@ -145,11 +147,11 @@ function renderMasterTable(data) {
             </td>
 
             <!-- AZIONI RAPIDE -->
-            <td class="p-4 text-right flex items-center justify-end gap-1.5 whitespace-nowrap">
+            <td class="p-4 text-right flex items-center justify-end gap-2 whitespace-nowrap">
                 ${closingPitchBtn}
-                <button onclick="sendResendDirectEmail('${p.id}', '${p.client_email || ''}', '${p.client_name || ''}', '${p.title || ''}', '${portalViewUrl}')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1.5 rounded-lg text-[10px] font-bold transition flex items-center gap-1" title="Invia Mail con Resend"><i class="fa-solid fa-paper-plane"></i> Mail</button>
-                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2 py-1.5 rounded-lg text-[10px] font-bold transition" title="Copy WA"><i class="fa-brands fa-whatsapp"></i> WA</button>
-                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded transition" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                <button onclick="sendResendDirectEmail('${p.id}', '${p.client_email || ''}', '${p.client_name || ''}', '${p.title || ''}', '${portalViewUrl}')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Invia Mail con Resend"><i class="fa-solid fa-paper-plane"></i> Mail</button>
+                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-3 py-1.5 rounded-lg text-xs font-bold transition" title="Copy WA"><i class="fa-brands fa-whatsapp"></i> WA</button>
+                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1.5 rounded transition" title="Elimina"><i class="fa-solid fa-trash-can text-sm"></i></button>
             </td>
         `;
         container.appendChild(tr);
