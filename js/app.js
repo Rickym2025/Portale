@@ -284,8 +284,31 @@ function closeCreationModal() { document.getElementById('creation-modal').classL
 
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
-    document.getElementById('file-upload-box').classList.toggle('hidden', t === 'html' || t === 'link' || t === 'experience');
-    document.getElementById('link-input-box').classList.toggle('hidden', t !== 'html' && t !== 'link' && t !== 'experience');
+    const titleInput = document.getElementById('c-title');
+
+    // Imposta automaticamente il Titolo del Progetto in base al SaaS selezionato
+    if (titleInput) {
+        if (t === 'experience') {
+            titleInput.value = "Smart Experience Page";
+        } else if (t === 'html') {
+            titleInput.value = "Sito Web";
+        } else if (t === 'vision') {
+            titleInput.value = "Vision UGC Video";
+        } else if (t === 'video') {
+            titleInput.value = "HomeTour Video";
+        } else if (t === 'voice_ai') {
+            titleInput.value = "Voice AI Assistente";
+        } else if (t === 'license') {
+            titleInput.value = "Licenza Software";
+        }
+    }
+
+    // Gestione visibilità campi
+    const fileBox = document.getElementById('file-upload-box');
+    const linkBox = document.getElementById('link-input-box');
+    
+    if (fileBox) fileBox.classList.toggle('hidden', t === 'html' || t === 'link' || t === 'experience');
+    if (linkBox) linkBox.classList.toggle('hidden', t !== 'html' && t !== 'link' && t !== 'experience');
 }
 
 async function handleCreateSubmit(e) {
