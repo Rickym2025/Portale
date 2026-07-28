@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RM Studio — Mobile Lead Engine</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050508;
+            color: #f3f4f6;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .category-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .category-card.selected {
+            border-color: #a855f7 !important;
+            background: rgba(168, 85, 247, 0.15) !important;
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+        }
+    </style>
+</head>
+<body class="p-4 min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white">
+
+    <!-- HEADER MOBILE -->
+    <header class="flex items-center justify-between pb-4 border-b border-zinc-900 mb-5">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-600/30">
+                <i class="fa-solid fa-bolt text-lg text-white"></i>
+            </div>
+            <div>
+                <h1 class="font-display font-black text-white text-lg leading-tight">Mobile Sales Engine</h1>
+                <span class="text-xs text-purple-400 font-bold">RM Studio Live Demo</span>
+            </div>
+        </div>
+        <a href="index.html" class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 text-gray-400 flex items-center justify-center text-xs font-bold">
+            <i class="fa-solid fa-desktop"></i>
+        </a>
+    </header>
+
+    <!-- FORM SELEZIONE E GENERAZIONE -->
+    <main class="flex-1 space-y-5">
+        
+        <div>
+            <label class="block text-xs font-black uppercase tracking-wider text-gray-400 mb-2.5">
+                1. Seleziona la Categoria del Lead:
+            </label>
+
+            <div class="grid grid-cols-2 gap-2.5">
+                <button type="button" onclick="selectCategory('experience', 'https://n8n.rmstudio.app/webhook/omnia-taste-generate', 'Smart Experience Page')" id="cat-experience" class="category-card selected p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-2xl">🍷</span>
+                    <span class="font-extrabold text-white text-sm">Ristoranti</span>
+                    <span class="text-[10px] text-gray-400 font-medium">Experience Page</span>
+                </button>
+
+                <button type="button" onclick="selectCategory('html', 'https://n8n.rmstudio.app/webhook/omnia-quick-generate', 'Sito Web Pro')" id="cat-html" class="category-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-2xl">🌐</span>
+                    <span class="font-extrabold text-white text-sm">Sito Web Pro</span>
+                    <span class="text-[10px] text-gray-400 font-medium">SiteEngine AI</span>
+                </button>
+
+                <button type="button" onclick="selectCategory('vision', 'https://n8n.rmstudio.app/webhook/vision-creator', 'Vision UGC Video')" id="cat-vision" class="category-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-2xl">🎬</span>
+                    <span class="font-extrabold text-white text-sm">E-commerce</span>
+                    <span class="text-[10px] text-gray-400 font-medium">Vision UGC Video</span>
+                </button>
+
+                <button type="button" onclick="selectCategory('video', 'https://n8n.rmstudio.app/webhook/hometour-creator', 'Video Immobiliare/Auto')" id="cat-video" class="category-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-2xl">🏠</span>
+                    <span class="font-extrabold text-white text-sm">Auto / Immobile</span>
+                    <span class="text-[10px] text-gray-400 font-medium">HomeTour & Drive</span>
+                </button>
+
+                <button type="button" onclick="selectCategory('voice_ai', 'https://n8n.rmstudio.app/webhook/dentis-creator', 'Voice AI Receptionist')" id="cat-voice_ai" class="category-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-2xl">📞</span>
+                    <span class="font-extrabold text-white text-sm">Dentisti / Legali</span>
+                    <span class="text-[10px] text-gray-400 font-medium">Voice AI H24</span>
+                </button>
+
+                <button type="button" onclick="selectCategory('chatbot', 'https://n8n.rmstudio.app/webhook/chatbot-creator', 'NexusAI Bot')" id="cat-chatbot" class="category-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
+                    <span class="text-2xl">💬</span>
+                    <span class="font-extrabold text-white text-sm">Sito Generico</span>
+                    <span class="text-[10px] text-gray-400 font-medium">Nexus Chatbot</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- INPUT DATI LEAD -->
+        <div class="space-y-3 bg-[#0e0e14] border border-zinc-800 p-4 rounded-2xl">
+            <label class="block text-xs font-black uppercase tracking-wider text-purple-400">
+                2. Dati del Lead davanti a te:
+            </label>
+
+            <div>
+                <input type="text" id="m-name" placeholder="Nome Attività o Titolare..." class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold">
+            </div>
+
+            <div>
+                <input type="url" id="m-url" placeholder="Sito Web del cliente (https://...)" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-mono text-xs">
+            </div>
+
+            <div>
+                <input type="tel" id="m-phone" placeholder="Cellulare WhatsApp (opzionale)..." class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold">
+            </div>
+        </div>
+
+        <!-- BOTTONE AZIONE GENERAZIONE -->
+        <button id="m-submit-btn" onclick="generateMobileDemo()" class="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-black py-4 rounded-2xl text-sm uppercase tracking-wider shadow-xl shadow-purple-600/30 transition active:scale-95 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> GENERA DEMO IN TEMPO REALE
+        </button>
+
+        <!-- RISULTATO ANTEPRIMA (NASCOSTO INIZIALMENTE) -->
+        <div id="m-result-box" class="hidden bg-[#0c140c] border-2 border-emerald-500/50 p-4 rounded-2xl space-y-3">
+            <div class="flex items-center gap-2 text-emerald-400 font-black text-sm">
+                <i class="fa-solid fa-circle-check animate-bounce"></i> DEMO PRONTA ALL'USO!
+            </div>
+            
+            <a id="m-wa-link" href="#" target="_blank" class="w-full bg-emerald-600 text-white font-black py-3.5 rounded-xl text-xs uppercase tracking-wider text-center block transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Invia Ora su WhatsApp
+            </a>
+
+            <a id="m-portal-link" href="#" target="_blank" class="w-full bg-purple-600 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider text-center block transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-eye"></i> Apri Anteprima Portale
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="pt-4 text-center text-[10px] text-gray-600 font-bold">
+        RM Studio Mobile Lead Engine © 2026
+    </footer>
+
+    <script>
+        let currentType = 'experience';
+        let currentEndpoint = 'https://n8n.rmstudio.app/webhook/omnia-taste-generate';
+        let currentTitle = 'Smart Experience Page';
+
+        function selectCategory(type, endpoint, title) {
+            currentType = type;
+            currentEndpoint = endpoint;
+            currentTitle = title;
+
+            document.querySelectorAll('.category-card').forEach(c => c.classList.remove('selected'));
+            const selectedCard = document.getElementById(`cat-${type}`);
+            if (selectedCard) selectedCard.classList.add('selected');
+        }
+
+        async function generateMobileDemo() {
+            const siteUrl = document.getElementById('m-url').value.trim();
+            const name = document.getElementById('m-name').value.trim();
+            const phone = document.getElementById('m-phone').value.trim();
+
+            if (!siteUrl) return alert("Inserisci l'URL del sito del cliente per procedere.");
+
+            const btn = document.getElementById('m-submit-btn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generazione AI in corso (15s)...`;
+
+            try {
+                const res = await fetch(currentEndpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        site_url: siteUrl,
+                        nome_ristorante: name,
+                        nome_cliente: name,
+                        phone: phone,
+                        title: currentTitle
+                    })
+                });
+
+                const data = await res.json();
+                
+                if (data.success && data.portal_link) {
+                    const resultBox = document.getElementById('m-result-box');
+                    const portalBtn = document.getElementById('m-portal-link');
+                    const waBtn = document.getElementById('m-wa-link');
+
+                    portalBtn.href = data.portal_link;
+
+                    const textWa = `Ciao ${name || 'Titolare'}! Ho creato per voi un'anteprima interattiva dimostrativa. Puoi provarla qui: ${data.portal_link}`;
+                    const cleanPhone = phone ? phone.replace(/\D/g, '') : '';
+                    waBtn.href = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(textWa)}` : `https://wa.me/?text=${encodeURIComponent(textWa)}`;
+
+                    resultBox.classList.remove('hidden');
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                } else {
+                    throw new Error(data.message || "Errore sconosciuto.");
+                }
+            } catch (err) {
+                alert("⚠️ Errore generazione: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+    </script>
+</body>
+</html>
