@@ -73,8 +73,11 @@ function renderMasterTable(data) {
 
         const isPaid = p.is_paid === true || p.is_paid === "true";
         const isRead = p.is_opened || (p.views_count || 0) > 0;
+        const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
 
         let typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
+
+        const portalViewUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
 
         tr.innerHTML = `
             <!-- TIPO E ID -->
@@ -111,13 +114,16 @@ function renderMasterTable(data) {
             <td class="p-4">
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" ${p.is_whatsapp_sent ? 'checked' : ''} onchange="updateSupabaseField('${p.id}', 'is_whatsapp_sent', this.checked)" class="w-4 h-4 text-purple-600 bg-zinc-900 border-zinc-800 rounded focus:ring-purple-500">
-                    <span class="ml-2 text-xs text-gray-400">Inviato</span>
+                    <span class="ml-2 text-xs text-gray-400">WA</span>
                 </label>
             </td>
 
-            <!-- STATO LETTURA -->
+            <!-- STATO LETTURA / EMAIL INVIATA -->
             <td class="p-4 whitespace-nowrap">
-                ${isRead ? '<span class="text-green-400 font-bold text-xs"><i class="fa-solid fa-eye animate-pulse"></i> Letto</span>' : '<span class="text-zinc-500 font-bold text-xs"><i class="fa-solid fa-envelope"></i> No</span>'}
+                <div class="space-y-1">
+                    ${isRead ? '<span class="text-green-400 font-bold text-xs block"><i class="fa-solid fa-eye animate-pulse"></i> Letto</span>' : '<span class="text-zinc-500 font-bold text-xs block"><i class="fa-solid fa-eye-slash"></i> Non letto</span>'}
+                    ${emailSent ? '<span class="text-purple-400 text-[10px] font-bold block"><i class="fa-solid fa-paper-plane"></i> Mail Inviata</span>' : ''}
+                </div>
             </td>
 
             <!-- PAGAMENTO TOGGLE -->
@@ -132,15 +138,49 @@ function renderMasterTable(data) {
                 <textarea onchange="updateSupabaseField('${p.id}', 'notes', this.value)" placeholder="Aggiungi note..." class="w-full h-12 bg-transparent text-xs text-zinc-300 placeholder-zinc-700 hover:border-zinc-800 focus:border-purple-500 border border-transparent rounded-lg p-1.5 leading-relaxed focus:outline-none transition-all resize-none">${p.notes || ''}</textarea>
             </td>
 
-            <!-- AZIONI RAPIDE -->
+            <!-- AZIONI RAPIDE (WA + EMAIL DIRECT RESEND + COPY + DELETE) -->
             <td class="p-4 text-right flex items-center justify-end gap-1.5 whitespace-nowrap">
+                <button onclick="sendResendDirectEmail('${p.id}', '${p.client_email || ''}', '${p.client_name || ''}', '${p.title || ''}', '${portalViewUrl}')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition flex items-center gap-1" title="Invia Mail Subito con Resend"><i class="fa-solid fa-paper-plane"></i> Direct Mail</button>
                 <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition" title="Copy WA"><i class="fa-brands fa-whatsapp"></i> WA</button>
-                <button onclick="openMessageModal('${p.id}', 'email')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition" title="Copy Email"><i class="fa-solid fa-envelope"></i> Mail</button>
+                <button onclick="openMessageModal('${p.id}', 'email')" class="bg-blue-600/20 text-blue-300 border border-blue-500/30 hover:bg-blue-600/40 px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition" title="Copy Testo Mail"><i class="fa-solid fa-copy"></i> Copy</button>
                 <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1.5 rounded transition" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
             </td>
         `;
         container.appendChild(tr);
     });
+}
+
+// INVIO EMAIL DIRETTO VIA RESEND IN 1 CLICK
+async function sendResendDirectEmail(projectId, clientEmail, clientName, title, portalUrl) {
+    if (!clientEmail || !clientEmail.includes('@')) {
+        return alert("Nessuna email valida salvata per questo cliente. Inseriscila nel campo dedicato e riprova.");
+    }
+
+    if (!confirm(`Confermi l'invio immediato dell'Email a: ${clientEmail}?`)) return;
+
+    try {
+        const res = await fetch('https://n8n.rmstudio.app/webhook/omnia-taste-send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                project_id: projectId,
+                client_email: clientEmail,
+                client_name: clientName,
+                title: title,
+                portal_url: portalUrl
+            })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+            alert("✨ Email inviata con successo via Resend a " + clientEmail + "!");
+            loadMasterData();
+        } else {
+            throw new Error(data.message || "Errore invio email");
+        }
+    } catch (err) {
+        alert("Impossibile inviare l'email: " + err.message);
+    }
 }
 
 async function togglePayment(id, current) {
@@ -162,10 +202,11 @@ function switchTab(tab) {
 
 function openCreationModal() { document.getElementById('creation-modal').classList.remove('hidden'); document.getElementById('creation-modal').classList.add('flex'); }
 function closeCreationModal() { document.getElementById('creation-modal').classList.remove('flex'); document.getElementById('creation-modal').classList.add('hidden'); }
+
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
-    document.getElementById('file-upload-box').classList.toggle('hidden', t === 'html' || t === 'link');
-    document.getElementById('link-input-box').classList.toggle('hidden', t !== 'html' && t !== 'link');
+    document.getElementById('file-upload-box').classList.toggle('hidden', t === 'html' || t === 'link' || t === 'experience');
+    document.getElementById('link-input-box').classList.toggle('hidden', t !== 'html' && t !== 'link' && t !== 'experience');
 }
 
 async function handleCreateSubmit(e) {
@@ -174,13 +215,53 @@ async function handleCreateSubmit(e) {
     btn.disabled = true;
     btn.innerText = "Salvataggio in corso...";
 
+    const type = document.getElementById('c-type').value;
+
+    // SE È SMART EXPERIENCE PAGE RISTORANTI: Chiama lo Scraper/Generatore n8n
+    if (type === 'experience') {
+        const siteUrl = document.getElementById('c-url').value;
+        if (!siteUrl) {
+            alert("Inserisci l'URL del sito del ristorante nel campo Destinazione.");
+            btn.disabled = false;
+            btn.innerText = "Salva e Registra Progetto";
+            return;
+        }
+
+        try {
+            const res = await fetch('https://n8n.rmstudio.app/webhook/omnia-taste-generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    site_url: siteUrl,
+                    phone: document.getElementById('c-phone').value || '',
+                    nome_ristorante: document.getElementById('c-name').value || ''
+                })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                alert("✨ Smart Experience Page generata con successo!");
+                closeCreationModal();
+                loadMasterData();
+            } else {
+                throw new Error("Errore durante la generazione n8n.");
+            }
+        } catch (err) {
+            alert("Errore generazione: " + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Salva e Registra Progetto";
+        }
+        return;
+    }
+
+    // Per gli altri tipi di progetto standard
     const fd = new FormData();
     fd.append('client_name', document.getElementById('c-name').value);
     fd.append('email', document.getElementById('c-email').value || '');
     fd.append('client_phone', document.getElementById('c-phone').value || '');
     fd.append('title', document.getElementById('c-title').value);
     fd.append('price', document.getElementById('c-price').value);
-    const type = document.getElementById('c-type').value;
     fd.append('portal_type', type);
 
     if (type === 'video' || type === 'carousel' || type === 'vision') {
