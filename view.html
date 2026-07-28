@@ -400,13 +400,13 @@
             } 
             else if (data.portal_type === 'carousel') {
                 imagesArray = typeof data.carousel_images === 'string' ? JSON.parse(data.carousel_images) : data.carousel_images;
-                if(imagesArray.length > 0) {
+                if (imagesArray.length > 0) {
                     document.getElementById('carousel-img').src = imagesArray[0];
                     document.getElementById('player-carousel').classList.remove('hidden');
                 }
             } 
-            // ⚡ SITO WEB INTERATTIVO: Bypassa il secondo click e si avvia in full-screen automatico
-            else if (data.portal_type === 'html') {
+            // ⚡ SITO INTERATTIVO & SMART EXPERIENCE PAGE
+            else if (data.portal_type === 'html' || data.portal_type === 'experience') {
                 document.getElementById('html-preview-container').classList.remove('hidden');
                 openFullscreenWebsite(); // Avvio immediato a schermo intero
             } 
