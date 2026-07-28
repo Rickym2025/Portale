@@ -292,31 +292,61 @@
     <!-- 🌌 CONTENITORE DINAMICO PER L'ORBITA -->
     <div id="ecosystem-orbit-container" class="orbit-container"></div>
 
-    <!-- 🖥️ OVERLAY NATIVO A SCHERMO INTERO PER IL SITO WEB DEL CLIENTE -->
+    <!-- OVERLAY A SCHERMO INTERO CON SELETTORE DUAL VIEW -->
     <div id="fullscreen-iframe-overlay" class="hidden fixed inset-0 bg-[#050508] z-[9999] flex flex-col">
-        <!-- Barra di controllo superiore dell'overlay -->
+        <!-- Barra superiore dell'overlay con Selettore Viste -->
         <div class="h-16 shrink-0 bg-[#0b0b0f] border-b border-gray-900/80 flex items-center justify-between px-6">
-            <div class="flex items-center gap-3">
-                <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio Logo" class="h-6 w-auto">
-                <span class="text-xs text-gray-400">| Anteprima Interattiva Sito</span>
-            </div>
             <div class="flex items-center gap-4">
-                <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:shadow-[0_0_25px_rgba(147,51,234,0.5)]">
+                <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-6 w-auto">
+                
+                <!-- SELETTORE DUAL VISTA PER IL RISTORATORE -->
+                <div id="view-mode-selector" class="hidden sm:flex items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl">
+                    <button onclick="switchPreviewMode('experience')" id="btn-view-experience" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition">
+                        🍷 Smart Experience Page
+                    </button>
+                    <button onclick="switchPreviewMode('website')" id="btn-view-website" class="px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition">
+                        🌐 Vedi sul Vostro Sito Attuale
+                    </button>
+                </div>
+            </div>
+    
+            <div class="flex items-center gap-4">
+                <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)]">
                 </button>
                 <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-4 py-2.5 rounded-xl transition-all">
                     <i class="fa-solid fa-xmark"></i> Esci dall'anteprima
                 </button>
             </div>
         </div>
-        <!-- Iframe a schermo intero reale -->
+    
+        <!-- Iframe con Filigrana -->
         <div class="flex-1 w-full h-full relative bg-black">
-            <!-- Filigrana di sicurezza fitta sull'overlay -->
             <div id="overlay-watermark" class="watermark-pattern opacity-[0.06]"></div>
             <iframe id="fullscreen-iframe" class="w-full h-full border-none bg-black" src=""></iframe>
         </div>
     </div>
-
+    
     <script>
+    // Funzione per cambiare vista nell'overlay tra Experience e Sito Reale del cliente
+    function switchPreviewMode(mode) {
+        if (!videoData) return;
+        const iframe = document.getElementById('fullscreen-iframe');
+        const btnExp = document.getElementById('btn-view-experience');
+        const btnWeb = document.getElementById('btn-view-website');
+    
+        if (mode === 'experience') {
+            iframe.src = videoData.content_url;
+            btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition";
+            btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
+        } else {
+            // Genera la vista Nexus Shadow-Proxy sul loro sito originale con il Bot fluttuante
+            const originalSite = videoData.client_phone || 'https://www.tenutacastelvenezze.it'; // o URL del cliente
+            iframe.src = `https://demo.rmstudio.app/?site=${encodeURIComponent(originalSite)}&bot_id=${videoData.client_email || 'nexus_landing'}`;
+            btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition";
+            btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
+        }
+    }
+    </script>
         const supabaseUrl = 'https://jhijfulhntlhcytbhcly.supabase.co'; 
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
