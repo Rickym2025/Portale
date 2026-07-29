@@ -3,367 +3,329 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RM Studio — Mobile Sales Engine</title>
+    <title>RM Studio — Mobile Lead Launcher</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #050508;
             color: #f3f4f6;
+            font-size: 16px; /* ⚡ FONT BASE 16PX */
             -webkit-tap-highlight-color: transparent;
         }
         .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .saas-card {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        /* ⚡ ANIMAZIONE GLOW NEON PER I SAAS SUGGERITI */
+        @keyframes glow-pulse {
+            0%, 100% {
+                border-color: #06b6d4;
+                box-shadow: 0 0 15px rgba(6, 182, 212, 0.6), inset 0 0 10px rgba(6, 182, 212, 0.2);
+                transform: scale(1.02);
+            }
+            50% {
+                border-color: #a855f7;
+                box-shadow: 0 0 25px rgba(168, 85, 247, 0.8), inset 0 0 15px rgba(168, 85, 247, 0.3);
+                transform: scale(1.04);
+            }
         }
-        .saas-card.selected {
-            border-color: #a855f7 !important;
-            background: rgba(168, 85, 247, 0.18) !important;
-            transform: scale(1.02);
-            box-shadow: 0 0 25px rgba(168, 85, 247, 0.35);
+        .glow-suggested {
+            animation: glow-pulse 2s infinite ease-in-out !important;
+            border-width: 2px !important;
+        }
+        .saas-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .saas-card:active {
+            transform: scale(0.96);
         }
     </style>
 </head>
 <body class="p-4 min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white">
 
-    <!-- HEADER MOBILE -->
-    <header class="flex items-center justify-between pb-3 border-b border-zinc-900 mb-4">
+    <!-- HEADER MOBILE (FONT GRANDI) -->
+    <header class="flex items-center justify-between pb-4 border-b border-zinc-900 mb-5">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-600/30">
-                <i class="fa-solid fa-bolt text-lg text-white"></i>
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-600 to-amber-500 flex items-center justify-center shadow-lg shadow-purple-600/30 shrink-0">
+                <i class="fa-solid fa-bolt text-2xl text-white"></i>
             </div>
             <div>
-                <h1 class="font-display font-black text-white text-base leading-tight">Mobile Lead Pistol</h1>
-                <span class="text-xs text-purple-400 font-bold">RM Studio Ecosystem</span>
+                <h1 class="font-display font-black text-white text-xl leading-tight">Mobile Sales Engine</h1>
+                <span class="text-sm text-purple-400 font-extrabold">RM Studio Ecosystem</span>
             </div>
         </div>
-        <a href="index.html" class="w-9 h-9 rounded-xl bg-zinc-900 border border-zinc-800 text-gray-400 flex items-center justify-center text-xs font-bold" title="Master Hub Desktop">
-            <i class="fa-solid fa-desktop"></i>
+        <a href="index.html" class="w-11 h-11 rounded-2xl bg-zinc-900 border border-zinc-800 text-gray-300 flex items-center justify-center text-sm font-bold active:scale-95" title="Master Hub Desktop">
+            <i class="fa-solid fa-desktop text-base"></i>
         </a>
     </header>
 
-    <main class="flex-1 space-y-4">
+    <main class="flex-1 space-y-5">
         
-        <!-- 💡 GUIDA DINAMICA PER SETTORE -->
-        <div class="bg-purple-950/40 border border-purple-500/30 p-3.5 rounded-2xl space-y-2">
-            <label class="block text-xs font-extrabold uppercase text-purple-300 flex items-center justify-between">
-                <span>💡 Che settore stai visitando ora?</span>
-                <i class="fa-solid fa-lightbulb text-amber-400"></i>
+        <!-- 💡 GUIDA DINAMICA SETTORE CON EFFETTO GLOW -->
+        <div class="bg-zinc-900/90 border border-zinc-800 p-4 rounded-2xl space-y-2">
+            <label class="block text-sm font-black uppercase tracking-wider text-purple-300 flex items-center justify-between">
+                <span>💡 Che settore ha il tuo Lead?</span>
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-base"></i>
             </label>
-            <select id="sector-advisor" onchange="adviseSaasBySector()" class="w-full bg-[#151520] border border-purple-500/40 rounded-xl p-2.5 text-xs text-white font-bold outline-none">
-                <option value="">-- Seleziona il Settore del Cliente --</option>
+            <select id="sector-advisor" onchange="highlightSuggestedSaas()" class="w-full bg-[#151522] border border-purple-500/50 rounded-xl p-3 text-sm text-white font-extrabold outline-none focus:border-purple-400">
+                <option value="">-- Mostra tutti i SaaS --</option>
                 <option value="ristorante">🍷 Ristorante / Bar / Pizzeria</option>
-                <option value="hotel">🏨 Hotel / B&B / Resort</option>
-                <option value="evento">🎵 Matrimoni / Eventi / Regali (FF Edizioni)</option>
-                <option value="auto">🏎️ Concessionaria Auto / Moto</option>
+                <option value="hotel">🏨 Hotel / B&B / Struttura Ricettiva</option>
+                <option value="auto">🏎️ Concessionaria Auto / Salone Moto</option>
                 <option value="immobile">🏠 Agenzia Immobiliare</option>
-                <option value="medico">🦷 Studio Medico / Dentista</option>
+                <option value="medico">🦷 Studio Dentistico / Clinica</option>
                 <option value="legale">⚖️ Studio Legale / Avvocato</option>
                 <option value="palestra">🏋️ Palestra / Centro Fitness</option>
                 <option value="ecommerce">📦 E-Commerce / Brand Prodotto</option>
+                <option value="evento">🎵 Matrimoni / Eventi / Feste</option>
+                <option value="azienda">🏢 Azienda / Attività Generica</option>
             </select>
-            <p id="advisor-tip" class="text-[11px] text-purple-200/80 leading-relaxed hidden italic pt-1"></p>
         </div>
 
-        <!-- SELEZIONE SAAS -->
+        <!-- ECOSISTEMA TUTTI E 12 I SAAS (1-TAP ACCESSO LANDING O DEMO) -->
         <div>
-            <label class="block text-xs font-black uppercase tracking-wider text-gray-400 mb-2">
-                Scegli il Prodotto da Proporre:
+            <label class="block text-xs font-black uppercase tracking-widest text-gray-400 mb-3">
+                Seleziona il Prodotto (1-Tap per Aprire):
             </label>
 
-            <div class="grid grid-cols-2 gap-2">
+            <div class="grid grid-cols-2 gap-2.5">
                 
-                <button type="button" onclick="selectSaas('experience')" id="card-experience" class="saas-card selected p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-xl">🍷</span>
-                    <span class="font-extrabold text-white text-xs">Experience</span>
-                    <span class="text-[9px] text-gray-400 font-bold">Smart Page Ristoranti</span>
+                <!-- 1. EXPERIENCE -->
+                <button type="button" onclick="handleSaasTap('experience', 'https://experience.rmstudio.app')" id="card-experience" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🍷</span>
+                    <span class="font-black text-white text-sm">Experience</span>
+                    <span class="text-xs text-amber-400 font-bold">Smart Page Ristoranti</span>
                 </button>
 
-                <button type="button" onclick="selectSaas('ff_edizioni')" id="card-ff_edizioni" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-xl">🎵</span>
-                    <span class="font-extrabold text-white text-xs">FF Edizioni</span>
-                    <span class="text-[9px] text-amber-400 font-bold">Jingle & Canzoni Custom</span>
+                <!-- 2. NEXUS AI -->
+                <button type="button" onclick="handleSaasTap('nexus', 'https://nexus.rmstudio.app')" id="card-nexus" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🤖</span>
+                    <span class="font-black text-white text-sm">NexusAI</span>
+                    <span class="text-xs text-cyan-400 font-bold">Sales Overlay Chatbot</span>
                 </button>
 
-                <button type="button" onclick="selectSaas('nexus')" id="card-nexus" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-xl">🤖</span>
-                    <span class="font-extrabold text-white text-xs">NexusAI</span>
-                    <span class="text-[9px] text-gray-400 font-bold">Sales Overlay Chatbot</span>
+                <!-- 3. DRIVEMOTION -->
+                <button type="button" onclick="handleSaasTap('drivemotion', 'https://drivemotion.rmstudio.app')" id="card-drivemotion" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🏎️</span>
+                    <span class="font-black text-white text-sm">DriveMotion</span>
+                    <span class="text-xs text-cyan-400 font-bold">Video Auto Sfondo AI</span>
                 </button>
 
-                <button type="button" onclick="selectSaas('sitengine')" id="card-sitengine" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-xl">🌐</span>
-                    <span class="font-extrabold text-white text-xs">SiteEngine Pro</span>
-                    <span class="text-[9px] text-gray-400 font-bold">Landing Professionisti</span>
+                <!-- 4. HOMETOUR -->
+                <button type="button" onclick="handleSaasTap('hometour', 'https://hometour.rmstudio.app')" id="card-hometour" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🏠</span>
+                    <span class="font-black text-white text-sm">HomeTour</span>
+                    <span class="text-xs text-emerald-400 font-bold">Video Immobili 3D</span>
                 </button>
 
-                <button type="button" onclick="selectSaas('vision')" id="card-vision" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-xl">🎬</span>
-                    <span class="font-extrabold text-white text-xs">Vision UGC</span>
-                    <span class="text-[9px] text-gray-400 font-bold">Video Influencer AI</span>
+                <!-- 5. DENTIS -->
+                <button type="button" onclick="handleSaasTap('dentis', 'https://dentis.rmstudio.app')" id="card-dentis" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🦷</span>
+                    <span class="font-black text-white text-sm">Dentis AI</span>
+                    <span class="text-xs text-cyan-300 font-bold">Voice AI Dentisti H24</span>
                 </button>
 
-                <button type="button" onclick="selectSaas('hometour')" id="card-hometour" class="saas-card p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-xl">🏠</span>
-                    <span class="font-extrabold text-white text-xs">HomeTour / Drive</span>
-                    <span class="text-[9px] text-gray-400 font-bold">Video Immobili & Auto</span>
+                <!-- 6. LEXIS -->
+                <button type="button" onclick="handleSaasTap('lexis', 'https://lexis.rmstudio.app')" id="card-lexis" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">⚖️</span>
+                    <span class="font-black text-white text-sm">Lexis AI</span>
+                    <span class="text-xs text-amber-300 font-bold">Voice AI Studi Legali</span>
                 </button>
 
-                <button type="button" onclick="selectSaas('voice_ai')" id="card-voice_ai" class="saas-card col-span-2 p-3 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1">
-                    <span class="text-xl">📞</span>
-                    <span class="font-extrabold text-white text-xs">Voice AI H24 (Dentis / Lexis / Concierge24)</span>
-                    <span class="text-[9px] text-gray-400 font-bold">Receptionist Telefonica Parlante</span>
+                <!-- 7. CONCIERGE24 -->
+                <button type="button" onclick="handleSaasTap('concierge24', 'https://concierge24.rmstudio.app')" id="card-concierge24" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🏨</span>
+                    <span class="font-black text-white text-sm">Concierge24</span>
+                    <span class="text-xs text-orange-400 font-bold">Voice AI Hotel/B&B</span>
+                </button>
+
+                <!-- 8. VISION UGC -->
+                <button type="button" onclick="handleSaasTap('vision', 'https://vision.rmstudio.app')" id="card-vision" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🎬</span>
+                    <span class="font-black text-white text-sm">Vision UGC</span>
+                    <span class="text-xs text-pink-400 font-bold">Model Virtual Camila</span>
+                </button>
+
+                <!-- 9. SITEENGINE PRO -->
+                <button type="button" onclick="handleSaasTap('sitengine', 'https://sitengine.rmstudio.app')" id="card-sitengine" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🌐</span>
+                    <span class="font-black text-white text-sm">SiteEngine</span>
+                    <span class="text-xs text-blue-400 font-bold">Landing Professionisti</span>
+                </button>
+
+                <!-- 10. FF EDIZIONI -->
+                <button type="button" onclick="handleSaasTap('ff_edizioni', 'https://ff-edizioni.rmstudio.app')" id="card-ff_edizioni" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🎵</span>
+                    <span class="font-black text-white text-sm">FF Edizioni</span>
+                    <span class="text-xs text-purple-400 font-bold">Jingle & Canzoni Custom</span>
+                </button>
+
+                <!-- 11. FREE ENERGY -->
+                <button type="button" onclick="handleSaasTap('free_energy', 'https://free-energy.rmstudio.app')" id="card-free_energy" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">☀️</span>
+                    <span class="font-black text-white text-sm">Free Energy</span>
+                    <span class="text-xs text-emerald-400 font-bold">CRM PV Planner CAD</span>
+                </button>
+
+                <!-- 12. VELOMOTION -->
+                <button type="button" onclick="handleSaasTap('velomotion', 'https://velomotion.rmstudio.app')" id="card-velomotion" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">⚡</span>
+                    <span class="font-black text-white text-sm">VeloMotion</span>
+                    <span class="text-xs text-yellow-400 font-bold">Sblocco Bosch BES3</span>
                 </button>
 
             </div>
         </div>
 
-        <!-- LANDING PAGE UFFICIALE -->
-        <div class="flex justify-between items-center bg-zinc-900/60 border border-zinc-800 px-3.5 py-2 rounded-xl text-xs">
-            <span class="text-gray-400 font-semibold" id="saas-desc-label">Smart Page Ristoranti</span>
-            <a id="saas-landing-link" href="https://experience.rmstudio.app" target="_blank" class="text-purple-400 font-bold hover:underline flex items-center gap-1 text-xs">
-                <span>🔗 Apri Landing</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </a>
-        </div>
-
-        <!-- FORM DINAMICO -->
-        <div class="space-y-3 bg-[#0e0e14] border border-zinc-800 p-4 rounded-2xl">
-            <div class="flex items-center justify-between border-b border-zinc-800 pb-2">
-                <label class="text-xs font-black uppercase tracking-wider text-purple-400" id="saas-form-title">
-                    Dati Generazione Experience:
+        <!-- ⚡ SEZIONE DATI GENERAZIONE (VISIBILE ESCLUSIVAMENTE PER EXPERIENCE & NEXUS) -->
+        <div id="generation-form-container" class="hidden space-y-3 bg-[#0e0e14] border-2 border-purple-500/40 p-4.5 rounded-2xl shadow-xl">
+            
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-2.5">
+                <label class="text-sm font-black uppercase tracking-wider text-purple-300" id="form-title-label">
+                    Generazione Demo Rapida:
                 </label>
+                <button type="button" onclick="closeGenForm()" class="text-gray-400 hover:text-white font-bold text-sm">✕ Chiudi</button>
             </div>
 
-            <div id="box-url">
-                <label class="block text-[11px] font-bold text-gray-400 mb-1" id="lbl-url">URL Sito Web Cliente:</label>
-                <input type="url" id="inp-url" placeholder="https://www.ristorante.it" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-purple-500 font-mono">
+            <div>
+                <label class="block text-xs font-bold text-gray-300 mb-1" id="lbl-url">URL Sito Web Cliente:</label>
+                <input type="url" id="inp-url" placeholder="https://www.cliente.it" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-mono">
             </div>
 
-            <div id="box-name">
-                <label class="block text-[11px] font-bold text-gray-400 mb-1" id="lbl-name">Nome Attività / Titolare:</label>
-                <input type="text" id="inp-name" placeholder="Es. Osteria dal Conte" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
+            <div>
+                <label class="block text-xs font-bold text-gray-300 mb-1" id="lbl-name">Nome Attività / Titolare:</label>
+                <input type="text" id="inp-name" placeholder="Es. Tenuta Castel Venezze" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-base text-white outline-none focus:border-purple-500 font-bold">
             </div>
 
-            <div id="box-city" class="hidden">
-                <label class="block text-[11px] font-bold text-gray-400 mb-1">Città del Professionista:</label>
-                <input type="text" id="inp-city" placeholder="Es. Ariano nel Polesine (RO)" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
+            <div>
+                <label class="block text-xs font-bold text-gray-300 mb-1">Cellulare WhatsApp Referente:</label>
+                <input type="tel" id="inp-phone" placeholder="+393401234567" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-base text-white outline-none focus:border-purple-500 font-bold">
             </div>
 
-            <div id="box-category" class="hidden">
-                <label class="block text-[11px] font-bold text-gray-400 mb-1">Settore / Categoria:</label>
-                <select id="inp-category" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-purple-500 font-bold">
-                    <option value="psicologo">🧠 Psicologo / Terapeuta</option>
-                    <option value="dentista">🦷 Studio Dentistico (Dentis)</option>
-                    <option value="legale">⚖️ Studio Legale (Lexis)</option>
-                    <option value="hotel">🏨 Hotel / B&B (Concierge24)</option>
-                    <option value="consulente">💼 Consulente / Azienda</option>
-                </select>
-            </div>
-
-            <div id="box-phone">
-                <label class="block text-[11px] font-bold text-gray-400 mb-1" id="lbl-phone">Cellulare WhatsApp:</label>
-                <input type="tel" id="inp-phone" placeholder="+393401234567" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
-            </div>
+            <button id="m-submit-btn" onclick="generateLiveDemo()" class="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-black py-4 rounded-2xl text-xs uppercase tracking-wider shadow-xl shadow-purple-600/30 transition active:scale-95 flex items-center justify-center gap-2 mt-2">
+                <i class="fa-solid fa-wand-magic-sparkles text-base"></i> GENERA DEMO IN TEMPO REALE
+            </button>
         </div>
 
-        <button id="m-submit-btn" onclick="generateMobileDemo()" class="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-black py-4 rounded-2xl text-xs uppercase tracking-wider shadow-xl shadow-purple-600/30 transition active:scale-95 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles text-base"></i> GENERA DEMO IN TEMPO REALE
-        </button>
-
+        <!-- ESITO RISULTATO DEMO -->
         <div id="m-result-box" class="hidden bg-[#0c140c] border-2 border-emerald-500/50 p-4 rounded-2xl space-y-3">
-            <div class="flex items-center gap-2 text-emerald-400 font-black text-xs">
-                <i class="fa-solid fa-circle-check animate-bounce text-sm"></i> DEMO PRONTA ALL'USO!
+            <div class="flex items-center gap-2 text-emerald-400 font-black text-sm">
+                <i class="fa-solid fa-circle-check animate-bounce text-base"></i> DEMO PRONTA ALL'USO!
             </div>
             
-            <a id="m-wa-link" href="#" target="_blank" class="w-full bg-emerald-600 text-white font-black py-3.5 rounded-xl text-xs uppercase tracking-wider text-center block transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2">
-                <i class="fa-brands fa-whatsapp text-base"></i> Invia Ora su WhatsApp
+            <a id="m-wa-link" href="#" target="_blank" class="w-full bg-emerald-600 text-white font-black py-4 rounded-xl text-xs uppercase tracking-wider text-center block transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Invia Ora su WhatsApp
             </a>
 
-            <a id="m-portal-link" href="#" target="_blank" class="w-full bg-purple-600 text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider text-center block transition flex items-center justify-center gap-2">
+            <a id="m-portal-link" href="#" target="_blank" class="w-full bg-purple-600 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider text-center block transition flex items-center justify-center gap-2">
                 <i class="fa-solid fa-eye"></i> Apri Anteprima Portale
             </a>
         </div>
 
     </main>
 
-    <footer class="pt-4 text-center text-[10px] text-gray-600 font-bold">
-        RM Studio Mobile Lead Engine © 2026
+    <footer class="pt-4 text-center text-xs text-gray-500 font-bold">
+        RM Studio Mobile Sales Launcher © 2026
     </footer>
 
     <script>
-        const SAAS_CONFIG = {
-            experience: {
-                title: "Dati Smart Experience Page:",
-                endpoint: "https://n8n.rmstudio.app/webhook/omnia-taste-generate",
-                landing: "https://experience.rmstudio.app",
-                desc: "Smart Page Ristoranti",
-                showUrl: true, lblUrl: "URL Sito Web Ristorante:",
-                showName: true, lblName: "Nome Ristorante / Titolare:",
-                showCity: false, showCategory: false,
-                showPhone: true, lblPhone: "Telefono WhatsApp Ristorante:"
-            },
-            ff_edizioni: {
-                title: "Dati Jingle & Canzoni FF Edizioni:",
-                endpoint: "https://n8n.rmstudio.app/webhook/omnia-quick-generate",
-                landing: "https://ff-edizioni.rmstudio.app",
-                desc: "Jingle Pubblicitari & Canzoni d'Autore",
-                showUrl: true, lblUrl: "Link Social o Sito Attività/Sposi:",
-                showName: true, lblName: "Nome Brand / Nome Sposi:",
-                showCity: false, showCategory: false,
-                showPhone: true, lblPhone: "Telefono Referente:"
-            },
-            nexus: {
-                title: "Dati NexusAI Sales Overlay:",
-                endpoint: "https://n8n.rmstudio.app/webhook/chatbot-creator",
-                landing: "https://nexus.rmstudio.app",
-                desc: "AI Sales Overlay Chatbot",
-                showUrl: true, lblUrl: "URL Sito Web del Cliente:",
-                showName: true, lblName: "Nome Azienda / Brand:",
-                showCity: false, showCategory: false,
-                showPhone: true, lblPhone: "Telefono Referente:"
-            },
-            sitengine: {
-                title: "Dati SiteEngine Pro Landing:",
-                endpoint: "https://n8n.rmstudio.app/webhook/omnia-quick-generate",
-                landing: "https://sitengine.rmstudio.app",
-                desc: "Landing Page Professionisti",
-                showUrl: true, lblUrl: "Vecchio Sito o Link Social:",
-                showName: true, lblName: "Nome e Cognome Professionista:",
-                showCity: true, showCategory: true,
-                showPhone: true, lblPhone: "Telefono Professionista:"
-            },
-            vision: {
-                title: "Dati Vision UGC Video:",
-                endpoint: "https://n8n.rmstudio.app/webhook/vision-creator",
-                landing: "https://vision.rmstudio.app",
-                desc: "Video Influencer AI per E-Commerce",
-                showUrl: true, lblUrl: "Link Prodotto / E-Commerce:",
-                showName: true, lblName: "Nome Prodotto / Brand:",
-                showCity: false, showCategory: false,
-                showPhone: true, lblPhone: "Telefono Referente:"
-            },
-            hometour: {
-                title: "Dati HomeTour / DriveMotion:",
-                endpoint: "https://n8n.rmstudio.app/webhook/hometour-creator",
-                landing: "https://hometour.rmstudio.app",
-                desc: "Video Regia AI Immobili & Auto",
-                showUrl: true, lblUrl: "Link Annuncio Immobile o Auto:",
-                showName: true, lblName: "Nome Agenzia / Concessionaria:",
-                showCity: false, showCategory: false,
-                showPhone: true, lblPhone: "Telefono Agente:"
-            },
-            voice_ai: {
-                title: "Dati Test Voice AI (Dentis / Lexis / Concierge):",
-                endpoint: "https://n8n.rmstudio.app/webhook/dentis-creator",
-                landing: "https://dentis.rmstudio.app",
-                desc: "Receptionist Telefonica Vocale H24",
-                showUrl: true, lblUrl: "Sito Web Clinica / Studio / Hotel:",
-                showName: true, lblName: "Nome Studio / Dottore / Hotel:",
-                showCity: false, showCategory: true,
-                showPhone: true, lblPhone: "Cellulare del Titolare per Test Chiamata:"
+        let currentGenMode = null; // 'experience' oppure 'nexus'
+
+        // ⚡ GESTIONE TAP SCHEDA SAAS
+        function handleSaasTap(key, landingUrl) {
+            // Se si seleziona Experience o Nexus -> Mostra il Form di Generazione
+            if (key === 'experience' || key === 'nexus') {
+                currentGenMode = key;
+                const formContainer = document.getElementById('generation-form-container');
+                const titleLabel = document.getElementById('form-title-label');
+                const lblUrl = document.getElementById('lbl-url');
+                const lblName = document.getElementById('lbl-name');
+
+                if (key === 'experience') {
+                    titleLabel.innerText = "Dati Smart Experience Page (Ristoranti):";
+                    lblUrl.innerText = "URL Sito Web Ristorante:";
+                    lblName.innerText = "Nome Ristorante / Titolare:";
+                } else {
+                    titleLabel.innerText = "Dati NexusAI Sales Overlay:";
+                    lblUrl.innerText = "URL Sito Web Cliente:";
+                    lblName.innerText = "Nome Azienda / Brand:";
+                }
+
+                formContainer.classList.remove('hidden');
+                formContainer.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // Per tutti gli altri SaaS -> Apri immediatamente la Landing Page ufficiale in un nuovo tab!
+                window.open(landingUrl, '_blank');
             }
-        };
+        }
 
-        let currentSaasKey = 'experience';
+        function closeGenForm() {
+            document.getElementById('generation-form-container').classList.add('hidden');
+            currentGenMode = null;
+        }
 
-        // 💡 GUIDA AUTOMATICA AL SETTORE
-        function adviseSaasBySector() {
+        // ⚡ ILLUMINAZIONE NEON GLOW SUI SAAS SUGGERITI PER SETTORE
+        function highlightSuggestedSaas() {
             const sector = document.getElementById('sector-advisor').value;
-            const tipEl = document.getElementById('advisor-tip');
             
-            if (!sector) {
-                tipEl.classList.add('hidden');
-                return;
-            }
+            // Rimuovi l'effetto glow da tutte le schede
+            document.querySelectorAll('.saas-card').forEach(c => c.classList.remove('glow-suggested'));
 
-            tipEl.classList.remove('hidden');
+            if (!sector) return;
 
-            if (sector === 'ristorante') {
-                selectSaas('experience');
-                tipEl.innerHTML = "👉 <b>Consigliato:</b> Smart Experience Page. 🎵 <i>Leva FF Edizioni:</i> regala un Jingle per le Stories Instagram come bonus di chiusura!";
-            } else if (sector === 'hotel') {
-                selectSaas('voice_ai');
-                tipEl.innerHTML = "👉 <b>Consigliato:</b> Concierge24 Vocale H24 per check-in e turisti multilingua. 🎵 <i>Leva FF Edizioni:</i> Inno d'accoglienza personalizzato.";
-            } else if (sector === 'evento') {
-                selectSaas('ff_edizioni');
-                tipEl.innerHTML = "👉 <b>Consigliato:</b> FF Edizioni Canzone d'Autore Inedita su misura per la storia degli sposi o regalo unico!";
-            } else if (sector === 'auto') {
-                selectSaas('hometour');
-                tipEl.innerHTML = "👉 <b>Consigliato:</b> DriveMotion per video auto con cambio sfondo magico.";
-            } else if (sector === 'immobile') {
-                selectSaas('hometour');
-                tipEl.innerHTML = "👉 <b>Consigliato:</b> HomeTour per trasformare le foto piatte dell'immobile in video cinematici 3D.";
-            } else if (sector === 'medico' || sector === 'legale') {
-                selectSaas('voice_ai');
-                tipEl.innerHTML = "👉 <b>Consigliato:</b> Dentis / Lexis per azzerare le chiamate perse e fissare appuntamenti su Google Calendar.";
-            } else if (sector === 'palestra') {
-                selectSaas('nexus');
-                tipEl.innerHTML = "👉 <b>Consigliato:</b> NexusAI Chatbot. 🎵 <i>Leva FF Edizioni:</i> Inno motivazionale della palestra da mettere nei Reel!";
-            } else if (sector === 'ecommerce') {
-                selectSaas('vision');
-                tipEl.innerHTML = "👉 <b>Consigliato:</b> Vision UGC per creare video TikTok/Reels con la modella virtuale Camila in 24 ore.";
-            }
+            // Mappatura suggerimenti (Nexus e Voice AI si illuminano quasi sempre!)
+            const suggestions = {
+                ristorante: ['card-experience', 'card-nexus', 'card-ff_edizioni'],
+                hotel: ['card-concierge24', 'card-nexus', 'card-ff_edizioni'],
+                auto: ['card-drivemotion', 'card-nexus', 'card-voice_ai'],
+                immobile: ['card-hometour', 'card-nexus', 'card-sitengine'],
+                medico: ['card-dentis', 'card-nexus', 'card-sitengine'],
+                legale: ['card-lexis', 'card-nexus', 'card-sitengine'],
+                palestra: ['card-nexus', 'card-ff_edizioni', 'card-vision'],
+                ecommerce: ['card-vision', 'card-nexus', 'card-ff_edizioni'],
+                evento: ['card-ff_edizioni', 'card-vision'],
+                azienda: ['card-nexus', 'card-voice_ai', 'card-sitengine']
+            };
+
+            const targetCardIds = suggestions[sector] || ['card-nexus', 'card-voice_ai'];
+
+            targetCardIds.forEach(id => {
+                const card = document.getElementById(id);
+                if (card) card.classList.add('glow-suggested');
+            });
         }
 
-        function selectSaas(key) {
-            currentSaasKey = key;
-            const cfg = SAAS_CONFIG[key];
-            if (!cfg) return;
+        // GENERAZIONE LIVE PER EXPERIENCE O NEXUS
+        async function generateLiveDemo() {
+            if (!currentGenMode) return;
 
-            document.querySelectorAll('.saas-card').forEach(c => c.classList.remove('selected'));
-            const card = document.getElementById(`card-${key}`);
-            if (card) card.classList.add('selected');
-
-            document.getElementById('saas-form-title').innerText = cfg.title;
-            document.getElementById('saas-desc-label').innerText = cfg.desc;
-            document.getElementById('saas-landing-link').href = cfg.landing;
-
-            document.getElementById('box-url').classList.toggle('hidden', !cfg.showUrl);
-            if (cfg.lblUrl) document.getElementById('lbl-url').innerText = cfg.lblUrl;
-
-            document.getElementById('box-name').classList.toggle('hidden', !cfg.showName);
-            if (cfg.lblName) document.getElementById('lbl-name').innerText = cfg.lblName;
-
-            document.getElementById('box-city').classList.toggle('hidden', !cfg.showCity);
-            document.getElementById('box-category').classList.toggle('hidden', !cfg.showCategory);
-
-            document.getElementById('box-phone').classList.toggle('hidden', !cfg.showPhone);
-            if (cfg.lblPhone) document.getElementById('lbl-phone').innerText = cfg.lblPhone;
-        }
-
-        async function generateMobileDemo() {
-            const cfg = SAAS_CONFIG[currentSaasKey];
             const siteUrl = document.getElementById('inp-url').value.trim();
             const name = document.getElementById('inp-name').value.trim();
-            const city = document.getElementById('inp-city').value.trim();
-            const category = document.getElementById('inp-category').value;
             const phone = document.getElementById('inp-phone').value.trim();
 
-            if (cfg.showUrl && !siteUrl && currentSaasKey !== 'sitengine' && currentSaasKey !== 'ff_edizioni') {
-                return alert("Inserisci l'URL per procedere con la generazione.");
-            }
+            if (!siteUrl) return alert("Inserisci l'URL del sito per procedere.");
+
+            const endpoint = currentGenMode === 'experience' 
+                ? 'https://n8n.rmstudio.app/webhook/omnia-taste-generate'
+                : 'https://n8n.rmstudio.app/webhook/chatbot-creator';
 
             const btn = document.getElementById('m-submit-btn');
             const originalText = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generazione ${currentSaasKey.toUpperCase()} in corso (15s)...`;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generazione AI in corso (15s)...`;
 
             try {
-                const res = await fetch(cfg.endpoint, {
+                const res = await fetch(endpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         site_url: siteUrl,
                         nome_ristorante: name,
                         nome_cliente: name,
-                        citta: city,
-                        settore: category,
-                        phone: phone,
-                        title: cfg.desc
+                        phone: phone
                     })
                 });
 
@@ -376,14 +338,14 @@
 
                     portalBtn.href = data.portal_link;
 
-                    const textWa = `Ciao ${name || 'Titolare'}! Ho creato per voi un'anteprima interattiva dimostrativa di ${cfg.desc}. Puoi provarla qui: ${data.portal_link}`;
+                    const textWa = `Ciao ${name || 'Titolare'}! Ho creato per voi un'anteprima interattiva dimostrativa. Puoi provarla qui: ${data.portal_link}`;
                     const cleanPhone = phone ? phone.replace(/\D/g, '') : '';
                     waBtn.href = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(textWa)}` : `https://wa.me/?text=${encodeURIComponent(textWa)}`;
 
                     resultBox.classList.remove('hidden');
                     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                 } else {
-                    throw new Error(data.message || "Errore sconosciuto.");
+                    throw new Error(data.message || "Errore durante la generazione.");
                 }
             } catch (err) {
                 alert("⚠️ Errore generazione: " + err.message);
