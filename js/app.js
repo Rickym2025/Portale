@@ -62,6 +62,8 @@ function toggleModalFields() {
         if (t === 'experience') {
             titleInput.value = "Smart Experience Page";
             fetchPendingRestaurantsFromSheet(); // ⚡ Carica la lista dal Foglio Google
+        } else if (t === 'social') {
+            titleInput.value = "Carousel Engine";
         } else if (t === 'html') {
             titleInput.value = "Sito Web";
         } else if (t === 'vision') {
