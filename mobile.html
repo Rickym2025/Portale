@@ -79,12 +79,12 @@
                 <option value="legale">⚖️ Studio Legale / Avvocato</option>
                 <option value="palestra">🏋️ Palestra / Centro Fitness</option>
                 <option value="ecommerce">📦 E-Commerce / Brand Prodotto</option>
-                <option value="evento">🎵 Matrimoni / Eventi / Feste</option>
+                <option value="evento">💍 Matrimoni / Eventi / Feste</option>
                 <option value="azienda">🏢 Azienda / Attività Generica</option>
             </select>
         </div>
 
-        <!-- ECOSISTEMA TUTTI E 13 I SAAS -->
+        <!-- ECOSISTEMA TUTTI E 16 I SAAS -->
         <div>
             <label class="block text-xs font-black uppercase tracking-widest text-gray-400 mb-3">
                 Seleziona il Prodotto (1-Tap per Aprire):
@@ -98,7 +98,6 @@
                     <span class="text-xs text-amber-400 font-bold">Smart Page Ristoranti</span>
                 </button>
 
-                <!-- ⚡ NUOVO INSERIMENTO: SOCIALENGINE -->
                 <button type="button" onclick="handleSaasTap('social', 'https://social.rmstudio.app')" id="card-social" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
                     <span class="text-2xl">📊</span>
                     <span class="font-black text-white text-sm">SocialEngine</span>
@@ -109,6 +108,13 @@
                     <span class="text-2xl">🤖</span>
                     <span class="font-black text-white text-sm">NexusAI</span>
                     <span class="text-xs text-cyan-400 font-bold">Sales Overlay Chatbot</span>
+                </button>
+
+                <!-- ⚡ NUOVO INSERIMENTO: LOVE (PARTECIPAZIONI DIGITALI) -->
+                <button type="button" onclick="handleSaasTap('love', 'https://love.rmstudio.app')" id="card-love" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">💍</span>
+                    <span class="font-black text-white text-sm">LOVE</span>
+                    <span class="text-xs text-amber-300 font-bold">Partecipazioni &amp; Festa</span>
                 </button>
 
                 <button type="button" onclick="handleSaasTap('drivemotion', 'https://drivemotion.rmstudio.app')" id="card-drivemotion" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
@@ -138,7 +144,14 @@
                 <button type="button" onclick="handleSaasTap('concierge24', 'https://concierge24.rmstudio.app')" id="card-concierge24" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
                     <span class="text-2xl">🏨</span>
                     <span class="font-black text-white text-sm">Concierge24</span>
-                    <span class="text-xs text-orange-400 font-bold">Voice AI Hotel/B&B</span>
+                    <span class="text-xs text-orange-400 font-bold">Voice AI Hotel/B&amp;B</span>
+                </button>
+
+                <!-- ⚡ NUOVO INSERIMENTO: ARESAI (PALESTRE & COACH) -->
+                <button type="button" onclick="handleSaasTap('ares', 'https://ares.rmstudio.app')" id="card-ares" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🏋️</span>
+                    <span class="font-black text-white text-sm">AresAI</span>
+                    <span class="text-xs text-purple-400 font-bold">Voice Trainer &amp; Dieta</span>
                 </button>
 
                 <button type="button" onclick="handleSaasTap('vision', 'https://vision.rmstudio.app')" id="card-vision" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
@@ -153,10 +166,17 @@
                     <span class="text-xs text-blue-400 font-bold">Landing Professionisti</span>
                 </button>
 
+                <!-- ⚡ NUOVO INSERIMENTO: OMNIASTUDIO (IA OFFLINE) -->
+                <button type="button" onclick="handleSaasTap('omniastudio', 'https://omniastudio.rmstudio.app')" id="card-omniastudio" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">💼</span>
+                    <span class="font-black text-white text-sm">OmniaStudio</span>
+                    <span class="text-xs text-[#a855f7] font-bold">IA Offline Privata PC</span>
+                </button>
+
                 <button type="button" onclick="handleSaasTap('ff_edizioni', 'https://ff-edizioni.rmstudio.app')" id="card-ff_edizioni" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
                     <span class="text-2xl">🎵</span>
                     <span class="font-black text-white text-sm">FF Edizioni</span>
-                    <span class="text-xs text-purple-400 font-bold">Jingle & Canzoni Custom</span>
+                    <span class="text-xs text-purple-400 font-bold">Jingle &amp; Canzoni Custom</span>
                 </button>
 
                 <button type="button" onclick="handleSaasTap('free_energy', 'https://free-energy.rmstudio.app')" id="card-free_energy" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
@@ -251,7 +271,7 @@
             },
             social: {
                 title: "Dati Carousel Creator (SocialEngine):",
-                endpoint: "https://n8n.rmstudio.app/webhook/omnia-quick-generate", // O webhook dedicato caroselli
+                endpoint: "https://n8n.rmstudio.app/webhook/omnia-quick-generate",
                 landing: "https://social.rmstudio.app",
                 desc: "Carousel Creator (SocialEngine)",
                 showProduct: true,
@@ -267,6 +287,9 @@
                 lblUrl: "URL Sito Web del Cliente:",
                 lblName: "Nome Azienda / Brand:"
             },
+            love: { landing: "https://love.rmstudio.app", desc: "Partecipazioni Digitali & Maxischermo Festa" },
+            ares: { landing: "https://ares.rmstudio.app", desc: "Voice AI Personal Trainer & Dieta" },
+            omniastudio: { landing: "https://omniastudio.rmstudio.app", desc: "IA Offline Privata 100%" },
             sitengine: { landing: "https://sitengine.rmstudio.app", desc: "Landing Page Professionisti" },
             vision: { landing: "https://vision.rmstudio.app", desc: "Video Influencer AI" },
             hometour: { landing: "https://hometour.rmstudio.app", desc: "Video Regia AI Immobili" },
@@ -314,7 +337,7 @@
             currentGenMode = null;
         }
 
-        // ILLUMINAZIONE NEON GLOW SUI SAAS SUGGERITI PER SETTORE (NEXUS AI E VOICE AI SEMPRE PRESENTI)
+        // ILLUMINAZIONE NEON GLOW SUI SAAS SUGGERITI PER SETTORE
         function highlightSuggestedSaas() {
             const sector = document.getElementById('sector-advisor').value;
             
@@ -328,11 +351,11 @@
                 auto: ['card-drivemotion', 'card-nexus', 'card-dentis', 'card-social'],
                 immobile: ['card-hometour', 'card-nexus', 'card-sitengine', 'card-social'],
                 medico: ['card-dentis', 'card-nexus', 'card-sitengine', 'card-social'],
-                legale: ['card-lexis', 'card-nexus', 'card-sitengine', 'card-social'],
-                palestra: ['card-nexus', 'card-ff_edizioni', 'card-vision', 'card-social'],
+                legale: ['card-lexis', 'card-omniastudio', 'card-nexus', 'card-sitengine', 'card-social'],
+                palestra: ['card-ares', 'card-nexus', 'card-ff_edizioni', 'card-vision', 'card-social'],
                 ecommerce: ['card-vision', 'card-nexus', 'card-ff_edizioni', 'card-social'],
-                evento: ['card-ff_edizioni', 'card-vision'],
-                azienda: ['card-nexus', 'card-dentis', 'card-sitengine', 'card-social']
+                evento: ['card-love', 'card-ff_edizioni', 'card-vision', 'card-social'],
+                azienda: ['card-omniastudio', 'card-nexus', 'card-dentis', 'card-sitengine', 'card-social']
             };
 
             const targetCardIds = suggestions[sector] || ['card-nexus', 'card-dentis'];
