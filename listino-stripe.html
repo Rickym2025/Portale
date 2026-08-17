@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RM Studio — Listino Prezzi & Stripe Master Hub</title>
+    <title>RM Studio — Controllo Prezzi Live & Stripe Hub</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
@@ -23,11 +23,11 @@
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-zinc-900">
             <div class="flex items-center gap-3.5">
                 <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-purple-600/30 shrink-0">
-                    <i class="fa-solid fa-tags text-xl"></i>
+                    <i class="fa-solid fa-sliders text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-black text-white font-display">Stripe Registry &amp; Live Pricing</h1>
-                    <p class="text-sm text-gray-400 mt-0.5">Tutti i link Stripe ufficiali e pannello modifica prezzi in tempo reale.</p>
+                    <h1 class="text-2xl md:text-3xl font-black text-white font-display">Live Pricing &amp; Stripe Hub</h1>
+                    <p class="text-sm text-gray-400 mt-0.5">Modifica i prezzi di tutte le tue SaaS in tempo reale senza toccare il codice.</p>
                 </div>
             </div>
             <div class="flex gap-2.5">
@@ -40,9 +40,10 @@
             </div>
         </header>
 
-        <!-- ⚡ SEZIONE EDIT LIVE PREZZI (ETERNIA & LOVE) -->
+        <!-- ⚡ SEZIONE EDIT LIVE PREZZI (ETERNIA, LOVE, VISION, SITEENGINE, FF EDIZIONI) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- ETERNIA LIVE PRICING -->
+            
+            <!-- ETERNIA LIVE -->
             <div class="p-6 rounded-3xl bg-[#0b0b0f] border border-amber-500/40 shadow-2xl space-y-4">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
                     <div class="flex items-center gap-2.5">
@@ -75,7 +76,7 @@
                 </div>
             </div>
 
-            <!-- LOVE LIVE PRICING -->
+            <!-- LOVE LIVE -->
             <div class="p-6 rounded-3xl bg-[#0b0b0f] border border-pink-500/40 shadow-2xl space-y-4">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
                     <div class="flex items-center gap-2.5">
@@ -102,219 +103,100 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- FILTRI PER SAAS -->
-        <div class="flex flex-wrap gap-2 pb-2 overflow-x-auto">
-            <button onclick="filterBySaas('all')" class="saas-filter-btn active px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-purple-600 text-white transition">Tutti (13 SaaS)</button>
-            <button onclick="filterBySaas('eternia')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">🕊️ ETERNIA</button>
-            <button onclick="filterBySaas('love')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">💍 LOVE</button>
-            <button onclick="filterBySaas('concierge')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">🏨 Concierge24</button>
-            <button onclick="filterBySaas('dentis')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">🦷 Dentis AI</button>
-            <button onclick="filterBySaas('lexis')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">⚖️ Lexis AI</button>
-            <button onclick="filterBySaas('hometour')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">🏠 HomeTour</button>
-            <button onclick="filterBySaas('drivemotion')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">🏎️ DriveMotion</button>
-            <button onclick="filterBySaas('vision')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">🎬 Vision UGC</button>
-            <button onclick="filterBySaas('velomotion')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">⚡ VeloMotion</button>
-            <button onclick="filterBySaas('omniastudio')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">🔒 OmniaStudio</button>
-            <button onclick="filterBySaas('nexus')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">🤖 NexusAI</button>
-            <button onclick="filterBySaas('free_energy')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">☀️ Free Energy</button>
-            <button onclick="filterBySaas('ff')" class="saas-filter-btn px-4 py-2 rounded-xl text-xs font-bold border border-zinc-800 bg-zinc-900 text-gray-300 hover:text-white transition">🎵 FF Edizioni</button>
-        </div>
+            <!-- VISION UGC LIVE -->
+            <div class="p-6 rounded-3xl bg-[#0b0b0f] border border-pink-500/30 shadow-2xl space-y-4">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-2xl">🎬</span>
+                        <h2 class="text-lg font-black text-pink-300 font-display">Vision UGC — Prezzi Live</h2>
+                    </div>
+                    <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30 font-mono">Supabase Sync</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2.5 text-xs">
+                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
+                        <span class="text-gray-400 block truncate font-medium">Starter (1 Video)</span>
+                        <input type="number" id="price-vision-starter" value="50" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-pink-300 outline-none">
+                        <button onclick="saveLivePrice('vision', 'starter', 'price-vision-starter')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    </div>
+                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
+                        <span class="text-gray-400 block truncate font-medium">Pro Bundle (3)</span>
+                        <input type="number" id="price-vision-pro" value="120" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-pink-300 outline-none">
+                        <button onclick="saveLivePrice('vision', 'pro', 'price-vision-pro')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    </div>
+                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
+                        <span class="text-gray-400 block truncate font-medium">Maxi (10 Video)</span>
+                        <input type="number" id="price-vision-maxi" value="340" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-pink-300 outline-none">
+                        <button onclick="saveLivePrice('vision', 'maxi', 'price-vision-maxi')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    </div>
+                </div>
+            </div>
 
-        <!-- GRIGLIA COMPLETA TUTTI I SAAS -->
-        <div id="saas-groups-container" class="space-y-8"></div>
+            <!-- SITEENGINE & FF EDIZIONI LIVE -->
+            <div class="p-6 rounded-3xl bg-[#0b0b0f] border border-blue-500/30 shadow-2xl space-y-4">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-2xl">🌐</span>
+                        <h2 class="text-lg font-black text-blue-300 font-display">SiteEngine &amp; FF Edizioni</h2>
+                    </div>
+                    <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/30 font-mono">Supabase Sync</span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
+                        <span class="text-gray-400 block truncate font-medium">Sblocco Sito</span>
+                        <input type="number" id="price-siteengine-unlock" value="400" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-blue-300 outline-none">
+                        <button onclick="saveLivePrice('siteengine', 'unlock', 'price-siteengine-unlock')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    </div>
+                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
+                        <span class="text-gray-400 block truncate font-medium">Rinnovo / Anno</span>
+                        <input type="number" id="price-siteengine-renewal" value="200" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-blue-300 outline-none">
+                        <button onclick="saveLivePrice('siteengine', 'renewal', 'price-siteengine-renewal')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    </div>
+                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
+                        <span class="text-gray-400 block truncate font-medium">Brano Custom</span>
+                        <input type="number" id="price-ff-custom" value="300" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-purple-300 outline-none">
+                        <button onclick="saveLivePrice('ff', 'custom', 'price-ff-custom')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    </div>
+                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
+                        <span class="text-gray-400 block truncate font-medium">Jingle Spot</span>
+                        <input type="number" id="price-ff-jingle" value="250" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-purple-300 outline-none">
+                        <button onclick="saveLivePrice('ff', 'jingle', 'price-ff-jingle')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
     </div>
 
-    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-600 text-white font-bold px-6 py-3.5 rounded-2xl shadow-2xl text-xs uppercase tracking-wider hidden animate-in fade-in duration-200 z-50">
-        ✓ Operazione completata con successo!
+    <!-- TOAST -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-600 text-white font-bold px-6 py-3.5 rounded-2xl shadow-2xl text-xs uppercase tracking-wider hidden animate-in fade-in z-50">
+        ✓ Prezzo aggiornato in tempo reale su Supabase!
     </div>
-
-    <footer class="py-6 text-center text-xs text-gray-500 font-mono">
-        © 2026 RM Studio • Master Stripe Registry Hub
-    </footer>
 
     <script>
-        const SAAS_DIRECTORY = [
-            {
-                id: "eternia",
-                name: "ETERNIA",
-                tagline: "Memoriali Digitali d'Autore & Pet Memorials",
-                themeColor: "border-amber-500/40 bg-amber-950/10 text-amber-300",
-                badgeBg: "bg-amber-500/20 text-amber-300 border-amber-500/30",
-                icon: "🕊️",
-                products: [
-                    { name: "Credit Starter", price: "€79,00", type: "1 Cerimonia", desc: "1 Memoriale QR completo attivo per 1 anno con GPS e Libro Ricordi", url: "https://buy.stripe.com/PLACEHOLDER_ETERNIA_79" },
-                    { name: "VIP «Chiavi in Mano»", price: "€199,00", type: "1 Cerimonia VIP", desc: "Allestimento completo, fotoritocco e consegna del QR in 2 ore", url: "https://buy.stripe.com/PLACEHOLDER_ETERNIA_199" },
-                    { name: "Agency Hub B2B", price: "€690,00", type: "10 Cerimonie", desc: "Pacchetto 10 memoriali (€69 cad.) + Marchio Agenzia White-Label", url: "https://buy.stripe.com/PLACEHOLDER_ETERNIA_690" },
-                    { name: "Brano d'Autore Echi", price: "€300,00", type: "Add-On SIAE", desc: "Composizione orchestrale inedita su misura col Maestro Fausto Fusetti", url: "https://buy.stripe.com/PLACEHOLDER_ETERNIA_ECHI_300" }
-                ]
-            },
-            {
-                id: "love",
-                name: "LOVE",
-                tagline: "Partecipazioni Nuziali Digitali d'Autore & Regia Sala 3D",
-                themeColor: "border-pink-500/40 bg-pink-950/10 text-pink-300",
-                badgeBg: "bg-pink-500/20 text-pink-300 border-pink-500/30",
-                icon: "💍",
-                products: [
-                    { name: "Sposi Self-Service", price: "€149,00", type: "1 Matrimonio", desc: "Busta 3D, RSVP Intolleranze, Lista Nozze e Maxischermo Live", url: "https://love.rmstudio.app" },
-                    { name: "Sposi «Chiavi in Mano»", price: "€249,00", type: "Servizio VIP", desc: "Fotoritocco, impaginazione e consegna completa in 24h", url: "https://love.rmstudio.app" },
-                    { name: "Agency Hub B2B", price: "€490,00", type: "10 Matrimoni", desc: "Pacchetto Wedding Planner con White-Label e invio WA 1-Tap", url: "https://love.rmstudio.app" }
-                ]
-            },
-            {
-                id: "concierge",
-                name: "Concierge24",
-                tagline: "Assistente Vocale e Testuale AI H24 per Hotel & B&B",
-                themeColor: "border-orange-500/40 bg-orange-950/10 text-orange-300",
-                badgeBg: "bg-orange-500/20 text-orange-300 border-orange-500/30",
-                icon: "🏨",
-                products: [
-                    { name: "Setup Chiavi in Mano", price: "€149,00", type: "Una Tantum", desc: "Configurazione struttura, regole della casa e knowledge base", url: "https://buy.stripe.com/28EcN66V8gjk0ds18Tdwc07" },
-                    { name: "Ricarica Base", price: "€49,00", type: "100 Minuti", desc: "Chiamate vocali AI in lingua nativa", url: "https://buy.stripe.com/aFa28s7Zc1oq8JYg3Ndwc08" },
-                    { name: "Ricarica Pro", price: "€179,00", type: "450 Minuti", desc: "Pacchetto consigliato per strutture medio-grandi", url: "https://buy.stripe.com/bJe28senA1oq4tIcRBdwc09" },
-                    { name: "Ricarica Max", price: "€349,00", type: "1000 Minuti", desc: "Stagioni estive e alto traffico", url: "https://buy.stripe.com/6oUdRacfs0km7FU9Fpdwc0a" }
-                ]
-            },
-            {
-                id: "dentis",
-                name: "Dentis AI",
-                tagline: "Receptionist Telefonica Vocale H24 per Studi Odontoiatrici",
-                themeColor: "border-cyan-500/40 bg-cyan-950/10 text-cyan-300",
-                badgeBg: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
-                icon: "🦷",
-                products: [
-                    { name: "Serena Starter", price: "€79,00", type: "/ Mese", desc: "Risposta attiva fuori orario (notti e weekend) con notifiche email", url: "https://buy.stripe.com/28EaEYfrE2su1hw18Tdwc0l" },
-                    { name: "Serena PRO", price: "€149,00", type: "/ Mese", desc: "Risposta H24 + Google Calendar + promemoria WhatsApp", url: "https://buy.stripe.com/8x2cN64N0c34aS65p9dwc0m" },
-                    { name: "Clinic Elite", price: "€299,00", type: "/ Mese", desc: "Gestione multi-sede e multi-calendario per più medici", url: "https://buy.stripe.com/5kQcN6frE0km1hw7xhdwc0n" }
-                ]
-            },
-            {
-                id: "lexis",
-                name: "Lexis AI",
-                tagline: "Segreteria Telefonica Formale H24 per Studi Legali e Avvocati",
-                themeColor: "border-amber-400/40 bg-amber-950/10 text-amber-300",
-                badgeBg: "bg-amber-500/20 text-amber-300 border-amber-500/30",
-                icon: "⚖️",
-                products: [
-                    { name: "Chiara Starter", price: "€79,00", type: "/ Mese", desc: "Segreteria formale notti e festivi con report consulenze via email", url: "https://buy.stripe.com/8x29AUgvIc34d0e04Pdwc0o" },
-                    { name: "Chiara PRO", price: "€149,00", type: "/ Mese", desc: "Risposta H24 formale + appuntamenti su Google Calendar", url: "https://buy.stripe.com/8x26oI4N0aZ03pEaJtdwc0p" },
-                    { name: "Studio Elite", price: "€299,00", type: "/ Mese", desc: "Gestione multi-avvocato per studi legali associati", url: "https://buy.stripe.com/aFafZia7k8QSd0eaJtdwc0q" }
-                ]
-            },
-            {
-                id: "hometour",
-                name: "HomeTour",
-                tagline: "Video Social 3D Cinematografici per Agenzie Immobiliari",
-                themeColor: "border-emerald-500/40 bg-emerald-950/10 text-emerald-300",
-                badgeBg: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-                icon: "🏠",
-                products: [
-                    { name: "Starter Pack", price: "€14,90", type: "2 Video Reel", desc: "Video immobili 3D con animazioni parallasse e voce narrante", url: "https://buy.stripe.com/7sYfZi1AOc341hw3h1dwc0b" },
-                    { name: "Pro Pack", price: "€59,00", type: "10 Video HD", desc: "Logo agenzia incluso + tutte le lingue straniere sbloccate", url: "https://buy.stripe.com/28E3cwcfs0kmgcq18Tdwc0c" },
-                    { name: "Maxi Pack", price: "€129,00", type: "25 Video HD", desc: "Elaborazione prioritaria nei server di calcolo", url: "https://buy.stripe.com/fZuaEYbbo2suf8m8Bldwc0d" }
-                ]
-            },
-            {
-                id: "drivemotion",
-                name: "DriveMotion",
-                tagline: "Sfondo Magico AI & Video Promozionali per Saloni Auto",
-                themeColor: "border-cyan-500/40 bg-cyan-950/10 text-cyan-300",
-                badgeBg: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
-                icon: "🏎️",
-                products: [
-                    { name: "Starter Pack", price: "€14,90", type: "1 Video HD", desc: "Sfondo magico fotorealistico + post social pronti", url: "https://buy.stripe.com/9B614ogvIc34bWa9Fpdwc0e" },
-                    { name: "Pro Pack", price: "€59,00", type: "5 Video HD", desc: "Logo autosalone + tutte le lingue straniere sbloccate", url: "https://buy.stripe.com/fZu28s5R4c343pEg3Ndwc0f" },
-                    { name: "Maxi Pack", price: "€129,00", type: "15 Video HD", desc: "Pacchetto concessionarie con crediti senza scadenza", url: "https://buy.stripe.com/9B6dRaenAebc4tI9Fpdwc0g" }
-                ]
-            },
-            {
-                id: "vision",
-                name: "Vision UGC",
-                tagline: "Modelli e Attori Virtuali AI Iper-Realistici per E-Commerce",
-                themeColor: "border-pink-500/40 bg-pink-950/10 text-pink-300",
-                badgeBg: "bg-pink-500/20 text-pink-300 border-pink-500/30",
-                icon: "🎬",
-                products: [
-                    { name: "Starter Pack", price: "€50,00", type: "1 Video AI", desc: "1 Video con modello virtuale Camila (10-15s) a 480p", url: "https://buy.stripe.com/dRm6oIa7kgjk9O2dVFdwc0r" },
-                    { name: "Pro Bundle", price: "€120,00", type: "3 Video AI", desc: "3 Ganci marketing diversi, risoluzione 720p HD e watermark", url: "https://buy.stripe.com/14A7sMenA8QS2lA18Tdwc0s" },
-                    { name: "Agency Maxi Pack", price: "€340,00", type: "10 Video AI", desc: "1080p Full HD ad alte prestazioni con priorità in coda", url: "https://buy.stripe.com/dRm8wQfrE0km9O2dVFdwc0t" }
-                ]
-            },
-            {
-                id: "velomotion",
-                name: "VeloMotion",
-                tagline: "Sblocco Software e Hardware Sicuro per E-Bike Bosch Smart System",
-                themeColor: "border-yellow-500/40 bg-yellow-950/10 text-yellow-300",
-                badgeBg: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
-                icon: "⚡",
-                products: [
-                    { name: "Sblocco Software (32 km/h)", price: "€290,00", type: "1 Credito", desc: "Connessione diretta USB-C, nessun chip fisico da nascondere", url: "https://buy.stripe.com/cNi7sMa7kc34d0e2cXdwc0u" },
-                    { name: "Sblocco Hardware (45 km/h)", price: "€320,00", type: "1 Credito + Kit", desc: "Include licenza e kit di conversione hardware dedicato", url: "https://buy.stripe.com/fZu4gAenAgjk2lA5p9dwc0v" }
-                ]
-            },
-            {
-                id: "omniastudio",
-                name: "OmniaStudio",
-                tagline: "Intelligenza Artificiale Locale e Privata 100% Offline per Studi",
-                themeColor: "border-purple-500/40 bg-purple-950/10 text-purple-300",
-                badgeBg: "bg-purple-500/20 text-purple-300 border-purple-500/30",
-                icon: "🔒",
-                products: [
-                    { name: "OmniaStudio PRO", price: "€699,00", type: "Licenza A Vita", desc: "Analisi PDF e contratti sul disco rigido locale senza cloud", url: "https://buy.stripe.com/14AfZi1AOaZ07FUg3Ndwc0h" }
-                ]
-            },
-            {
-                id: "nexus",
-                name: "NexusAI",
-                tagline: "Shadow-Proxy Sales Overlay Chatbot per Siti Web",
-                themeColor: "border-indigo-500/40 bg-indigo-950/10 text-indigo-300",
-                badgeBg: "bg-indigo-500/20 text-indigo-300 border-indigo-500/30",
-                icon: "🤖",
-                products: [
-                    { name: "Piano Base", price: "€49,00", type: "/ Mese", desc: "1 Chatbot attivo su sito, scansione fino a 10 pagine", url: "https://buy.stripe.com/9B628sfrE1oq4tI04Pdwc0j" },
-                    { name: "Piano PRO", price: "€99,00", type: "/ Mese", desc: "Prenotazioni in chat + invio trascrizioni via email", url: "https://buy.stripe.com/8x25kEgvId78bWa7xhdwc0k" }
-                ]
-            },
-            {
-                id: "free_energy",
-                name: "Free Energy",
-                tagline: "CRM & Planner CAD Satellitare Fotovoltaico B2B",
-                themeColor: "border-emerald-500/40 bg-emerald-950/10 text-emerald-300",
-                badgeBg: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
-                icon: "☀️",
-                products: [
-                    { name: "Start Pack", price: "€199,00", type: "10.000 Crediti", desc: "Pacchetto iniziale per installatori con PV Planner e CV AI", url: "https://free-energy.rmstudio.app" },
-                    { name: "Pro Pack", price: "€449,00", type: "25.000 Crediti", desc: "Pacchetto per aziende con più cantieri attivi", url: "https://free-energy.rmstudio.app" }
-                ]
-            },
-            {
-                id: "ff",
-                name: "FF Edizioni",
-                tagline: "Composizioni Musicali e Jingle Commerciali (Maestro Fausto Fusetti)",
-                themeColor: "border-purple-400/40 bg-purple-950/10 text-purple-300",
-                badgeBg: "bg-purple-500/20 text-purple-300 border-purple-500/30",
-                icon: "🎵",
-                products: [
-                    { name: "Brano Demo Gratuito", price: "€0,00", type: "Free Trial", desc: "Ascolto catalogo composizioni Maestro Fusetti", url: "https://buy.stripe.com/9B65kE6V83wyf8m18Tdwc0i" }
-                ]
-            }
-        ];
-
-        // SUPABASE CLIENT LIVE PER ETERNIA E LOVE
         const SUPABASE_URL = "https://zqkqlhosyjvxdwfjmwwb.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpxa3FsaG9zeWp2eGR3Zmptd3diIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxNzg5NzgsImV4cCI6MjA1NTc1NDk3OH0.INSERISCI_CHIAVE";
+        const SUPABASE_ANON_KEY = "INSERISCI_LA_TUA_ANON_KEY_SUPABASE_QUI";
         let supabaseClient = null;
         try { supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); } catch(e) {}
+
+        async function loadPricesFromDB() {
+            if (!supabaseClient) return;
+            const { data } = await supabaseClient.from('saas_pricing').select('*');
+            if (data) {
+                data.forEach(p => {
+                    const el = document.getElementById(`price-${p.saas}-${p.plan_id}`);
+                    if (el) el.value = p.price;
+                });
+            }
+        }
 
         async function saveLivePrice(saas, plan_id, inputId) {
             const newPrice = parseFloat(document.getElementById(inputId).value);
             if (isNaN(newPrice)) return alert("Inserisci una cifra valida.");
 
             if (supabaseClient) {
-                await supabaseClient.from('saas_pricing').upsert({
+                const { error } = await supabaseClient.from('saas_pricing').upsert({
                     id: `${saas}_${plan_id}`,
                     saas: saas,
                     plan_id: plan_id,
@@ -322,85 +204,19 @@
                     price: newPrice,
                     updated_at: new Date().toISOString()
                 });
+
+                if (!error) {
+                    const toast = document.getElementById('toast');
+                    toast.innerText = `✓ Prezzo ${saas.toUpperCase()} aggiornato a €${newPrice}!`;
+                    toast.classList.remove('hidden');
+                    setTimeout(() => toast.classList.add('hidden'), 2500);
+                } else {
+                    alert("Errore salvataggio: " + error.message);
+                }
             }
-
-            const toast = document.getElementById('toast');
-            toast.innerText = `✓ Prezzo ${saas.toUpperCase()} aggiornato a €${newPrice}!`;
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 2500);
         }
 
-        function renderDirectory(saasFilter = 'all') {
-            const container = document.getElementById('saas-groups-container');
-            const filteredGroups = saasFilter === 'all' ? SAAS_DIRECTORY : SAAS_DIRECTORY.filter(s => s.id === saasFilter);
-
-            container.innerHTML = filteredGroups.map(group => `
-                <div class="p-6 md:p-8 rounded-3xl bg-[#0b0b0f] border ${group.themeColor.split(' ')[0]} shadow-2xl space-y-6">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-zinc-900 pb-4">
-                        <div class="flex items-center gap-3.5">
-                            <span class="text-3xl">${group.icon}</span>
-                            <div>
-                                <h2 class="text-xl md:text-2xl font-black text-white font-display">${group.name}</h2>
-                                <p class="text-xs md:text-sm text-gray-400 font-medium">${group.tagline}</p>
-                            </div>
-                        </div>
-                        <span class="text-xs font-bold px-3.5 py-1.5 rounded-full border ${group.badgeBg} font-mono">
-                            ${group.products.length} Pacchetti
-                        </span>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        ${group.products.map(prod => `
-                            <div class="p-5 rounded-2xl bg-[#12121a] border border-zinc-800/80 hover:border-purple-500/50 transition-all flex flex-col justify-between space-y-4 shadow-lg">
-                                <div>
-                                    <div class="flex justify-between items-start gap-2 mb-1.5">
-                                        <span class="text-[10px] uppercase font-black px-2.5 py-0.5 rounded-md bg-zinc-900 text-gray-300 border border-zinc-800 font-mono">
-                                            ${prod.type}
-                                        </span>
-                                        <span class="text-base font-black text-amber-400 font-mono">${prod.price}</span>
-                                    </div>
-                                    <h3 class="text-sm font-bold text-white font-serif">${prod.name}</h3>
-                                    <p class="text-xs text-gray-400 mt-1 leading-relaxed">${prod.desc}</p>
-                                </div>
-
-                                <div class="pt-3 border-t border-zinc-900 flex gap-2">
-                                    <button onclick="copyToClipboard('${prod.url}')" class="flex-1 py-2.5 px-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-gray-200 border border-zinc-800 text-xs font-bold flex items-center justify-center gap-1.5 transition active:scale-95">
-                                        <i class="fa-solid fa-copy text-purple-400"></i> Copia
-                                    </button>
-                                    <a href="https://wa.me/?text=${encodeURIComponent('Salve! Ecco il link sicuro di pagamento Stripe per ' + group.name + ' - ' + prod.name + ' (' + prod.price + '):\n' + prod.url)}" target="_blank" class="py-2.5 px-3.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex items-center justify-center" title="Invia su WhatsApp">
-                                        <i class="fa-brands fa-whatsapp text-sm"></i>
-                                    </a>
-                                    <a href="${prod.url}" target="_blank" class="py-2.5 px-3.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition flex items-center justify-center" title="Apri Checkout">
-                                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function filterBySaas(saasId) {
-            document.querySelectorAll('.saas-filter-btn').forEach(b => {
-                b.classList.remove('bg-purple-600', 'text-white');
-                b.classList.add('bg-zinc-900', 'text-gray-300');
-            });
-            event.target.classList.remove('bg-zinc-900', 'text-gray-300');
-            event.target.classList.add('bg-purple-600', 'text-white');
-
-            renderDirectory(saasId);
-        }
-
-        function copyToClipboard(url) {
-            navigator.clipboard.writeText(url);
-            const toast = document.getElementById('toast');
-            toast.innerText = "✓ Link Stripe copiato negli appunti!";
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 2500);
-        }
-
-        renderDirectory('all');
+        loadPricesFromDB();
     </script>
 </body>
 </html>
