@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore Link Stripe On-The-Fly — RM Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #050508; color: #f3f4f6; }
+        .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 flex flex-col justify-between selection:bg-purple-600 selection:text-white">
+
+    <div class="max-w-3xl w-full mx-auto space-y-6">
+        <!-- HEADER -->
+        <div class="flex justify-between items-center pb-4 border-b border-zinc-900">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-lg">
+                    <i class="fa-brands fa-stripe text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-black text-white">Stripe Checkout Generator</h1>
+                    <p class="text-xs text-gray-400 font-semibold">Crea sessioni di pagamento dinamiche senza prodotti Stripe</p>
+                </div>
+            </div>
+            <a href="mobile.html" class="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-bold border border-zinc-800">
+                ← Torna al Launcher
+            </a>
+        </div>
+
+        <!-- FORM CREAZIONE ON-THE-FLY -->
+        <form id="stripe-form" onsubmit="generateStripeLink(event)" class="p-6 rounded-3xl bg-[#0b0b0f] border border-zinc-900 space-y-5 shadow-2xl">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- SELEZIONE SAAS -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">1. Progetto SaaS *</label>
+                    <select id="sel-progetto" onchange="autoFillPresets()" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white font-bold outline-none focus:border-purple-500">
+                        <option value="ETERNIA">🕊️ ETERNIA (Onoranze Funebri &amp; Pet)</option>
+                        <option value="LOVE">💍 LOVE (Partecipazioni Digitali)</option>
+                        <option value="Dentis">🦷 Dentis AI (Voice Receptionist)</option>
+                        <option value="Lexis">⚖️ Lexis AI (Voice Receptionist)</option>
+                        <option value="Concierge24">🏨 Concierge24 (Voice AI Hotel)</option>
+                        <option value="Free Energy">☀️ Free Energy (CRM Fotovoltaico)</option>
+                        <option value="SiteEngine">🌐 SiteEngine Pro (Landing)</option>
+                        <option value="Experience">🍷 Experience (Smart Menu)</option>
+                        <option value="VeloMotion">⚡ VeloMotion (Sblocco E-Bike)</option>
+                        <option value="Vision">🎬 Vision UGC (Video AI)</option>
+                        <option value="HomeTour">🏠 HomeTour (Video Immobili)</option>
+                        <option value="DriveMotion">🏎️ DriveMotion (Video Auto)</option>
+                        <option value="Ares">🏋️ AresAI (Fitness &amp; Dieta)</option>
+                        <option value="FFausto">🎵 FF Edizioni (Musica &amp; Jingle)</option>
+                        <option value="OmniaStudio">💼 OmniaStudio (IA Offline)</option>
+                    </select>
+                </div>
+
+                <!-- PRESET RAPIDI O PREZZO LIBERO -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">2. Pacchetto Predefinito</label>
+                    <select id="sel-preset" onchange="applyPreset()" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white font-semibold outline-none focus:border-purple-500">
+                        <option value="79|Credit Starter (1 Cerimonia)|starter">Credit Starter (€79)</option>
+                        <option value="199|Servizio VIP «Chiavi in Mano»|vip">VIP Chiavi in Mano (€199)</option>
+                        <option value="690|Agency Hub B2B (10 Cerimonie)|hub" selected>Agency Hub 10 Cerimonie (€690)</option>
+                        <option value="300|Brano Musicale d'Autore (Echi)|echi">Brano d'Autore Echi (€300)</option>
+                        <option value="custom">-- Importo Personalizzato --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <!-- TITOLO SCONTRINO / RICEVUTA -->
+                <div class="sm:col-span-2">
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Titolo Prodotto (Visibile su Ricevuta Stripe) *</label>
+                    <input type="text" id="inp-title" required value="ETERNIA - Agency Hub B2B (10 Cerimonie)" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white font-bold outline-none focus:border-purple-500">
+                </div>
+
+                <!-- IMPORTO EURO -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Prezzo (€) *</label>
+                    <input type="number" step="0.01" id="inp-price" required value="690" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-base text-amber-400 font-extrabold outline-none focus:border-purple-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- EMAIL CLIENTE (Opzionale per pre-compilare) -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Email Cliente / Agenzia</label>
+                    <input type="email" id="inp-email" placeholder="cliente@agenzia.it" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-mono">
+                </div>
+
+                <!-- ID AGENZIA / SLUG -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Agency ID / Slug</label>
+                    <input type="text" id="inp-agency" placeholder="es. onoranze-san-marco" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-mono">
+                </div>
+            </div>
+
+            <!-- TASTO GENERAZIONE -->
+            <button type="submit" id="btn-submit" class="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-sm uppercase tracking-wider shadow-lg transition-all active:scale-[0.98]">
+                ⚡ Genera Link Checkout Stripe Immediato
+            </button>
+        </form>
+
+        <!-- RISULTATO LINK GENERATO -->
+        <div id="result-box" class="hidden p-6 rounded-3xl bg-[#0c140c] border-2 border-emerald-500/50 space-y-4 animate-in zoom-in-95">
+            <div class="flex items-center gap-2 text-emerald-400 font-black text-sm">
+                <i class="fa-solid fa-circle-check text-lg"></i> LINK STRIPE PRONTO!
+            </div>
+
+            <div class="p-3 bg-black/60 rounded-xl border border-emerald-500/30 font-mono text-xs text-emerald-300 break-all select-all" id="txt-stripe-url">
+                https://checkout.stripe.com/...
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button type="button" onclick="copyLink()" class="py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white border border-zinc-700 text-xs font-bold flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-copy"></i> Copia Link
+                </button>
+                <a id="btn-wa" href="#" target="_blank" class="py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-2 text-center">
+                    <i class="fa-brands fa-whatsapp text-base"></i> Invia su WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-6 text-center text-xs text-gray-500 font-mono">
+        © 2026 RM Studio • Stripe Dynamic Engine
+    </footer>
+
+    <script>
+        const PRESETS = {
+            ETERNIA: [
+                { val: "79|Credit Starter (1 Cerimonia)|starter", label: "Credit Starter (€79)" },
+                { val: "199|Servizio VIP «Chiavi in Mano»|vip", label: "VIP Chiavi in Mano (€199)" },
+                { val: "690|Agency Hub B2B (10 Cerimonie)|hub", label: "Agency Hub 10 Cerimonie (€690)" },
+                { val: "300|Brano Musicale d'Autore (Echi)|echi", label: "Brano d'Autore Echi (€300)" },
+            ],
+            LOVE: [
+                { val: "149|LOVE - Sposi Self-Service (1 Anno)|self", label: "Sposi Self-Service (€149)" },
+                { val: "249|LOVE - Sposi Chiavi in Mano|vip", label: "Sposi VIP (€249)" },
+                { val: "490|LOVE - Agency Hub B2B (10 Matrimoni)|agency", label: "Agency Hub 10 Matrimoni (€490)" },
+            ],
+            Dentis: [
+                { val: "79|Dentis AI - Piano Starter|starter", label: "Serena Starter (€79/m)" },
+                { val: "149|Dentis AI - Piano PRO|pro", label: "Serena PRO (€149/m)" },
+                { val: "299|Dentis AI - Clinic Elite|elite", label: "Clinic Elite (€299/m)" },
+            ],
+            Lexis: [
+                { val: "79|Lexis AI - Chiara Starter|starter", label: "Chiara Starter (€79/m)" },
+                { val: "149|Lexis AI - Chiara PRO|pro", label: "Chiara PRO (€149/m)" },
+                { val: "299|Lexis AI - Studio Elite|elite", label: "Studio Elite (€299/m)" },
+            ],
+            Concierge24: [
+                { val: "49|Concierge24 - Ricarica Base (100 min)|base", label: "Ricarica Base (€49)" },
+                { val: "179|Concierge24 - Ricarica Pro (450 min)|pro", label: "Ricarica Pro (€179)" },
+                { val: "349|Concierge24 - Ricarica Max (1000 min)|max", label: "Ricarica Max (€349)" },
+            ],
+            FreeEnergy: [
+                { val: "199|Free Energy - Start Pack (10.000 Crediti)|base", label: "Start Pack 10k (€199)" },
+                { val: "449|Free Energy - Pro Pack (25.000 Crediti)|max", label: "Pro Pack 25k (€449)" },
+            ]
+        };
+
+        function autoFillPresets() {
+            const prog = document.getElementById('sel-progetto').value;
+            const selPreset = document.getElementById('sel-preset');
+            const list = PRESETS[prog] || [
+                { val: "99|Licenza Standard|base", label: "Standard (€99)" },
+                { val: "299|Licenza Professional|pro", label: "Pro (€299)" },
+                { val: "499|Licenza Enterprise|hub", label: "Enterprise (€499)" }
+            ];
+
+            selPreset.innerHTML = list.map(p => `<option value="${p.val}">${p.label}</option>`).join('') + `<option value="custom">-- Importo Personalizzato --</option>`;
+            applyPreset();
+        }
+
+        function applyPreset() {
+            const val = document.getElementById('sel-preset').value;
+            if (val === 'custom') return;
+            const [price, title] = val.split('|');
+            const prog = document.getElementById('sel-progetto').value;
+            document.getElementById('inp-price').value = price;
+            document.getElementById('inp-title').value = `${prog} - ${title}`;
+        }
+
+        async function generateStripeLink(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            const orig = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generazione Stripe Session...`;
+
+            const prog = document.getElementById('sel-progetto').value;
+            const title = document.getElementById('inp-title').value;
+            const price = parseFloat(document.getElementById('inp-price').value);
+            const email = document.getElementById('inp-email').value.trim();
+            const agency = document.getElementById('inp-agency').value.trim();
+            const presetVal = document.getElementById('sel-preset').value;
+            const ricarica_tipo = presetVal.includes('|') ? presetVal.split('|')[2] : 'custom';
+
+            try {
+                // Chiamata al nodo "Crea Sessione Stripe" di n8n
+                const res = await fetch("https://n8n.rmstudio.app/webhook/crea-sessione-stripe", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        email: email,
+                        price: price,
+                        title: title,
+                        project_id: agency || "direct-checkout",
+                        portal_type: prog.toLowerCase(),
+                        origin: `https://${prog.toLowerCase()}.rmstudio.app`,
+                        ricarica_tipo: ricarica_tipo
+                    })
+                });
+
+                const data = await res.json();
+                if (data?.url) {
+                    document.getElementById('txt-stripe-url').innerText = data.url;
+                    document.getElementById('result-box').classList.remove('hidden');
+
+                    const textWa = `Salve! Ecco il link sicuro di Stripe per l'attivazione di ${title} (€${price}):\n${data.url}`;
+                    document.getElementById('btn-wa').href = `https://wa.me/?text=${encodeURIComponent(textWa)}`;
+                    
+                    document.getElementById('result-box').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    throw new Error("Impossibile generare l'URL di pagamento da Stripe.");
+                }
+            } catch (err) {
+                alert("⚠️ Errore: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = orig;
+            }
+        }
+
+        function copyLink() {
+            const url = document.getElementById('txt-stripe-url').innerText;
+            navigator.clipboard.writeText(url);
+            alert("✓ Link Stripe copiato negli appunti!");
+        }
+    </script>
+</body>
+</html>
