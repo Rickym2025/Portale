@@ -15,53 +15,19 @@
     <link rel="stylesheet" href="css/styles.css">
 
     <style>
-        /* Maniglia di ridimensionamento */
-        #resizer {
-            width: 5px;
-            cursor: col-resize;
-            background-color: rgba(255, 255, 255, 0.05);
-            transition: background-color 0.2s;
-            z-index: 40;
-        }
-        #resizer:hover, #resizer.resizing {
-            background-color: #9333ea;
-        }
-
-        /* STILI PER SIDEBAR COMPATTA / COLLASSED (ICON RAIL) */
-        .sidebar-collapsed {
-            width: 68px !important;
-            min-width: 68px !important;
-            padding-left: 0.5rem !important;
-            padding-right: 0.5rem !important;
-        }
-        .sidebar-collapsed .sidebar-text,
-        .sidebar-collapsed details summary i.fa-angle-down {
-            display: none !important;
-        }
-        .sidebar-collapsed nav button,
-        .sidebar-collapsed .space-y-1 button,
-        .sidebar-collapsed .space-y-1 a {
-            justify-content: center !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            font-size: 15px;
-        }
-        .font-display {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        .glass {
-            background: rgba(11, 11, 15, 0.95);
-            backdrop-filter: blur(16px);
-        }
+        #resizer { width: 5px; cursor: col-resize; background-color: rgba(255, 255, 255, 0.05); transition: background-color 0.2s; z-index: 40; }
+        #resizer:hover, #resizer.resizing { background-color: #9333ea; }
+        .sidebar-collapsed { width: 68px !important; min-width: 68px !important; padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+        .sidebar-collapsed .sidebar-text, .sidebar-collapsed details summary i.fa-angle-down { display: none !important; }
+        .sidebar-collapsed nav button, .sidebar-collapsed .space-y-1 button, .sidebar-collapsed .space-y-1 a { justify-content: center !important; padding-left: 0 !important; padding-right: 0 !important; }
+        body { font-family: 'Inter', sans-serif; font-size: 15px; }
+        .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass { background: rgba(11, 11, 15, 0.95); backdrop-filter: blur(16px); }
     </style>
 </head>
 <body class="bg-[#050508] text-gray-200 font-body min-h-screen selection:bg-purple-600 selection:text-white flex overflow-x-hidden">
 
-  <!-- LOCK SCREEN DI AUTENTICAZIONE -->
+  <!-- LOCK SCREEN -->
   <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#050508]/98 backdrop-blur-xl">
     <div class="glass p-8 rounded-3xl max-w-md w-full mx-4 text-center border border-zinc-800 shadow-2xl">
       <div class="mb-6">
@@ -83,12 +49,12 @@
   <!-- MAIN DASHBOARD -->
   <div id="main-content" class="hidden flex-1 flex w-full min-h-screen relative">
     
-    <!-- SIDEBAR RIDIMENSIONABILE A ICONE / ESTESA CON TOOLTIPS -->
+    <!-- SIDEBAR RIDIMENSIONABILE -->
     <aside id="sidebar" class="w-72 bg-[#08080c] border-r border-zinc-900/80 p-4 flex flex-col justify-between relative z-30 shrink-0 select-none transition-all duration-200" style="min-width: 68px; max-width: 480px;">
       
       <div class="overflow-y-auto max-h-screen space-y-5">
         
-        <!-- HEADER SIDEBAR CON TOGGLE -->
+        <!-- HEADER SIDEBAR -->
         <div class="flex items-center justify-between pb-3 border-b border-zinc-900/80">
           <div class="flex items-center gap-3 sidebar-text">
             <div class="w-9 h-9 rounded-xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-600/30 shrink-0">
@@ -101,14 +67,18 @@
           </button>
         </div>
 
-        <!-- NAVIGAZIONE PRINCIPALE -->
+        <!-- NAVIGAZIONE -->
         <nav class="space-y-1.5">
           <button onclick="switchTab('master')" id="nav-master" class="w-full px-3.5 py-3 rounded-xl flex items-center gap-3 bg-purple-600 text-white font-extrabold text-sm shadow-lg shadow-purple-600/20 transition" title="Master Command Hub">
             <i class="fa-solid fa-layer-group text-base shrink-0"></i> <span class="sidebar-text">Master Command Hub</span>
           </button>
+          <!-- ⚡ NUOVO PULSANTE LISTINO STRIPE -->
+          <a href="listino-stripe.html" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 font-bold text-xs transition" title="Listino Prezzi & Stripe Hub">
+            <i class="fa-solid fa-tags text-base shrink-0"></i> <span class="sidebar-text">Listino Prezzi &amp; Stripe Hub</span>
+          </a>
         </nav>
 
-        <!-- ⚡ CREA PROGETTO RAPIDO CON TOOLTIPS HOVER -->
+        <!-- ⚡ CREA PROGETTO RAPIDO -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-xs uppercase font-bold text-purple-400 tracking-wider mb-2 flex items-center justify-between sidebar-text">
             <span>+ Crea Progetto Rapido</span>
@@ -116,6 +86,11 @@
           </div>
           
           <div class="space-y-1 font-semibold text-sm">
+            <!-- ⚡ INSERIMENTO ETERNIA -->
+            <button onclick="quickOpenCreate('eternia')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold" title="ETERNIA (Memoriali QR & Pet)">
+              <span class="shrink-0 text-base">🕊️</span> <span class="sidebar-text">ETERNIA (Memoriali QR)</span>
+            </button>
+
             <button onclick="quickOpenCreate('experience')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold" title="Smart Experience Page (Ristoranti)">
               <span class="shrink-0 text-base">🍷</span> <span class="sidebar-text">Smart Experience Page</span>
             </button>
@@ -124,7 +99,6 @@
               <span class="shrink-0 text-base">📊</span> <span class="sidebar-text">Carousel Engine</span>
             </button>  
             
-            <!-- SITEENGINE PRO + SOTTO-PULSANTE GENERATORE JSON -->
             <div class="space-y-1">
               <button onclick="quickOpenCreate('html')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-blue-600/20 hover:text-white border border-transparent hover:border-blue-500/30 transition text-xs font-bold" title="SiteEngine Pro (Siti Web)">
                 <span class="shrink-0 text-base">🌐</span> <span class="sidebar-text">SiteEngine Pro (Siti)</span>
@@ -149,7 +123,7 @@
           </div>
         </div>
 
-        <!-- 🗄️ SEZIONE SUPABASE PROJECTS (MULTI-ACCOUNT) -->
+        <!-- 🗄️ SUPABASE PROJECTS -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-[11px] uppercase font-bold text-gray-500 tracking-wider mb-2 flex items-center justify-between sidebar-text">
             <span>Supabase Projects</span> <i class="fa-solid fa-database text-xs"></i>
@@ -162,6 +136,8 @@
                     <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
                 </summary>
                 <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 sidebar-text">
+                    <!-- ⚡ AGGIUNTO SUPABASE ETERNIA -->
+                    <a href="https://supabase.com/dashboard/project/zqkqlhosyjvxdwfjmwwb" target="_blank" class="block text-amber-400 font-bold hover:underline">🕊️ ETERNIA</a>
                     <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-gray-400 hover:text-purple-400">⚡ VeloMotion</a>
                     <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-gray-400 hover:text-purple-400">🌐 Website-Builder (S1)</a>
                 </div>
@@ -202,7 +178,7 @@
           </div>
         </div>
 
-        <!-- 🐙 SEZIONE GITHUB REPOSITORIES -->
+        <!-- 🐙 GITHUB REPOSITORIES -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-[11px] uppercase font-bold text-gray-500 tracking-wider mb-2 flex items-center justify-between sidebar-text">
             <span>GitHub Repos</span> <i class="fa-brands fa-github text-xs"></i>
@@ -210,10 +186,13 @@
 
           <details class="group">
             <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between text-xs" title="GitHub Repositories">
-                <span class="sidebar-text">Rickym2025 (15 Repo)</span>
+                <span class="sidebar-text">Rickym2025 (16 Repo)</span>
                 <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
             </summary>
             <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 max-h-48 overflow-y-auto text-[11px] sidebar-text">
+                <!-- ⚡ AGGIUNTO REPO ETERNIA -->
+                <a href="https://github.com/Rickym2025/eternia" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🕊️ eternia</a>
+                <a href="https://github.com/Rickym2025/love" target="_blank" class="block text-pink-400 font-bold hover:underline truncate">💍 love</a>
                 <a href="https://github.com/Rickym2025/experience" target="_blank" class="block text-purple-400 font-bold hover:underline truncate">🍷 experience</a>
                 <a href="https://github.com/Rickym2025/Portale" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">📦 Portale</a>
                 <a href="https://github.com/Rickym2025/site-engine" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🌐 site-engine</a>
@@ -247,7 +226,6 @@
       </button>
     </aside>
 
-    <!-- MANIGLIA DI RIDIMENSIONAMETO LARGHEZZA SIDEBAR -->
     <div id="resizer"></div>
 
     <!-- CONTENT AREA -->
@@ -293,16 +271,16 @@
                 <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">PRODOTTO / CATEGORIA</label>
                 <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
                     <option value="all">Tutti i Prodotti</option>
+                    <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
                     <option value="experience">🍷 Smart Experience Page (Ristoranti)</option>
                     <option value="social">📊 Carousel Engine (Social Creator)</option>
                     <option value="html">🌐 SiteEngine Pro (Siti Web)</option>
                     <option value="vision">🎬 Vision UGC Video</option>
-                    <option value="video">🏠 HomeTour & DriveMotion</option>
+                    <option value="video">🏠 HomeTour &amp; DriveMotion</option>
                     <option value="voice_ai">📞 Voice AI (Dentis/Lexis/Concierge)</option>
                     <option value="chatbot">💬 NexusAI Chatbot</option>
                     <option value="license">🔑 Licenze (VeloMotion/Omnia)</option>
                     <option value="solar">☀️ Free Energy (Fotovoltaico)</option>
-                    
                 </select>
             </div>
             <div>
@@ -328,7 +306,7 @@
                             <th class="p-4 w-[6%] text-center">Tipo / ID</th>
                             <th class="p-4 w-[18%]">Cliente / Contatti</th>
                             <th class="p-4 w-[16%]">Progetto / Titolo</th>
-                            <th class="p-4 w-[10%]">Link Progetto</th> <!-- ⚡ COLONNA RIPRISTINATA -->
+                            <th class="p-4 w-[10%]">Link Progetto</th>
                             <th class="p-4 w-[7%]">Prezzo (€)</th>
                             <th class="p-4 w-[6%]">Visite</th>
                             <th class="p-4 w-[6%]">WA</th>
@@ -345,23 +323,6 @@
         </div>
       </section>
 
-      <!-- TAB 2: COLD OUTREACH HUB -->
-      <section id="tab-outreach" class="hidden">
-        <header class="mb-8">
-          <h1 class="text-2xl md:text-3xl font-display font-black text-white">Cold Outreach & <span class="grad-text">Generatore Rapido</span></h1>
-          <p class="text-sm text-gray-400 mt-1">Genera bozze speculative e inviale a freddo su WhatsApp/Email.</p>
-        </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-[#0b0b0f] border border-zinc-900 p-6 rounded-3xl">
-                <h3 class="font-bold text-white mb-4 text-base flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> Generatore AI Sitengine Pro</h3>
-                <a href="crea.html" target="_blank" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider block text-center transition">
-                    Apri Generatore AI Sito Web
-                </a>
-            </div>
-        </div>
-      </section>
-
     </main>
   </div>
 
@@ -374,26 +335,14 @@
       </div>
 
       <form id="create-project-form" onsubmit="handleCreateSubmit(event)" class="space-y-4">
-        
-        <!-- ⚡ SELETTORE RISTORANTE DA FOGLIO GOOGLE (VISIBILE SOLO PER EXPERIENCE PAGE) -->
-        <div id="experience-sheet-select-box" class="hidden p-3.5 bg-purple-950/30 border border-purple-500/30 rounded-2xl">
-            <label class="block text-xs font-extrabold uppercase text-purple-300 mb-1.5 flex items-center justify-between">
-                <span>📊 Seleziona da Foglio Google Experience</span>
-                <i class="fa-solid fa-table text-purple-400"></i>
-            </label>
-            <select id="c-sheet-restaurant" onchange="onRestaurantSelectedFromSheet()" class="w-full bg-[#15151a] border border-purple-500/40 rounded-xl p-3 text-sm text-white font-bold outline-none focus:border-purple-400">
-                <option value="">-- Caricamento ristoranti da elaborare... --</option>
-            </select>
-        </div>
-
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Nome Cliente / Azienda</label>
-            <input type="text" id="c-name" required placeholder="Es. Osteria dal Conte" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+            <input type="text" id="c-name" required placeholder="Es. Onoranze Funebri San Marco" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
         </div>
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Email</label>
-                <input type="email" id="c-email" placeholder="info@ristorante.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+                <input type="email" id="c-email" placeholder="info@agenzia.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Telefono / WhatsApp</label>
@@ -403,7 +352,6 @@
         <div class="grid grid-cols-3 gap-4">
             <div class="col-span-2">
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Titolo Servizio / Progetto</label>
-                <!-- ⚡ NOME SEMPLIFICATO "Sito Web" -->
                 <input type="text" id="c-title" required value="Sito Web" placeholder="Sito Web" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
             </div>
             <div>
@@ -413,7 +361,9 @@
         </div>
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prodotto Ecosistema</label>
-            <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold">
+            <select id="c-type" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold">
+                <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
+                <option value="love">💍 LOVE (Partecipazioni Digitali)</option>
                 <option value="experience">🍷 Smart Experience Page (Ristoranti)</option>
                 <option value="html">🌐 SiteEngine Pro (Sito Web / Link HTML)</option>
                 <option value="vision">🎬 Vision UGC Video</option>
@@ -422,40 +372,14 @@
                 <option value="license">🔑 Licenza Software (VeloMotion/Omnia)</option>
             </select>
         </div>
-        <div id="file-upload-box" class="hidden border-2 border-dashed border-zinc-800 rounded-xl p-4 text-center cursor-pointer hover:border-purple-500/50">
-            <input type="file" id="c-file" class="hidden">
-            <div onclick="document.getElementById('c-file').click()">
-                <i class="fa-solid fa-cloud-arrow-up text-lg text-purple-400 mb-1"></i>
-                <span class="block text-xs font-bold text-gray-300">Carica File (.mp4 o immagini)</span>
-            </div>
-        </div>
         <div id="link-input-box">
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">URL Destinazione / Sito Web Cliente</label>
-            <input type="url" id="c-url" placeholder="https://www.osteriadelconte.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+            <input type="url" id="c-url" placeholder="https://eternia.rmstudio.app" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
         </div>
         <button type="submit" id="c-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-4 rounded-xl text-xs uppercase tracking-wider mt-4 shadow-lg shadow-purple-600/30 active:scale-95 transition">
             Salva e Registra Progetto
         </button>
       </form>
-    </div>
-  </div>
-
-  <!-- MODALE MESSAGGI PRONTI WA / EMAIL -->
-  <div id="copy-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
-    <div class="glass p-8 rounded-3xl max-w-lg w-full border border-zinc-800 shadow-2xl">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-display font-bold text-white flex items-center gap-2"><i class="fa-solid fa-comment-dots text-purple-400"></i> Copy Pronto da Inviare</h3>
-        <button onclick="closeCopyModal()" class="text-gray-400 hover:text-white text-xl font-bold">&times;</button>
-      </div>
-      <textarea id="copy-text-area" readonly class="w-full h-48 bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-gray-200 outline-none resize-none font-mono mb-4 leading-relaxed"></textarea>
-      <div class="flex gap-3">
-          <button onclick="executeCopyText()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-xl text-xs transition">
-            <i class="fa-solid fa-copy"></i> Copia Testo
-          </button>
-          <a id="copy-wa-direct-link" target="_blank" href="#" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl text-xs text-center transition flex items-center justify-center gap-2">
-            <i class="fa-brands fa-whatsapp"></i> Apri WhatsApp
-          </a>
-      </div>
     </div>
   </div>
 
