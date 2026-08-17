@@ -71,8 +71,9 @@
             </label>
             <select id="sector-advisor" onchange="highlightSuggestedSaas()" class="w-full bg-[#151522] border border-purple-500/50 rounded-xl p-3 text-sm text-white font-extrabold outline-none focus:border-purple-400">
                 <option value="">-- Mostra tutti i SaaS --</option>
+                <option value="funebre">🕊️ Onoranze Funebri / Cremazioni Pet</option>
                 <option value="ristorante">🍷 Ristorante / Bar / Pizzeria</option>
-                <option value="hotel">🏨 Hotel / B&B / Struttura Ricettiva</option>
+                <option value="hotel">🏨 Hotel / B&amp;B / Struttura Ricettiva</option>
                 <option value="auto">🏎️ Concessionaria Auto / Salone Moto</option>
                 <option value="immobile">🏠 Agenzia Immobiliare</option>
                 <option value="medico">🦷 Studio Dentistico / Clinica</option>
@@ -84,7 +85,7 @@
             </select>
         </div>
 
-        <!-- ECOSISTEMA TUTTI E 16 I SAAS -->
+        <!-- ECOSISTEMA TUTTI I SAAS -->
         <div>
             <label class="block text-xs font-black uppercase tracking-widest text-gray-400 mb-3">
                 Seleziona il Prodotto (1-Tap per Aprire):
@@ -92,6 +93,19 @@
 
             <div class="grid grid-cols-2 gap-2.5">
                 
+                <!-- ⚡ ETERNIA (MEMORIALI QR & PET) -->
+                <button type="button" onclick="handleSaasTap('eternia', 'https://eternia.rmstudio.app')" id="card-eternia" class="saas-card p-3.5 bg-[#0e0e14] border border-amber-500/40 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🕊️</span>
+                    <span class="font-black text-amber-200 text-sm">ETERNIA</span>
+                    <span class="text-xs text-amber-400 font-bold">Memoriali QR &amp; Pet</span>
+                </button>
+
+                <button type="button" onclick="handleSaasTap('love', 'https://love.rmstudio.app')" id="card-love" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">💍</span>
+                    <span class="font-black text-white text-sm">LOVE</span>
+                    <span class="text-xs text-amber-300 font-bold">Partecipazioni &amp; Festa</span>
+                </button>
+
                 <button type="button" onclick="handleSaasTap('experience', 'https://experience.rmstudio.app')" id="card-experience" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
                     <span class="text-2xl">🍷</span>
                     <span class="font-black text-white text-sm">Experience</span>
@@ -108,13 +122,6 @@
                     <span class="text-2xl">🤖</span>
                     <span class="font-black text-white text-sm">NexusAI</span>
                     <span class="text-xs text-cyan-400 font-bold">Sales Overlay Chatbot</span>
-                </button>
-
-                <!-- ⚡ NUOVO INSERIMENTO: LOVE (PARTECIPAZIONI DIGITALI) -->
-                <button type="button" onclick="handleSaasTap('love', 'https://love.rmstudio.app')" id="card-love" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
-                    <span class="text-2xl">💍</span>
-                    <span class="font-black text-white text-sm">LOVE</span>
-                    <span class="text-xs text-amber-300 font-bold">Partecipazioni &amp; Festa</span>
                 </button>
 
                 <button type="button" onclick="handleSaasTap('drivemotion', 'https://drivemotion.rmstudio.app')" id="card-drivemotion" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
@@ -147,7 +154,6 @@
                     <span class="text-xs text-orange-400 font-bold">Voice AI Hotel/B&amp;B</span>
                 </button>
 
-                <!-- ⚡ NUOVO INSERIMENTO: ARESAI (PALESTRE & COACH) -->
                 <button type="button" onclick="handleSaasTap('ares', 'https://ares.rmstudio.app')" id="card-ares" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
                     <span class="text-2xl">🏋️</span>
                     <span class="font-black text-white text-sm">AresAI</span>
@@ -166,7 +172,6 @@
                     <span class="text-xs text-blue-400 font-bold">Landing Professionisti</span>
                 </button>
 
-                <!-- ⚡ NUOVO INSERIMENTO: OMNIASTUDIO (IA OFFLINE) -->
                 <button type="button" onclick="handleSaasTap('omniastudio', 'https://omniastudio.rmstudio.app')" id="card-omniastudio" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
                     <span class="text-2xl">💼</span>
                     <span class="font-black text-white text-sm">OmniaStudio</span>
@@ -194,62 +199,25 @@
             </div>
         </div>
 
-        <!-- LANDING PAGE UFFICIALE -->
+        <!-- LANDING PAGE UFFICIALE SELEZIONATA -->
         <div class="flex justify-between items-center bg-zinc-900/60 border border-zinc-800 px-3.5 py-2 rounded-xl text-xs">
-            <span class="text-gray-400 font-semibold" id="saas-desc-label">Smart Page Ristoranti</span>
-            <a id="saas-landing-link" href="https://experience.rmstudio.app" target="_blank" class="text-purple-400 font-bold hover:underline flex items-center gap-1 text-xs">
+            <span class="text-gray-400 font-semibold" id="saas-desc-label">Memoriali QR d'Autore &amp; Pet</span>
+            <a id="saas-landing-link" href="https://eternia.rmstudio.app" target="_blank" class="text-amber-300 font-bold hover:underline flex items-center gap-1 text-xs">
                 <span>🔗 Apri Landing</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             </a>
         </div>
 
-        <!-- ⚡ SEZIONE DATI GENERAZIONE (VISIBILE ESCLUSIVAMENTE PER EXPERIENCE, NEXUS, SOCIAL) -->
-        <div id="generation-form-container" class="hidden space-y-3 bg-[#0e0e14] border-2 border-purple-500/40 p-4.5 rounded-2xl shadow-xl">
-            
-            <div class="flex items-center justify-between border-b border-zinc-800 pb-2.5">
-                <label class="text-sm font-black uppercase tracking-wider text-purple-300" id="form-title-label">
-                    Generazione Demo Rapida:
-                </label>
-                <button type="button" onclick="closeGenForm()" class="text-gray-400 hover:text-white font-bold text-sm">✕ Chiudi</button>
+        <!-- ⚡ SEZIONE GENERATORE RAPIDO STRIPE ON-THE-FLY -->
+        <div class="p-4 bg-gradient-to-br from-purple-950/40 via-zinc-900 to-zinc-950 border border-purple-500/40 rounded-2xl space-y-3">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-black uppercase tracking-wider text-purple-300 flex items-center gap-2">
+                    <i class="fa-brands fa-stripe text-xl text-purple-400"></i> Generatore Link Stripe Istantaneo
+                </span>
+                <a href="stripe-generator.html" class="text-[10px] text-amber-400 font-bold underline">Apri Pagina Dedicata ↗</a>
             </div>
-
-            <div>
-                <label class="block text-xs font-bold text-gray-300 mb-1" id="lbl-url">URL Sito Web Cliente:</label>
-                <input type="url" id="inp-url" placeholder="https://www.cliente.it" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-mono">
-            </div>
-
-            <div>
-                <label class="block text-xs font-bold text-gray-300 mb-1" id="lbl-name">Nome Attività / Titolare:</label>
-                <input type="text" id="inp-name" placeholder="Es. Tenuta Castel Venezze" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-base text-white outline-none focus:border-purple-500 font-bold">
-            </div>
-
-            <div id="box-product" class="hidden">
-                <label class="block text-xs font-bold text-gray-300 mb-1">Prodotto o Servizio da Promuovere:</label>
-                <input type="text" id="inp-product" placeholder="Es: Trattamento di Coppia, Offerta Lancio Auto..." class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-semibold">
-            </div>
-
-            <div>
-                <label class="block text-xs font-bold text-gray-300 mb-1">Cellulare WhatsApp Referente:</label>
-                <input type="tel" id="inp-phone" placeholder="+393401234567" class="w-full bg-[#151520] border border-zinc-800 rounded-xl p-3 text-base text-white outline-none focus:border-purple-500 font-bold">
-            </div>
-
-            <button id="m-submit-btn" onclick="generateLiveDemo()" class="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white font-black py-4 rounded-2xl text-xs uppercase tracking-wider shadow-xl shadow-purple-600/30 transition active:scale-95 flex items-center justify-center gap-2 mt-2">
-                <i class="fa-solid fa-wand-magic-sparkles text-base"></i> GENERA DEMO IN TEMPO REALE
-            </button>
-        </div>
-
-        <!-- ESITO RISULTATO DEMO -->
-        <div id="m-result-box" class="hidden bg-[#0c140c] border-2 border-emerald-500/50 p-4 rounded-2xl space-y-3">
-            <div class="flex items-center gap-2 text-emerald-400 font-black text-sm">
-                <i class="fa-solid fa-circle-check animate-bounce text-base"></i> DEMO PRONTA ALL'USO!
-            </div>
-            
-            <a id="m-wa-link" href="#" target="_blank" class="w-full bg-emerald-600 text-white font-black py-4 rounded-xl text-xs uppercase tracking-wider text-center block transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2">
-                <i class="fa-brands fa-whatsapp text-lg"></i> Invia Ora su WhatsApp
-            </a>
-
-            <a id="m-portal-link" href="#" target="_blank" class="w-full bg-purple-600 text-white font-bold py-3.5 rounded-xl text-xs uppercase tracking-wider text-center block transition flex items-center justify-center gap-2">
-                <i class="fa-solid fa-eye"></i> Apri Anteprima Portale
-            </a>
+            <p class="text-xs text-gray-400 leading-snug">
+                Crea qualsiasi importo al volo senza creare prodotti su Stripe.
+            </p>
         </div>
 
     </main>
@@ -260,6 +228,7 @@
 
     <script>
         const SAAS_CONFIG = {
+            eternia: { landing: "https://eternia.rmstudio.app", desc: "Memoriali QR d'Autore & Pet Memorials" },
             experience: {
                 title: "Dati Smart Experience Page (Ristoranti):",
                 endpoint: "https://n8n.rmstudio.app/webhook/omnia-taste-generate",
@@ -302,50 +271,20 @@
             velomotion: { landing: "https://velomotion.rmstudio.app", desc: "Sblocco Bosch BES3" }
         };
 
-        let currentGenMode = null;
-
         function handleSaasTap(key, landingUrl) {
-            // Se si seleziona Experience, Nexus o Social -> Mostra il Form di Generazione
-            if (key === 'experience' || key === 'nexus' || key === 'social') {
-                currentGenMode = key;
-                const cfg = SAAS_CONFIG[key];
-                
-                const formContainer = document.getElementById('generation-form-container');
-                const titleLabel = document.getElementById('form-title-label');
-                const lblUrl = document.getElementById('lbl-url');
-                const lblName = document.getElementById('lbl-name');
-                const boxProduct = document.getElementById('box-product');
-
-                titleLabel.innerText = cfg.title;
-                lblUrl.innerText = cfg.lblUrl;
-                lblName.innerText = cfg.lblName;
-                boxProduct.classList.toggle('hidden', !cfg.showProduct);
-
-                document.getElementById('saas-desc-label').innerText = cfg.desc;
-                document.getElementById('saas-landing-link').href = cfg.landing;
-
-                formContainer.classList.remove('hidden');
-                formContainer.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                // Per tutti gli altri SaaS -> Apri immediatamente la Landing Page ufficiale in un nuovo tab!
-                window.open(landingUrl, '_blank');
-            }
+            document.getElementById('saas-desc-label').innerText = SAAS_CONFIG[key]?.desc || key;
+            document.getElementById('saas-landing-link').href = landingUrl;
+            window.open(landingUrl, '_blank');
         }
 
-        function closeGenForm() {
-            document.getElementById('generation-form-container').classList.add('hidden');
-            currentGenMode = null;
-        }
-
-        // ILLUMINAZIONE NEON GLOW SUI SAAS SUGGERITI PER SETTORE
         function highlightSuggestedSaas() {
             const sector = document.getElementById('sector-advisor').value;
-            
             document.querySelectorAll('.saas-card').forEach(c => c.classList.remove('glow-suggested'));
 
             if (!sector) return;
 
             const suggestions = {
+                funebre: ['card-eternia', 'card-ff_edizioni', 'card-nexus', 'card-dentis'],
                 ristorante: ['card-experience', 'card-nexus', 'card-ff_edizioni', 'card-social'],
                 hotel: ['card-concierge24', 'card-nexus', 'card-ff_edizioni', 'card-social'],
                 auto: ['card-drivemotion', 'card-nexus', 'card-dentis', 'card-social'],
@@ -358,69 +297,11 @@
                 azienda: ['card-omniastudio', 'card-nexus', 'card-dentis', 'card-sitengine', 'card-social']
             };
 
-            const targetCardIds = suggestions[sector] || ['card-nexus', 'card-dentis'];
-
+            const targetCardIds = suggestions[sector] || ['card-eternia', 'card-nexus'];
             targetCardIds.forEach(id => {
                 const card = document.getElementById(id);
                 if (card) card.classList.add('glow-suggested');
             });
-        }
-
-        async function generateLiveDemo() {
-            if (!currentGenMode) return;
-
-            const siteUrl = document.getElementById('inp-url').value.trim();
-            const name = document.getElementById('inp-name').value.trim();
-            const phone = document.getElementById('inp-phone').value.trim();
-            const product = document.getElementById('inp-product').value.trim();
-
-            if (!siteUrl) return alert("Inserisci l'URL del sito per procedere.");
-
-            const endpoint = SAAS_CONFIG[currentGenMode].endpoint;
-
-            const btn = document.getElementById('m-submit-btn');
-            const originalText = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generazione AI in corso (15s)...`;
-
-            try {
-                const res = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        site_url: siteUrl,
-                        nome_ristorante: name,
-                        nome_cliente: name,
-                        phone: phone,
-                        details: product,
-                        title: SAAS_CONFIG[currentGenMode].desc
-                    })
-                });
-
-                const data = await res.json();
-                
-                if (data.success && data.portal_link) {
-                    const resultBox = document.getElementById('m-result-box');
-                    const portalBtn = document.getElementById('m-portal-link');
-                    const waBtn = document.getElementById('m-wa-link');
-
-                    portalBtn.href = data.portal_link;
-
-                    const textWa = `Ciao ${name || 'Titolare'}! Ho creato per voi un'anteprima interattiva dimostrativa. Puoi provarla qui: ${data.portal_link}`;
-                    const cleanPhone = phone ? phone.replace(/\D/g, '') : '';
-                    waBtn.href = cleanPhone ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(textWa)}` : `https://wa.me/?text=${encodeURIComponent(textWa)}`;
-
-                    resultBox.classList.remove('hidden');
-                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                } else {
-                    throw new Error(data.message || "Errore durante la generazione.");
-                }
-            } catch (err) {
-                alert("⚠️ Errore generazione: " + err.message);
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalText;
-            }
         }
     </script>
 </body>
