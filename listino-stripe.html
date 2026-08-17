@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RM Studio — Listino Prezzi & Stripe Master Hub</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #050508; color: #f3f4f6; }
+        .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 flex flex-col justify-between selection:bg-purple-600 selection:text-white">
+
+    <div class="max-w-6xl w-full mx-auto space-y-6">
+        
+        <!-- HEADER -->
+        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-zinc-900">
+            <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-purple-600/30 shrink-0">
+                    <i class="fa-solid fa-tags text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-black text-white font-display">Listino Prezzi &amp; Stripe Master Hub</h1>
+                    <p class="text-xs md:text-sm text-gray-400">Tutti i link di pagamento ufficiali dell'ecosistema RM Studio sempre pronti.</p>
+                </div>
+            </div>
+            <div class="flex gap-2.5">
+                <a href="stripe-generator.html" class="px-4 py-2.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 border border-purple-500/30 text-xs font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-bolt"></i> Crea Prezzo On-The-Fly
+                </a>
+                <a href="index.html" class="px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-bold border border-zinc-800 transition">
+                    ← Dashboard
+                </a>
+            </div>
+        </header>
+
+        <!-- BARRA RICERCA E FILTRO RAPIDO -->
+        <div class="flex flex-col sm:flex-row gap-3 bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl">
+            <div class="relative flex-1">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm"></i>
+                <input
+                    type="text"
+                    id="search-input"
+                    oninput="filterLinks()"
+                    placeholder="Cerca per SaaS (es: Eternia, Dentis, Concierge, Vision...)"
+                    class="w-full bg-[#15151e] border border-zinc-800 rounded-xl pl-11 pr-4 py-3 text-sm text-white outline-none focus:border-purple-500 font-medium"
+                >
+            </div>
+            <select id="filter-saas" onchange="filterLinks()" class="bg-[#15151e] border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white font-bold outline-none focus:border-purple-500">
+                <option value="all">Tutti i Prodotti</option>
+                <option value="eternia">🕊️ ETERNIA</option>
+                <option value="concierge">🏨 Concierge24</option>
+                <option value="dentis">🦷 Dentis AI</option>
+                <option value="lexis">⚖️ Lexis AI</option>
+                <option value="hometour">🏠 HomeTour</option>
+                <option value="drivemotion">🏎️ DriveMotion</option>
+                <option value="vision">🎬 Vision UGC</option>
+                <option value="velomotion">⚡ VeloMotion</option>
+                <option value="omniastudio">🔒 OmniaStudio</option>
+                <option value="nexus">🤖 NexusAI</option>
+                <option value="ff">🎵 FF Edizioni</option>
+            </select>
+        </div>
+
+        <!-- GRIGLIA PRODOTTI STRIPE -->
+        <div id="links-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Generato dinamicamente via JS -->
+        </div>
+
+    </div>
+
+    <!-- TOAST NOTIFICA COPIA -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-600 text-white font-bold px-5 py-3 rounded-2xl shadow-2xl text-xs uppercase tracking-wider hidden animate-in fade-in duration-200">
+        ✓ Link Stripe copiato negli appunti!
+    </div>
+
+    <footer class="py-6 text-center text-xs text-gray-500 font-mono">
+        © 2026 RM Studio • Master Stripe Registry
+    </footer>
+
+    <script>
+        const STRIPE_PRODUCTS = [
+            // 🕊️ ETERNIA
+            { saas: "eternia", icon: "🕊️", name: "ETERNIA - Credit Starter", price: "€79,00", type: "Una Tantum", desc: "1 Memoriale QR attivo per 1 anno", url: "https://buy.stripe.com/PLACEHOLDER_ETERNIA_79" },
+            { saas: "eternia", icon: "🕊️", name: "ETERNIA - VIP «Chiavi in Mano»", price: "€199,00", type: "Una Tantum", desc: "Allestimento grafico e QR pronto in 2h", url: "https://buy.stripe.com/PLACEHOLDER_ETERNIA_199" },
+            { saas: "eternia", icon: "🕊️", name: "ETERNIA - Agency Hub B2B", price: "€690,00", type: "10 Cerimonie", desc: "Pacchetto 10 memoriali + Marchio Agenzia White-Label", url: "https://buy.stripe.com/PLACEHOLDER_ETERNIA_690" },
+            { saas: "eternia", icon: "🕊️", name: "ETERNIA - Brano d'Autore Echi", price: "€300,00", type: "Una Tantum", desc: "Composizione inedita registrata SIAE (Maestro Fusetti)", url: "https://buy.stripe.com/PLACEHOLDER_ETERNIA_ECHI_300" },
+
+            // 🏨 CONCIERGE24
+            { saas: "concierge", icon: "🏨", name: "Concierge24 - Setup Chiavi in Mano", price: "€149,00", type: "Una Tantum", desc: "Configurazione completa struttura e knowledge base", url: "https://buy.stripe.com/28EcN66V8gjk0ds18Tdwc07" },
+            { saas: "concierge", icon: "🏨", name: "Concierge24 - Ricarica Base", price: "€49,00", type: "100 Minuti", desc: "Ricarica pay-as-you-go per chiamate vocali AI", url: "https://buy.stripe.com/aFa28s7Zc1oq8JYg3Ndwc08" },
+            { saas: "concierge", icon: "🏨", name: "Concierge24 - Ricarica Pro", price: "€179,00", type: "450 Minuti", desc: "Pacchetto medio per hotel e B&B attivi", url: "https://buy.stripe.com/bJe28senA1oq4tIcRBdwc09" },
+            { saas: "concierge", icon: "🏨", name: "Concierge24 - Ricarica Max", price: "€349,00", type: "1000 Minuti", desc: "Pacchetto alto volume per stagioni estive", url: "https://buy.stripe.com/6oUdRacfs0km7FU9Fpdwc0a" },
+
+            // 🏠 HOMETOUR
+            { saas: "hometour", icon: "🏠", name: "HomeTour - Starter Pack", price: "€14,90", type: "2 Video Reel", desc: "Video immobili 3D con parallasse e voce narrante", url: "https://buy.stripe.com/7sYfZi1AOc341hw3h1dwc0b" },
+            { saas: "hometour", icon: "🏠", name: "HomeTour - Pro Pack", price: "€59,00", type: "10 Video HD", desc: "Logo agenzia incluso + lingue straniere sbloccate", url: "https://buy.stripe.com/28E3cwcfs0kmgcq18Tdwc0c" },
+            { saas: "hometour", icon: "🏠", name: "HomeTour - Maxi Pack", price: "€129,00", type: "25 Video HD", desc: "Elaborazione prioritaria nei server di calcolo", url: "https://buy.stripe.com/fZuaEYbbo2suf8m8Bldwc0d" },
+
+            // 🏎️ DRIVEMOTION
+            { saas: "drivemotion", icon: "🏎️", name: "DriveMotion - Starter Pack", price: "€14,90", type: "1 Video HD", desc: "Sfondo magico AI + post social pronti", url: "https://buy.stripe.com/9B614ogvIc34bWa9Fpdwc0e" },
+            { saas: "drivemotion", icon: "🏎️", name: "DriveMotion - Pro Pack", price: "€59,00", type: "5 Video HD", desc: "Logo autosalone + tutte le lingue sbloccate", url: "https://buy.stripe.com/fZu28s5R4c343pEg3Ndwc0f" },
+            { saas: "drivemotion", icon: "🏎️", name: "DriveMotion - Maxi Pack", price: "€129,00", type: "15 Video HD", desc: "Pacchetto concessionarie con crediti senza scadenza", url: "https://buy.stripe.com/9B6dRaenAebc4tI9Fpdwc0g" },
+
+            // 🔒 OMNIASTUDIO
+            { saas: "omniastudio", icon: "🔒", name: "OmniaStudio PRO - Licenza Lifetime", price: "€699,00", type: "Una Tantum", desc: "IA locale 100% offline per studi legali e commercialisti", url: "https://buy.stripe.com/14AfZi1AOaZ07FUg3Ndwc0h" },
+
+            // 🎵 FF EDIZIONI
+            { saas: "ff", icon: "🎵", name: "FF Edizioni - Brano Musicale Demo", price: "€0,00", type: "Free Trial", desc: "Ascolto catalogo composizioni Maestro Fusetti", url: "https://buy.stripe.com/9B65kE6V83wyf8m18Tdwc0i" },
+
+            // 🤖 NEXUS AI
+            { saas: "nexus", icon: "🤖", name: "Nexus AI - Piano Base", price: "€49,00", type: "/ Mese", desc: "1 Chatbot attivo su sito, scansione fino a 10 pagine", url: "https://buy.stripe.com/9B628sfrE1oq4tI04Pdwc0j" },
+            { saas: "nexus", icon: "🤖", name: "Nexus AI - Piano PRO", price: "€99,00", type: "/ Mese", desc: "Prenotazioni in chat + invio trascrizioni via email", url: "https://buy.stripe.com/8x25kEgvId78bWa7xhdwc0k" },
+
+            // 🦷 DENTIS
+            { saas: "dentis", icon: "🦷", name: "Dentis AI - Serena Starter", price: "€79,00", type: "/ Mese", desc: "Risposta fuori orario (notti e weekend) via email", url: "https://buy.stripe.com/28EaEYfrE2su1hw18Tdwc0l" },
+            { saas: "dentis", icon: "🦷", name: "Dentis AI - Serena PRO", price: "€149,00", type: "/ Mese", desc: "Risposta H24 + Google Calendar + WhatsApp bot", url: "https://buy.stripe.com/8x2cN64N0c34aS65p9dwc0m" },
+            { saas: "dentis", icon: "🦷", name: "Dentis AI - Clinic Elite", price: "€299,00", type: "/ Mese", desc: "Multi-medico e multi-sede per cliniche complesse", url: "https://buy.stripe.com/5kQcN6frE0km1hw7xhdwc0n" },
+
+            // ⚖️ LEXIS AI
+            { saas: "lexis", icon: "⚖️", name: "Lexis AI - Chiara Starter", price: "€79,00", type: "/ Mese", desc: "Segreteria formale notti e festivi per studi legali", url: "https://buy.stripe.com/8x29AUgvIc34d0e04Pdwc0o" },
+            { saas: "lexis", icon: "⚖️", name: "Lexis AI - Chiara PRO", price: "€149,00", type: "/ Mese", desc: "Risposta H24 formale + appuntamenti su Google Calendar", url: "https://buy.stripe.com/8x26oI4N0aZ03pEaJtdwc0p" },
+            { saas: "lexis", icon: "⚖️", name: "Lexis AI - Studio Elite", price: "€299,00", type: "/ Mese", desc: "Gestione associati e multi-avvocato", url: "https://buy.stripe.com/aFafZia7k8QSd0eaJtdwc0q" },
+
+            // 🎬 VISION UGC
+            { saas: "vision", icon: "🎬", name: "Vision UGC - Starter Pack", price: "€50,00", type: "1 Video AI", desc: "Modello virtuale Camila per e-commerce e ads", url: "https://buy.stripe.com/dRm6oIa7kgjk9O2dVFdwc0r" },
+            { saas: "vision", icon: "🎬", name: "Vision UGC - Pro Bundle", price: "€120,00", type: "3 Video AI", desc: "3 Ganci marketing diversi, risoluzione 720p HD", url: "https://buy.stripe.com/14A7sMenA8QS2lA18Tdwc0s" },
+            { saas: "vision", icon: "🎬", name: "Vision UGC - Agency Maxi Pack", price: "€340,00", type: "10 Video AI", desc: "1080p Full HD + elaborazione prioritaria in coda", url: "https://buy.stripe.com/dRm8wQfrE0km9O2dVFdwc0t" },
+
+            // ⚡ VELOMOTION
+            { saas: "velomotion", icon: "⚡", name: "VeloMotion - Sblocco Software (32 km/h)", price: "€290,00", type: "1 Credito", desc: "Sblocco invisibile via USB-C Bosch Smart System", url: "https://buy.stripe.com/cNi7sMa7kc34d0e2cXdwc0u" },
+            { saas: "velomotion", icon: "⚡", name: "VeloMotion - Sblocco Hardware (45 km/h)", price: "€320,00", type: "1 Credito + Kit", desc: "Include licenza e sensore fisico dedicato", url: "https://buy.stripe.com/fZu4gAenAgjk2lA5p9dwc0v" }
+        ];
+
+        function renderCards(list) {
+            const container = document.getElementById('links-container');
+            container.innerHTML = list.map(item => `
+                <div class="p-5 rounded-2xl bg-[#0b0b0f] border border-zinc-900 hover:border-purple-500/40 transition-all flex flex-col justify-between space-y-4 shadow-xl">
+                    <div>
+                        <div class="flex justify-between items-start gap-2 mb-2">
+                            <span class="text-xs font-bold px-2.5 py-1 rounded-lg bg-zinc-900 text-gray-300 border border-zinc-800 font-mono flex items-center gap-1.5">
+                                <span>${item.icon}</span> ${item.saas.toUpperCase()}
+                            </span>
+                            <span class="text-sm font-black text-amber-400 font-mono">${item.price} <span class="text-[10px] text-gray-400 font-normal font-sans">${item.type}</span></span>
+                        </div>
+                        <h3 class="text-base font-bold text-white font-serif">${item.name}</h3>
+                        <p class="text-xs text-gray-400 mt-1 leading-relaxed">${item.desc}</p>
+                    </div>
+
+                    <div class="pt-3 border-t border-zinc-900 flex gap-2">
+                        <button onclick="copyToClipboard('${item.url}')" class="flex-1 py-2.5 px-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-gray-200 border border-zinc-800 text-xs font-bold flex items-center justify-center gap-1.5 transition active:scale-95">
+                            <i class="fa-solid fa-copy text-purple-400"></i> Copia Link
+                        </button>
+                        <a href="https://wa.me/?text=${encodeURIComponent('Salve! Ecco il link sicuro di pagamento Stripe per ' + item.name + ' (' + item.price + '):\n' + item.url)}" target="_blank" class="py-2.5 px-3.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex items-center justify-center">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                        </a>
+                        <a href="${item.url}" target="_blank" class="py-2.5 px-3.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition flex items-center justify-center">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterLinks() {
+            const search = document.getElementById('search-input').value.toLowerCase().trim();
+            const saas = document.getElementById('filter-saas').value;
+
+            const filtered = STRIPE_PRODUCTS.filter(p => {
+                const matchSearch = p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search) || p.saas.toLowerCase().includes(search);
+                const matchSaas = (saas === 'all') || (p.saas.toLowerCase() === saas.toLowerCase());
+                return matchSearch && matchSaas;
+            });
+
+            renderCards(filtered);
+        }
+
+        function copyToClipboard(url) {
+            navigator.clipboard.writeText(url);
+            const toast = document.getElementById('toast');
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2500);
+        }
+
+        renderCards(STRIPE_PRODUCTS);
+    </script>
+</body>
+</html>
