@@ -31,7 +31,7 @@
                 </div>
                 <div>
                     <h1 class="text-2xl md:text-3xl font-black text-white font-display">Command Center Prezzi &amp; Affiliati</h1>
-                    <p class="text-sm text-gray-400 mt-0.5">Gestisci i prezzi in tempo reale e monitora le provvigioni degli affiliati.</p>
+                    <p class="text-sm text-gray-400 mt-0.5">Controllo in tempo reale per tutti i 17 SaaS dell&apos;ecosistema RM Studio.</p>
                 </div>
             </div>
             <a href="index.html" class="px-5 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-bold border border-zinc-800 transition">
@@ -64,7 +64,7 @@
             </button>
         </div>
 
-        <!-- SEZIONE SPECIALE: GESTIONE AFFILIATI & CODICI SCONTO (Tab Affiliati) -->
+        <!-- SEZIONE GESTIONE AFFILIATI & CODICI SCONTO -->
         <div id="section-affiliati" class="hidden space-y-6">
             <div class="p-6 rounded-3xl bg-gradient-to-br from-amber-950/20 via-zinc-900 to-zinc-950 border border-amber-500/40 shadow-2xl space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-white/10 pb-4">
@@ -118,10 +118,10 @@
             </div>
         </div>
 
-        <!-- GRIGLIA PREZZI: 17 SCHEDE CON FILTRO CATEGORIE -->
+        <!-- GRIGLIA PREZZI: 17 SCHEDE CATEGORIZZATE -->
         <div id="pricing-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <!-- 1. ETERNIA (Categoria: Eventi & Memoriali) -->
+            <!-- 1. ETERNIA (Eventi & Memoriali) -->
             <div data-cat="eventi_musica" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-amber-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🕊️</span><h2 class="text-sm font-black text-amber-200 font-display">1. ETERNIA</h2></div>
@@ -131,27 +131,27 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Starter (€)</span>
                         <input type="number" id="price-eternia-starter" value="79" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
-                        <button onclick="saveLivePrice('eternia', 'starter', 'price-eternia-starter')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('eternia', 'starter', 'price-eternia-starter')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">VIP 2h (€)</span>
                         <input type="number" id="price-eternia-vip" value="199" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
-                        <button onclick="saveLivePrice('eternia', 'vip', 'price-eternia-vip')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('eternia', 'vip', 'price-eternia-vip')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Hub 10 (€)</span>
                         <input type="number" id="price-eternia-hub" value="690" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
-                        <button onclick="saveLivePrice('eternia', 'hub', 'price-eternia-hub')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('eternia', 'hub', 'price-eternia-hub')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Echi SIAE (€)</span>
                         <input type="number" id="price-eternia-echi" value="300" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
-                        <button onclick="saveLivePrice('eternia', 'echi', 'price-eternia-echi')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('eternia', 'echi', 'price-eternia-echi')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. LOVE (Categoria: Eventi & Memoriali) -->
+            <!-- 2. LOVE (Eventi & Memoriali) -->
             <div data-cat="eventi_musica" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-pink-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">💍</span><h2 class="text-sm font-black text-pink-200 font-display">2. LOVE</h2></div>
@@ -161,22 +161,22 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Self-Service</span>
                         <input type="number" id="price-love-self" value="149" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-pink-300 outline-none">
-                        <button onclick="saveLivePrice('love', 'self', 'price-love-self')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('love', 'self', 'price-love-self')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">VIP 24h</span>
                         <input type="number" id="price-love-vip" value="249" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-pink-300 outline-none">
-                        <button onclick="saveLivePrice('love', 'vip', 'price-love-vip')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('love', 'vip', 'price-love-vip')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Hub 10 Nozze</span>
                         <input type="number" id="price-love-hub" value="490" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-pink-300 outline-none">
-                        <button onclick="saveLivePrice('love', 'hub', 'price-love-hub')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('love', 'hub', 'price-love-hub')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. CONCIERGE24 (Categoria: Turismo & Horeca) -->
+            <!-- 3. CONCIERGE24 (Turismo & Horeca) -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-orange-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🏨</span><h2 class="text-sm font-black text-orange-200 font-display">3. Concierge24</h2></div>
@@ -186,27 +186,27 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Setup (€)</span>
                         <input type="number" id="price-concierge-setup" value="149" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-orange-300 outline-none">
-                        <button onclick="saveLivePrice('concierge', 'setup', 'price-concierge-setup')" class="w-full py-1 bg-orange-600 hover:bg-orange-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('concierge', 'setup', 'price-concierge-setup')" class="w-full py-1 bg-orange-600 hover:bg-orange-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Base 100m (€)</span>
                         <input type="number" id="price-concierge-base" value="49" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-orange-300 outline-none">
-                        <button onclick="saveLivePrice('concierge', 'base', 'price-concierge-base')" class="w-full py-1 bg-orange-600 hover:bg-orange-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('concierge', 'base', 'price-concierge-base')" class="w-full py-1 bg-orange-600 hover:bg-orange-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Pro 450m (€)</span>
                         <input type="number" id="price-concierge-pro" value="179" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-orange-300 outline-none">
-                        <button onclick="saveLivePrice('concierge', 'pro', 'price-concierge-pro')" class="w-full py-1 bg-orange-600 hover:bg-orange-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('concierge', 'pro', 'price-concierge-pro')" class="w-full py-1 bg-orange-600 hover:bg-orange-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Max 1000m (€)</span>
                         <input type="number" id="price-concierge-max" value="349" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-orange-300 outline-none">
-                        <button onclick="saveLivePrice('concierge', 'max', 'price-concierge-max')" class="w-full py-1 bg-orange-600 hover:bg-orange-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('concierge', 'max', 'price-concierge-max')" class="w-full py-1 bg-orange-600 hover:bg-orange-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 4. DENTIS AI (Categoria: Medici & Legali) -->
+            <!-- 4. DENTIS AI (Medici & Legali) -->
             <div data-cat="medico_legale" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🦷</span><h2 class="text-sm font-black text-cyan-200 font-display">4. Dentis AI</h2></div>
@@ -216,22 +216,22 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Starter /m</span>
                         <input type="number" id="price-dentis-starter" value="79" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
-                        <button onclick="saveLivePrice('dentis', 'starter', 'price-dentis-starter')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('dentis', 'starter', 'price-dentis-starter')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">PRO /m</span>
                         <input type="number" id="price-dentis-pro" value="149" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
-                        <button onclick="saveLivePrice('dentis', 'pro', 'price-dentis-pro')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('dentis', 'pro', 'price-dentis-pro')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Elite /m</span>
                         <input type="number" id="price-dentis-elite" value="299" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
-                        <button onclick="saveLivePrice('dentis', 'elite', 'price-dentis-elite')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('dentis', 'elite', 'price-dentis-elite')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 5. LEXIS AI (Categoria: Medici & Legali) -->
+            <!-- 5. LEXIS AI (Medici & Legali) -->
             <div data-cat="medico_legale" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-yellow-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">⚖️</span><h2 class="text-sm font-black text-yellow-200 font-display">5. Lexis AI</h2></div>
@@ -241,22 +241,22 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Starter /m</span>
                         <input type="number" id="price-lexis-starter" value="79" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
-                        <button onclick="saveLivePrice('lexis', 'starter', 'price-lexis-starter')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('lexis', 'starter', 'price-lexis-starter')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">PRO /m</span>
                         <input type="number" id="price-lexis-pro" value="149" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
-                        <button onclick="saveLivePrice('lexis', 'pro', 'price-lexis-pro')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('lexis', 'pro', 'price-lexis-pro')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Elite /m</span>
                         <input type="number" id="price-lexis-elite" value="299" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
-                        <button onclick="saveLivePrice('lexis', 'elite', 'price-lexis-elite')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('lexis', 'elite', 'price-lexis-elite')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 6. HOMETOUR AI (Categoria: Real Estate & Auto) -->
+            <!-- 6. HOMETOUR AI (Real Estate & Auto) -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-emerald-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🏠</span><h2 class="text-sm font-black text-emerald-200 font-display">6. HomeTour AI</h2></div>
@@ -266,22 +266,22 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Starter (€)</span>
                         <input type="number" step="0.1" id="price-hometour-starter" value="14.90" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
-                        <button onclick="saveLivePrice('hometour', 'starter', 'price-hometour-starter')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('hometour', 'starter', 'price-hometour-starter')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Pro (€)</span>
                         <input type="number" id="price-hometour-pro" value="59" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
-                        <button onclick="saveLivePrice('hometour', 'pro', 'price-hometour-pro')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('hometour', 'pro', 'price-hometour-pro')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Maxi (€)</span>
                         <input type="number" id="price-hometour-max" value="129" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
-                        <button onclick="saveLivePrice('hometour', 'max', 'price-hometour-max')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('hometour', 'max', 'price-hometour-max')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 7. DRIVEMOTION AI (Categoria: Real Estate & Auto) -->
+            <!-- 7. DRIVEMOTION AI (Real Estate & Auto) -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🏎️</span><h2 class="text-sm font-black text-cyan-300 font-display">7. DriveMotion</h2></div>
@@ -291,22 +291,22 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Starter (€)</span>
                         <input type="number" step="0.1" id="price-drivemotion-starter" value="14.90" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
-                        <button onclick="saveLivePrice('drivemotion', 'starter', 'price-drivemotion-starter')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('drivemotion', 'starter', 'price-drivemotion-starter')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Pro (€)</span>
                         <input type="number" id="price-drivemotion-pro" value="59" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
-                        <button onclick="saveLivePrice('drivemotion', 'pro', 'price-drivemotion-pro')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('drivemotion', 'pro', 'price-drivemotion-pro')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Maxi (€)</span>
                         <input type="number" id="price-drivemotion-max" value="129" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
-                        <button onclick="saveLivePrice('drivemotion', 'max', 'price-drivemotion-max')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('drivemotion', 'max', 'price-drivemotion-max')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 8. VISION UGC (Categoria: Real Estate & Auto) -->
+            <!-- 8. VISION UGC (Real Estate & Auto) -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-pink-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🎬</span><h2 class="text-sm font-black text-pink-300 font-display">8. Vision UGC</h2></div>
@@ -316,22 +316,22 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Starter (€)</span>
                         <input type="number" id="price-vision-starter" value="50" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-pink-300 outline-none">
-                        <button onclick="saveLivePrice('vision', 'starter', 'price-vision-starter')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('vision', 'starter', 'price-vision-starter')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Pro (€)</span>
                         <input type="number" id="price-vision-pro" value="120" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-pink-300 outline-none">
-                        <button onclick="saveLivePrice('vision', 'pro', 'price-vision-pro')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('vision', 'pro', 'price-vision-pro')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Maxi (€)</span>
                         <input type="number" id="price-vision-maxi" value="340" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-pink-300 outline-none">
-                        <button onclick="saveLivePrice('vision', 'maxi', 'price-vision-maxi')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('vision', 'maxi', 'price-vision-maxi')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 9. VELOMOTION (Categoria: Turismo & Horeca) -->
+            <!-- 9. VELOMOTION (Turismo & Horeca) -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-yellow-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">⚡</span><h2 class="text-sm font-black text-yellow-300 font-display">9. VeloMotion</h2></div>
@@ -341,17 +341,17 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Software (€)</span>
                         <input type="number" id="price-velomotion-software" value="290" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
-                        <button onclick="saveLivePrice('velomotion', 'software', 'price-velomotion-software')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('velomotion', 'software', 'price-velomotion-software')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Hardware (€)</span>
                         <input type="number" id="price-velomotion-hardware" value="320" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
-                        <button onclick="saveLivePrice('velomotion', 'hardware', 'price-velomotion-hardware')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('velomotion', 'hardware', 'price-velomotion-hardware')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 10. OMNIASTUDIO (Categoria: Medici & Legali) -->
+            <!-- 10. OMNIASTUDIO (Medici & Legali) -->
             <div data-cat="medico_legale" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-purple-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">💼</span><h2 class="text-sm font-black text-purple-200 font-display">10. OmniaStudio PRO</h2></div>
@@ -360,11 +360,11 @@
                 <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                     <span class="text-gray-400 block text-[11px]">Licenza Lifetime (€)</span>
                     <input type="number" id="price-omniastudio-lifetime" value="699" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-purple-300 outline-none">
-                    <button onclick="saveLivePrice('omniastudio', 'lifetime', 'price-omniastudio-lifetime')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                    <button onclick="saveLivePrice('omniastudio', 'lifetime', 'price-omniastudio-lifetime')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                 </div>
             </div>
 
-            <!-- 11. EXPERIENCE (Categoria: Turismo & Horeca) -->
+            <!-- 11. EXPERIENCE (Turismo & Horeca) -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-amber-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🍷</span><h2 class="text-sm font-black text-amber-300 font-display">11. Smart Experience</h2></div>
@@ -373,11 +373,11 @@
                 <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                     <span class="text-gray-400 block text-[11px]">Sblocco Portale (€)</span>
                     <input type="number" id="price-experience-sblocco" value="390" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
-                    <button onclick="saveLivePrice('experience', 'sblocco', 'price-experience-sblocco')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    <button onclick="saveLivePrice('experience', 'sblocco', 'price-experience-sblocco')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                 </div>
             </div>
 
-            <!-- 12. NEXUSAI (Categoria: Software & CRM) -->
+            <!-- 12. NEXUSAI (Software & CRM) -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🤖</span><h2 class="text-sm font-black text-cyan-200 font-display">12. NexusAI</h2></div>
@@ -387,17 +387,17 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Base (€/m)</span>
                         <input type="number" id="price-nexus-base" value="49" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
-                        <button onclick="saveLivePrice('nexus', 'base', 'price-nexus-base')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('nexus', 'base', 'price-nexus-base')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Pro (€/m)</span>
                         <input type="number" id="price-nexus-pro" value="99" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
-                        <button onclick="saveLivePrice('nexus', 'pro', 'price-nexus-pro')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('nexus', 'pro', 'price-nexus-pro')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 13. FREE ENERGY (Categoria: Software & CRM) -->
+            <!-- 13. FREE ENERGY (Software & CRM) -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-emerald-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">☀️</span><h2 class="text-sm font-black text-emerald-200 font-display">13. Free Energy</h2></div>
@@ -407,17 +407,17 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Start Pack (€)</span>
                         <input type="number" id="price-free_energy-base" value="199" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
-                        <button onclick="saveLivePrice('free_energy', 'base', 'price-free_energy-base')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('free_energy', 'base', 'price-free_energy-base')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Pro Pack (€)</span>
                         <input type="number" id="price-free_energy-max" value="449" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
-                        <button onclick="saveLivePrice('free_energy', 'max', 'price-free_energy-max')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('free_energy', 'max', 'price-free_energy-max')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 14. ARESAI (Categoria: Software & CRM) -->
+            <!-- 14. ARESAI (Software & CRM) -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🏋️</span><h2 class="text-sm font-black text-cyan-300 font-display">14. AresAI</h2></div>
@@ -427,17 +427,17 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Atleta (€/m)</span>
                         <input type="number" id="price-ares-base" value="19" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
-                        <button onclick="saveLivePrice('ares', 'base', 'price-ares-base')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('ares', 'base', 'price-ares-base')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Coach Hub (€/m)</span>
                         <input type="number" id="price-ares-coach" value="99" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
-                        <button onclick="saveLivePrice('ares', 'coach', 'price-ares-coach')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('ares', 'coach', 'price-ares-coach')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 15. SOCIALENGINE (Categoria: Real Estate & Auto) -->
+            <!-- 15. SOCIALENGINE (Real Estate & Auto) -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-indigo-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">📊</span><h2 class="text-sm font-black text-indigo-300 font-display">15. SocialEngine</h2></div>
@@ -447,22 +447,22 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Starter (€)</span>
                         <input type="number" id="price-social-starter" value="29" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-indigo-300 outline-none">
-                        <button onclick="saveLivePrice('social', 'starter', 'price-social-starter')" class="w-full py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('social', 'starter', 'price-social-starter')" class="w-full py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Pro (€)</span>
                         <input type="number" id="price-social-pro" value="79" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-indigo-300 outline-none">
-                        <button onclick="saveLivePrice('social', 'pro', 'price-social-pro')" class="w-full py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('social', 'pro', 'price-social-pro')" class="w-full py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[10px]">Agency (€)</span>
                         <input type="number" id="price-social-agency" value="199" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-indigo-300 outline-none">
-                        <button onclick="saveLivePrice('social', 'agency', 'price-social-agency')" class="w-full py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('social', 'agency', 'price-social-agency')" class="w-full py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 16. SITEENGINE PRO (Categoria: Software & CRM) -->
+            <!-- 16. SITEENGINE PRO (Software & CRM) -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-blue-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🌐</span><h2 class="text-sm font-black text-blue-200 font-display">16. SiteEngine Pro</h2></div>
@@ -472,17 +472,17 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Sblocco Sito (€)</span>
                         <input type="number" id="price-siteengine-unlock" value="400" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-blue-300 outline-none">
-                        <button onclick="saveLivePrice('siteengine', 'unlock', 'price-siteengine-unlock')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('siteengine', 'unlock', 'price-siteengine-unlock')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Rinnovo/Anno (€)</span>
                         <input type="number" id="price-siteengine-renewal" value="200" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-blue-300 outline-none">
-                        <button onclick="saveLivePrice('siteengine', 'renewal', 'price-siteengine-renewal')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('siteengine', 'renewal', 'price-siteengine-renewal')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 17. FF EDIZIONI (Categoria: Eventi & Memoriali) -->
+            <!-- 17. FF EDIZIONI (Eventi & Memoriali) -->
             <div data-cat="eventi_musica" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-purple-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🎵</span><h2 class="text-sm font-black text-purple-200 font-display">17. FF Edizioni</h2></div>
@@ -492,12 +492,12 @@
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Canzone Custom (€)</span>
                         <input type="number" id="price-ff-custom" value="300" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-purple-300 outline-none">
-                        <button onclick="saveLivePrice('ff', 'custom', 'price-ff-custom')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('ff', 'custom', 'price-ff-custom')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Jingle Spot (€)</span>
                         <input type="number" id="price-ff-jingle" value="250" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-purple-300 outline-none">
-                        <button onclick="saveLivePrice('ff', 'jingle', 'price-ff-jingle')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                        <button onclick="saveLivePrice('ff', 'jingle', 'price-ff-jingle')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
@@ -511,11 +511,12 @@
         ✓ Prezzo aggiornato su Supabase!
     </div>
 
+    <!-- CONFIGURAZIONE CHIAVI DEL PORTALE (S2) -->
+    <script src="js/config.js"></script>
+
     <script>
-        const SUPABASE_URL = "https://zqkqlhosyjvxdwfjmwwb.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpxa3FsaG9zeWp2eGR3Zmptd3diIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0Nzg2MzQsImV4cCI6MjA5NzA1NDYzNH0.K6w38PjDqX31aA_Z6p21c1F9F-b4mB0Q2J8x_4V6k0M";
-        let supabaseClient = null;
-        try { supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); } catch(e) {}
+        // Utilizza il client Supabase già inizializzato da js/config.js
+        const client = typeof supabaseClient !== 'undefined' ? supabaseClient : null;
 
         // FILTRO CATEGORIE & TAB AFFILIATI
         function filterCategory(cat) {
@@ -545,13 +546,20 @@
         }
 
         async function loadPricesFromDB() {
-            if (!supabaseClient) return;
-            const { data } = await supabaseClient.from('saas_pricing').select('*');
-            if (data) {
-                data.forEach(p => {
-                    const el = document.getElementById(`price-${p.saas}-${p.plan_id}`);
-                    if (el) el.value = p.price;
-                });
+            if (!client) {
+                console.warn("Client Supabase non disponibile, utilizzo fallback locali.");
+                return;
+            }
+            try {
+                const { data, error } = await client.from('saas_pricing').select('*');
+                if (data) {
+                    data.forEach(p => {
+                        const el = document.getElementById(`price-${p.saas}-${p.plan_id}`);
+                        if (el) el.value = p.price;
+                    });
+                }
+            } catch (e) {
+                console.error("Errore caricamento prezzi:", e);
             }
         }
 
@@ -559,8 +567,12 @@
             const newPrice = parseFloat(document.getElementById(inputId).value);
             if (isNaN(newPrice)) return alert("Inserisci una cifra valida.");
 
-            if (supabaseClient) {
-                const { error } = await supabaseClient.from('saas_pricing').upsert({
+            if (!client) {
+                return alert("Impossibile connettersi a Supabase. Verifica js/config.js");
+            }
+
+            try {
+                const { error } = await client.from('saas_pricing').upsert({
                     id: `${saas}_${plan_id}`,
                     saas: saas,
                     plan_id: plan_id,
@@ -577,6 +589,8 @@
                 } else {
                     alert("Errore salvataggio: " + error.message);
                 }
+            } catch (err) {
+                alert("Errore: " + err.message);
             }
         }
 
