@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RM Studio — Controllo Prezzi Live & Stripe Hub</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #050508; color: #f3f4f6; }
         .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -27,140 +25,295 @@
                 </div>
                 <div>
                     <h1 class="text-2xl md:text-3xl font-black text-white font-display">Live Pricing &amp; Stripe Hub</h1>
-                    <p class="text-sm text-gray-400 mt-0.5">Modifica i prezzi di tutte le tue SaaS in tempo reale senza toccare il codice.</p>
+                    <p class="text-sm text-gray-400 mt-0.5">Modifica i prezzi di tutte le 17 SaaS in tempo reale senza toccare il codice.</p>
                 </div>
             </div>
             <div class="flex gap-2.5">
-                <a href="stripe-generator.html" class="px-5 py-3 rounded-xl bg-purple-600/25 hover:bg-purple-600/40 text-purple-300 border border-purple-500/40 text-xs font-bold transition flex items-center gap-2 shadow-lg">
-                    <i class="fa-solid fa-bolt text-amber-400"></i> Crea Link On-The-Fly
-                </a>
                 <a href="index.html" class="px-5 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-bold border border-zinc-800 transition">
-                    ← Dashboard
+                    ← Torna alla Dashboard
                 </a>
             </div>
         </header>
 
-        <!-- ⚡ SEZIONE EDIT LIVE PREZZI (ETERNIA, LOVE, VISION, SITEENGINE, FF EDIZIONI) -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- GRIGLIA EDIT PREZZI TUTTI I SAAS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <!-- ETERNIA LIVE -->
-            <div class="p-6 rounded-3xl bg-[#0b0b0f] border border-amber-500/40 shadow-2xl space-y-4">
-                <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
-                    <div class="flex items-center gap-2.5">
-                        <span class="text-2xl">🕊️</span>
-                        <h2 class="text-lg font-black text-amber-200 font-display">ETERNIA — Prezzi Live</h2>
-                    </div>
-                    <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-mono">Supabase Sync</span>
+            <!-- 1. ETERNIA -->
+            <div class="p-5 rounded-3xl bg-[#0b0b0f] border border-amber-500/40 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">🕊️</span><h2 class="text-sm font-black text-amber-200 font-display">ETERNIA</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">eternia</span>
                 </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">Starter</span>
-                        <input type="number" id="price-eternia-starter" value="79" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-amber-300 outline-none">
-                        <button onclick="saveLivePrice('eternia', 'starter', 'price-eternia-starter')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Starter (€)</span>
+                        <input type="number" id="price-eternia-starter" value="79" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('eternia', 'starter', 'price-eternia-starter')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">VIP 2h</span>
-                        <input type="number" id="price-eternia-vip" value="199" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-amber-300 outline-none">
-                        <button onclick="saveLivePrice('eternia', 'vip', 'price-eternia-vip')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">VIP 2h (€)</span>
+                        <input type="number" id="price-eternia-vip" value="199" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('eternia', 'vip', 'price-eternia-vip')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">Hub 10</span>
-                        <input type="number" id="price-eternia-hub" value="690" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-amber-300 outline-none">
-                        <button onclick="saveLivePrice('eternia', 'hub', 'price-eternia-hub')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Hub 10 (€)</span>
+                        <input type="number" id="price-eternia-hub" value="690" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('eternia', 'hub', 'price-eternia-hub')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">Echi SIAE</span>
-                        <input type="number" id="price-eternia-echi" value="300" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-amber-300 outline-none">
-                        <button onclick="saveLivePrice('eternia', 'echi', 'price-eternia-echi')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Echi SIAE (€)</span>
+                        <input type="number" id="price-eternia-echi" value="300" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('eternia', 'echi', 'price-eternia-echi')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- LOVE LIVE -->
-            <div class="p-6 rounded-3xl bg-[#0b0b0f] border border-pink-500/40 shadow-2xl space-y-4">
-                <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
-                    <div class="flex items-center gap-2.5">
-                        <span class="text-2xl">💍</span>
-                        <h2 class="text-lg font-black text-pink-200 font-display">LOVE — Prezzi Live</h2>
-                    </div>
-                    <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30 font-mono">Supabase Sync</span>
+            <!-- 2. LOVE -->
+            <div class="p-5 rounded-3xl bg-[#0b0b0f] border border-pink-500/40 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">💍</span><h2 class="text-sm font-black text-pink-200 font-display">LOVE</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">love</span>
                 </div>
-                <div class="grid grid-cols-3 gap-2.5 text-xs">
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">Self-Service</span>
-                        <input type="number" id="price-love-self" value="149" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-pink-300 outline-none">
-                        <button onclick="saveLivePrice('love', 'self', 'price-love-self')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Self-Service</span>
+                        <input type="number" id="price-love-self" value="149" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-pink-300 outline-none">
+                        <button onclick="saveLivePrice('love', 'self', 'price-love-self')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">VIP 24h</span>
-                        <input type="number" id="price-love-vip" value="249" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-pink-300 outline-none">
-                        <button onclick="saveLivePrice('love', 'vip', 'price-love-vip')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">VIP 24h</span>
+                        <input type="number" id="price-love-vip" value="249" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-pink-300 outline-none">
+                        <button onclick="saveLivePrice('love', 'vip', 'price-love-vip')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">Hub 10 Nozze</span>
-                        <input type="number" id="price-love-hub" value="490" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-pink-300 outline-none">
-                        <button onclick="saveLivePrice('love', 'hub', 'price-love-hub')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Hub 10 Nozze</span>
+                        <input type="number" id="price-love-hub" value="490" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-pink-300 outline-none">
+                        <button onclick="saveLivePrice('love', 'hub', 'price-love-hub')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- VISION UGC LIVE -->
-            <div class="p-6 rounded-3xl bg-[#0b0b0f] border border-pink-500/30 shadow-2xl space-y-4">
-                <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
-                    <div class="flex items-center gap-2.5">
-                        <span class="text-2xl">🎬</span>
-                        <h2 class="text-lg font-black text-pink-300 font-display">Vision UGC — Prezzi Live</h2>
-                    </div>
-                    <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30 font-mono">Supabase Sync</span>
+            <!-- 3. CONCIERGE24 -->
+            <div class="p-5 rounded-3xl bg-[#0b0b0f] border border-orange-500/40 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">🏨</span><h2 class="text-sm font-black text-orange-200 font-display">Concierge24</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-500/30">concierge</span>
                 </div>
-                <div class="grid grid-cols-3 gap-2.5 text-xs">
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">Starter (1 Video)</span>
-                        <input type="number" id="price-vision-starter" value="50" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-pink-300 outline-none">
-                        <button onclick="saveLivePrice('vision', 'starter', 'price-vision-starter')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Setup (€)</span>
+                        <input type="number" id="price-concierge-setup" value="149" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-orange-300 outline-none">
+                        <button onclick="saveLivePrice('concierge', 'setup', 'price-concierge-setup')" class="w-full py-1 bg-orange-600 hover:bg-orange-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">Pro Bundle (3)</span>
-                        <input type="number" id="price-vision-pro" value="120" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-pink-300 outline-none">
-                        <button onclick="saveLivePrice('vision', 'pro', 'price-vision-pro')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Base 100m (€)</span>
+                        <input type="number" id="price-concierge-base" value="49" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-orange-300 outline-none">
+                        <button onclick="saveLivePrice('concierge', 'base', 'price-concierge-base')" class="w-full py-1 bg-orange-600 hover:bg-orange-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">Maxi (10 Video)</span>
-                        <input type="number" id="price-vision-maxi" value="340" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-pink-300 outline-none">
-                        <button onclick="saveLivePrice('vision', 'maxi', 'price-vision-maxi')" class="w-full py-1 bg-pink-600 hover:bg-pink-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Pro 450m (€)</span>
+                        <input type="number" id="price-concierge-pro" value="179" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-orange-300 outline-none">
+                        <button onclick="saveLivePrice('concierge', 'pro', 'price-concierge-pro')" class="w-full py-1 bg-orange-600 hover:bg-orange-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Max 1000m (€)</span>
+                        <input type="number" id="price-concierge-max" value="349" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-orange-300 outline-none">
+                        <button onclick="saveLivePrice('concierge', 'max', 'price-concierge-max')" class="w-full py-1 bg-orange-600 hover:bg-orange-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- SITEENGINE & FF EDIZIONI LIVE -->
-            <div class="p-6 rounded-3xl bg-[#0b0b0f] border border-blue-500/30 shadow-2xl space-y-4">
-                <div class="flex items-center justify-between border-b border-zinc-900 pb-3">
-                    <div class="flex items-center gap-2.5">
-                        <span class="text-2xl">🌐</span>
-                        <h2 class="text-lg font-black text-blue-300 font-display">SiteEngine &amp; FF Edizioni</h2>
-                    </div>
-                    <span class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/30 font-mono">Supabase Sync</span>
+            <!-- 4. DENTIS AI -->
+            <div class="p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/40 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">🦷</span><h2 class="text-sm font-black text-cyan-200 font-display">Dentis AI</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">dentis</span>
                 </div>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">Sblocco Sito</span>
-                        <input type="number" id="price-siteengine-unlock" value="400" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-blue-300 outline-none">
-                        <button onclick="saveLivePrice('siteengine', 'unlock', 'price-siteengine-unlock')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Starter /m</span>
+                        <input type="number" id="price-dentis-starter" value="79" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('dentis', 'starter', 'price-dentis-starter')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">Rinnovo / Anno</span>
-                        <input type="number" id="price-siteengine-renewal" value="200" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-blue-300 outline-none">
-                        <button onclick="saveLivePrice('siteengine', 'renewal', 'price-siteengine-renewal')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">PRO /m</span>
+                        <input type="number" id="price-dentis-pro" value="149" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('dentis', 'pro', 'price-dentis-pro')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">Brano Custom</span>
-                        <input type="number" id="price-ff-custom" value="300" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-purple-300 outline-none">
-                        <button onclick="saveLivePrice('ff', 'custom', 'price-ff-custom')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Elite /m</span>
+                        <input type="number" id="price-dentis-elite" value="299" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('dentis', 'elite', 'price-dentis-elite')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
-                    <div class="p-2.5 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1.5">
-                        <span class="text-gray-400 block truncate font-medium">Jingle Spot</span>
-                        <input type="number" id="price-ff-jingle" value="250" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1.5 text-sm font-bold text-purple-300 outline-none">
-                        <button onclick="saveLivePrice('ff', 'jingle', 'price-ff-jingle')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[10px] rounded-lg uppercase">Salva</button>
+                </div>
+            </div>
+
+            <!-- 5. LEXIS AI -->
+            <div class="p-5 rounded-3xl bg-[#0b0b0f] border border-yellow-500/40 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">⚖️</span><h2 class="text-sm font-black text-yellow-200 font-display">Lexis AI</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-300 border border-yellow-500/30">lexis</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Starter /m</span>
+                        <input type="number" id="price-lexis-starter" value="79" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
+                        <button onclick="saveLivePrice('lexis', 'starter', 'price-lexis-starter')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">PRO /m</span>
+                        <input type="number" id="price-lexis-pro" value="149" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
+                        <button onclick="saveLivePrice('lexis', 'pro', 'price-lexis-pro')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Elite /m</span>
+                        <input type="number" id="price-lexis-elite" value="299" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
+                        <button onclick="saveLivePrice('lexis', 'elite', 'price-lexis-elite')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. HOMETOUR & DRIVEMOTION -->
+            <div class="p-5 rounded-3xl bg-[#0b0b0f] border border-emerald-500/40 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">🏠</span><h2 class="text-sm font-black text-emerald-200 font-display">HomeTour / DriveMotion</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">video</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Starter Pack</span>
+                        <input type="number" step="0.1" id="price-hometour-starter" value="14.90" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
+                        <button onclick="saveLivePrice('hometour', 'starter', 'price-hometour-starter')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Pro Pack</span>
+                        <input type="number" id="price-hometour-pro" value="59" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
+                        <button onclick="saveLivePrice('hometour', 'pro', 'price-hometour-pro')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Maxi Pack</span>
+                        <input type="number" id="price-hometour-max" value="129" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
+                        <button onclick="saveLivePrice('hometour', 'max', 'price-hometour-max')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. VELOMOTION -->
+            <div class="p-5 rounded-3xl bg-[#0b0b0f] border border-yellow-500/30 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">⚡</span><h2 class="text-sm font-black text-yellow-300 font-display">VeloMotion</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-300 border border-yellow-500/30">velomotion</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Software (€)</span>
+                        <input type="number" id="price-velomotion-software" value="290" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
+                        <button onclick="saveLivePrice('velomotion', 'software', 'price-velomotion-software')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Hardware (€)</span>
+                        <input type="number" id="price-velomotion-hardware" value="320" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
+                        <button onclick="saveLivePrice('velomotion', 'hardware', 'price-velomotion-hardware')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. OMNIASTUDIO & EXPERIENCE -->
+            <div class="p-5 rounded-3xl bg-[#0b0b0f] border border-purple-500/30 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">💼</span><h2 class="text-sm font-black text-purple-200 font-display">Omnia &amp; Experience</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30">lifetime</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Omnia Lifetime (€)</span>
+                        <input type="number" id="price-omniastudio-lifetime" value="699" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-purple-300 outline-none">
+                        <button onclick="saveLivePrice('omniastudio', 'lifetime', 'price-omniastudio-lifetime')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Experience (€)</span>
+                        <input type="number" id="price-experience-sblocco" value="390" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('experience', 'sblocco', 'price-experience-sblocco')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. NEXUSAI & SOCIALENGINE -->
+            <div class="p-5 rounded-3xl bg-[#0b0b0f] border border-indigo-500/30 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">🤖</span><h2 class="text-sm font-black text-indigo-200 font-display">NexusAI &amp; Social</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">saas</span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Nexus Base</span>
+                        <input type="number" id="price-nexus-base" value="49" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('nexus', 'base', 'price-nexus-base')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Nexus Pro</span>
+                        <input type="number" id="price-nexus-pro" value="99" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('nexus', 'pro', 'price-nexus-pro')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Social Pro</span>
+                        <input type="number" id="price-social-pro" value="79" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-indigo-300 outline-none">
+                        <button onclick="saveLivePrice('social', 'pro', 'price-social-pro')" class="w-full py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Social Hub</span>
+                        <input type="number" id="price-social-agency" value="199" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-indigo-300 outline-none">
+                        <button onclick="saveLivePrice('social', 'agency', 'price-social-agency')" class="w-full py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. FREE ENERGY & ARES AI -->
+            <div class="p-5 rounded-3xl bg-[#0b0b0f] border border-emerald-500/30 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">☀️</span><h2 class="text-sm font-black text-emerald-200 font-display">Free Energy &amp; Ares</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">b2b</span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Energy Start</span>
+                        <input type="number" id="price-free_energy-base" value="199" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
+                        <button onclick="saveLivePrice('free_energy', 'base', 'price-free_energy-base')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Energy Pro</span>
+                        <input type="number" id="price-free_energy-max" value="449" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
+                        <button onclick="saveLivePrice('free_energy', 'max', 'price-free_energy-max')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Ares Atleta</span>
+                        <input type="number" id="price-ares-base" value="19" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('ares', 'base', 'price-ares-base')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px] truncate">Ares Coach</span>
+                        <input type="number" id="price-ares-coach" value="99" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('ares', 'coach', 'price-ares-coach')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. SITEENGINE & FF EDIZIONI -->
+            <div class="p-5 rounded-3xl bg-[#0b0b0f] border border-blue-500/30 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">🌐</span><h2 class="text-sm font-black text-blue-200 font-display">SiteEngine &amp; FF</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/30">web/audio</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Sblocco Sito (€)</span>
+                        <input type="number" id="price-siteengine-unlock" value="400" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-blue-300 outline-none">
+                        <button onclick="saveLivePrice('siteengine', 'unlock', 'price-siteengine-unlock')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[11px] truncate">Canzone Custom (€)</span>
+                        <input type="number" id="price-ff-custom" value="300" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-purple-300 outline-none">
+                        <button onclick="saveLivePrice('ff', 'custom', 'price-ff-custom')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[9px] rounded uppercase">Salva</button>
                     </div>
                 </div>
             </div>
@@ -169,14 +322,14 @@
 
     </div>
 
-    <!-- TOAST -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-600 text-white font-bold px-6 py-3.5 rounded-2xl shadow-2xl text-xs uppercase tracking-wider hidden animate-in fade-in z-50">
-        ✓ Prezzo aggiornato in tempo reale su Supabase!
+    <!-- TOAST NOTIFICA -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-emerald-600 text-white font-bold px-6 py-3.5 rounded-2xl shadow-2xl text-xs uppercase tracking-wider hidden z-50">
+        ✓ Prezzo aggiornato su Supabase!
     </div>
 
     <script>
         const SUPABASE_URL = "https://zqkqlhosyjvxdwfjmwwb.supabase.co";
-        const SUPABASE_ANON_KEY = "INSERISCI_LA_TUA_ANON_KEY_SUPABASE_QUI";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpxa3FsaG9zeWp2eGR3Zmptd3diIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0Nzg2MzQsImV4cCI6MjA5NzA1NDYzNH0.K6w38PjDqX31aA_Z6p21c1F9F-b4mB0Q2J8x_4V6k0M";
         let supabaseClient = null;
         try { supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); } catch(e) {}
 
@@ -200,23 +353,23 @@
                     id: `${saas}_${plan_id}`,
                     saas: saas,
                     plan_id: plan_id,
-                    name: plan_id.toUpperCase(),
+                    name: `${saas.toUpperCase()} ${plan_id.toUpperCase()}`,
                     price: newPrice,
                     updated_at: new Date().toISOString()
                 });
 
                 if (!error) {
                     const toast = document.getElementById('toast');
-                    toast.innerText = `✓ Prezzo ${saas.toUpperCase()} aggiornato a €${newPrice}!`;
+                    toast.innerText = `✓ Prezzo ${saas.toUpperCase()} (${plan_id}) aggiornato a €${newPrice}!`;
                     toast.classList.remove('hidden');
                     setTimeout(() => toast.classList.add('hidden'), 2500);
                 } else {
-                    alert("Errore salvataggio: " + error.message);
+                    alert("Errore: " + error.message);
                 }
             }
         }
 
-        loadPricesFromDB();
+        document.addEventListener("DOMContentLoaded", loadPricesFromDB);
     </script>
 </body>
 </html>
