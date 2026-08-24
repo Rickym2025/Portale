@@ -577,14 +577,12 @@
             }
 
             try {
-                const { error } = await client.from('saas_pricing').upsert({
-                    id: `${saas}_${plan_id}`,
-                    saas: saas,
-                    plan_id: plan_id,
-                    name: `${saas.toUpperCase()} ${plan_id.toUpperCase()}`,
-                    price: newPrice,
-                    updated_at: new Date().toISOString()
-                });
+                // Aggiornamento diretto con filtro saas + plan_id
+                const { data, error } = await client
+                    .from('saas_pricing')
+                    .update({ price: newPrice, updated_at: new Date().toISOString() })
+                    .eq('saas', saas)
+                    .eq('plan_id', plan_id);
 
                 if (!error) {
                     const toast = document.getElementById('toast');
