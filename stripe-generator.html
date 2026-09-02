@@ -135,43 +135,43 @@
             Ares: [
                 { val: "19|AresAI - Atleta PRO (Mensile)|base", label: "Atleta PRO (€19/m)" },
                 { val: "99|AresAI - Coach Hub & Arena TV (Mensile)|coach", label: "Coach Hub & TV (€99/m)" },
-                { val: "149|AresAI - Setup Chiavi in Mano & Cartelli QR|setup", label: "Setup Cartelli QR (€149)" },
+                { val: "149|AresAI - Setup Chiavi in Mano & Cartelli QR|setup", label: "Setup Cartelli QR (€149)" }
             ],
             ETERNIA: [
                 { val: "79|Credit Starter (1 Cerimonia)|starter", label: "Credit Starter (€79)" },
                 { val: "199|Servizio VIP «Chiavi in Mano»|vip", label: "VIP Chiavi in Mano (€199)" },
                 { val: "690|Agency Hub B2B (10 Cerimonie)|hub", label: "Agency Hub 10 Cerimonie (€690)" },
-                { val: "300|Brano Musicale d'Autore (Echi)|echi", label: "Brano d'Autore Echi (€300)" },
+                { val: "300|Brano Musicale d'Autore (Echi)|echi", label: "Brano d'Autore Echi (€300)" }
             ],
             LOVE: [
                 { val: "149|LOVE - Sposi Self-Service (1 Anno)|self", label: "Sposi Self-Service (€149)" },
                 { val: "249|LOVE - Sposi Chiavi in Mano|vip", label: "Sposi VIP (€249)" },
-                { val: "490|LOVE - Agency Hub B2B (10 Matrimoni)|agency", label: "Agency Hub 10 Matrimoni (€490)" },
+                { val: "490|LOVE - Agency Hub B2B (10 Matrimoni)|agency", label: "Agency Hub 10 Matrimoni (€490)" }
             ],
             Dentis: [
                 { val: "79|Dentis AI - Piano Starter|starter", label: "Serena Starter (€79/m)" },
                 { val: "149|Dentis AI - Piano PRO|pro", label: "Serena PRO (€149/m)" },
-                { val: "299|Dentis AI - Clinic Elite|elite", label: "Clinic Elite (€299/m)" },
+                { val: "299|Dentis AI - Clinic Elite|elite", label: "Clinic Elite (€299/m)" }
             ],
             Lexis: [
                 { val: "79|Lexis AI - Chiara Starter|starter", label: "Chiara Starter (€79/m)" },
                 { val: "149|Lexis AI - Chiara PRO|pro", label: "Chiara PRO (€149/m)" },
-                { val: "299|Lexis AI - Studio Elite|elite", label: "Studio Elite (€299/m)" },
+                { val: "299|Lexis AI - Studio Elite|elite", label: "Studio Elite (€299/m)" }
             ],
             Concierge24: [
                 { val: "49|Concierge24 - Ricarica Base (100 min)|base", label: "Ricarica Base (€49)" },
                 { val: "179|Concierge24 - Ricarica Pro (450 min)|pro", label: "Ricarica Pro (€179)" },
-                { val: "349|Concierge24 - Ricarica Max (1000 min)|max", label: "Ricarica Max (€349)" },
+                { val: "349|Concierge24 - Ricarica Max (1000 min)|max", label: "Ricarica Max (€349)" }
             ],
-            FreeEnergy: [
+            "Free Energy": [
                 { val: "199|Free Energy - Start Pack (10.000 Crediti)|base", label: "Start Pack 10k (€199)" },
-                { val: "449|Free Energy - Pro Pack (25.000 Crediti)|max", label: "Pro Pack 25k (€449)" },
+                { val: "449|Free Energy - Pro Pack (25.000 Crediti)|max", label: "Pro Pack 25k (€449)" }
             ],
             Locanda: [
                 { val: "99|Locanda Digitale - Social 3D Starter|starter", label: "Social 3D Starter (€99)" },
                 { val: "199|Locanda Digitale - Visual Menu Pro|visual", label: "Visual Menu Pro (€199)" },
-                { val: "390|Locanda Digitale - All-In Suite|allin", label: "All-In Suite (€390)" },
-            ],
+                { val: "390|Locanda Digitale - All-In Suite|allin", label: "All-In Suite (€390)" }
+            ]
         };
 
         function autoFillPresets() {
@@ -211,8 +211,11 @@
             const presetVal = document.getElementById('sel-preset').value;
             const ricarica_tipo = presetVal.includes('|') ? presetVal.split('|')[2] : 'custom';
 
+            // Mappatura domini ufficiali
+            let originUrl = `https://${prog.toLowerCase().replace(/\s+/g, '')}.rmstudio.app`;
+            if (prog === 'Locanda') originUrl = 'https://locandadigitale.rmstudio.app';
+
             try {
-                // Chiamata al nodo "Crea Sessione Stripe" di n8n
                 const res = await fetch("https://n8n.rmstudio.app/webhook/crea-sessione-stripe", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -221,8 +224,8 @@
                         price: price,
                         title: title,
                         project_id: agency || "direct-checkout",
-                        portal_type: prog.toLowerCase(),
-                        origin: `https://${prog.toLowerCase()}.rmstudio.app`,
+                        portal_type: prog === 'Locanda' ? 'locanda' : prog.toLowerCase().replace(/\s+/g, '_'),
+                        origin: originUrl,
                         ricarica_tipo: ricarica_tipo
                     })
                 });
