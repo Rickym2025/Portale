@@ -196,6 +196,12 @@
                     <span class="text-xs text-yellow-400 font-bold">Software sicuro ed invisibile</span>
                 </button>
 
+                <button type="button" onclick="handleSaasTap('locanda', 'https://locandadigitale.rmstudio.app')" id="card-locanda" class="saas-card p-3.5 bg-[#0e0e14] border border-amber-500/40 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🍽️</span>
+                    <span class="font-black text-amber-200 text-sm">Locanda Digitale</span>
+                    <span class="text-xs text-amber-400 font-bold">Video 3D &amp; Menu QR</span>
+                </button>
+
             </div>
         </div>
 
@@ -294,7 +300,8 @@
                 palestra: ['card-ares', 'card-nexus', 'card-ff_edizioni', 'card-vision', 'card-social'],
                 ecommerce: ['card-vision', 'card-nexus', 'card-ff_edizioni', 'card-social'],
                 evento: ['card-love', 'card-ff_edizioni', 'card-vision', 'card-social'],
-                azienda: ['card-omniastudio', 'card-nexus', 'card-dentis', 'card-sitengine', 'card-social']
+                azienda: ['card-omniastudio', 'card-nexus', 'card-dentis', 'card-sitengine', 'card-social'],
+                ristorante: ['card-locanda', 'card-experience', 'card-nexus', 'card-ff_edizioni'],
             };
 
             const targetCardIds = suggestions[sector] || ['card-eternia', 'card-nexus'];
