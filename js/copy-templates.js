@@ -1,10 +1,15 @@
 // GENERATORE NEUROMARKETING MESSAGGI 1-CLICK
 function generateWhatsAppCopy(item) {
-    const name = item.client_name || 'Cliente';
+    const name = item.client_name || 'Titolare';
     const title = item.title || 'Progetto';
     const link = item.portal_type === 'vision' 
         ? `${window.location.origin}/vision-preview?token=${item.token}`
         : `https://portale.rmstudio.app/view?id=${item.id}`;
+
+    // Messaggio personalizzato per Locanda Digitale / Ristoranti
+    if (item.portal_type === 'locanda' || item.portal_type === 'experience') {
+        return `Ciao ${name}! 👋\n\nStavo ammirando le specialità del vostro locale e vi ho preparato questo spot video 3D in anteprima per i vostri social:\n👉 ${link}\n\nSe vi piace potete usarlo per i vostri Reel o sul menu! Fatemi sapere cosa ne pensate 😊`;
+    }
 
     return `Ciao ${name}! 👋\n\nHo appena completato la lavorazione speciale per te: *"${title}"*.\n\nPuoi guardare l'anteprima riservata direttamente qui:\n👉 ${link}\n\nFammi sapere cosa ne pensi! 😊`;
 }
