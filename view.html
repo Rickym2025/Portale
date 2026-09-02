@@ -327,26 +327,25 @@
     </div>
     
     <script>
-    // Funzione per cambiare vista nell'overlay tra Experience e Sito Reale del cliente
-    function switchPreviewMode(mode) {
-        if (!videoData) return;
-        const iframe = document.getElementById('fullscreen-iframe');
-        const btnExp = document.getElementById('btn-view-experience');
-        const btnWeb = document.getElementById('btn-view-website');
-    
-        if (mode === 'experience') {
-            iframe.src = videoData.content_url;
-            btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition";
-            btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
-        } else {
-            // Genera la vista Nexus Shadow-Proxy sul loro sito originale con il Bot fluttuante
-            const originalSite = videoData.client_phone || 'https://www.tenutacastelvenezze.it'; // o URL del cliente
-            iframe.src = `https://demo.rmstudio.app/?site=${encodeURIComponent(originalSite)}&bot_id=${videoData.client_email || 'nexus_landing'}`;
-            btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition";
-            btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
+        // Funzione per cambiare vista nell'overlay tra Experience e Sito Reale del cliente
+        function switchPreviewMode(mode) {
+            if (!videoData) return;
+            const iframe = document.getElementById('fullscreen-iframe');
+            const btnExp = document.getElementById('btn-view-experience');
+            const btnWeb = document.getElementById('btn-view-website');
+        
+            if (mode === 'experience') {
+                iframe.src = videoData.content_url;
+                btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition";
+                btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
+            } else {
+                const originalSite = videoData.client_phone || 'https://www.tenutacastelvenezze.it';
+                iframe.src = `https://demo.rmstudio.app/?site=${encodeURIComponent(originalSite)}&bot_id=${videoData.client_email || 'nexus_landing'}`;
+                btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition";
+                btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
+            }
         }
-    }
-    </script>
+
         const supabaseUrl = 'https://jhijfulhntlhcytbhcly.supabase.co'; 
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
@@ -391,7 +390,6 @@
             const id = params.get('id');
             if (!id) return alert("ID non valido");
 
-            // ⚡ TRACCIAMENTO DIRETTO, REALE E IMMUNE DA CANCELLAZIONI DI RETE DEL BROWSER
             const { data: currentData } = await supabaseClient
                 .from('portal_videos')
                 .select('views_count')
@@ -406,7 +404,6 @@
                     .eq('id', id);
             }
 
-            // Recupera dati del record
             const { data, error } = await supabaseClient.from('portal_videos').select('*').eq('id', id).single();
             if (error || !data) return alert("Contenuto non trovato");
             videoData = data;
@@ -422,8 +419,8 @@
                 document.getElementById('sent-date').innerText = "Non ancora inviato";
             }
             
-            // RENDERING DINAMICO PER TIPO
-            if (data.portal_type === 'video') {
+            // RENDERING DINAMICO PER TIPO (Incluso 'locanda')
+            if (data.portal_type === 'video' || data.portal_type === 'locanda') {
                 const p = document.getElementById('player-video');
                 p.src = data.content_url;
                 p.classList.remove('hidden');
@@ -435,41 +432,36 @@
                     document.getElementById('player-carousel').classList.remove('hidden');
                 }
             } 
-            // ⚡ SITO INTERATTIVO & SMART EXPERIENCE PAGE
             else if (data.portal_type === 'html' || data.portal_type === 'experience') {
                 document.getElementById('html-preview-container').classList.remove('hidden');
-                openFullscreenWebsite(); // Avvio immediato a schermo intero
+                openFullscreenWebsite();
             } 
             else if (data.portal_type === 'link') {
                 document.getElementById('external-link-btn').href = data.content_url;
                 document.getElementById('player-link').classList.remove('hidden');
             }
 
-            // Formattazione prezzo dinamico
             const priceVal = parseFloat(data.price_euro);
             const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
 
-            // GESTIONE STATO PAGAMENTO / WATERMARK
             if (data.is_paid === true || data.is_paid === "true") {
                 document.getElementById('watermark-layer').classList.add('hidden'); 
                 document.getElementById('overlay-watermark').classList.add('hidden'); 
                 
                 const btn = document.getElementById('actionBtn');
-                
                 if (data.portal_type === 'html' || data.portal_type === 'link') {
                     btn.innerHTML = `<i class="fa-solid fa-globe"></i> Visita il Sito Web`;
                 } else {
                     btn.innerHTML = `<i class="fa-solid fa-lock-open"></i> Scarica in HD`;
                 }
                 
-                btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] hover:shadow-[0_0_40px_rgba(34,197,94,0.6)] flex items-center justify-center gap-3";
+                btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] flex items-center justify-center gap-3";
                 btn.classList.remove('animate-pulse'); 
             } else {
                 document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca Progetto €${formattedPrice}`;
             }
         });
 
-        // Gestione Anteprima Sito Web a Schermo Intero Reale
         function openFullscreenWebsite() {
             if (!videoData) return;
             const overlay = document.getElementById('fullscreen-iframe-overlay');
@@ -536,7 +528,8 @@
                             email: videoData.client_email,
                             title: videoData.title,
                             price: parseFloat(videoData.price_euro),
-                            origin: window.location.origin
+                            origin: window.location.origin,
+                            portal_type: videoData.portal_type || 'locanda'
                         })
                     });
 
