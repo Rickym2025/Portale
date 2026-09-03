@@ -109,7 +109,7 @@
           </a>
         </nav>
 
-        <!-- ⚡ CREA PROGETTO RAPIDO (CON LOCANDA DIGITALE) -->
+        <!-- ⚡ CREA PROGETTO RAPIDO (CON AURA & LOCANDA) -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-xs uppercase font-bold text-purple-400 tracking-wider mb-2 flex items-center justify-between sidebar-text">
             <span>+ Crea Progetto Rapido</span>
@@ -117,6 +117,11 @@
           </div>
           
           <div class="space-y-1 font-semibold text-sm">
+            <!-- ⚡ AURA PROXIMITY -->
+            <button onclick="quickOpenCreate('aura')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold" title="AURA Proximity (Virtual Mesh Radar)">
+              <span class="shrink-0 text-base">📡</span> <span class="sidebar-text">AURA Proximity</span>
+            </button>
+
             <!-- ⚡ LOCANDA DIGITALE -->
             <button onclick="quickOpenCreate('locanda')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold" title="Locanda Digitale (Video 3D & Menu)">
               <span class="shrink-0 text-base">🍽️</span> <span class="sidebar-text">Locanda Digitale</span>
@@ -216,7 +221,7 @@
                 </summary>
                 <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 sidebar-text">
                     <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-cyan-300 hover:underline">🦷 Dentis</a>
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-purple-400 hover:underline">📦 Portale DB (S2)</a>
+                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-purple-400 hover:underline">📦 Portale DB (S2 / AURA)</a>
                 </div>
             </details>
 
@@ -232,7 +237,7 @@
                 </div>
             </details>
 
-            <!-- 6. Lamesola Shop (Nuovo) -->
+            <!-- 6. Lamesola Shop -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">lamesolashop@...</span>
@@ -254,10 +259,11 @@
 
           <details class="group">
             <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between text-xs" title="GitHub Repositories">
-                <span class="sidebar-text">Rickym2025 (17 Repo)</span>
+                <span class="sidebar-text">Rickym2025 (18 Repo)</span>
                 <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
             </summary>
             <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 max-h-48 overflow-y-auto text-[11px] sidebar-text">
+                <a href="https://github.com/Rickym2025/aura" target="_blank" class="block text-cyan-400 font-bold hover:underline truncate">📡 aura</a>
                 <a href="https://github.com/Rickym2025/locandadigitale" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🍽️ locandadigitale</a>
                 <a href="https://github.com/Rickym2025/eternia" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🕊️ eternia</a>
                 <a href="https://github.com/Rickym2025/love" target="_blank" class="block text-pink-400 font-bold hover:underline truncate">💍 love</a>
@@ -334,12 +340,13 @@
             </div>
         </div>
 
-        <!-- FILTRI PRODOTTI (CON LOCANDA DIGITALE) -->
+        <!-- FILTRI PRODOTTI (CON AURA & LOCANDA) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">PRODOTTO / CATEGORIA</label>
                 <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
-                    <option value="all">Tutti i Prodotti</option>
+                    <option value="all">Tutti i Prodotti (19)</option>
+                    <option value="aura">📡 AURA Proximity (Virtual Mesh Radar)</option>
                     <option value="locanda">🍽️ Locanda Digitale (Video 3D &amp; Menu)</option>
                     <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
                     <option value="love">💍 LOVE (Partecipazioni Digitali)</option>
@@ -437,12 +444,12 @@
 
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Nome Cliente / Azienda</label>
-            <input type="text" id="c-name" required placeholder="Es. Ristorante Zafferano" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+            <input type="text" id="c-name" required placeholder="Es. Team Vacanze Dolomiti o Mario Rossi" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
         </div>
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Email</label>
-                <input type="email" id="c-email" placeholder="info@ristorante.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+                <input type="email" id="c-email" placeholder="cliente@email.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Telefono / WhatsApp</label>
@@ -452,16 +459,17 @@
         <div class="grid grid-cols-3 gap-4">
             <div class="col-span-2">
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Titolo Servizio / Progetto</label>
-                <input type="text" id="c-title" required value="Locanda Digitale • Spot 3D & Menu" placeholder="Titolo" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+                <input type="text" id="c-title" required value="AURA • Proximity Mesh Radar" placeholder="Titolo" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prezzo (€)</label>
-                <input type="number" id="c-price" value="79" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold text-purple-400">
+                <input type="number" id="c-price" value="19" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold text-cyan-400 font-mono">
             </div>
         </div>
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prodotto Ecosistema</label>
             <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold">
+                <option value="aura">📡 AURA Proximity (Virtual Mesh Radar)</option>
                 <option value="locanda">🍽️ Locanda Digitale (Video 3D &amp; Menu)</option>
                 <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
                 <option value="love">💍 LOVE (Partecipazioni Digitali)</option>
@@ -482,8 +490,8 @@
             </div>
         </div>
         <div id="link-input-box">
-            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">URL Destinazione / Sito Web Cliente</label>
-            <input type="url" id="c-url" placeholder="https://locandadigitale.rmstudio.app" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">URL Destinazione / Stanza Progetto</label>
+            <input type="url" id="c-url" placeholder="https://aura.rmstudio.app" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
         </div>
         <button type="submit" id="c-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-4 rounded-xl text-xs uppercase tracking-wider mt-4 shadow-lg shadow-purple-600/30 active:scale-95 transition">
             Salva e Registra Progetto
