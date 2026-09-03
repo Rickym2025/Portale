@@ -39,7 +39,7 @@
             </a>
         </header>
 
-        <!-- BARRA FILTRI PER CATEGORIE + TAB AFFILIATI -->
+        <!-- BARRA FILTRI CATEGORIE + TAB AFFILIATI -->
         <div class="flex flex-wrap gap-2 pb-2 border-b border-zinc-900/60">
             <button onclick="filterCategory('all')" id="tab-all" class="tab-btn active px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold transition cursor-pointer">
                 Tutti i SaaS (18)
@@ -64,7 +64,7 @@
             </button>
         </div>
 
-        <!-- SEZIONE GESTIONE AFFILIATI & CODICI SCONTO -->
+        <!-- SEZIONE GESTIONE AFFILIATI & CODICI SCONTO (DINAMICA CON ELIMINAZIONE) -->
         <div id="section-affiliati" class="hidden space-y-6">
             <div class="p-6 rounded-3xl bg-gradient-to-br from-amber-950/20 via-zinc-900 to-zinc-950 border border-amber-500/40 shadow-2xl space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-white/10 pb-4">
@@ -95,33 +95,20 @@
                             <th class="p-3.5">Affiliato</th>
                             <th class="p-3.5">Sconto Cliente</th>
                             <th class="p-3.5">Provvigione Riconosciuta</th>
-                            <th class="p-3.5">Stato</th>
+                            <th class="p-3.5 text-right">Azioni</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-zinc-800 font-medium">
-                        <tr>
-                            <td class="p-3.5 font-mono font-bold text-amber-400">MARCO10</td>
-                            <td class="p-3.5 text-white">Marco</td>
-                            <td class="p-3.5 text-green-400 font-bold">-10%</td>
-                            <td class="p-3.5 text-amber-300 font-bold">15% su ogni vendita</td>
-                            <td class="p-3.5"><span class="px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-bold">Attivo</span></td>
-                        </tr>
-                        <tr>
-                            <td class="p-3.5 font-mono font-bold text-amber-400">LUCA15</td>
-                            <td class="p-3.5 text-white">Luca</td>
-                            <td class="p-3.5 text-green-400 font-bold">-15%</td>
-                            <td class="p-3.5 text-amber-300 font-bold">20% su ogni vendita</td>
-                            <td class="p-3.5"><span class="px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 font-bold">Attivo</span></td>
-                        </tr>
+                        <!-- Caricato dinamicamente via JS con tasto Elimina -->
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- GRIGLIA PREZZI: 18 SCHEDE CATEGORIZZATE -->
+        <!-- GRIGLIA PREZZI: TUTTI I 18 SAAS CATEGORIZZATI -->
         <div id="pricing-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <!-- 1. ETERNIA (Eventi & Memoriali) -->
+            <!-- 1. ETERNIA -->
             <div data-cat="eventi_musica" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-amber-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🕊️</span><h2 class="text-sm font-black text-amber-200 font-display">1. ETERNIA</h2></div>
@@ -151,7 +138,7 @@
                 </div>
             </div>
 
-            <!-- 2. LOVE (Eventi & Memoriali) -->
+            <!-- 2. LOVE -->
             <div data-cat="eventi_musica" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-pink-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">💍</span><h2 class="text-sm font-black text-pink-200 font-display">2. LOVE</h2></div>
@@ -176,7 +163,7 @@
                 </div>
             </div>
 
-            <!-- 3. CONCIERGE24 (Turismo & Horeca) -->
+            <!-- 3. CONCIERGE24 -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-orange-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🏨</span><h2 class="text-sm font-black text-orange-200 font-display">3. Concierge24</h2></div>
@@ -206,7 +193,7 @@
                 </div>
             </div>
 
-            <!-- 4. DENTIS AI (Medici & Legali) -->
+            <!-- 4. DENTIS AI -->
             <div data-cat="medico_legale" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🦷</span><h2 class="text-sm font-black text-cyan-200 font-display">4. Dentis AI</h2></div>
@@ -231,7 +218,7 @@
                 </div>
             </div>
 
-            <!-- 5. LEXIS AI (Medici & Legali) -->
+            <!-- 5. LEXIS AI -->
             <div data-cat="medico_legale" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-yellow-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">⚖️</span><h2 class="text-sm font-black text-yellow-200 font-display">5. Lexis AI</h2></div>
@@ -256,7 +243,7 @@
                 </div>
             </div>
 
-            <!-- 6. HOMETOUR AI (Real Estate & Auto) -->
+            <!-- 6. HOMETOUR AI -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-emerald-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🏠</span><h2 class="text-sm font-black text-emerald-200 font-display">6. HomeTour AI</h2></div>
@@ -281,7 +268,7 @@
                 </div>
             </div>
 
-            <!-- 7. DRIVEMOTION AI (Real Estate & Auto) -->
+            <!-- 7. DRIVEMOTION AI -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🏎️</span><h2 class="text-sm font-black text-cyan-300 font-display">7. DriveMotion</h2></div>
@@ -306,7 +293,7 @@
                 </div>
             </div>
 
-            <!-- 8. VISION UGC (Real Estate & Auto) -->
+            <!-- 8. VISION UGC -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-pink-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🎬</span><h2 class="text-sm font-black text-pink-300 font-display">8. Vision UGC</h2></div>
@@ -331,7 +318,7 @@
                 </div>
             </div>
 
-            <!-- 9. VELOMOTION (Turismo & Horeca) -->
+            <!-- 9. VELOMOTION -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-yellow-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">⚡</span><h2 class="text-sm font-black text-yellow-300 font-display">9. VeloMotion</h2></div>
@@ -351,7 +338,7 @@
                 </div>
             </div>
 
-            <!-- 10. OMNIASTUDIO (Medici & Legali) -->
+            <!-- 10. OMNIASTUDIO -->
             <div data-cat="medico_legale" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-purple-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">💼</span><h2 class="text-sm font-black text-purple-200 font-display">10. OmniaStudio PRO</h2></div>
@@ -364,7 +351,7 @@
                 </div>
             </div>
 
-            <!-- 11. EXPERIENCE (Turismo & Horeca) -->
+            <!-- 11. EXPERIENCE -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-amber-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🍷</span><h2 class="text-sm font-black text-amber-300 font-display">11. Smart Experience</h2></div>
@@ -377,7 +364,7 @@
                 </div>
             </div>
 
-            <!-- 12. NEXUSAI (Software & CRM) -->
+            <!-- 12. NEXUSAI -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🤖</span><h2 class="text-sm font-black text-cyan-200 font-display">12. NexusAI</h2></div>
@@ -397,7 +384,7 @@
                 </div>
             </div>
 
-            <!-- 13. FREE ENERGY (Software & CRM) -->
+            <!-- 13. FREE ENERGY -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-emerald-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">☀️</span><h2 class="text-sm font-black text-emerald-200 font-display">13. Free Energy</h2></div>
@@ -417,7 +404,7 @@
                 </div>
             </div>
 
-            <!-- 14. ARESAI (Software & CRM - 3 Piani B2B) -->
+            <!-- 14. ARESAI -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🏋️</span><h2 class="text-sm font-black text-cyan-300 font-display">14. AresAI</h2></div>
@@ -442,7 +429,7 @@
                 </div>
             </div>
 
-            <!-- 15. SOCIALENGINE (Real Estate & Auto) -->
+            <!-- 15. SOCIALENGINE -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-indigo-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">📊</span><h2 class="text-sm font-black text-indigo-300 font-display">15. SocialEngine</h2></div>
@@ -467,7 +454,7 @@
                 </div>
             </div>
 
-            <!-- 16. SITEENGINE PRO (Software & CRM) -->
+            <!-- 16. SITEENGINE PRO -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-blue-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🌐</span><h2 class="text-sm font-black text-blue-200 font-display">16. SiteEngine Pro</h2></div>
@@ -487,7 +474,7 @@
                 </div>
             </div>
 
-            <!-- 17. FF EDIZIONI (Eventi & Memoriali) -->
+            <!-- 17. FF EDIZIONI -->
             <div data-cat="eventi_musica" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-purple-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🎵</span><h2 class="text-sm font-black text-purple-200 font-display">17. FF Edizioni</h2></div>
@@ -507,7 +494,7 @@
                 </div>
             </div>
 
-            <!-- 18. LOCANDA DIGITALE (Turismo & Horeca) -->
+            <!-- 18. LOCANDA DIGITALE -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-amber-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🍽️</span><h2 class="text-sm font-black text-amber-200 font-display">18. Locanda Digitale</h2></div>
@@ -619,6 +606,31 @@
             }
         }
 
+        // GESTIONE DINAMICA AFFILIATI CON ELIMINAZIONE 1-CLICK
+        let listaAffiliati = JSON.parse(localStorage.getItem('rm_affiliates')) || [
+            { code: 'MARCO10', name: 'Marco', discount: '10', commission: '15' },
+            { code: 'LUCA15', name: 'Luca', discount: '15', commission: '20' }
+        ];
+
+        function renderTabellaAffiliati() {
+            const tbody = document.querySelector('#section-affiliati tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = listaAffiliati.map((item, index) => `
+                <tr>
+                    <td class="p-3.5 font-mono font-bold text-amber-400">${item.code}</td>
+                    <td class="p-3.5 text-white">${item.name}</td>
+                    <td class="p-3.5 text-green-400 font-bold">-${item.discount}%</td>
+                    <td class="p-3.5 text-amber-300 font-bold">${item.commission}% su ogni vendita</td>
+                    <td class="p-3.5 text-right">
+                        <button onclick="eliminaAffiliato(${index})" class="text-gray-500 hover:text-red-400 p-1.5 rounded transition cursor-pointer" title="Elimina Codice">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
         function salvaNuovoAffiliato() {
             const code = document.getElementById('new-affiliate-code').value.trim().toUpperCase();
             const name = document.getElementById('new-affiliate-name').value.trim();
@@ -629,10 +641,31 @@
                 return alert("Compila tutti i campi per registrare l'affiliato.");
             }
 
-            alert(`Codice ${code} registrato!\n- Affiliato: ${name}\n- Sconto cliente: ${discount}%\n- Provvigione: ${commission}%\n\nCrea il coupon "${code}" su Stripe Dashboard e n8n calcolerà la provvigione su Telegram in automatico.`);
+            listaAffiliati.push({ code, name, discount, commission });
+            localStorage.setItem('rm_affiliates', JSON.stringify(listaAffiliati));
+            renderTabellaAffiliati();
+
+            document.getElementById('new-affiliate-code').value = '';
+            document.getElementById('new-affiliate-name').value = '';
+            document.getElementById('new-affiliate-discount').value = '';
+            document.getElementById('new-affiliate-commission').value = '';
+
+            alert(`Codice ${code} registrato!\nRicordati di crearlo anche su Stripe Dashboard (Coupon) se non esiste già.`);
         }
 
-        document.addEventListener("DOMContentLoaded", loadPricesFromDB);
+        function eliminaAffiliato(index) {
+            const item = listaAffiliati[index];
+            if (!confirm(`Eliminare definitivamente il codice "${item.code}" di ${item.name}?\n(Ricordati di archiviarlo/eliminarlo anche dalla Dashboard di Stripe).`)) return;
+
+            listaAffiliati.splice(index, 1);
+            localStorage.setItem('rm_affiliates', JSON.stringify(listaAffiliati));
+            renderTabellaAffiliati();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadPricesFromDB();
+            renderTabellaAffiliati();
+        });
     </script>
 </body>
 </html>
