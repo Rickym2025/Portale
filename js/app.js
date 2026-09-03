@@ -107,7 +107,7 @@ function toggleModalFields() {
     const fileBox = document.getElementById('file-upload-box');
     const linkBox = document.getElementById('link-input-box');
     
-    // Mostra il link input per tutti i servizi web/link e l'upload per i video/file
+    // Gestione upload file vs link URL
     const isFileBased = (t === 'video' || t === 'carousel' || t === 'vision');
     if (fileBox) fileBox.classList.toggle('hidden', !isFileBased);
     if (linkBox) linkBox.classList.toggle('hidden', isFileBased);
