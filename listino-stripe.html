@@ -631,7 +631,8 @@
             `).join('');
         }
 
-        function salvaNuovoAffiliato() {
+        // REGISTRAZIONE AUTOMATICA STRIPE + TABELLA 1-CLICK
+        async function salvaNuovoAffiliato() {
             const code = document.getElementById('new-affiliate-code').value.trim().toUpperCase();
             const name = document.getElementById('new-affiliate-name').value.trim();
             const discount = document.getElementById('new-affiliate-discount').value.trim();
@@ -641,16 +642,50 @@
                 return alert("Compila tutti i campi per registrare l'affiliato.");
             }
 
-            listaAffiliati.push({ code, name, discount, commission });
-            localStorage.setItem('rm_affiliates', JSON.stringify(listaAffiliati));
-            renderTabellaAffiliati();
+            const btn = document.querySelector('#section-affiliati button');
+            const origText = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Creazione Coupon su Stripe in corso...`;
+            btn.disabled = true;
 
-            document.getElementById('new-affiliate-code').value = '';
-            document.getElementById('new-affiliate-name').value = '';
-            document.getElementById('new-affiliate-discount').value = '';
-            document.getElementById('new-affiliate-commission').value = '';
+            try {
+                // Chiamata all'endpoint n8n per creare Coupon e Promotion Code su Stripe
+                const res = await fetch("https://n8n.rmstudio.app/webhook/crea-coupon-stripe", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        code: code,
+                        name: name,
+                        discount: parseFloat(discount),
+                        commission: parseFloat(commission)
+                    })
+                });
 
-            alert(`Codice ${code} registrato!\nRicordati di crearlo anche su Stripe Dashboard (Coupon) se non esiste già.`);
+                if (!res.ok) throw new Error("Errore durante la creazione del coupon su Stripe.");
+
+                const data = await res.json();
+
+                if (data.success) {
+                    // Salva in locale e aggiorna la tabella visiva
+                    listaAffiliati.push({ code, name, discount, commission });
+                    localStorage.setItem('rm_affiliates', JSON.stringify(listaAffiliati));
+                    renderTabellaAffiliati();
+
+                    // Svuota i campi del form
+                    document.getElementById('new-affiliate-code').value = '';
+                    document.getElementById('new-affiliate-name').value = '';
+                    document.getElementById('new-affiliate-discount').value = '';
+                    document.getElementById('new-affiliate-commission').value = '';
+
+                    alert(`✨ Codice "${code}" creato con successo su Stripe e registrato nel sistema!`);
+                } else {
+                    throw new Error("Stripe non ha confermato la creazione del codice.");
+                }
+            } catch (err) {
+                alert("⚠️ " + err.message);
+            } finally {
+                btn.innerHTML = origText;
+                btn.disabled = false;
+            }
         }
 
         function eliminaAffiliato(index) {
