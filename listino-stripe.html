@@ -31,7 +31,7 @@
                 </div>
                 <div>
                     <h1 class="text-2xl md:text-3xl font-black text-white font-display">Command Center Prezzi &amp; Affiliati</h1>
-                    <p class="text-sm text-gray-400 mt-0.5">Controllo in tempo reale per tutti i 17 SaaS dell&apos;ecosistema RM Studio.</p>
+                    <p class="text-sm text-gray-400 mt-0.5">Controllo in tempo reale per tutti i 18 SaaS dell&apos;ecosistema RM Studio.</p>
                 </div>
             </div>
             <a href="index.html" class="px-5 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-bold border border-zinc-800 transition">
@@ -42,13 +42,13 @@
         <!-- BARRA FILTRI PER CATEGORIE + TAB AFFILIATI -->
         <div class="flex flex-wrap gap-2 pb-2 border-b border-zinc-900/60">
             <button onclick="filterCategory('all')" id="tab-all" class="tab-btn active px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold transition cursor-pointer">
-                Tutti i SaaS (17)
+                Tutti i SaaS (18)
             </button>
             <button onclick="filterCategory('medico_legale')" id="tab-medico_legale" class="tab-btn px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-gray-400 transition cursor-pointer">
                 🏛️ Medici &amp; Legali (3)
             </button>
             <button onclick="filterCategory('turismo_horeca')" id="tab-turismo_horeca" class="tab-btn px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-gray-400 transition cursor-pointer">
-                🏨 Turismo &amp; Horeca (3)
+                🏨 Turismo &amp; Horeca (4)
             </button>
             <button onclick="filterCategory('media_auto')" id="tab-media_auto" class="tab-btn px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-gray-400 transition cursor-pointer">
                 🚗 Real Estate &amp; Auto (4)
@@ -118,7 +118,7 @@
             </div>
         </div>
 
-        <!-- GRIGLIA PREZZI: 17 SCHEDE CATEGORIZZATE -->
+        <!-- GRIGLIA PREZZI: 18 SCHEDE CATEGORIZZATE -->
         <div id="pricing-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
             <!-- 1. ETERNIA (Eventi & Memoriali) -->
@@ -507,6 +507,31 @@
                 </div>
             </div>
 
+            <!-- 18. LOCANDA DIGITALE (Turismo & Horeca) -->
+            <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-amber-500/40 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">🍽️</span><h2 class="text-sm font-black text-amber-200 font-display">18. Locanda Digitale</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">locanda</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Starter 3D (€)</span>
+                        <input type="number" id="price-locanda-starter" value="79" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('locanda', 'starter', 'price-locanda-starter')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Visual Menu (€)</span>
+                        <input type="number" id="price-locanda-visual" value="149" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('locanda', 'visual', 'price-locanda-visual')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">All-In Suite (€)</span>
+                        <input type="number" id="price-locanda-allin" value="290" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('locanda', 'allin', 'price-locanda-allin')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -520,10 +545,8 @@
     <script src="js/config.js"></script>
 
     <script>
-        // Utilizza il client Supabase già inizializzato da js/config.js
         const client = typeof supabaseClient !== 'undefined' ? supabaseClient : null;
 
-        // FILTRO CATEGORIE & TAB AFFILIATI
         function filterCategory(cat) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             const activeBtn = document.getElementById(`tab-${cat}`);
@@ -577,7 +600,6 @@
             }
 
             try {
-                // Aggiornamento diretto con filtro saas + plan_id
                 const { data, error } = await client
                     .from('saas_pricing')
                     .update({ price: newPrice, updated_at: new Date().toISOString() })
