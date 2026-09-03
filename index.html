@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="css/styles.css">
 
     <style>
-        /* Maniglia di ridimensionamento */
         #resizer {
             width: 5px;
             cursor: col-resize;
@@ -27,7 +26,6 @@
             background-color: #9333ea;
         }
 
-        /* STILI PER SIDEBAR COMPATTA / COLLASSED (ICON RAIL) */
         .sidebar-collapsed {
             width: 68px !important;
             min-width: 68px !important;
@@ -83,12 +81,12 @@
   <!-- MAIN DASHBOARD -->
   <div id="main-content" class="hidden flex-1 flex w-full min-h-screen relative">
     
-    <!-- SIDEBAR RIDIMENSIONABILE A ICONE / ESTESA -->
+    <!-- SIDEBAR -->
     <aside id="sidebar" class="w-72 bg-[#08080c] border-r border-zinc-900/80 p-4 flex flex-col justify-between relative z-30 shrink-0 select-none transition-all duration-200" style="min-width: 68px; max-width: 480px;">
       
       <div class="overflow-y-auto max-h-screen space-y-5">
         
-        <!-- HEADER SIDEBAR CON TOGGLE -->
+        <!-- HEADER SIDEBAR -->
         <div class="flex items-center justify-between pb-3 border-b border-zinc-900/80">
           <div class="flex items-center gap-3 sidebar-text">
             <div class="w-9 h-9 rounded-xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-600/30 shrink-0">
@@ -111,7 +109,7 @@
           </a>
         </nav>
 
-        <!-- ⚡ CREA PROGETTO RAPIDO -->
+        <!-- ⚡ CREA PROGETTO RAPIDO (CON LOCANDA DIGITALE) -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-xs uppercase font-bold text-purple-400 tracking-wider mb-2 flex items-center justify-between sidebar-text">
             <span>+ Crea Progetto Rapido</span>
@@ -119,6 +117,11 @@
           </div>
           
           <div class="space-y-1 font-semibold text-sm">
+            <!-- ⚡ LOCANDA DIGITALE -->
+            <button onclick="quickOpenCreate('locanda')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold" title="Locanda Digitale (Video 3D & Menu)">
+              <span class="shrink-0 text-base">🍽️</span> <span class="sidebar-text">Locanda Digitale</span>
+            </button>
+
             <!-- ⚡ ETERNIA -->
             <button onclick="quickOpenCreate('eternia')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold" title="ETERNIA (Memoriali QR & Pet)">
               <span class="shrink-0 text-base">🕊️</span> <span class="sidebar-text">ETERNIA (Memoriali QR)</span>
@@ -137,7 +140,7 @@
               <span class="shrink-0 text-base">📊</span> <span class="sidebar-text">Carousel Engine</span>
             </button>  
             
-            <!-- SITEENGINE PRO + SOTTO-PULSANTE GENERATORE JSON -->
+            <!-- SITEENGINE PRO -->
             <div class="space-y-1">
               <button onclick="quickOpenCreate('html')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-blue-600/20 hover:text-white border border-transparent hover:border-blue-500/30 transition text-xs font-bold" title="SiteEngine Pro (Siti Web)">
                 <span class="shrink-0 text-base">🌐</span> <span class="sidebar-text">SiteEngine Pro (Siti)</span>
@@ -162,7 +165,7 @@
           </div>
         </div>
 
-        <!-- 🗄️ SEZIONE SUPABASE PROJECTS (MULTI-ACCOUNT) -->
+        <!-- 🗄️ SEZIONE SUPABASE PROJECTS -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-[11px] uppercase font-bold text-gray-500 tracking-wider mb-2 flex items-center justify-between sidebar-text">
             <span>Supabase Projects</span> <i class="fa-solid fa-database text-xs"></i>
@@ -175,7 +178,7 @@
                     <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
                 </summary>
                 <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 sidebar-text">
-                    <!-- ⚡ ETERNIA & LOVE -->
+                    <a href="https://supabase.com/dashboard/project/nnuhzrzoebudwyalevht" target="_blank" class="block text-amber-400 font-bold hover:underline">🍽️ Locanda Digitale</a>
                     <a href="https://supabase.com/dashboard/project/zqkqlhosyjvxdwfjmwwb" target="_blank" class="block text-amber-400 font-bold hover:underline">🕊️ ETERNIA</a>
                     <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-pink-400 font-bold hover:underline">💍 LOVE</a>
                     <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-gray-400 hover:text-purple-400">⚡ VeloMotion</a>
@@ -226,11 +229,11 @@
 
           <details class="group">
             <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between text-xs" title="GitHub Repositories">
-                <span class="sidebar-text">Rickym2025 (16 Repo)</span>
+                <span class="sidebar-text">Rickym2025 (17 Repo)</span>
                 <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
             </summary>
             <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 max-h-48 overflow-y-auto text-[11px] sidebar-text">
-                <!-- ⚡ ETERNIA & LOVE -->
+                <a href="https://github.com/Rickym2025/locandadigitale" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🍽️ locandadigitale</a>
                 <a href="https://github.com/Rickym2025/eternia" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🕊️ eternia</a>
                 <a href="https://github.com/Rickym2025/love" target="_blank" class="block text-pink-400 font-bold hover:underline truncate">💍 love</a>
                 <a href="https://github.com/Rickym2025/experience" target="_blank" class="block text-purple-400 font-bold hover:underline truncate">🍷 experience</a>
@@ -266,7 +269,7 @@
       </button>
     </aside>
 
-    <!-- MANIGLIA DI RIDIMENSIONAMETO LARGHEZZA SIDEBAR -->
+    <!-- MANIGLIA DI RIDIMENSIONAMENTO -->
     <div id="resizer"></div>
 
     <!-- CONTENT AREA -->
@@ -306,12 +309,13 @@
             </div>
         </div>
 
-        <!-- FILTRI PRODOTTI -->
+        <!-- FILTRI PRODOTTI (CON LOCANDA DIGITALE) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">PRODOTTO / CATEGORIA</label>
                 <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
                     <option value="all">Tutti i Prodotti</option>
+                    <option value="locanda">🍽️ Locanda Digitale (Video 3D &amp; Menu)</option>
                     <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
                     <option value="love">💍 LOVE (Partecipazioni Digitali)</option>
                     <option value="experience">🍷 Smart Experience Page (Ristoranti)</option>
@@ -395,7 +399,7 @@
 
       <form id="create-project-form" onsubmit="handleCreateSubmit(event)" class="space-y-4">
         
-        <!-- SELETTORE RISTORANTE DA FOGLIO GOOGLE (PER EXPERIENCE PAGE) -->
+        <!-- SELETTORE RISTORANTE DA FOGLIO GOOGLE -->
         <div id="experience-sheet-select-box" class="hidden p-3.5 bg-purple-950/30 border border-purple-500/30 rounded-2xl">
             <label class="block text-xs font-extrabold uppercase text-purple-300 mb-1.5 flex items-center justify-between">
                 <span>📊 Seleziona da Foglio Google Experience</span>
@@ -408,12 +412,12 @@
 
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Nome Cliente / Azienda</label>
-            <input type="text" id="c-name" required placeholder="Es. Onoranze Funebri San Marco" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+            <input type="text" id="c-name" required placeholder="Es. Ristorante Zafferano" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
         </div>
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Email</label>
-                <input type="email" id="c-email" placeholder="info@agenzia.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+                <input type="email" id="c-email" placeholder="info@ristorante.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Telefono / WhatsApp</label>
@@ -423,16 +427,17 @@
         <div class="grid grid-cols-3 gap-4">
             <div class="col-span-2">
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Titolo Servizio / Progetto</label>
-                <input type="text" id="c-title" required value="Sito Web" placeholder="Sito Web" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+                <input type="text" id="c-title" required value="Locanda Digitale • Spot 3D & Menu" placeholder="Titolo" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prezzo (€)</label>
-                <input type="number" id="c-price" value="390" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold text-purple-400">
+                <input type="number" id="c-price" value="79" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold text-purple-400">
             </div>
         </div>
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prodotto Ecosistema</label>
             <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold">
+                <option value="locanda">🍽️ Locanda Digitale (Video 3D &amp; Menu)</option>
                 <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
                 <option value="love">💍 LOVE (Partecipazioni Digitali)</option>
                 <option value="ares">🏋️ AresAI (Fitness RPG &amp; Arena)</option>
@@ -453,7 +458,7 @@
         </div>
         <div id="link-input-box">
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">URL Destinazione / Sito Web Cliente</label>
-            <input type="url" id="c-url" placeholder="https://eternia.rmstudio.app" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+            <input type="url" id="c-url" placeholder="https://locandadigitale.rmstudio.app" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
         </div>
         <button type="submit" id="c-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-4 rounded-xl text-xs uppercase tracking-wider mt-4 shadow-lg shadow-purple-600/30 active:scale-95 transition">
             Salva e Registra Progetto
