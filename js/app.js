@@ -74,6 +74,9 @@ function toggleModalFields() {
             titleInput.value = "Voice AI Assistente";
         } else if (t === 'license') {
             titleInput.value = "Licenza Software";
+        } else if (t === 'locanda') {
+            titleInput.value = "Locanda Digitale • Spot 3D & Menu";
+            if (document.getElementById('c-price')) document.getElementById('c-price').value = 79;
         }
     }
 
