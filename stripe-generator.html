@@ -39,7 +39,9 @@
                 <div>
                     <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">1. Progetto SaaS *</label>
                     <select id="sel-progetto" onchange="autoFillPresets()" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white font-bold outline-none focus:border-purple-500">
+                        <option value="AURA">📡 AURA Proximity (Virtual Mesh Radar)</option>
                         <option value="ETERNIA">🕊️ ETERNIA (Onoranze Funebri &amp; Pet)</option>
+                        <option value="Locanda">🍽️ Locanda Digitale (Video 3D &amp; Menu)</option>
                         <option value="LOVE">💍 LOVE (Partecipazioni Digitali)</option>
                         <option value="Dentis">🦷 Dentis AI (Voice Receptionist)</option>
                         <option value="Lexis">⚖️ Lexis AI (Voice Receptionist)</option>
@@ -54,7 +56,6 @@
                         <option value="Ares">🏋️ AresAI (Fitness &amp; Dieta)</option>
                         <option value="FFausto">🎵 FF Edizioni (Musica &amp; Jingle)</option>
                         <option value="OmniaStudio">💼 OmniaStudio (IA Offline)</option>
-                        <option value="Locanda">🍽️ Locanda Digitale (Video 3D & Menu)</option>
                     </select>
                 </div>
 
@@ -62,11 +63,7 @@
                 <div>
                     <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">2. Pacchetto Predefinito</label>
                     <select id="sel-preset" onchange="applyPreset()" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white font-semibold outline-none focus:border-purple-500">
-                        <option value="79|Credit Starter (1 Cerimonia)|starter">Credit Starter (€79)</option>
-                        <option value="199|Servizio VIP «Chiavi in Mano»|vip">VIP Chiavi in Mano (€199)</option>
-                        <option value="690|Agency Hub B2B (10 Cerimonie)|hub" selected>Agency Hub 10 Cerimonie (€690)</option>
-                        <option value="300|Brano Musicale d'Autore (Echi)|echi">Brano d'Autore Echi (€300)</option>
-                        <option value="custom">-- Importo Personalizzato --</option>
+                        <!-- Popolato dinamicamente via JS -->
                     </select>
                 </div>
             </div>
@@ -75,27 +72,27 @@
                 <!-- TITOLO SCONTRINO / RICEVUTA -->
                 <div class="sm:col-span-2">
                     <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Titolo Prodotto (Visibile su Ricevuta Stripe) *</label>
-                    <input type="text" id="inp-title" required value="ETERNIA - Agency Hub B2B (10 Cerimonie)" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white font-bold outline-none focus:border-purple-500">
+                    <input type="text" id="inp-title" required value="AURA - Pass Viaggio Singolo (24h)" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white font-bold outline-none focus:border-purple-500">
                 </div>
 
                 <!-- IMPORTO EURO -->
                 <div>
                     <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Prezzo (€) *</label>
-                    <input type="number" step="0.01" id="inp-price" required value="690" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-base text-amber-400 font-extrabold outline-none focus:border-purple-500">
+                    <input type="number" step="0.01" id="inp-price" required value="4.90" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-base text-cyan-400 font-extrabold outline-none focus:border-purple-500 font-mono">
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <!-- EMAIL CLIENTE (Opzionale per pre-compilare) -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Email Cliente / Agenzia</label>
-                    <input type="email" id="inp-email" placeholder="cliente@agenzia.it" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-mono">
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Email Cliente / Lead</label>
+                    <input type="email" id="inp-email" placeholder="cliente@email.it" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-mono">
                 </div>
 
-                <!-- ID AGENZIA / SLUG -->
+                <!-- ID STANZA / PROGETTO -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Agency ID / Slug</label>
-                    <input type="text" id="inp-agency" placeholder="es. onoranze-san-marco" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-mono">
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">ID Stanza / Agency Slug</label>
+                    <input type="text" id="inp-agency" placeholder="es. convoy-vip-2026" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-mono">
                 </div>
             </div>
 
@@ -132,16 +129,21 @@
 
     <script>
         const PRESETS = {
-            Ares: [
-                { val: "19|AresAI - Atleta PRO (Mensile)|base", label: "Atleta PRO (€19/m)" },
-                { val: "99|AresAI - Coach Hub & Arena TV (Mensile)|coach", label: "Coach Hub & TV (€99/m)" },
-                { val: "149|AresAI - Setup Chiavi in Mano & Cartelli QR|setup", label: "Setup Cartelli QR (€149)" }
+            AURA: [
+                { val: "4.90|AURA - Pass Viaggio Singolo (24h)|pass_viaggio", label: "Pass Viaggio Singolo (€4.90)" },
+                { val: "19|AURA - Pro Mensile Illimitato|pro_monthly", label: "Aura Pro Mensile (€19/m)" },
+                { val: "79|AURA - Studio & Gym Hub B2B|studio_hub", label: "Studio & Gym Hub (€79/m)" }
             ],
             ETERNIA: [
                 { val: "79|Credit Starter (1 Cerimonia)|starter", label: "Credit Starter (€79)" },
                 { val: "199|Servizio VIP «Chiavi in Mano»|vip", label: "VIP Chiavi in Mano (€199)" },
                 { val: "690|Agency Hub B2B (10 Cerimonie)|hub", label: "Agency Hub 10 Cerimonie (€690)" },
                 { val: "300|Brano Musicale d'Autore (Echi)|echi", label: "Brano d'Autore Echi (€300)" }
+            ],
+            Locanda: [
+                { val: "79|Locanda Digitale - Social 3D Starter|starter", label: "Social 3D Starter (€79)" },
+                { val: "149|Locanda Digitale - Visual Menu Pro|visual", label: "Visual Menu Pro (€149)" },
+                { val: "290|Locanda Digitale - All-In Suite|allin", label: "All-In Suite (€290)" }
             ],
             LOVE: [
                 { val: "149|LOVE - Sposi Self-Service (1 Anno)|self", label: "Sposi Self-Service (€149)" },
@@ -167,10 +169,10 @@
                 { val: "199|Free Energy - Start Pack (10.000 Crediti)|base", label: "Start Pack 10k (€199)" },
                 { val: "449|Free Energy - Pro Pack (25.000 Crediti)|max", label: "Pro Pack 25k (€449)" }
             ],
-            Locanda: [
-                { val: "99|Locanda Digitale - Social 3D Starter|starter", label: "Social 3D Starter (€99)" },
-                { val: "199|Locanda Digitale - Visual Menu Pro|visual", label: "Visual Menu Pro (€199)" },
-                { val: "390|Locanda Digitale - All-In Suite|allin", label: "All-In Suite (€390)" }
+            Ares: [
+                { val: "19|AresAI - Atleta PRO (Mensile)|base", label: "Atleta PRO (€19/m)" },
+                { val: "199|AresAI - Arena Coach Hub (Mensile)|coach", label: "Arena Coach Hub (€199/m)" },
+                { val: "399|AresAI - ELITE Multi-Palestra|elite", label: "ELITE Multi-Palestra (€399/m)" }
             ]
         };
 
@@ -193,7 +195,7 @@
             const [price, title] = val.split('|');
             const prog = document.getElementById('sel-progetto').value;
             document.getElementById('inp-price').value = price;
-            document.getElementById('inp-title').value = `${prog} - ${title}`;
+            document.getElementById('inp-title').value = title;
         }
 
         async function generateStripeLink(e) {
@@ -211,9 +213,12 @@
             const presetVal = document.getElementById('sel-preset').value;
             const ricarica_tipo = presetVal.includes('|') ? presetVal.split('|')[2] : 'custom';
 
-            // Mappatura domini ufficiali
+            // Mappatura URL ufficiali
             let originUrl = `https://${prog.toLowerCase().replace(/\s+/g, '')}.rmstudio.app`;
             if (prog === 'Locanda') originUrl = 'https://locandadigitale.rmstudio.app';
+            if (prog === 'AURA') originUrl = 'https://aura.rmstudio.app';
+
+            const portalType = prog === 'Locanda' ? 'locanda' : (prog === 'AURA' ? 'aura' : prog.toLowerCase().replace(/\s+/g, '_'));
 
             try {
                 const res = await fetch("https://n8n.rmstudio.app/webhook/crea-sessione-stripe", {
@@ -224,7 +229,7 @@
                         price: price,
                         title: title,
                         project_id: agency || "direct-checkout",
-                        portal_type: prog === 'Locanda' ? 'locanda' : prog.toLowerCase().replace(/\s+/g, '_'),
+                        portal_type: portalType,
                         origin: originUrl,
                         ricarica_tipo: ricarica_tipo
                     })
@@ -255,6 +260,10 @@
             navigator.clipboard.writeText(url);
             alert("✓ Link Stripe copiato negli appunti!");
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            autoFillPresets();
+        });
     </script>
 </body>
 </html>
