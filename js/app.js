@@ -57,26 +57,47 @@ function onRestaurantSelectedFromSheet() {
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
     const titleInput = document.getElementById('c-title');
+    const priceInput = document.getElementById('c-price');
+    const urlInput = document.getElementById('c-url');
 
     if (titleInput) {
-        if (t === 'experience') {
+        if (t === 'locanda') {
+            titleInput.value = "Locanda Digitale • Spot 3D & Menu";
+            if (priceInput) priceInput.value = 79;
+            if (urlInput) urlInput.placeholder = "https://locandadigitale.rmstudio.app";
+        } else if (t === 'eternia') {
+            titleInput.value = "ETERNIA • Memoriale QR";
+            if (priceInput) priceInput.value = 79;
+            if (urlInput) urlInput.placeholder = "https://eternia.rmstudio.app";
+        } else if (t === 'love') {
+            titleInput.value = "LOVE • Partecipazioni Digitali";
+            if (priceInput) priceInput.value = 149;
+            if (urlInput) urlInput.placeholder = "https://love.rmstudio.app";
+        } else if (t === 'experience') {
             titleInput.value = "Smart Experience Page";
-            fetchPendingRestaurantsFromSheet(); // ⚡ Carica la lista dal Foglio Google
+            if (priceInput) priceInput.value = 390;
+            if (urlInput) urlInput.placeholder = "https://www.ristorante-esempio.it";
+            fetchPendingRestaurantsFromSheet();
         } else if (t === 'social') {
             titleInput.value = "Carousel Engine";
+            if (priceInput) priceInput.value = 29;
+            if (urlInput) urlInput.placeholder = "https://social.rmstudio.app";
         } else if (t === 'html') {
             titleInput.value = "Sito Web";
+            if (priceInput) priceInput.value = 400;
+            if (urlInput) urlInput.placeholder = "https://sitengine.rmstudio.app";
         } else if (t === 'vision') {
             titleInput.value = "Vision UGC Video";
+            if (priceInput) priceInput.value = 50;
         } else if (t === 'video') {
             titleInput.value = "HomeTour Video";
+            if (priceInput) priceInput.value = 59;
         } else if (t === 'voice_ai') {
             titleInput.value = "Voice AI Assistente";
+            if (priceInput) priceInput.value = 149;
         } else if (t === 'license') {
             titleInput.value = "Licenza Software";
-        } else if (t === 'locanda') {
-            titleInput.value = "Locanda Digitale • Spot 3D & Menu";
-            if (document.getElementById('c-price')) document.getElementById('c-price').value = 79;
+            if (priceInput) priceInput.value = 290;
         }
     }
 
@@ -86,8 +107,10 @@ function toggleModalFields() {
     const fileBox = document.getElementById('file-upload-box');
     const linkBox = document.getElementById('link-input-box');
     
-    if (fileBox) fileBox.classList.toggle('hidden', t === 'html' || t === 'link' || t === 'experience' || t === 'locanda');
-    if (linkBox) linkBox.classList.toggle('hidden', t !== 'html' && t !== 'link' && t !== 'experience' && t !== 'locanda');
+    // Mostra il link input per tutti i servizi web/link e l'upload per i video/file
+    const isFileBased = (t === 'video' || t === 'carousel' || t === 'vision');
+    if (fileBox) fileBox.classList.toggle('hidden', !isFileBased);
+    if (linkBox) linkBox.classList.toggle('hidden', isFileBased);
 }
 
 // Helper per calcolare i giorni trascorsi
@@ -178,7 +201,6 @@ function renderMasterTable(data) {
         const isPaid = p.is_paid === true || p.is_paid === "true";
         const views = parseInt(p.views_count || 0);
         
-        // ⚡ CORREZIONE RIGIDA: È "Letto" SOLTANTO SE LE VISITE SONO > 0
         const isRead = views > 0;
         const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
 
@@ -218,7 +240,7 @@ function renderMasterTable(data) {
                 <input type="text" value="${p.title || ''}" placeholder="Titolo Progetto" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-sm text-gray-200 font-bold w-full">
             </td>
 
-            <!-- ⚡ COLONNA RIPRISTINATA: LINK AL PROGETTO -->
+            <!-- LINK AL PROGETTO -->
             <td class="p-4">
                 <a href="${p.content_url || portalViewUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-purple-400 border border-zinc-800 px-3 py-1.5 rounded-lg text-xs font-bold transition truncate max-w-[130px]">
                     <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Apri Link
@@ -372,7 +394,7 @@ function switchTab(tab) {
 function openCreationModal() { 
     document.getElementById('creation-modal').classList.remove('hidden'); 
     document.getElementById('creation-modal').classList.add('flex'); 
-    toggleModalFields(); // ⚡ Invocazione automatica controllo campi e caricamento Sheet
+    toggleModalFields();
 }
 
 function closeCreationModal() { 
