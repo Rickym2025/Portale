@@ -53,7 +53,7 @@
             </div>
             <div>
                 <h1 class="font-display font-black text-white text-base leading-tight">Mobile Lead Pistol</h1>
-                <span class="text-xs text-purple-400 font-bold">RM Studio Ecosystem</span>
+                <span class="text-xs text-purple-400 font-bold">RM Studio Ecosystem (19 SaaS)</span>
             </div>
         </div>
         <a href="index.html" class="w-11 h-11 rounded-2xl bg-zinc-900 border border-zinc-800 text-gray-300 flex items-center justify-center text-sm font-bold active:scale-95" title="Master Hub Desktop">
@@ -71,6 +71,7 @@
             </label>
             <select id="sector-advisor" onchange="highlightSuggestedSaas()" class="w-full bg-[#151522] border border-purple-500/50 rounded-xl p-3 text-sm text-white font-extrabold outline-none focus:border-purple-400">
                 <option value="">-- Mostra tutti i SaaS --</option>
+                <option value="prossimita">📡 Viaggi in Colonna / Sport / Proximity Mesh</option>
                 <option value="funebre">🕊️ Onoranze Funebri / Cremazioni Pet</option>
                 <option value="ristorante">🍷 Ristorante / Bar / Pizzeria</option>
                 <option value="hotel">🏨 Hotel / B&amp;B / Struttura Ricettiva</option>
@@ -93,11 +94,30 @@
 
             <div class="grid grid-cols-2 gap-2.5">
                 
-                <!-- ⚡ ETERNIA (MEMORIALI QR & PET) -->
+                <!-- 📡 AURA PROXIMITY (NUOVO) -->
+                <button type="button" onclick="handleSaasTap('aura', 'https://aura.rmstudio.app')" id="card-aura" class="saas-card col-span-2 p-3.5 bg-[#0e0e14] border border-cyan-500/50 rounded-2xl text-left flex items-center justify-between relative overflow-hidden shadow-lg shadow-cyan-500/10">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">📡</span>
+                        <div>
+                            <span class="font-black text-cyan-300 text-sm block">AURA Proximity</span>
+                            <span class="text-xs text-cyan-400 font-bold">Virtual Mesh &amp; Radar P2P</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-black uppercase px-2 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">100% Web</span>
+                </button>
+
+                <!-- 🕊️ ETERNIA -->
                 <button type="button" onclick="handleSaasTap('eternia', 'https://eternia.rmstudio.app')" id="card-eternia" class="saas-card p-3.5 bg-[#0e0e14] border border-amber-500/40 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
                     <span class="text-2xl">🕊️</span>
                     <span class="font-black text-amber-200 text-sm">ETERNIA</span>
                     <span class="text-xs text-amber-400 font-bold">Memoriali QR &amp; Pet</span>
+                </button>
+
+                <!-- 🍽️ LOCANDA DIGITALE -->
+                <button type="button" onclick="handleSaasTap('locanda', 'https://locandadigitale.rmstudio.app')" id="card-locanda" class="saas-card p-3.5 bg-[#0e0e14] border border-amber-500/40 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+                    <span class="text-2xl">🍽️</span>
+                    <span class="font-black text-amber-200 text-sm">Locanda Digitale</span>
+                    <span class="text-xs text-amber-400 font-bold">Video 3D &amp; Menu QR</span>
                 </button>
 
                 <button type="button" onclick="handleSaasTap('love', 'https://love.rmstudio.app')" id="card-love" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
@@ -196,19 +216,13 @@
                     <span class="text-xs text-yellow-400 font-bold">Software sicuro ed invisibile</span>
                 </button>
 
-                <button type="button" onclick="handleSaasTap('locanda', 'https://locandadigitale.rmstudio.app')" id="card-locanda" class="saas-card p-3.5 bg-[#0e0e14] border border-amber-500/40 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
-                    <span class="text-2xl">🍽️</span>
-                    <span class="font-black text-amber-200 text-sm">Locanda Digitale</span>
-                    <span class="text-xs text-amber-400 font-bold">Video 3D &amp; Menu QR</span>
-                </button>
-
             </div>
         </div>
 
         <!-- LANDING PAGE UFFICIALE SELEZIONATA -->
         <div class="flex justify-between items-center bg-zinc-900/60 border border-zinc-800 px-3.5 py-2 rounded-xl text-xs">
-            <span class="text-gray-400 font-semibold" id="saas-desc-label">Memoriali QR d'Autore &amp; Pet</span>
-            <a id="saas-landing-link" href="https://eternia.rmstudio.app" target="_blank" class="text-amber-300 font-bold hover:underline flex items-center gap-1 text-xs">
+            <span class="text-gray-400 font-semibold" id="saas-desc-label">Radar di Prossimità &amp; Virtual Mesh P2P</span>
+            <a id="saas-landing-link" href="https://aura.rmstudio.app" target="_blank" class="text-cyan-300 font-bold hover:underline flex items-center gap-1 text-xs">
                 <span>🔗 Apri Landing</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
             </a>
         </div>
@@ -234,7 +248,9 @@
 
     <script>
         const SAAS_CONFIG = {
+            aura: { landing: "https://aura.rmstudio.app", desc: "Radar di Prossimità & Virtual Mesh P2P" },
             eternia: { landing: "https://eternia.rmstudio.app", desc: "Memoriali QR d'Autore & Pet Memorials" },
+            locanda: { landing: "https://locandadigitale.rmstudio.app", desc: "Video 3D Piatti & Visual Menu QR" },
             experience: {
                 title: "Dati Smart Experience Page (Ristoranti):",
                 endpoint: "https://n8n.rmstudio.app/webhook/omnia-taste-generate",
@@ -290,21 +306,21 @@
             if (!sector) return;
 
             const suggestions = {
+                prossimita: ['card-aura', 'card-ares', 'card-love', 'card-drivemotion'],
                 funebre: ['card-eternia', 'card-ff_edizioni', 'card-nexus', 'card-dentis'],
-                ristorante: ['card-experience', 'card-nexus', 'card-ff_edizioni', 'card-social'],
-                hotel: ['card-concierge24', 'card-nexus', 'card-ff_edizioni', 'card-social'],
-                auto: ['card-drivemotion', 'card-nexus', 'card-dentis', 'card-social'],
+                ristorante: ['card-locanda', 'card-experience', 'card-nexus', 'card-ff_edizioni'],
+                hotel: ['card-concierge24', 'card-aura', 'card-nexus', 'card-social'],
+                auto: ['card-drivemotion', 'card-aura', 'card-nexus', 'card-dentis'],
                 immobile: ['card-hometour', 'card-nexus', 'card-sitengine', 'card-social'],
                 medico: ['card-dentis', 'card-nexus', 'card-sitengine', 'card-social'],
-                legale: ['card-lexis', 'card-omniastudio', 'card-nexus', 'card-sitengine', 'card-social'],
-                palestra: ['card-ares', 'card-nexus', 'card-ff_edizioni', 'card-vision', 'card-social'],
+                legale: ['card-lexis', 'card-omniastudio', 'card-nexus', 'card-sitengine'],
+                palestra: ['card-ares', 'card-aura', 'card-nexus', 'card-vision'],
                 ecommerce: ['card-vision', 'card-nexus', 'card-ff_edizioni', 'card-social'],
-                evento: ['card-love', 'card-ff_edizioni', 'card-vision', 'card-social'],
-                azienda: ['card-omniastudio', 'card-nexus', 'card-dentis', 'card-sitengine', 'card-social'],
-                ristorante: ['card-locanda', 'card-experience', 'card-nexus', 'card-ff_edizioni'],
+                evento: ['card-love', 'card-aura', 'card-ff_edizioni', 'card-vision'],
+                azienda: ['card-omniastudio', 'card-nexus', 'card-dentis', 'card-sitengine']
             };
 
-            const targetCardIds = suggestions[sector] || ['card-eternia', 'card-nexus'];
+            const targetCardIds = suggestions[sector] || ['card-aura', 'card-eternia'];
             targetCardIds.forEach(id => {
                 const card = document.getElementById(id);
                 if (card) card.classList.add('glow-suggested');
