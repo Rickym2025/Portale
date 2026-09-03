@@ -31,7 +31,7 @@
                 </div>
                 <div>
                     <h1 class="text-2xl md:text-3xl font-black text-white font-display">Command Center Prezzi &amp; Affiliati</h1>
-                    <p class="text-sm text-gray-400 mt-0.5">Controllo in tempo reale per tutti i 18 SaaS dell&apos;ecosistema RM Studio.</p>
+                    <p class="text-sm text-gray-400 mt-0.5">Controllo in tempo reale per tutti i 19 SaaS dell&apos;ecosistema RM Studio.</p>
                 </div>
             </div>
             <a href="index.html" class="px-5 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-bold border border-zinc-800 transition">
@@ -42,7 +42,7 @@
         <!-- BARRA FILTRI CATEGORIE + TAB AFFILIATI -->
         <div class="flex flex-wrap gap-2 pb-2 border-b border-zinc-900/60">
             <button onclick="filterCategory('all')" id="tab-all" class="tab-btn active px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold transition cursor-pointer">
-                Tutti i SaaS (18)
+                Tutti i SaaS (19)
             </button>
             <button onclick="filterCategory('medico_legale')" id="tab-medico_legale" class="tab-btn px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-gray-400 transition cursor-pointer">
                 🏛️ Medici &amp; Legali (3)
@@ -57,7 +57,7 @@
                 💍 Eventi &amp; Memoriali (3)
             </button>
             <button onclick="filterCategory('software_crm')" id="tab-software_crm" class="tab-btn px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-gray-400 transition cursor-pointer">
-                ⚡ Software &amp; CRM (4)
+                ⚡ Software &amp; Proximity (5)
             </button>
             <button onclick="filterCategory('affiliati')" id="tab-affiliati" class="tab-btn px-4 py-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/40 text-xs font-black text-amber-300 transition cursor-pointer ml-auto">
                 ⭐ Hub Statistiche &amp; Provvigioni Affiliati
@@ -66,8 +66,6 @@
 
         <!-- SEZIONE GESTIONE AFFILIATI & STATISTICHE DETTAGLIATE -->
         <div id="section-affiliati" class="hidden space-y-6">
-            
-            <!-- KPI CARDS PROVVIGIONI -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="p-4 rounded-2xl bg-[#0b0b0f] border border-zinc-800 shadow-lg">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Fatturato Generato</span>
@@ -87,7 +85,6 @@
                 </div>
             </div>
 
-            <!-- REGISTRAZIONE NUOVO AFFILIATO AUTOMATICA CON STRIPE -->
             <div class="p-6 rounded-3xl bg-gradient-to-br from-amber-950/20 via-zinc-900 to-zinc-950 border border-amber-500/40 shadow-2xl space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-white/10 pb-4">
                     <div>
@@ -108,7 +105,6 @@
                 </button>
             </div>
 
-            <!-- TABELLA AFFILIATI CON BREAKDOWN PER SAAS E SALDO RESIDUO -->
             <div class="bg-[#0b0b0f] border border-zinc-800 rounded-2xl overflow-hidden shadow-xl">
                 <div class="p-4 border-b border-zinc-800 bg-black/40 flex justify-between items-center">
                     <span class="text-xs font-bold text-white uppercase tracking-wider">Riepilogo Provvigioni per Affiliato</span>
@@ -127,16 +123,15 @@
                                 <th class="p-3.5 text-right">Azioni</th>
                             </tr>
                         </thead>
-                        <tbody id="affiliates-table-body" class="divide-y divide-zinc-800 font-medium">
-                            <!-- Caricato dinamicamente via JS da Supabase -->
-                        </tbody>
+                        <tbody id="affiliates-table-body" class="divide-y divide-zinc-800 font-medium"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- GRIGLIA PREZZI: TUTTI I 18 SAAS -->
+        <!-- GRIGLIA PREZZI: TUTTI I 19 SAAS -->
         <div id="pricing-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
             <!-- 1. ETERNIA -->
             <div data-cat="eventi_musica" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-amber-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
@@ -548,6 +543,31 @@
                 </div>
             </div>
 
+            <!-- 19. AURA PROXIMITY -->
+            <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/40 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">📡</span><h2 class="text-sm font-black text-cyan-300 font-display">19. AURA Proximity</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">aura</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Pass Viaggio (€)</span>
+                        <input type="number" step="0.1" id="price-aura-pass_viaggio" value="4.90" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('aura', 'pass_viaggio', 'price-aura-pass_viaggio')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Pro Mensile (€)</span>
+                        <input type="number" id="price-aura-pro_monthly" value="19" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('aura', 'pro_monthly', 'price-aura-pro_monthly')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Studio Hub (€)</span>
+                        <input type="number" id="price-aura-studio_hub" value="79" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('aura', 'studio_hub', 'price-aura-studio_hub')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -661,7 +681,6 @@
             if (!client) return;
 
             try {
-                // Recupera anagrafica affiliati e transazioni
                 const { data: affiliates } = await client.from('affiliates').select('*').order('created_at', { ascending: false });
                 const { data: transactions } = await client.from('affiliate_transactions').select('*');
 
@@ -699,7 +718,6 @@
                     totalComm += affComm;
                     totalPaid += affPaid;
 
-                    // Breakdown stringa SaaS
                     const saasBadges = Object.keys(saasMap).map(s => `
                         <span class="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 text-[10px] mr-1">${s} (${saasMap[s]})</span>
                     `).join('') || '<span class="text-zinc-600">Nessuna vendita</span>';
@@ -733,7 +751,6 @@
                     tbody.appendChild(tr);
                 });
 
-                // Aggiorna KPI generali
                 document.getElementById('kpi-gross-revenue').innerText = `€${totalGross.toFixed(2)}`;
                 document.getElementById('kpi-total-commissions').innerText = `€${totalComm.toFixed(2)}`;
                 document.getElementById('kpi-total-paid').innerText = `€${totalPaid.toFixed(2)}`;
@@ -755,14 +772,12 @@
             }
 
             try {
-                // 1. Crea su Stripe tramite Webhook n8n
                 const res = await fetch("https://n8n.rmstudio.app/webhook/crea-coupon-stripe", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ code, name, discount, commission })
                 });
                 
-                // 2. Salva nel database Supabase S2
                 if (client) {
                     await client.from('affiliates').insert([{
                         code,
@@ -806,17 +821,14 @@
             }
 
             try {
-                // Recupera affiliato corrente
                 const { data: aff } = await client.from('affiliates').select('total_paid').eq('code', activePayoutAffiliateCode).single();
                 const newTotalPaid = (parseFloat(aff.total_paid || 0)) + amount;
 
-                // Aggiorna totale pagato e data ultimo bonifico
                 await client.from('affiliates').update({
                     total_paid: newTotalPaid,
                     last_payout_at: new Date().toISOString()
                 }).eq('code', activePayoutAffiliateCode);
 
-                // Segna le transazioni come saldate
                 await client.from('affiliate_transactions').update({
                     status: 'paid',
                     paid_at: new Date().toISOString()
