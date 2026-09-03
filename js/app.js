@@ -86,8 +86,8 @@ function toggleModalFields() {
     const fileBox = document.getElementById('file-upload-box');
     const linkBox = document.getElementById('link-input-box');
     
-    if (fileBox) fileBox.classList.toggle('hidden', t === 'html' || t === 'link' || t === 'experience');
-    if (linkBox) linkBox.classList.toggle('hidden', t !== 'html' && t !== 'link' && t !== 'experience');
+    if (fileBox) fileBox.classList.toggle('hidden', t === 'html' || t === 'link' || t === 'experience' || t === 'locanda');
+    if (linkBox) linkBox.classList.toggle('hidden', t !== 'html' && t !== 'link' && t !== 'experience' && t !== 'locanda');
 }
 
 // Helper per calcolare i giorni trascorsi
