@@ -650,6 +650,7 @@
             }
         }
 
+        // SALVATAGGIO CON UPSERT: Crea la riga se non esiste, altrimenti la aggiorna
         async function saveLivePrice(saas, plan_id, inputId) {
             const newPrice = parseFloat(document.getElementById(inputId).value);
             if (isNaN(newPrice)) return alert("Inserisci una cifra valida.");
@@ -659,13 +660,16 @@
             try {
                 const { error } = await client
                     .from('saas_pricing')
-                    .update({ price: newPrice, updated_at: new Date().toISOString() })
-                    .eq('saas', saas)
-                    .eq('plan_id', plan_id);
+                    .upsert({ 
+                        saas: saas, 
+                        plan_id: plan_id, 
+                        price: newPrice, 
+                        updated_at: new Date().toISOString() 
+                    }, { onConflict: 'saas,plan_id' });
 
                 if (!error) {
                     const toast = document.getElementById('toast');
-                    toast.innerText = `✓ Prezzo ${saas.toUpperCase()} (${plan_id}) aggiornato a €${newPrice}!`;
+                    toast.innerText = `✓ Prezzo ${saas.toUpperCase()} (${plan_id}) aggiornato a €${newPrice.toFixed(2)}!`;
                     toast.classList.remove('hidden');
                     setTimeout(() => toast.classList.add('hidden'), 2500);
                 } else {
