@@ -259,13 +259,13 @@
                 <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-right text-xs"></i></button>
             </div>
 
-            <!-- 3. CARTELLA ANTEPRIMA SITO WEB -->
+            <!-- 3. ANTEPRIMA SITO WEB / WEB APP INTERATTIVA (HTML, EXPERIENCE, AURA) -->
             <div id="html-preview-container" class="hidden w-full h-full flex flex-col items-center justify-center p-6 text-center z-20 bg-[#020204]">
-                <div class="w-16 h-16 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4">
+                <div class="w-16 h-16 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4" id="html-preview-icon">
                     <i class="fa-solid fa-laptop-code text-2xl text-purple-400"></i>
                 </div>
-                <h3 class="text-white text-lg font-bold mb-1">Sito Web Interattivo Pronto</h3>
-                <p class="text-xs text-gray-400 max-w-sm mb-5">Abbiamo sviluppato una bozza interattiva del tuo nuovo sito web. Clicca il pulsante qui sotto per provarla ed esplorarla in tempo reale a schermo intero.</p>
+                <h3 class="text-white text-lg font-bold mb-1" id="html-preview-title">Applicazione Interattiva Pronta</h3>
+                <p class="text-xs text-gray-400 max-w-sm mb-5" id="html-preview-desc">Abbiamo predisposto la tua applicazione interattiva. Clicca il pulsante qui sotto per provarla ed esplorarla in tempo reale a schermo intero.</p>
                 <button onclick="openFullscreenWebsite()" class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all active:scale-95 shadow-[0_0_15px_rgba(147,51,234,0.35)]">
                     <i class="fa-solid fa-expand animate-bounce"></i> Esplora a Schermo Intero
                 </button>
@@ -299,7 +299,7 @@
             <div class="flex items-center gap-4">
                 <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-6 w-auto">
                 
-                <!-- SELETTORE DUAL VISTA PER IL RISTORATORE -->
+                <!-- SELETTORE DUAL VISTA PER IL RISTORATORE (Nascosto se AURA) -->
                 <div id="view-mode-selector" class="hidden sm:flex items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl">
                     <button onclick="switchPreviewMode('experience')" id="btn-view-experience" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition">
                         🍷 Smart Experience Page
@@ -336,13 +336,13 @@
         
             if (mode === 'experience') {
                 iframe.src = videoData.content_url;
-                btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition";
-                btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
+                if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition";
+                if (btnWeb) btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
             } else {
                 const originalSite = videoData.client_phone || 'https://www.tenutacastelvenezze.it';
                 iframe.src = `https://demo.rmstudio.app/?site=${encodeURIComponent(originalSite)}&bot_id=${videoData.client_email || 'nexus_landing'}`;
-                btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition";
-                btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
+                if (btnWeb) btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition";
+                if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
             }
         }
 
@@ -419,7 +419,7 @@
                 document.getElementById('sent-date').innerText = "Non ancora inviato";
             }
             
-            // RENDERING DINAMICO PER TIPO (Incluso 'locanda')
+            // RENDERING DINAMICO PER TIPO (Inclusi 'locanda' e 'aura')
             if (data.portal_type === 'video' || data.portal_type === 'locanda') {
                 const p = document.getElementById('player-video');
                 p.src = data.content_url;
@@ -432,7 +432,13 @@
                     document.getElementById('player-carousel').classList.remove('hidden');
                 }
             } 
-            else if (data.portal_type === 'html' || data.portal_type === 'experience') {
+            else if (data.portal_type === 'html' || data.portal_type === 'experience' || data.portal_type === 'aura') {
+                if (data.portal_type === 'aura') {
+                    const iconBox = document.getElementById('html-preview-icon');
+                    if (iconBox) iconBox.innerHTML = `<i class="fa-solid fa-crosshairs text-2xl text-cyan-400"></i>`;
+                    document.getElementById('html-preview-title').innerText = "Radar Tattico AURA Configurato";
+                    document.getElementById('html-preview-desc').innerText = "La tua stanza virtual mesh è pronta all'uso. Clicca sotto per aprire la schermata radar a pieno schermo.";
+                }
                 document.getElementById('html-preview-container').classList.remove('hidden');
                 openFullscreenWebsite();
             } 
@@ -451,6 +457,8 @@
                 const btn = document.getElementById('actionBtn');
                 if (data.portal_type === 'html' || data.portal_type === 'link') {
                     btn.innerHTML = `<i class="fa-solid fa-globe"></i> Visita il Sito Web`;
+                } else if (data.portal_type === 'aura') {
+                    btn.innerHTML = `<i class="fa-solid fa-crosshairs"></i> Apri Radar Operativo`;
                 } else {
                     btn.innerHTML = `<i class="fa-solid fa-lock-open"></i> Scarica in HD`;
                 }
@@ -476,7 +484,11 @@
 
             if (videoData.is_paid === true || videoData.is_paid === "true") {
                 document.getElementById('overlay-watermark').classList.add('hidden');
-                overlayBtn.innerHTML = `<i class="fa-solid fa-globe"></i> Visita il Sito`;
+                if (videoData.portal_type === 'aura') {
+                    overlayBtn.innerHTML = `<i class="fa-solid fa-crosshairs"></i> Apri Radar`;
+                } else {
+                    overlayBtn.innerHTML = `<i class="fa-solid fa-globe"></i> Visita il Sito`;
+                }
             } else {
                 overlayBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca €${formattedPrice}`;
             }
@@ -529,7 +541,7 @@
                             title: videoData.title,
                             price: parseFloat(videoData.price_euro),
                             origin: window.location.origin,
-                            portal_type: videoData.portal_type || 'locanda'
+                            portal_type: videoData.portal_type || 'aura'
                         })
                     });
 
