@@ -53,7 +53,7 @@ function onRestaurantSelectedFromSheet() {
     document.getElementById('c-price').value = 390;
 }
 
-// 3. GESTIONE VISIBILITÀ CAMPI E TITOLI NELLA MODALE
+// 3. GESTIONE VISIBILITÀ CAMPI E TITOLI NELLA MODALE (INCLUSO AURA)
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
     const titleInput = document.getElementById('c-title');
@@ -61,7 +61,11 @@ function toggleModalFields() {
     const urlInput = document.getElementById('c-url');
 
     if (titleInput) {
-        if (t === 'locanda') {
+        if (t === 'aura') {
+            titleInput.value = "AURA • Pro Mensile (Virtual Mesh Radar)";
+            if (priceInput) priceInput.value = 19;
+            if (urlInput) urlInput.placeholder = "https://aura.rmstudio.app/radar.html?room=convoy-main";
+        } else if (t === 'locanda') {
             titleInput.value = "Locanda Digitale • Spot 3D & Menu";
             if (priceInput) priceInput.value = 79;
             if (urlInput) urlInput.placeholder = "https://locandadigitale.rmstudio.app";
@@ -210,7 +214,9 @@ function renderMasterTable(data) {
         const openDateFormatted = p.updated_at ? new Date(p.updated_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const openDaysAgo = getDaysAgo(p.updated_at);
 
-        let typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
+        let typeBadge = p.portal_type === 'aura'
+            ? `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">aura</span>`
+            : `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
 
         const portalViewUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
 
@@ -407,11 +413,12 @@ async function handleCreateSubmit(e) {
     const btn = document.getElementById('c-btn');
     const originalText = btn.innerText;
     btn.disabled = true;
-    btn.innerText = "Analisi AI del Ristorante in corso (può richiedere 20s)...";
+    btn.innerText = "Salvataggio progetto in corso...";
 
     const type = document.getElementById('c-type').value;
 
     if (type === 'experience') {
+        btn.innerText = "Analisi AI del Ristorante in corso (può richiedere 20s)...";
         const siteUrl = document.getElementById('c-url').value;
         if (!siteUrl) {
             alert("Inserisci l'URL del sito del ristorante nel campo Destinazione.");
@@ -479,7 +486,9 @@ async function handleCreateSubmit(e) {
         alert("Progetto registrato con successo!");
         closeCreationModal();
         await loadMasterData();
-    } else alert("Errore creazione.");
+    } else {
+        alert("Errore creazione.");
+    }
     
     btn.disabled = false;
     btn.innerText = originalText;
@@ -490,51 +499,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const resizer = document.getElementById('resizer');
     
-    if (!sidebar || !resizer) return;
-
-    const isCollapsed = localStorage.getItem('sidebar_collapsed') === 'true';
-    if (isCollapsed) {
-        sidebar.classList.add('sidebar-collapsed');
-    } else {
-        const savedWidth = localStorage.getItem('sidebar_width');
-        if (savedWidth) {
-            sidebar.style.width = `${savedWidth}px`;
-        }
-    }
-
-    let x = 0;
-    let w = 0;
-
-    const mouseDownHandler = (e) => {
-        x = e.clientX;
-        w = sidebar.getBoundingClientRect().width;
-
-        resizer.classList.add('resizing');
-        document.addEventListener('mousemove', mouseMoveHandler);
-        document.addEventListener('mouseup', mouseUpHandler);
-    };
-
-    const mouseMoveHandler = (e) => {
-        const dx = e.clientX - x;
-        let newWidth = w + dx;
-
-        if (newWidth < 120) {
+    if (sidebar && resizer) {
+        const isCollapsed = localStorage.getItem('sidebar_collapsed') === 'true';
+        if (isCollapsed) {
             sidebar.classList.add('sidebar-collapsed');
-            localStorage.setItem('sidebar_collapsed', 'true');
         } else {
-            sidebar.classList.remove('sidebar-collapsed');
-            newWidth = Math.min(Math.max(newWidth, 220), 480);
-            sidebar.style.width = `${newWidth}px`;
-            localStorage.setItem('sidebar_width', newWidth);
-            localStorage.setItem('sidebar_collapsed', 'false');
+            const savedWidth = localStorage.getItem('sidebar_width');
+            if (savedWidth) {
+                sidebar.style.width = `${savedWidth}px`;
+            }
         }
-    };
 
-    const mouseUpHandler = () => {
-        resizer.classList.remove('resizing');
-        document.removeEventListener('mousemove', mouseMoveHandler);
-        document.removeEventListener('mouseup', mouseUpHandler);
-    };
+        let x = 0;
+        let w = 0;
 
-    resizer.addEventListener('mousedown', mouseDownHandler);
+        const mouseDownHandler = (e) => {
+            x = e.clientX;
+            w = sidebar.getBoundingClientRect().width;
+
+            resizer.classList.add('resizing');
+            document.addEventListener('mousemove', mouseMoveHandler);
+            document.addEventListener('mouseup', mouseUpHandler);
+        };
+
+        const mouseMoveHandler = (e) => {
+            const dx = e.clientX - x;
+            let newWidth = w + dx;
+
+            if (newWidth < 120) {
+                sidebar.classList.add('sidebar-collapsed');
+                localStorage.setItem('sidebar_collapsed', 'true');
+            } else {
+                sidebar.classList.remove('sidebar-collapsed');
+                newWidth = Math.min(Math.max(newWidth, 220), 480);
+                sidebar.style.width = `${newWidth}px`;
+                localStorage.setItem('sidebar_width', newWidth);
+                localStorage.setItem('sidebar_collapsed', 'false');
+            }
+        };
+
+        const mouseUpHandler = () => {
+            resizer.classList.remove('resizing');
+            document.removeEventListener('mousemove', mouseMoveHandler);
+            document.removeEventListener('mouseup', mouseUpHandler);
+        };
+
+        resizer.addEventListener('mousedown', mouseDownHandler);
+    }
 });
