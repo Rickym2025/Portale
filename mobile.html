@@ -71,7 +71,9 @@
             </label>
             <select id="sector-advisor" onchange="highlightSuggestedSaas()" class="w-full bg-[#151522] border border-purple-500/50 rounded-xl p-3 text-sm text-white font-extrabold outline-none focus:border-purple-400">
                 <option value="">-- Mostra tutti i SaaS --</option>
-                <option value="prossimita">📡 Viaggi in Colonna / Sport / Proximity Mesh</option>
+                <option value="prossimita">📡 Viaggi in Colonna / Moto / Outdoor off-grid</option>
+                <option value="sicurezza_cantieri">🦺 Cantieri Edili &amp; Lavoratori Isolati (D.Lgs. 81/08)</option>
+                <option value="vigilanza">🛡️ Istituti di Vigilanza &amp; Ronde Notturne</option>
                 <option value="funebre">🕊️ Onoranze Funebri / Cremazioni Pet</option>
                 <option value="ristorante">🍷 Ristorante / Bar / Pizzeria</option>
                 <option value="hotel">🏨 Hotel / B&amp;B / Struttura Ricettiva</option>
@@ -94,7 +96,7 @@
 
             <div class="grid grid-cols-2 gap-2.5">
                 
-                <!-- 📡 AURA PROXIMITY (NUOVO) -->
+                <!-- 📡 AURA PROXIMITY (EVIDENZIATO IN CIANO) -->
                 <button type="button" onclick="handleSaasTap('aura', 'https://aura.rmstudio.app')" id="card-aura" class="saas-card col-span-2 p-3.5 bg-[#0e0e14] border border-cyan-500/50 rounded-2xl text-left flex items-center justify-between relative overflow-hidden shadow-lg shadow-cyan-500/10">
                     <div class="flex items-center gap-3">
                         <span class="text-2xl">📡</span>
@@ -307,6 +309,8 @@
 
             const suggestions = {
                 prossimita: ['card-aura', 'card-ares', 'card-love', 'card-drivemotion'],
+                sicurezza_cantieri: ['card-aura', 'card-free_energy', 'card-sitengine'],
+                vigilanza: ['card-aura', 'card-omniastudio', 'card-nexus'],
                 funebre: ['card-eternia', 'card-ff_edizioni', 'card-nexus', 'card-dentis'],
                 ristorante: ['card-locanda', 'card-experience', 'card-nexus', 'card-ff_edizioni'],
                 hotel: ['card-concierge24', 'card-aura', 'card-nexus', 'card-social'],
