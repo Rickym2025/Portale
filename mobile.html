@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RM Studio — Mobile Sales Pistol</title>
+    <title>RM Studio — Mobile Sales Launcher</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,291 +14,396 @@
             font-family: 'Inter', sans-serif;
             background-color: #050508;
             color: #f3f4f6;
-            font-size: 16px;
+            font-size: 15px;
             -webkit-tap-highlight-color: transparent;
         }
         .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
-        
+
         @keyframes glow-pulse {
             0%, 100% {
-                border-color: #06b6d4;
-                box-shadow: 0 0 15px rgba(6, 182, 212, 0.6), inset 0 0 10px rgba(6, 182, 212, 0.2);
-                transform: scale(1.02);
+                border-color: #38bdf8;
+                box-shadow: 0 0 15px rgba(56, 189, 248, 0.5), inset 0 0 10px rgba(56, 189, 248, 0.15);
+                transform: translateY(-2px);
             }
             50% {
-                border-color: #8b5cf6;
-                box-shadow: 0 0 25px rgba(139, 92, 246, 0.8), inset 0 0 15px rgba(139, 92, 246, 0.3);
-                transform: scale(1.04);
+                border-color: #c084fc;
+                box-shadow: 0 0 25px rgba(192, 132, 252, 0.7), inset 0 0 15px rgba(192, 132, 252, 0.25);
+                transform: translateY(-4px);
             }
         }
         .glow-suggested {
             animation: glow-pulse 2s infinite ease-in-out !important;
             border-width: 2px !important;
         }
+
         .saas-card {
-            transition: all 0.2s ease-in-out;
+            min-height: 108px;
+            transition: all 0.15s ease-in-out;
         }
         .saas-card:active {
             transform: scale(0.96);
         }
+        .saas-card.selected {
+            border-color: #a855f7 !important;
+            background: #12101e !important;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.35);
+        }
     </style>
 </head>
-<body class="p-4 min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white">
+<body class="p-4 pb-28 min-h-screen flex flex-col justify-between selection:bg-purple-600 selection:text-white">
 
     <!-- HEADER MOBILE -->
     <header class="flex items-center justify-between pb-4 border-b border-zinc-900 mb-4">
         <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-600 to-amber-500 flex items-center justify-center shadow-lg shadow-purple-600/30 shrink-0">
-                <i class="fa-solid fa-bolt text-2xl text-white"></i>
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-600 to-amber-500 flex items-center justify-center shadow-lg shadow-purple-600/30 shrink-0">
+                <i class="fa-solid fa-bolt text-xl text-white"></i>
             </div>
             <div>
-                <h1 class="font-display font-black text-white text-base leading-tight">Mobile Lead Pistol</h1>
-                <span class="text-xs text-purple-400 font-bold">RM Studio Ecosystem (19 SaaS)</span>
+                <h1 class="font-display font-black text-white text-base leading-tight">Mobile Sales Launcher</h1>
+                <span class="text-xs text-purple-400 font-bold">RM Studio • 19 SaaS Attivi</span>
             </div>
         </div>
-        <a href="index.html" class="w-11 h-11 rounded-2xl bg-zinc-900 border border-zinc-800 text-gray-300 flex items-center justify-center text-sm font-bold active:scale-95" title="Master Hub Desktop">
-            <i class="fa-solid fa-desktop text-base"></i>
-        </a>
+        <div class="flex items-center gap-2">
+            <a href="stripe-generator.html" class="w-10 h-10 rounded-xl bg-purple-600/20 border border-purple-500/40 text-purple-300 flex items-center justify-center text-sm font-bold active:scale-95" title="Generatore Stripe">
+                <i class="fa-brands fa-stripe text-base"></i>
+            </a>
+            <a href="index.html" class="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 text-gray-300 flex items-center justify-center text-sm font-bold active:scale-95" title="Master Desktop">
+                <i class="fa-solid fa-desktop text-sm"></i>
+            </a>
+        </div>
     </header>
 
     <main class="flex-1 space-y-4">
         
-        <!-- GUIDA DINAMICA SETTORE CON GLOW -->
-        <div class="bg-zinc-900/90 border border-zinc-800 p-4 rounded-2xl space-y-2">
-            <label class="block text-sm font-black uppercase tracking-wider text-purple-300 flex items-center justify-between">
-                <span>💡 Che settore ha il tuo Lead?</span>
-                <i class="fa-solid fa-wand-magic-sparkles text-amber-400 text-base"></i>
+        <!-- GUIDA DINAMICA SETTORE -->
+        <div class="bg-zinc-900/90 border border-zinc-800 p-3.5 rounded-2xl space-y-1.5 shadow-xl">
+            <label class="block text-xs font-black uppercase tracking-wider text-purple-300 flex items-center justify-between">
+                <span>💡 Di che settore si occupa il Lead?</span>
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
             </label>
-            <select id="sector-advisor" onchange="highlightSuggestedSaas()" class="w-full bg-[#151522] border border-purple-500/50 rounded-xl p-3 text-sm text-white font-extrabold outline-none focus:border-purple-400">
-                <option value="">-- Mostra tutti i SaaS --</option>
-                <option value="prossimita">📡 Viaggi in Colonna / Moto / Outdoor off-grid</option>
-                <option value="sicurezza_cantieri">🦺 Cantieri Edili &amp; Lavoratori Isolati (D.Lgs. 81/08)</option>
+            <select id="sector-advisor" onchange="highlightSuggestedSaas()" class="w-full bg-[#151520] border border-purple-500/40 rounded-xl p-3 text-xs text-white font-extrabold outline-none focus:border-purple-400">
+                <option value="">-- Mostra tutti i 19 SaaS --</option>
+                <option value="prossimita">📡 Viaggi in Colonna / Moto / Outdoor / GPS</option>
+                <option value="sicurezza_cantieri">🦺 Cantieri Edili &amp; Man-Down (D.Lgs. 81/08)</option>
                 <option value="vigilanza">🛡️ Istituti di Vigilanza &amp; Ronde Notturne</option>
-                <option value="funebre">🕊️ Onoranze Funebri / Cremazioni Pet</option>
-                <option value="ristorante">🍷 Ristorante / Bar / Pizzeria</option>
-                <option value="hotel">🏨 Hotel / B&amp;B / Struttura Ricettiva</option>
-                <option value="auto">🏎️ Concessionaria Auto / Salone Moto</option>
-                <option value="immobile">🏠 Agenzia Immobiliare</option>
-                <option value="medico">🦷 Studio Dentistico / Clinica</option>
-                <option value="legale">⚖️ Studio Legale / Avvocato</option>
-                <option value="palestra">🏋️ Palestra / Centro Fitness</option>
-                <option value="ecommerce">📦 E-Commerce / Brand Prodotto</option>
-                <option value="evento">💍 Matrimoni / Eventi / Feste</option>
-                <option value="azienda">🏢 Azienda / Attività Generica</option>
+                <option value="funebre">🕊️ Onoranze Funebri &amp; Pet Memorials</option>
+                <option value="ristorante">🍽️ Ristoranti / Trattorie / Pizzerie</option>
+                <option value="hotel">🏨 Hotel / B&amp;B / Agenzie Turistiche</option>
+                <option value="auto">🏎️ Concessionarie Auto &amp; Saloni Moto</option>
+                <option value="immobile">🏠 Agenzie Immobiliari &amp; Realtors</option>
+                <option value="medico">🦷 Studi Dentistici &amp; Cliniche</option>
+                <option value="legale">⚖️ Studi Legali &amp; Avvocati</option>
+                <option value="palestra">🏋️ Palestre &amp; Personal Trainer</option>
+                <option value="ecommerce">📦 E-Commerce &amp; Brand di Prodotto</option>
+                <option value="evento">💍 Matrimoni &amp; Wedding Planner</option>
+                <option value="azienda">🏢 Professionisti &amp; Landing Page</option>
             </select>
         </div>
 
-        <!-- ECOSISTEMA TUTTI I SAAS -->
-        <div>
-            <label class="block text-xs font-black uppercase tracking-widest text-gray-400 mb-3">
-                Seleziona il Prodotto (1-Tap per Aprire):
-            </label>
+        <!-- GRIGLIA UNIFORME E REGOLARE (2 COLONNE PERFETTE) -->
+        <div class="grid grid-cols-2 gap-2.5" id="saas-grid">
+            
+            <!-- 1. AURA -->
+            <button type="button" onclick="selectSaas('aura')" id="card-aura" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
+                    <span class="text-2xl">📡</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">Radar</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">AURA Proximity</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Mesh GPS &amp; Co-Pilota</span>
+                </div>
+            </button>
 
-            <div class="grid grid-cols-2 gap-2.5">
-                
-                <!-- 📡 AURA PROXIMITY (EVIDENZIATO IN CIANO) -->
-                <button type="button" onclick="handleSaasTap('aura', 'https://aura.rmstudio.app')" id="card-aura" class="saas-card col-span-2 p-3.5 bg-[#0e0e14] border border-cyan-500/50 rounded-2xl text-left flex items-center justify-between relative overflow-hidden shadow-lg shadow-cyan-500/10">
-                    <div class="flex items-center gap-3">
-                        <span class="text-2xl">📡</span>
-                        <div>
-                            <span class="font-black text-cyan-300 text-sm block">AURA Proximity</span>
-                            <span class="text-xs text-cyan-400 font-bold">Virtual Mesh &amp; Radar P2P</span>
-                        </div>
-                    </div>
-                    <span class="text-[10px] font-black uppercase px-2 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">100% Web</span>
-                </button>
-
-                <!-- 🕊️ ETERNIA -->
-                <button type="button" onclick="handleSaasTap('eternia', 'https://eternia.rmstudio.app')" id="card-eternia" class="saas-card p-3.5 bg-[#0e0e14] border border-amber-500/40 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+            <!-- 2. ETERNIA -->
+            <button type="button" onclick="selectSaas('eternia')" id="card-eternia" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
                     <span class="text-2xl">🕊️</span>
-                    <span class="font-black text-amber-200 text-sm">ETERNIA</span>
-                    <span class="text-xs text-amber-400 font-bold">Memoriali QR &amp; Pet</span>
-                </button>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30">Memorial</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">ETERNIA</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Memoriali QR &amp; Pet</span>
+                </div>
+            </button>
 
-                <!-- 🍽️ LOCANDA DIGITALE -->
-                <button type="button" onclick="handleSaasTap('locanda', 'https://locandadigitale.rmstudio.app')" id="card-locanda" class="saas-card p-3.5 bg-[#0e0e14] border border-amber-500/40 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+            <!-- 3. LOCANDA DIGITALE -->
+            <button type="button" onclick="selectSaas('locanda')" id="card-locanda" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
                     <span class="text-2xl">🍽️</span>
-                    <span class="font-black text-amber-200 text-sm">Locanda Digitale</span>
-                    <span class="text-xs text-amber-400 font-bold">Video 3D &amp; Menu QR</span>
-                </button>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/30">Horeca</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">Locanda Digitale</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Video 3D &amp; PicMenu QR</span>
+                </div>
+            </button>
 
-                <button type="button" onclick="handleSaasTap('love', 'https://love.rmstudio.app')" id="card-love" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+            <!-- 4. LOVE -->
+            <button type="button" onclick="selectSaas('love')" id="card-love" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
                     <span class="text-2xl">💍</span>
-                    <span class="font-black text-white text-sm">LOVE</span>
-                    <span class="text-xs text-amber-300 font-bold">Partecipazioni &amp; Festa</span>
-                </button>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-pink-500/10 text-pink-300 border border-pink-500/30">Wedding</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">LOVE</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Partecipazioni &amp; Festa</span>
+                </div>
+            </button>
 
-                <button type="button" onclick="handleSaasTap('experience', 'https://experience.rmstudio.app')" id="card-experience" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
-                    <span class="text-2xl">🍷</span>
-                    <span class="font-black text-white text-sm">Experience</span>
-                    <span class="text-xs text-amber-400 font-bold">Smart Page Ristoranti</span>
-                </button>
-
-                <button type="button" onclick="handleSaasTap('social', 'https://social.rmstudio.app')" id="card-social" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
-                    <span class="text-2xl">📊</span>
-                    <span class="font-black text-white text-sm">SocialEngine</span>
-                    <span class="text-xs text-indigo-400 font-bold">Carousel AI Creator</span>
-                </button>
-
-                <button type="button" onclick="handleSaasTap('nexus', 'https://nexus.rmstudio.app')" id="card-nexus" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
-                    <span class="text-2xl">🤖</span>
-                    <span class="font-black text-white text-sm">NexusAI</span>
-                    <span class="text-xs text-cyan-400 font-bold">Sales Overlay Chatbot</span>
-                </button>
-
-                <button type="button" onclick="handleSaasTap('drivemotion', 'https://drivemotion.rmstudio.app')" id="card-drivemotion" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
-                    <span class="text-2xl">🏎️</span>
-                    <span class="font-black text-white text-sm">DriveMotion</span>
-                    <span class="text-xs text-cyan-400 font-bold">Video Auto Sfondo AI</span>
-                </button>
-
-                <button type="button" onclick="handleSaasTap('hometour', 'https://hometour.rmstudio.app')" id="card-hometour" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
-                    <span class="text-2xl">🏠</span>
-                    <span class="font-black text-white text-sm">HomeTour</span>
-                    <span class="text-xs text-emerald-400 font-bold">Video Immobili 3D</span>
-                </button>
-
-                <button type="button" onclick="handleSaasTap('dentis', 'https://dentis.rmstudio.app')" id="card-dentis" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+            <!-- 5. DENTIS AI -->
+            <button type="button" onclick="selectSaas('dentis')" id="card-dentis" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
                     <span class="text-2xl">🦷</span>
-                    <span class="font-black text-white text-sm">Dentis AI</span>
-                    <span class="text-xs text-cyan-300 font-bold">Voice AI Dentisti H24</span>
-                </button>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">Voice AI</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">Dentis AI</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Receptionist Dentisti</span>
+                </div>
+            </button>
 
-                <button type="button" onclick="handleSaasTap('lexis', 'https://lexis.rmstudio.app')" id="card-lexis" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+            <!-- 6. LEXIS AI -->
+            <button type="button" onclick="selectSaas('lexis')" id="card-lexis" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
                     <span class="text-2xl">⚖️</span>
-                    <span class="font-black text-white text-sm">Lexis AI</span>
-                    <span class="text-xs text-amber-300 font-bold">Voice AI Studi Legali</span>
-                </button>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-300 border border-yellow-500/30">Voice AI</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">Lexis AI</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Segreteria Legale H24</span>
+                </div>
+            </button>
 
-                <button type="button" onclick="handleSaasTap('concierge24', 'https://concierge24.rmstudio.app')" id="card-concierge24" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+            <!-- 7. CONCIERGE24 -->
+            <button type="button" onclick="selectSaas('concierge')" id="card-concierge" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
                     <span class="text-2xl">🏨</span>
-                    <span class="font-black text-white text-sm">Concierge24</span>
-                    <span class="text-xs text-orange-400 font-bold">Voice AI Hotel/B&amp;B</span>
-                </button>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-orange-500/10 text-orange-300 border border-orange-500/30">Voice AI</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">Concierge24</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Assistente Hotel &amp; B&amp;B</span>
+                </div>
+            </button>
 
-                <button type="button" onclick="handleSaasTap('ares', 'https://ares.rmstudio.app')" id="card-ares" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+            <!-- 8. ARESAI -->
+            <button type="button" onclick="selectSaas('ares')" id="card-ares" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
                     <span class="text-2xl">🏋️</span>
-                    <span class="font-black text-white text-sm">AresAI</span>
-                    <span class="text-xs text-purple-400 font-bold">Voice Trainer &amp; Dieta</span>
-                </button>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/30">Fitness</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">AresAI</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Voice Coach &amp; Dieta AI</span>
+                </div>
+            </button>
 
-                <button type="button" onclick="handleSaasTap('vision', 'https://vision.rmstudio.app')" id="card-vision" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+            <!-- 9. SMART EXPERIENCE -->
+            <button type="button" onclick="selectSaas('experience')" id="card-experience" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
+                    <span class="text-2xl">🍷</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">Horeca</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">Experience</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Smart Page Ristoranti</span>
+                </div>
+            </button>
+
+            <!-- 10. SOCIALENGINE -->
+            <button type="button" onclick="selectSaas('social')" id="card-social" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
+                    <span class="text-2xl">📊</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/30">Social</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">SocialEngine</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Carousel Creator AI</span>
+                </div>
+            </button>
+
+            <!-- 11. NEXUSAI -->
+            <button type="button" onclick="selectSaas('nexus')" id="card-nexus" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
+                    <span class="text-2xl">🤖</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">Chatbot</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">NexusAI</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Sales Overlay Web</span>
+                </div>
+            </button>
+
+            <!-- 12. DRIVEMOTION -->
+            <button type="button" onclick="selectSaas('drivemotion')" id="card-drivemotion" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
+                    <span class="text-2xl">🏎️</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">Video</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">DriveMotion</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Video Auto Sfondo AI</span>
+                </div>
+            </button>
+
+            <!-- 13. HOMETOUR -->
+            <button type="button" onclick="selectSaas('hometour')" id="card-hometour" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
+                    <span class="text-2xl">🏠</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">RealEstate</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">HomeTour</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Reel Immobiliari 3D</span>
+                </div>
+            </button>
+
+            <!-- 14. VISION UGC -->
+            <button type="button" onclick="selectSaas('vision')" id="card-vision" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
                     <span class="text-2xl">🎬</span>
-                    <span class="font-black text-white text-sm">Vision UGC</span>
-                    <span class="text-xs text-pink-400 font-bold">Model Virtual Camila</span>
-                </button>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-pink-500/10 text-pink-300 border border-pink-500/30">Video UGC</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">Vision UGC</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Influencer Virtuali</span>
+                </div>
+            </button>
 
-                <button type="button" onclick="handleSaasTap('sitengine', 'https://sitengine.rmstudio.app')" id="card-sitengine" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+            <!-- 15. SITEENGINE PRO -->
+            <button type="button" onclick="selectSaas('sitengine')" id="card-sitengine" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
                     <span class="text-2xl">🌐</span>
-                    <span class="font-black text-white text-sm">SiteEngine</span>
-                    <span class="text-xs text-blue-400 font-bold">Landing Professionisti</span>
-                </button>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-300 border border-blue-500/30">Web</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">SiteEngine</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Landing Professionisti</span>
+                </div>
+            </button>
 
-                <button type="button" onclick="handleSaasTap('omniastudio', 'https://omniastudio.rmstudio.app')" id="card-omniastudio" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+            <!-- 16. OMNIASTUDIO -->
+            <button type="button" onclick="selectSaas('omniastudio')" id="card-omniastudio" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
                     <span class="text-2xl">💼</span>
-                    <span class="font-black text-white text-sm">OmniaStudio</span>
-                    <span class="text-xs text-[#a855f7] font-bold">IA Offline Privata PC</span>
-                </button>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/30">Software</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">OmniaStudio</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">IA Offline 100% Locale</span>
+                </div>
+            </button>
 
-                <button type="button" onclick="handleSaasTap('ff_edizioni', 'https://ff-edizioni.rmstudio.app')" id="card-ff_edizioni" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
-                    <span class="text-2xl">🎵</span>
-                    <span class="font-black text-white text-sm">FF Edizioni</span>
-                    <span class="text-xs text-purple-400 font-bold">Jingle &amp; Canzoni Custom</span>
-                </button>
-
-                <button type="button" onclick="handleSaasTap('free_energy', 'https://free-energy.rmstudio.app')" id="card-free_energy" class="saas-card p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+            <!-- 17. FREE ENERGY -->
+            <button type="button" onclick="selectSaas('free_energy')" id="card-free_energy" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
                     <span class="text-2xl">☀️</span>
-                    <span class="font-black text-white text-sm">Free Energy</span>
-                    <span class="text-xs text-emerald-400 font-bold">CRM PV Planner CAD</span>
-                </button>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">Solar B2B</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">Free Energy</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">CAD Fotovoltaico &amp; CRM</span>
+                </div>
+            </button>
 
-                <button type="button" onclick="handleSaasTap('velomotion', 'https://velomotion.rmstudio.app')" id="card-velomotion" class="saas-card col-span-2 p-3.5 bg-[#0e0e14] border border-zinc-800 rounded-2xl text-left flex flex-col gap-1 relative overflow-hidden">
+            <!-- 18. VELOMOTION -->
+            <button type="button" onclick="selectSaas('velomotion')" id="card-velomotion" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
                     <span class="text-2xl">⚡</span>
-                    <span class="font-black text-white text-sm">VeloMotion (Sblocco Bosch BES3)</span>
-                    <span class="text-xs text-yellow-400 font-bold">Software sicuro ed invisibile</span>
-                </button>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-yellow-500/10 text-yellow-300 border border-yellow-500/30">E-Bike</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">VeloMotion</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Sblocco Bosch BES3</span>
+                </div>
+            </button>
 
-            </div>
-        </div>
+            <!-- 19. FF EDIZIONI -->
+            <button type="button" onclick="selectSaas('ff_edizioni')" id="card-ff_edizioni" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between col-span-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-2xl">🎵</span>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded bg-purple-500/15 text-purple-300 border border-purple-500/30">Musica SIAE</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block">FF Edizioni Musicali</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block">Canzoni Custom, Jingle Radio/Social d'Autore con il M° Fausto Fusetti</span>
+                </div>
+            </button>
 
-        <!-- LANDING PAGE UFFICIALE SELEZIONATA -->
-        <div class="flex justify-between items-center bg-zinc-900/60 border border-zinc-800 px-3.5 py-2 rounded-xl text-xs">
-            <span class="text-gray-400 font-semibold" id="saas-desc-label">Radar di Prossimità &amp; Virtual Mesh P2P</span>
-            <a id="saas-landing-link" href="https://aura.rmstudio.app" target="_blank" class="text-cyan-300 font-bold hover:underline flex items-center gap-1 text-xs">
-                <span>🔗 Apri Landing</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-            </a>
-        </div>
-
-        <!-- ⚡ SEZIONE GENERATORE RAPIDO STRIPE ON-THE-FLY -->
-        <div class="p-4 bg-gradient-to-br from-purple-950/40 via-zinc-900 to-zinc-950 border border-purple-500/40 rounded-2xl space-y-3">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-black uppercase tracking-wider text-purple-300 flex items-center gap-2">
-                    <i class="fa-brands fa-stripe text-xl text-purple-400"></i> Generatore Link Stripe Istantaneo
-                </span>
-                <a href="stripe-generator.html" class="text-[10px] text-amber-400 font-bold underline">Apri Pagina Dedicata ↗</a>
-            </div>
-            <p class="text-xs text-gray-400 leading-snug">
-                Crea qualsiasi importo al volo senza creare prodotti su Stripe.
-            </p>
         </div>
 
     </main>
 
-    <footer class="pt-4 text-center text-xs text-gray-500 font-bold">
-        RM Studio Mobile Sales Launcher © 2026
-    </footer>
+    <!-- BARRA D'AZIONE RAPIDA STICKY IN BASSO -->
+    <div class="fixed bottom-0 left-0 right-0 bg-[#08080e]/95 border-t border-zinc-800 backdrop-blur-xl p-3 z-50">
+        <div class="max-w-md mx-auto flex items-center justify-between gap-2">
+            <div class="min-w-0 flex-1">
+                <span id="bar-saas-title" class="font-black text-white text-xs block truncate">AURA Proximity</span>
+                <span id="bar-saas-url" class="text-[10px] text-purple-400 font-mono block truncate">https://aura.rmstudio.app</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+                <button onclick="copyCurrentSaasUrl()" class="px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1">
+                    <i class="fa-solid fa-copy"></i>
+                </button>
+                <a id="bar-open-btn" href="https://aura.rmstudio.app" target="_blank" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl text-xs font-black uppercase tracking-wider transition shadow-lg flex items-center gap-1.5">
+                    <span>Apri</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST COPIA -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-purple-600 text-white text-xs font-black px-4 py-2 rounded-full shadow-2xl z-50 hidden">
+        ✓ Link copiato negli appunti!
+    </div>
 
     <script>
-        const SAAS_CONFIG = {
-            aura: { landing: "https://aura.rmstudio.app", desc: "Radar di Prossimità & Virtual Mesh P2P" },
-            eternia: { landing: "https://eternia.rmstudio.app", desc: "Memoriali QR d'Autore & Pet Memorials" },
-            locanda: { landing: "https://locandadigitale.rmstudio.app", desc: "Video 3D Piatti & Visual Menu QR" },
-            experience: {
-                title: "Dati Smart Experience Page (Ristoranti):",
-                endpoint: "https://n8n.rmstudio.app/webhook/omnia-taste-generate",
-                landing: "https://experience.rmstudio.app",
-                desc: "Smart Page Ristoranti",
-                showProduct: false,
-                lblUrl: "URL Sito Web Ristorante:",
-                lblName: "Nome Ristorante / Titolare:"
-            },
-            social: {
-                title: "Dati Carousel Creator (SocialEngine):",
-                endpoint: "https://n8n.rmstudio.app/webhook/omnia-quick-generate",
-                landing: "https://social.rmstudio.app",
-                desc: "Carousel Creator (SocialEngine)",
-                showProduct: true,
-                lblUrl: "URL Sito Web o Link Social Cliente:",
-                lblName: "Nome Brand / Attività:"
-            },
-            nexus: {
-                title: "Dati NexusAI Sales Overlay:",
-                endpoint: "https://n8n.rmstudio.app/webhook/chatbot-creator",
-                landing: "https://nexus.rmstudio.app",
-                desc: "AI Sales Overlay Chatbot",
-                showProduct: false,
-                lblUrl: "URL Sito Web del Cliente:",
-                lblName: "Nome Azienda / Brand:"
-            },
-            love: { landing: "https://love.rmstudio.app", desc: "Partecipazioni Digitali & Maxischermo Festa" },
-            ares: { landing: "https://ares.rmstudio.app", desc: "Fitness RPG, Voice AI & Maxischermo TV" },
-            omniastudio: { landing: "https://omniastudio.rmstudio.app", desc: "IA Offline Privata 100%" },
-            sitengine: { landing: "https://sitengine.rmstudio.app", desc: "Landing Page Professionisti" },
-            vision: { landing: "https://vision.rmstudio.app", desc: "Video Influencer AI" },
-            hometour: { landing: "https://hometour.rmstudio.app", desc: "Video Regia AI Immobili" },
-            drivemotion: { landing: "https://drivemotion.rmstudio.app", desc: "Video Auto Sfondo AI" },
-            dentis: { landing: "https://dentis.rmstudio.app", desc: "Voice AI Dentis" },
-            lexis: { landing: "https://lexis.rmstudio.app", desc: "Voice AI Lexis" },
-            concierge24: { landing: "https://concierge24.rmstudio.app", desc: "Voice AI Hotel" },
-            ff_edizioni: { landing: "https://ff-edizioni.rmstudio.app", desc: "Canzoni & Jingle Custom" },
-            free_energy: { landing: "https://free-energy.rmstudio.app", desc: "Fotovoltaico B2B CRM" },
-            velomotion: { landing: "https://velomotion.rmstudio.app", desc: "Sblocco Bosch BES3" }
+        const SAAS_CATALOG = {
+            aura: { name: "AURA Proximity", url: "https://aura.rmstudio.app", desc: "Radar Mesh P2P & Co-Pilota Vocale" },
+            eternia: { name: "ETERNIA", url: "https://eternia.rmstudio.app", desc: "Memoriali QR d'Autore & Pet" },
+            locanda: { name: "Locanda Digitale", url: "https://locandadigitale.rmstudio.app", desc: "Video 3D Piatti & Visual Menu QR" },
+            love: { name: "LOVE", url: "https://love.rmstudio.app", desc: "Partecipazioni Digitali & Maxischermo" },
+            dentis: { name: "Dentis AI", url: "https://dentis.rmstudio.app", desc: "Receptionist Dentisti H24" },
+            lexis: { name: "Lexis AI", url: "https://lexis.rmstudio.app", desc: "Segreteria Telefonica Legale H24" },
+            concierge: { name: "Concierge24", url: "https://concierge24.rmstudio.app", desc: "Assistente Vocale Hotel & B&B" },
+            ares: { name: "AresAI", url: "https://ares.rmstudio.app", desc: "Fitness RPG, Voice Coach & Dieta" },
+            experience: { name: "Smart Experience", url: "https://experience.rmstudio.app", desc: "Smart Experience Ristoranti" },
+            social: { name: "SocialEngine", url: "https://social.rmstudio.app", desc: "Carousel Creator AI" },
+            nexus: { name: "NexusAI", url: "https://nexus.rmstudio.app", desc: "Sales Overlay Chatbot" },
+            drivemotion: { name: "DriveMotion", url: "https://drivemotion.rmstudio.app", desc: "Video Auto Sfondo AI" },
+            hometour: { name: "HomeTour", url: "https://hometour.rmstudio.app", desc: "Reel Immobiliari 3D" },
+            vision: { name: "Vision UGC", url: "https://vision.rmstudio.app", desc: "Influencer & Testimonial Virtuali" },
+            sitengine: { name: "SiteEngine Pro", url: "https://sitengine.rmstudio.app", desc: "Landing Professionisti" },
+            omniastudio: { name: "OmniaStudio", url: "https://omniastudio.rmstudio.app", desc: "IA Offline Privata 100%" },
+            free_energy: { name: "Free Energy", url: "https://free-energy.rmstudio.app", desc: "CAD Fotovoltaico & CRM B2B" },
+            velomotion: { name: "VeloMotion", url: "https://velomotion.rmstudio.app", desc: "Sblocco Bosch BES3 Sicuro" },
+            ff_edizioni: { name: "FF Edizioni", url: "https://ff-edizioni.rmstudio.app", desc: "Musica Custom & Jingle SIAE" }
         };
 
-        function handleSaasTap(key, landingUrl) {
-            document.getElementById('saas-desc-label').innerText = SAAS_CONFIG[key]?.desc || key;
-            document.getElementById('saas-landing-link').href = landingUrl;
-            window.open(landingUrl, '_blank');
+        let currentActiveSaas = "aura";
+
+        function selectSaas(key) {
+            currentActiveSaas = key;
+            const item = SAAS_CATALOG[key];
+            if (!item) return;
+
+            document.querySelectorAll('.saas-card').forEach(c => c.classList.remove('selected'));
+            const selectedCard = document.getElementById(`card-${key}`);
+            if (selectedCard) selectedCard.classList.add('selected');
+
+            document.getElementById('bar-saas-title').innerText = item.name;
+            document.getElementById('bar-saas-url').innerText = item.url;
+            document.getElementById('bar-open-btn').href = item.url;
+        }
+
+        function copyCurrentSaasUrl() {
+            const url = SAAS_CATALOG[currentActiveSaas]?.url || "https://rmstudio.app";
+            navigator.clipboard.writeText(url).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.remove('hidden');
+                setTimeout(() => toast.classList.add('hidden'), 2000);
+            });
         }
 
         function highlightSuggestedSaas() {
@@ -307,29 +412,37 @@
 
             if (!sector) return;
 
-            const suggestions = {
-                prossimita: ['card-aura', 'card-ares', 'card-love', 'card-drivemotion'],
+            const map = {
+                prossimita: ['card-aura', 'card-ares', 'card-drivemotion'],
                 sicurezza_cantieri: ['card-aura', 'card-free_energy', 'card-sitengine'],
                 vigilanza: ['card-aura', 'card-omniastudio', 'card-nexus'],
-                funebre: ['card-eternia', 'card-ff_edizioni', 'card-nexus', 'card-dentis'],
-                ristorante: ['card-locanda', 'card-experience', 'card-nexus', 'card-ff_edizioni'],
-                hotel: ['card-concierge24', 'card-aura', 'card-nexus', 'card-social'],
-                auto: ['card-drivemotion', 'card-aura', 'card-nexus', 'card-dentis'],
-                immobile: ['card-hometour', 'card-nexus', 'card-sitengine', 'card-social'],
-                medico: ['card-dentis', 'card-nexus', 'card-sitengine', 'card-social'],
-                legale: ['card-lexis', 'card-omniastudio', 'card-nexus', 'card-sitengine'],
-                palestra: ['card-ares', 'card-aura', 'card-nexus', 'card-vision'],
-                ecommerce: ['card-vision', 'card-nexus', 'card-ff_edizioni', 'card-social'],
-                evento: ['card-love', 'card-aura', 'card-ff_edizioni', 'card-vision'],
-                azienda: ['card-omniastudio', 'card-nexus', 'card-dentis', 'card-sitengine']
+                funebre: ['card-eternia', 'card-ff_edizioni', 'card-nexus'],
+                ristorante: ['card-locanda', 'card-experience', 'card-ff_edizioni'],
+                hotel: ['card-concierge', 'card-aura', 'card-social'],
+                auto: ['card-drivemotion', 'card-aura', 'card-nexus'],
+                immobile: ['card-hometour', 'card-sitengine', 'card-social'],
+                medico: ['card-dentis', 'card-nexus', 'card-sitengine'],
+                legale: ['card-lexis', 'card-omniastudio', 'card-sitengine'],
+                palestra: ['card-ares', 'card-aura', 'card-vision'],
+                ecommerce: ['card-vision', 'card-nexus', 'card-ff_edizioni'],
+                evento: ['card-love', 'card-aura', 'card-ff_edizioni'],
+                azienda: ['card-sitengine', 'card-nexus', 'card-omniastudio']
             };
 
-            const targetCardIds = suggestions[sector] || ['card-aura', 'card-eternia'];
-            targetCardIds.forEach(id => {
-                const card = document.getElementById(id);
-                if (card) card.classList.add('glow-suggested');
+            const targets = map[sector] || ['card-aura', 'card-eternia'];
+            targets.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('glow-suggested');
             });
+
+            // Seleziona in automatico il primo consigliato nella barra
+            const firstKey = targets[0]?.replace('card-', '');
+            if (firstKey) selectSaas(firstKey);
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            selectSaas('aura');
+        });
     </script>
 </body>
 </html>
