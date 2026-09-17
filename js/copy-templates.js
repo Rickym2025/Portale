@@ -1,11 +1,18 @@
 // GENERATORE NEUROMARKETING MESSAGGI 1-CLICK • RM STUDIO
 
 function generateWhatsAppCopy(item) {
-    const name = item.client_name || 'Titolare';
+    const name = item.client_name || 'Architetto';
     const title = item.title || 'Progetto';
     const link = item.portal_type === 'vision' 
         ? `${window.location.origin}/vision-preview?token=${item.token}`
-        : `https://portale.rmstudio.app/view?id=${item.id}`;
+        : (item.portal_type === 'forma_materia' 
+            ? (item.content_url || `https://formamateria.rmstudio.app/studio`)
+            : `https://portale.rmstudio.app/view?id=${item.id}`);
+
+    // 🏛️ Messaggio personalizzato Forma & Materia (Architettura & Design)
+    if (item.portal_type === 'forma_materia') {
+        return `Ciao ${name}! 👋\n\nHo preparato questo spazio di lavoro riservato per il tuo studio su *Forma & Materia*:\n👉 ${link}\n\nÈ una piattaforma neurale che trasforma qualsiasi schizzo a mano libera o disegno CAD in render fotorealistici 4K in 20 secondi. La cosa più comoda è che legge in automatico anche le frecce e le note a penna che scrivi sul foglio!\n\nÈ 100% web, puoi provarlo anche da tablet o smartphone. Fammi sapere cosa ne pensi! 🏛️✨`;
+    }
 
     // 📡 Messaggio personalizzato AURA Proximity
     if (item.portal_type === 'aura') {
@@ -22,11 +29,18 @@ function generateWhatsAppCopy(item) {
 }
 
 function generateEmailCopy(item) {
-    const name = item.client_name || 'Cliente';
+    const name = item.client_name || 'Architetto';
     const title = item.title || 'Progetto';
     const link = item.portal_type === 'vision' 
         ? `${window.location.origin}/vision-preview?token=${item.token}`
-        : `https://portale.rmstudio.app/view?id=${item.id}`;
+        : (item.portal_type === 'forma_materia' 
+            ? (item.content_url || `https://formamateria.rmstudio.app/studio`)
+            : `https://portale.rmstudio.app/view?id=${item.id}`);
+
+    // 🏛️ Email personalizzata Forma & Materia (Architettura & Design)
+    if (item.portal_type === 'forma_materia') {
+        return `OGGETTO: 🏛️ Studio di Rendering Neurale Attivo - ${title}\n\nGentile ${name},\n\nAbbiamo attivato l'ambiente di lavoro dedicato per "${title}" su Forma & Materia.\n\nPuoi accedere direttamente senza installare alcun software dal link riservato:\n${link}\n\nIl motore consente di caricare schizzi a matita, planimetrie o wireframe CAD e ottenere render fotorealistici in 4K ad alta fedeltà, preservando l'esatta geometria e interpretando automaticamente le annotazioni a penna.\n\nRestiamo a tua disposizione per qualsiasi supporto o prova personalizzata.\n\nUn cordiale saluto,\nRiccardo Modena | RM Studio`;
+    }
 
     // 📡 Email personalizzata AURA Proximity
     if (item.portal_type === 'aura') {
