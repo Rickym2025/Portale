@@ -109,7 +109,7 @@
           </a>
         </nav>
 
-        <!-- ⚡ CREA PROGETTO RAPIDO (CON AURA & LOCANDA) -->
+        <!-- ⚡ CREA PROGETTO RAPIDO (CON FORMA & MATERIA) -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-xs uppercase font-bold text-purple-400 tracking-wider mb-2 flex items-center justify-between sidebar-text">
             <span>+ Crea Progetto Rapido</span>
@@ -117,6 +117,11 @@
           </div>
           
           <div class="space-y-1 font-semibold text-sm">
+            <!-- ⚡ FORMA & MATERIA (20° SAAS) -->
+            <button onclick="quickOpenCreate('forma_materia')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold" title="Forma & Materia (Rendering Neurale 4K)">
+              <span class="shrink-0 text-base">🏛️</span> <span class="sidebar-text">Forma &amp; Materia</span>
+            </button>
+
             <!-- ⚡ AURA PROXIMITY -->
             <button onclick="quickOpenCreate('aura')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold" title="AURA Proximity (Virtual Mesh Radar)">
               <span class="shrink-0 text-base">📡</span> <span class="sidebar-text">AURA Proximity</span>
@@ -170,14 +175,25 @@
           </div>
         </div>
 
-        <!-- 🗄️ SEZIONE SUPABASE PROJECTS (I 6 ACCOUNT UFFICIALI) -->
+        <!-- 🗄️ SEZIONE SUPABASE PROJECTS (I 7 ACCOUNT UFFICIALI) -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-[11px] uppercase font-bold text-gray-500 tracking-wider mb-2 flex items-center justify-between sidebar-text">
-            <span>Supabase Projects (6 Account)</span> <i class="fa-solid fa-database text-xs"></i>
+            <span>Supabase Projects (7 Account)</span> <i class="fa-solid fa-database text-xs"></i>
           </div>
           
           <div class="space-y-1 text-xs">
-            <!-- 1. Modena -->
+            <!-- 1. Lamesola Riccardo (Forma & Materia) -->
+            <details class="group">
+                <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
+                    <span class="truncate sidebar-text">lamesola.riccardo@...</span>
+                    <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
+                </summary>
+                <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 sidebar-text">
+                    <a href="https://supabase.com/dashboard/project/scoiflppeeosbknxeslw" target="_blank" class="block text-amber-400 font-bold hover:underline">🏛️ Forma &amp; Materia</a>
+                </div>
+            </details>
+
+            <!-- 2. Modena -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">modena.riccardo@...</span>
@@ -189,7 +205,7 @@
                 </div>
             </details>
 
-            <!-- 2. Bottega -->
+            <!-- 3. Bottega -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">labottegadeldelta@...</span>
@@ -201,7 +217,7 @@
                 </div>
             </details>
 
-            <!-- 3. Turismo -->
+            <!-- 4. Turismo -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">assistente.turismo@...</span>
@@ -213,7 +229,7 @@
                 </div>
             </details>
 
-            <!-- 4. SmartAI -->
+            <!-- 5. SmartAI -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">smartai.riccardo@...</span>
@@ -225,7 +241,7 @@
                 </div>
             </details>
 
-            <!-- 5. FF Edizioni -->
+            <!-- 6. FF Edizioni -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">ff.edizioni@...</span>
@@ -237,7 +253,7 @@
                 </div>
             </details>
 
-            <!-- 6. Lamesola Shop -->
+            <!-- 7. Lamesola Shop -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">lamesolashop@...</span>
@@ -254,15 +270,16 @@
         <!-- 🐙 SEZIONE GITHUB REPOSITORIES -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-[11px] uppercase font-bold text-gray-500 tracking-wider mb-2 flex items-center justify-between sidebar-text">
-            <span>GitHub Repos</span> <i class="fa-brands fa-github text-xs"></i>
+            <span>GitHub Repos (19 Repo)</span> <i class="fa-brands fa-github text-xs"></i>
           </div>
 
           <details class="group">
             <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between text-xs" title="GitHub Repositories">
-                <span class="sidebar-text">Rickym2025 (18 Repo)</span>
+                <span class="sidebar-text">Rickym2025</span>
                 <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
             </summary>
             <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 max-h-48 overflow-y-auto text-[11px] sidebar-text">
+                <a href="https://github.com/Rickym2025/Forma-Materia" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🏛️ forma-materia</a>
                 <a href="https://github.com/Rickym2025/aura" target="_blank" class="block text-cyan-400 font-bold hover:underline truncate">📡 aura</a>
                 <a href="https://github.com/Rickym2025/locandadigitale" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🍽️ locandadigitale</a>
                 <a href="https://github.com/Rickym2025/eternia" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🕊️ eternia</a>
@@ -311,7 +328,7 @@
         <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
             <div>
               <h1 class="text-2xl md:text-3xl font-display font-black text-white">Master <span class="grad-text">Command Center</span></h1>
-              <p class="text-sm text-gray-400 mt-1">Gestisci le proposte e i pagamenti di tutti i SaaS RM Studio in tempo reale.</p>
+              <p class="text-sm text-gray-400 mt-1">Gestisci le proposte e i pagamenti di tutti i 20 SaaS RM Studio in tempo reale.</p>
             </div>
             <div class="flex items-center gap-3">
               <button onclick="openCreationModal()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-purple-600/20 active:scale-95">
@@ -340,12 +357,13 @@
             </div>
         </div>
 
-        <!-- FILTRI PRODOTTI (CON AURA & LOCANDA) -->
+        <!-- FILTRI PRODOTTI (CON FORMA & MATERIA) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">PRODOTTO / CATEGORIA</label>
                 <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
-                    <option value="all">Tutti i Prodotti (19)</option>
+                    <option value="all">Tutti i Prodotti (20)</option>
+                    <option value="forma_materia">🏛️ Forma &amp; Materia (Rendering Neurale 4K)</option>
                     <option value="aura">📡 AURA Proximity (Virtual Mesh Radar)</option>
                     <option value="locanda">🍽️ Locanda Digitale (Video 3D &amp; Menu)</option>
                     <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
@@ -431,7 +449,6 @@
 
       <form id="create-project-form" onsubmit="handleCreateSubmit(event)" class="space-y-4">
         
-        <!-- SELETTORE RISTORANTE DA FOGLIO GOOGLE -->
         <div id="experience-sheet-select-box" class="hidden p-3.5 bg-purple-950/30 border border-purple-500/30 rounded-2xl">
             <label class="block text-xs font-extrabold uppercase text-purple-300 mb-1.5 flex items-center justify-between">
                 <span>📊 Seleziona da Foglio Google Experience</span>
@@ -444,12 +461,12 @@
 
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Nome Cliente / Azienda</label>
-            <input type="text" id="c-name" required placeholder="Es. Team Vacanze Dolomiti o Mario Rossi" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+            <input type="text" id="c-name" required placeholder="Es. Studio Tecnico Arch. Rossi" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
         </div>
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Email</label>
-                <input type="email" id="c-email" placeholder="cliente@email.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+                <input type="email" id="c-email" placeholder="studio@email.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Telefono / WhatsApp</label>
@@ -459,16 +476,17 @@
         <div class="grid grid-cols-3 gap-4">
             <div class="col-span-2">
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Titolo Servizio / Progetto</label>
-                <input type="text" id="c-title" required value="AURA • Proximity Mesh Radar" placeholder="Titolo" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+                <input type="text" id="c-title" required value="Forma & Materia • Atelier Pro 4K" placeholder="Titolo" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prezzo (€)</label>
-                <input type="number" id="c-price" value="19" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold text-cyan-400 font-mono">
+                <input type="number" id="c-price" value="249" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold text-amber-400 font-mono">
             </div>
         </div>
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prodotto Ecosistema</label>
             <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold">
+                <option value="forma_materia" selected>🏛️ Forma &amp; Materia (Rendering Neurale 4K)</option>
                 <option value="aura">📡 AURA Proximity (Virtual Mesh Radar)</option>
                 <option value="locanda">🍽️ Locanda Digitale (Video 3D &amp; Menu)</option>
                 <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
@@ -490,8 +508,8 @@
             </div>
         </div>
         <div id="link-input-box">
-            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">URL Destinazione / Stanza Progetto</label>
-            <input type="url" id="c-url" placeholder="https://aura.rmstudio.app" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">URL Destinazione / Studio</label>
+            <input type="url" id="c-url" placeholder="https://formamateria.rmstudio.app/studio" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
         </div>
         <button type="submit" id="c-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-4 rounded-xl text-xs uppercase tracking-wider mt-4 shadow-lg shadow-purple-600/30 active:scale-95 transition">
             Salva e Registra Progetto
