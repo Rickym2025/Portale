@@ -1,7 +1,7 @@
 window.allProjects = [];
 window.sheetPendingRestaurants = [];
 
-// 1. CARICA I RISTORANTI DA ELABORARE DAL FOGLIO GOOGLE
+// 1. CARICA I RISTORANTI DA ELABORARE DAL FOGLIO GOOGLE (EXPERIENCE)
 async function fetchPendingRestaurantsFromSheet() {
     const select = document.getElementById('c-sheet-restaurant');
     if (!select) return;
@@ -9,25 +9,19 @@ async function fetchPendingRestaurantsFromSheet() {
     select.innerHTML = `<option value="">Caricamento dal Foglio Google in corso...</option>`;
 
     try {
-        console.log("Richiesta ristoranti a n8n...");
         const res = await fetch('https://n8n.rmstudio.app/webhook/get-pending-restaurants');
-        
         if (!res.ok) {
             select.innerHTML = `<option value="">Verifica che il workflow get-pending-restaurants sia ATTIVO su n8n!</option>`;
             return;
         }
 
         const data = await res.json();
-        console.log("Dati ricevuti da Google Sheet:", data);
-
         if (data.success && data.restaurants && data.restaurants.length > 0) {
             window.sheetPendingRestaurants = data.restaurants;
             let optionsHtml = `<option value="">-- Seleziona un Ristorante dal Sheet (${data.restaurants.length} pronti) --</option>`;
-            
             data.restaurants.forEach((r, idx) => {
                 optionsHtml += `<option value="${idx}">${r.nome || 'Senza Nome'} (${r.sito || 'Nessun Sito'})</option>`;
             });
-
             select.innerHTML = optionsHtml;
         } else {
             select.innerHTML = `<option value="">Tutti i ristoranti del foglio sono stati elaborati! 🎉</option>`;
@@ -44,7 +38,6 @@ function onRestaurantSelectedFromSheet() {
     if (idx === "" || !window.sheetPendingRestaurants[idx]) return;
 
     const selected = window.sheetPendingRestaurants[idx];
-
     if (selected.nome) document.getElementById('c-name').value = selected.nome;
     if (selected.sito) document.getElementById('c-url').value = selected.sito;
     if (selected.telefono) document.getElementById('c-phone').value = selected.telefono;
@@ -53,7 +46,7 @@ function onRestaurantSelectedFromSheet() {
     document.getElementById('c-price').value = 390;
 }
 
-// 3. GESTIONE VISIBILITÀ CAMPI E TITOLI NELLA MODALE (INCLUSO AURA)
+// 3. GESTIONE VISIBILITÀ CAMPI E TITOLI NELLA MODALE (INCLUSO FORMA & MATERIA)
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
     const titleInput = document.getElementById('c-title');
@@ -61,7 +54,11 @@ function toggleModalFields() {
     const urlInput = document.getElementById('c-url');
 
     if (titleInput) {
-        if (t === 'aura') {
+        if (t === 'forma_materia') {
+            titleInput.value = "Forma & Materia • Atelier Pro 4K";
+            if (priceInput) priceInput.value = 249;
+            if (urlInput) urlInput.placeholder = "https://formamateria.rmstudio.app/studio";
+        } else if (t === 'aura') {
             titleInput.value = "AURA • Pro Mensile (Virtual Mesh Radar)";
             if (priceInput) priceInput.value = 19;
             if (urlInput) urlInput.placeholder = "https://aura.rmstudio.app/radar.html?room=convoy-main";
@@ -111,13 +108,11 @@ function toggleModalFields() {
     const fileBox = document.getElementById('file-upload-box');
     const linkBox = document.getElementById('link-input-box');
     
-    // Gestione upload file vs link URL
     const isFileBased = (t === 'video' || t === 'carousel' || t === 'vision');
     if (fileBox) fileBox.classList.toggle('hidden', !isFileBased);
     if (linkBox) linkBox.classList.toggle('hidden', isFileBased);
 }
 
-// Helper per calcolare i giorni trascorsi
 function getDaysAgo(dateStr) {
     if (!dateStr) return null;
     const past = new Date(dateStr);
@@ -136,7 +131,6 @@ async function loadMasterData() {
     return true;
 }
 
-// TOGGLE CONTRAZIONE SIDEBAR IN ICON RAIL
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const icon = document.getElementById('sidebar-icon');
@@ -214,9 +208,14 @@ function renderMasterTable(data) {
         const openDateFormatted = p.updated_at ? new Date(p.updated_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const openDaysAgo = getDaysAgo(p.updated_at);
 
-        let typeBadge = p.portal_type === 'aura'
-            ? `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">aura</span>`
-            : `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
+        let typeBadge = '';
+        if (p.portal_type === 'aura') {
+            typeBadge = `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">aura</span>`;
+        } else if (p.portal_type === 'forma_materia') {
+            typeBadge = `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">f&amp;m</span>`;
+        } else {
+            typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
+        }
 
         const portalViewUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
 
@@ -226,13 +225,10 @@ function renderMasterTable(data) {
         }
 
         tr.innerHTML = `
-            <!-- TIPO E ID -->
             <td class="p-4 text-center">
                 ${typeBadge}
                 <span class="font-mono text-xs text-gray-400 block mt-1 font-bold">#${p.id ? p.id.substring(0, 4).toUpperCase() : '---'}</span>
             </td>
-
-            <!-- CLIENTE, EMAIL, TELEFONO EDITABILI -->
             <td class="p-4">
                 <input type="text" value="${p.client_name || ''}" placeholder="Nome Cliente" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-extrabold text-white text-base block w-full mb-1">
                 <div class="space-y-1">
@@ -240,38 +236,26 @@ function renderMasterTable(data) {
                     <input type="text" value="${p.client_phone || ''}" placeholder="Inserisci Telefono" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-300 w-full block">
                 </div>
             </td>
-
-            <!-- TITOLO PROGETTO EDITABILE -->
             <td class="p-4">
                 <input type="text" value="${p.title || ''}" placeholder="Titolo Progetto" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-sm text-gray-200 font-bold w-full">
             </td>
-
-            <!-- LINK AL PROGETTO -->
             <td class="p-4">
                 <a href="${p.content_url || portalViewUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-purple-400 border border-zinc-800 px-3 py-1.5 rounded-lg text-xs font-bold transition truncate max-w-[130px]">
                     <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Apri Link
                 </a>
             </td>
-
-            <!-- PREZZO EDITABILE -->
             <td class="p-4">
                 <input type="number" value="${p.price_euro || 0}" onchange="updateSupabaseField('${p.id}', 'price_euro', this.value)" class="w-20 bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-center font-black text-purple-400 focus:border-purple-500 focus:outline-none text-sm">
             </td>
-
-            <!-- VISITE EDITABILI -->
             <td class="p-4">
                 <input type="number" value="${views}" onchange="updateSupabaseField('${p.id}', 'views_count', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-center font-bold text-blue-400 focus:border-purple-500 focus:outline-none text-sm">
             </td>
-
-            <!-- SPUNTA WA INVIATO EDITABILE -->
             <td class="p-4">
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" ${p.is_whatsapp_sent ? 'checked' : ''} onchange="updateSupabaseField('${p.id}', 'is_whatsapp_sent', this.checked)" class="w-4 h-4 text-purple-600 bg-zinc-900 border-zinc-800 rounded focus:ring-purple-500">
                     <span class="ml-2 text-xs text-gray-400">WA</span>
                 </label>
             </td>
-
-            <!-- STATO LETTURA, DATE E GIORNI TRANSCORSI -->
             <td class="p-4 text-xs whitespace-nowrap">
                 <div class="space-y-1">
                     ${emailSent ? `<div class="text-purple-400 font-bold"><i class="fa-solid fa-paper-plane"></i> Inviata ${sendDateFormatted || ''} <span class="text-gray-500 font-normal">(${sendDaysAgo || ''})</span></div>` : ''}
@@ -281,15 +265,11 @@ function renderMasterTable(data) {
                     }
                 </div>
             </td>
-
-            <!-- PAGAMENTO TOGGLE -->
             <td class="p-4">
                 <button onclick="togglePayment('${p.id}', ${isPaid})" class="px-3 py-1.5 rounded-full text-xs font-bold transition ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
                     ${isPaid ? '✓ Pagato' : '● Attesa'}
                 </button>
             </td>
-
-            <!-- AZIONI RAPIDE -->
             <td class="p-4 text-right flex items-center justify-end gap-1.5 whitespace-nowrap">
                 ${closingPitchBtn}
                 <button onclick="sendResendDirectEmail('${p.id}', '${p.client_email || ''}', '${p.client_name || ''}', '${p.title || ''}', '${portalViewUrl}')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1" title="Invia Mail con Resend"><i class="fa-solid fa-paper-plane"></i> Mail</button>
@@ -301,12 +281,10 @@ function renderMasterTable(data) {
     });
 }
 
-// INVIO EMAIL DIRETTO VIA RESEND IN 1 CLICK
 async function sendResendDirectEmail(projectId, clientEmail, clientName, title, portalUrl) {
     if (!clientEmail || !clientEmail.includes('@')) {
         return alert("Nessuna email valida salvata per questo cliente. Inseriscila nel campo dedicato e riprova.");
     }
-
     if (!confirm(`Confermi l'invio immediato dell'Email a: ${clientEmail}?`)) return;
 
     try {
@@ -334,7 +312,6 @@ async function sendResendDirectEmail(projectId, clientEmail, clientName, title, 
     }
 }
 
-// GENERATORE PITCH DI CHIUSURA CON LEVA JINGLE (FF EDIZIONI)
 function openClosingPitchModal(projectId) {
     const project = window.allProjects.find(p => p.id === projectId);
     if (!project) return;
@@ -347,7 +324,6 @@ function openClosingPitchModal(projectId) {
     const text = `Ciao ${name}! 👋\n\nHo visto che hai avuto modo di esplorare l'anteprima della Smart Experience Page creata per ${title}.\n\nCi tenevo a dirti che, sbloccandola questa settimana per metterla online sul vostro dominio, **includiamo GRATIS nei 390€ un Jingle Audio d'Autore personalizzato (valore 150€)** realizzato dal nostro studio musicale FF Edizioni, pronto da usare per le vostre Stories e Reel Instagram! 🎵🍷\n\nPuoi rivedere l'anteprima e sbloccarla qui:\n${portalUrl}\n\nResto a disposizione!`;
 
     document.getElementById('copy-text-area').value = text;
-    
     const waBtn = document.getElementById('copy-wa-direct-link');
     if (phone) {
         waBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
@@ -360,7 +336,6 @@ function openClosingPitchModal(projectId) {
     document.getElementById('copy-modal').classList.add('flex');
 }
 
-// APERTURA MODALE RAPIDA DA SIDEBAR
 function quickOpenCreate(typeKey) {
     const select = document.getElementById('c-type');
     if (select) {
@@ -375,10 +350,8 @@ async function togglePayment(id, current) {
     loadMasterData();
 }
 
-// CANCELLAZIONE DEFINITIVA TRAMITE N8N WEBHOOK
 async function handleDelete(id) {
     if (!confirm("Eliminare definitivamente questo progetto e tutte le sue risorse da tutti i server e database?")) return;
-    
     try {
         const ok = await triggerN8NDelete(id);
         if (ok) {
@@ -438,17 +411,9 @@ async function handleCreateSubmit(e) {
                 })
             });
 
-            if (!res.ok) {
-                throw new Error(`Il server n8n ha risposto con codice ${res.status}`);
-            }
-
+            if (!res.ok) throw new Error(`Il server n8n ha risposto con codice ${res.status}`);
             const text = await res.text();
-            let data;
-            try {
-                data = JSON.parse(text);
-            } catch (pErr) {
-                throw new Error("Risposta del server non valida. Verifica che il workflow n8n sia ATTIVO.");
-            }
+            let data = JSON.parse(text);
 
             if (data.success) {
                 alert("✨ Smart Experience Page generata con successo!");
@@ -494,7 +459,6 @@ async function handleCreateSubmit(e) {
     btn.innerText = originalText;
 }
 
-// RIDIMENSIONAMENTO TRASCINABILE SIDEBAR CON SNAP COMPATTO (<120px)
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const resizer = document.getElementById('resizer');
@@ -505,9 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sidebar.classList.add('sidebar-collapsed');
         } else {
             const savedWidth = localStorage.getItem('sidebar_width');
-            if (savedWidth) {
-                sidebar.style.width = `${savedWidth}px`;
-            }
+            if (savedWidth) sidebar.style.width = `${savedWidth}px`;
         }
 
         let x = 0;
@@ -516,7 +478,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const mouseDownHandler = (e) => {
             x = e.clientX;
             w = sidebar.getBoundingClientRect().width;
-
             resizer.classList.add('resizing');
             document.addEventListener('mousemove', mouseMoveHandler);
             document.addEventListener('mouseup', mouseUpHandler);
@@ -525,7 +486,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const mouseMoveHandler = (e) => {
             const dx = e.clientX - x;
             let newWidth = w + dx;
-
             if (newWidth < 120) {
                 sidebar.classList.add('sidebar-collapsed');
                 localStorage.setItem('sidebar_collapsed', 'true');
