@@ -60,7 +60,7 @@
             </div>
             <div>
                 <h1 class="font-display font-black text-white text-base leading-tight">Mobile Sales Launcher</h1>
-                <span class="text-xs text-purple-400 font-bold">RM Studio • 19 SaaS Attivi</span>
+                <span class="text-xs text-purple-400 font-bold">RM Studio • 20 SaaS Attivi</span>
             </div>
         </div>
         <div class="flex items-center gap-2">
@@ -82,7 +82,8 @@
                 <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
             </label>
             <select id="sector-advisor" onchange="highlightSuggestedSaas()" class="w-full bg-[#151520] border border-purple-500/40 rounded-xl p-3 text-xs text-white font-extrabold outline-none focus:border-purple-400">
-                <option value="">-- Mostra tutti i 19 SaaS --</option>
+                <option value="">-- Mostra tutti i 20 SaaS --</option>
+                <option value="architettura">🏛️ Architetti, Designer &amp; Geometri</option>
                 <option value="prossimita">📡 Viaggi in Colonna / Moto / Outdoor / GPS</option>
                 <option value="sicurezza_cantieri">🦺 Cantieri Edili &amp; Man-Down (D.Lgs. 81/08)</option>
                 <option value="vigilanza">🛡️ Istituti di Vigilanza &amp; Ronde Notturne</option>
@@ -100,7 +101,7 @@
             </select>
         </div>
 
-        <!-- GRIGLIA UNIFORME E REGOLARE (2 COLONNE PERFETTE) -->
+        <!-- GRIGLIA UNIFORME E REGOLARE (2 COLONNE PERFETTE - 10 RIGHE x 2) -->
         <div class="grid grid-cols-2 gap-2.5" id="saas-grid">
             
             <!-- 1. AURA -->
@@ -115,7 +116,19 @@
                 </div>
             </button>
 
-            <!-- 2. ETERNIA -->
+            <!-- 2. FORMA & MATERIA (NEW 20°) -->
+            <button type="button" onclick="selectSaas('forma_materia')" id="card-forma_materia" class="saas-card p-3 bg-[#0c0c12] border border-amber-500/30 rounded-2xl text-left flex flex-col justify-between">
+                <div class="flex items-center justify-between">
+                    <span class="text-2xl">🏛️</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">Render 4K</span>
+                </div>
+                <div>
+                    <span class="font-extrabold text-white text-xs block truncate">Forma &amp; Materia</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Schizzo to Render Neurale</span>
+                </div>
+            </button>
+
+            <!-- 3. ETERNIA -->
             <button type="button" onclick="selectSaas('eternia')" id="card-eternia" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">🕊️</span>
@@ -127,7 +140,7 @@
                 </div>
             </button>
 
-            <!-- 3. LOCANDA DIGITALE -->
+            <!-- 4. LOCANDA DIGITALE -->
             <button type="button" onclick="selectSaas('locanda')" id="card-locanda" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">🍽️</span>
@@ -139,7 +152,7 @@
                 </div>
             </button>
 
-            <!-- 4. LOVE -->
+            <!-- 5. LOVE -->
             <button type="button" onclick="selectSaas('love')" id="card-love" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">💍</span>
@@ -151,7 +164,7 @@
                 </div>
             </button>
 
-            <!-- 5. DENTIS AI -->
+            <!-- 6. DENTIS AI -->
             <button type="button" onclick="selectSaas('dentis')" id="card-dentis" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">🦷</span>
@@ -163,7 +176,7 @@
                 </div>
             </button>
 
-            <!-- 6. LEXIS AI -->
+            <!-- 7. LEXIS AI -->
             <button type="button" onclick="selectSaas('lexis')" id="card-lexis" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">⚖️</span>
@@ -175,7 +188,7 @@
                 </div>
             </button>
 
-            <!-- 7. CONCIERGE24 -->
+            <!-- 8. CONCIERGE24 -->
             <button type="button" onclick="selectSaas('concierge')" id="card-concierge" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">🏨</span>
@@ -187,7 +200,7 @@
                 </div>
             </button>
 
-            <!-- 8. ARESAI -->
+            <!-- 9. ARESAI -->
             <button type="button" onclick="selectSaas('ares')" id="card-ares" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">🏋️</span>
@@ -199,7 +212,7 @@
                 </div>
             </button>
 
-            <!-- 9. SMART EXPERIENCE -->
+            <!-- 10. SMART EXPERIENCE -->
             <button type="button" onclick="selectSaas('experience')" id="card-experience" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">🍷</span>
@@ -211,7 +224,7 @@
                 </div>
             </button>
 
-            <!-- 10. SOCIALENGINE -->
+            <!-- 11. SOCIALENGINE -->
             <button type="button" onclick="selectSaas('social')" id="card-social" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">📊</span>
@@ -223,7 +236,7 @@
                 </div>
             </button>
 
-            <!-- 11. NEXUSAI -->
+            <!-- 12. NEXUSAI -->
             <button type="button" onclick="selectSaas('nexus')" id="card-nexus" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">🤖</span>
@@ -235,7 +248,7 @@
                 </div>
             </button>
 
-            <!-- 12. DRIVEMOTION -->
+            <!-- 13. DRIVEMOTION -->
             <button type="button" onclick="selectSaas('drivemotion')" id="card-drivemotion" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">🏎️</span>
@@ -247,7 +260,7 @@
                 </div>
             </button>
 
-            <!-- 13. HOMETOUR -->
+            <!-- 14. HOMETOUR -->
             <button type="button" onclick="selectSaas('hometour')" id="card-hometour" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">🏠</span>
@@ -259,7 +272,7 @@
                 </div>
             </button>
 
-            <!-- 14. VISION UGC -->
+            <!-- 15. VISION UGC -->
             <button type="button" onclick="selectSaas('vision')" id="card-vision" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">🎬</span>
@@ -271,7 +284,7 @@
                 </div>
             </button>
 
-            <!-- 15. SITEENGINE PRO -->
+            <!-- 16. SITEENGINE PRO -->
             <button type="button" onclick="selectSaas('sitengine')" id="card-sitengine" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">🌐</span>
@@ -283,7 +296,7 @@
                 </div>
             </button>
 
-            <!-- 16. OMNIASTUDIO -->
+            <!-- 17. OMNIASTUDIO -->
             <button type="button" onclick="selectSaas('omniastudio')" id="card-omniastudio" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">💼</span>
@@ -295,7 +308,7 @@
                 </div>
             </button>
 
-            <!-- 17. FREE ENERGY -->
+            <!-- 18. FREE ENERGY -->
             <button type="button" onclick="selectSaas('free_energy')" id="card-free_energy" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">☀️</span>
@@ -307,7 +320,7 @@
                 </div>
             </button>
 
-            <!-- 18. VELOMOTION -->
+            <!-- 19. VELOMOTION -->
             <button type="button" onclick="selectSaas('velomotion')" id="card-velomotion" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">⚡</span>
@@ -319,15 +332,15 @@
                 </div>
             </button>
 
-            <!-- 19. FF EDIZIONI -->
-            <button type="button" onclick="selectSaas('ff_edizioni')" id="card-ff_edizioni" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between col-span-2">
+            <!-- 20. FF EDIZIONI -->
+            <button type="button" onclick="selectSaas('ff_edizioni')" id="card-ff_edizioni" class="saas-card p-3 bg-[#0c0c12] border border-zinc-800 rounded-2xl text-left flex flex-col justify-between">
                 <div class="flex items-center justify-between">
                     <span class="text-2xl">🎵</span>
-                    <span class="text-[9px] font-bold px-2 py-0.5 rounded bg-purple-500/15 text-purple-300 border border-purple-500/30">Musica SIAE</span>
+                    <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-500/15 text-purple-300 border border-purple-500/30">Musica SIAE</span>
                 </div>
                 <div>
-                    <span class="font-extrabold text-white text-xs block">FF Edizioni Musicali</span>
-                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block">Canzoni Custom, Jingle Radio/Social d'Autore con il M° Fausto Fusetti</span>
+                    <span class="font-extrabold text-white text-xs block truncate">FF Edizioni</span>
+                    <span class="text-[11px] text-zinc-400 font-medium leading-tight block truncate">Jingle &amp; Canzoni d'Autore</span>
                 </div>
             </button>
 
@@ -361,6 +374,7 @@
     <script>
         const SAAS_CATALOG = {
             aura: { name: "AURA Proximity", url: "https://aura.rmstudio.app", desc: "Radar Mesh P2P & Co-Pilota Vocale" },
+            forma_materia: { name: "Forma & Materia", url: "https://formamateria.rmstudio.app", desc: "Schizzo to Render 4K & Note AI" },
             eternia: { name: "ETERNIA", url: "https://eternia.rmstudio.app", desc: "Memoriali QR d'Autore & Pet" },
             locanda: { name: "Locanda Digitale", url: "https://locandadigitale.rmstudio.app", desc: "Video 3D Piatti & Visual Menu QR" },
             love: { name: "LOVE", url: "https://love.rmstudio.app", desc: "Partecipazioni Digitali & Maxischermo" },
@@ -413,14 +427,15 @@
             if (!sector) return;
 
             const map = {
+                architettura: ['card-forma_materia', 'card-sitengine', 'card-social'],
                 prossimita: ['card-aura', 'card-ares', 'card-drivemotion'],
-                sicurezza_cantieri: ['card-aura', 'card-free_energy', 'card-sitengine'],
+                sicurezza_cantieri: ['card-aura', 'card-free_energy', 'card-forma_materia'],
                 vigilanza: ['card-aura', 'card-omniastudio', 'card-nexus'],
                 funebre: ['card-eternia', 'card-ff_edizioni', 'card-nexus'],
                 ristorante: ['card-locanda', 'card-experience', 'card-ff_edizioni'],
                 hotel: ['card-concierge', 'card-aura', 'card-social'],
                 auto: ['card-drivemotion', 'card-aura', 'card-nexus'],
-                immobile: ['card-hometour', 'card-sitengine', 'card-social'],
+                immobile: ['card-hometour', 'card-forma_materia', 'card-sitengine'],
                 medico: ['card-dentis', 'card-nexus', 'card-sitengine'],
                 legale: ['card-lexis', 'card-omniastudio', 'card-sitengine'],
                 palestra: ['card-ares', 'card-aura', 'card-vision'],
@@ -429,13 +444,12 @@
                 azienda: ['card-sitengine', 'card-nexus', 'card-omniastudio']
             };
 
-            const targets = map[sector] || ['card-aura', 'card-eternia'];
+            const targets = map[sector] || ['card-aura', 'card-forma_materia'];
             targets.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('glow-suggested');
             });
 
-            // Seleziona in automatico il primo consigliato nella barra
             const firstKey = targets[0]?.replace('card-', '');
             if (firstKey) selectSaas(firstKey);
         }
