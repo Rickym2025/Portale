@@ -46,7 +46,7 @@ function onRestaurantSelectedFromSheet() {
     document.getElementById('c-price').value = 390;
 }
 
-// 3. GESTIONE VISIBILITÀ CAMPI E TITOLI NELLA MODALE (INCLUSO FORMA & MATERIA)
+// 3. GESTIONE VISIBILITÀ CAMPI E TITOLI NELLA MODALE (CON METODO BOUNTY/LOCANDA AGGIORNATO)
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
     const titleInput = document.getElementById('c-title');
@@ -63,9 +63,9 @@ function toggleModalFields() {
             if (priceInput) priceInput.value = 19;
             if (urlInput) urlInput.placeholder = "https://aura.rmstudio.app/radar.html?room=convoy-main";
         } else if (t === 'locanda') {
-            titleInput.value = "Locanda Digitale • Spot 3D & Menu";
-            if (priceInput) priceInput.value = 79;
-            if (urlInput) urlInput.placeholder = "https://locandadigitale.rmstudio.app";
+            titleInput.value = "Locanda Digitale • Living 3D Menu & Marketing";
+            if (priceInput) priceInput.value = 169;
+            if (urlInput) urlInput.placeholder = "https://locandadigitale.rmstudio.app/menu.html?slug=pizzeria-esempio";
         } else if (t === 'eternia') {
             titleInput.value = "ETERNIA • Memoriale QR";
             if (priceInput) priceInput.value = 79;
@@ -213,6 +213,8 @@ function renderMasterTable(data) {
             typeBadge = `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">aura</span>`;
         } else if (p.portal_type === 'forma_materia') {
             typeBadge = `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">f&amp;m</span>`;
+        } else if (p.portal_type === 'locanda') {
+            typeBadge = `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">locanda</span>`;
         } else {
             typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
         }
@@ -221,7 +223,7 @@ function renderMasterTable(data) {
 
         let closingPitchBtn = '';
         if (isRead && !isPaid) {
-            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2.5 py-1.5 rounded-lg text-xs font-black transition animate-pulse" title="Pitch Chiusura Jingle"><i class="fa-solid fa-fire"></i> Pitch Jingle</button>`;
+            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2.5 py-1.5 rounded-lg text-xs font-black transition animate-pulse" title="Pitch Chiusura Dedicato"><i class="fa-solid fa-fire"></i> Pitch VIP</button>`;
         }
 
         tr.innerHTML = `
@@ -321,7 +323,12 @@ function openClosingPitchModal(projectId) {
     const portalUrl = `https://portale.rmstudio.app/view?id=${project.id}`;
     const phone = project.client_phone ? project.client_phone.replace(/\D/g, '') : '';
 
-    const text = `Ciao ${name}! 👋\n\nHo visto che hai avuto modo di esplorare l'anteprima della Smart Experience Page creata per ${title}.\n\nCi tenevo a dirti che, sbloccandola questa settimana per metterla online sul vostro dominio, **includiamo GRATIS nei 390€ un Jingle Audio d'Autore personalizzato (valore 150€)** realizzato dal nostro studio musicale FF Edizioni, pronto da usare per le vostre Stories e Reel Instagram! 🎵🍷\n\nPuoi rivedere l'anteprima e sbloccarla qui:\n${portalUrl}\n\nResto a disposizione!`;
+    let text = "";
+    if (project.portal_type === 'locanda') {
+        text = `Ciao ${name}! 👋\n\nHo visto che hai dato un'occhiata all'anteprima del vostro Living 3D Menu per ${title}.\n\nCi tenevo a farti sapere che sbloccando la proposta questa settimana, oltre ai piatti animati a 60 FPS vi configuriamo **INCLUSO nel pacchetto il Bancomat dei Compleanni automatico su WhatsApp e lo Scudo Recensioni a 5 stelle per Google Maps**! 🎂🍷\n\nPuoi sbloccare il progetto direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi chiarimento!`;
+    } else {
+        text = `Ciao ${name}! 👋\n\nHo visto che hai avuto modo di esplorare l'anteprima della Smart Experience Page creata per ${title}.\n\nCi tenevo a dirti che, sbloccandola questa settimana per metterla online sul vostro dominio, **includiamo GRATIS nei 390€ un Jingle Audio d'Autore personalizzato (valore 150€)** realizzato dal nostro studio musicale FF Edizioni, pronto da usare per le vostre Stories e Reel Instagram! 🎵🍷\n\nPuoi rivedere l'anteprima e sbloccarla qui:\n${portalUrl}\n\nResto a disposizione!`;
+    }
 
     document.getElementById('copy-text-area').value = text;
     const waBtn = document.getElementById('copy-wa-direct-link');
