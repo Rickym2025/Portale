@@ -61,7 +61,8 @@ function toggleModalFields() {
     const urlLabel = document.getElementById('c-url-label');
 
     const config = {
-        concierge: { title: "Concierge24 • Giulia Voice Assistant H24", price: 179, url: "https://www.ilducadeste.it/", label: "Sito Web Struttura Ricettiva (Hotel / B&B)" },
+        nexus: { title: "NexusAI • Sales Overlay Pro", price: 99, url: "https://www.azienda.it", label: "Sito Web Azienda (per Generazione Shadow-Proxy)" },
+        concierge: { title: "Concierge24 • Giulia Voice Assistant H24", price: 179, url: "https://www.hotel.it", label: "Sito Web Struttura Ricettiva (Hotel / B&B)" },
         dentis: { title: "Dentis AI • Serena PRO", price: 149, url: "https://www.sanadent.it/", label: "Sito Web Studio Dentistico (per Scraping AI)" },
         lexis: { title: "Lexis AI • Chiara PRO", price: 149, url: "https://www.studiolegale.it/", label: "Sito Web Studio Legale (per Scraping AI)" },
         forma_materia: { title: "Forma & Materia • Atelier Pro 4K", price: 249, url: "https://formamateria.rmstudio.app/studio", label: "URL Destinazione Studio" },
@@ -170,6 +171,7 @@ function renderMasterTable(data) {
         const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
 
         const badges = {
+            nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🤖 nexus</span>`,
             dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🦷 dentis</span>`,
             lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">⚖️ lexis</span>`,
             concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🏨 concierge</span>`,
@@ -267,7 +269,7 @@ function closeCreationModal() {
     if (m) { m.classList.remove('flex'); m.classList.add('hidden'); }
 }
 
-// 4. SUBMIT FORM CREAZIONE PROGETTI (CONCIERGE, DENTIS, LEXIS & EXPERIENCE)
+// 4. SUBMIT FORM: DISPATCH SU NEXUS, CONCIERGE, DENTIS, LEXIS ED EXPERIENCE
 async function handleCreateSubmit(e) {
     e.preventDefault();
     const btn = document.getElementById('c-btn');
@@ -281,34 +283,52 @@ async function handleCreateSubmit(e) {
     const price = parseFloat(document.getElementById('c-price').value) || 0;
     const siteUrl = document.getElementById('c-url').value.trim();
 
-    // 🏨 CONCIERGE24: Invio a Webhook n8n per setup hotel & scraper
-    if (type === 'concierge') {
-        btn.innerText = "Configurazione Giulia AI & Scraper Hotel...";
-        const targetEmail = email || 'info@hotel.it';
+    // 🤖 NEXUSAI: Generazione Shadow-Proxy AI
+    if (type === 'nexus') {
+        btn.innerText = "Analisi Sito & Generazione Shadow-Proxy (15s)...";
+        let targetUrl = siteUrl;
+        if (!/^https?:\/\//i.test(targetUrl)) targetUrl = 'https://' + targetUrl;
 
-        const payload = {
-            "Nome Agenzia": clientName,
-            "Email": targetEmail,
-            "Telefono": phone,
-            "Piano": 'trial',
-            "Sito Web": siteUrl,
-            "Fonte": "Command Center Portale (Bozza Speculativa)"
-        };
+        const botId = 'bot_' + Math.random().toString(36).slice(2, 9);
 
         try {
-            const res = await fetch('https://n8n.rmstudio.app/webhook/nuova-registrazione', {
+            const res = await fetch('https://n8n.rmstudio.app/webhook/chatbot-creator', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({
+                    site_url: targetUrl,
+                    bot_id: botId,
+                    nome_struttura: clientName,
+                    email: email,
+                    is_paid: false
+                })
             });
 
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+            const demoUrl = (data.success && data.demo_url) 
+                ? data.demo_url 
+                : `https://demo.rmstudio.app/?site=${encodeURIComponent(targetUrl)}&bot_id=${botId}`;
 
-            alert(`✨ Giulia AI configurata con successo per ${clientName}!\n\nLa struttura è stata creata, lo scraper AI ha estratto le regole dell'hotel e nessuna email è stata inviata al cliente.`);
+            // Salva nel Portale S2 con il link Shadow-Proxy reale
+            await supabaseClient.from('portal_videos').insert([{
+                client_name: clientName,
+                client_email: email,
+                client_phone: phone,
+                title: document.getElementById('c-title').value || "NexusAI • Sales Overlay Assistant",
+                price_euro: price || 99,
+                portal_type: "nexus",
+                content_url: demoUrl,
+                is_paid: false,
+                sent_at: new Date().toISOString(),
+                first_email_sent: false,
+                views_count: 0
+            }]);
+
+            alert(`✨ Shadow-Proxy generato per ${clientName}!\n\nIl bot è stato iniettato sul loro sito. Link demo pronto nel Portale.`);
             closeCreationModal();
-            setTimeout(loadMasterData, 1500);
+            loadMasterData();
         } catch (err) {
-            alert("⚠️ Errore attivazione Concierge24: " + err.message);
+            alert("⚠️ Errore generazione NexusAI: " + err.message);
         } finally {
             btn.disabled = false;
             btn.innerText = orig;
@@ -316,31 +336,55 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🦷 DENTIS & ⚖️ LEXIS: Invio a Webhook n8n per setup studio & scraper
+    // 🏨 CONCIERGE24
+    if (type === 'concierge') {
+        btn.innerText = "Configurazione Giulia AI & Scraper Hotel...";
+        const targetEmail = email || 'info@hotel.it';
+        try {
+            const res = await fetch('https://n8n.rmstudio.app/webhook/nuova-registrazione', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "Nome Agenzia": clientName,
+                    "Email": targetEmail,
+                    "Telefono": phone,
+                    "Piano": 'trial',
+                    "Sito Web": siteUrl,
+                    "Fonte": "Command Center Portale (Bozza Speculativa)"
+                })
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            alert(`✨ Giulia AI configurata con successo per ${clientName}!`);
+            closeCreationModal();
+            setTimeout(loadMasterData, 1500);
+        } catch (err) {
+            alert("⚠️ Errore Concierge24: " + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = orig;
+        }
+        return;
+    }
+
+    // 🦷 DENTIS & ⚖️ LEXIS
     if (type === 'dentis' || type === 'lexis') {
         btn.innerText = "Configurazione AI & Scraper in corso...";
-        const targetEmail = email || 'info@studiorossi.it';
-
-        const payload = {
-            "Nome Agenzia": clientName,
-            "Email": targetEmail,
-            "Telefono": phone || '+3904251675950',
-            "Piano": 'trial',
-            "Sito Web": siteUrl,
-            "Settore": type === 'lexis' ? 'legale' : 'odontoiatria',
-            "Fonte": "Command Center Portale (Bozza Speculativa)"
-        };
-
         try {
             const res = await fetch('https://n8n.rmstudio.app/webhook/studio-registrazione', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({
+                    "Nome Agenzia": clientName,
+                    "Email": email || 'info@studiorossi.it',
+                    "Telefono": phone || '+3904251675950',
+                    "Piano": 'trial',
+                    "Sito Web": siteUrl,
+                    "Settore": type === 'lexis' ? 'legale' : 'odontoiatria',
+                    "Fonte": "Command Center Portale (Bozza Speculativa)"
+                })
             });
-
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-            alert(`✨ ${type === 'lexis' ? 'Chiara AI' : 'Serena AI'} registrata con successo per ${clientName}!\n\nL'ambiente di prova è pronto e lo scraper AI è stato avviato.`);
+            alert(`✨ ${type === 'lexis' ? 'Chiara AI' : 'Serena AI'} registrata per ${clientName}!`);
             closeCreationModal();
             setTimeout(loadMasterData, 1500);
         } catch (err) {
@@ -352,7 +396,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🍷 EXPERIENCE: Webhook Taste
+    // 🍷 EXPERIENCE
     if (type === 'experience') {
         btn.innerText = "Analisi Ristorante in corso (20s)...";
         try {
