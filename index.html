@@ -109,7 +109,7 @@
           </a>
         </nav>
 
-        <!-- ⚡ CREA PROGETTO RAPIDO (CON FORMA & MATERIA) -->
+        <!-- ⚡ CREA PROGETTO RAPIDO (SEPARATO E CHIARO) -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-xs uppercase font-bold text-purple-400 tracking-wider mb-2 flex items-center justify-between sidebar-text">
             <span>+ Crea Progetto Rapido</span>
@@ -117,40 +117,57 @@
           </div>
           
           <div class="space-y-1 font-semibold text-sm">
-            <!-- ⚡ FORMA & MATERIA (20° SAAS) -->
-            <button onclick="quickOpenCreate('forma_materia')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold" title="Forma & Materia (Rendering Neurale 4K)">
-              <span class="shrink-0 text-base">🏛️</span> <span class="sidebar-text">Forma &amp; Materia</span>
+            <!-- 🏨 CONCIERGE24 (TURISMO & HOTEL) -->
+            <button onclick="quickOpenCreate('concierge')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-orange-600/20 hover:text-white border border-transparent hover:border-orange-500/30 transition text-xs font-bold" title="Concierge24 (Assistente Vocale Hotel & B&B)">
+              <span class="shrink-0 text-base">🏨</span> <span class="sidebar-text">Concierge24 (Hotel)</span>
             </button>
 
-            <!-- ⚡ AURA PROXIMITY -->
-            <button onclick="quickOpenCreate('aura')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold" title="AURA Proximity (Virtual Mesh Radar)">
-              <span class="shrink-0 text-base">📡</span> <span class="sidebar-text">AURA Proximity</span>
+            <!-- 🦷 DENTIS AI (STUDI DENTISTICI) -->
+            <button onclick="quickOpenCreate('dentis')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold" title="Dentis AI (Receptionist Dentisti)">
+              <span class="shrink-0 text-base">🦷</span> <span class="sidebar-text">Dentis AI (Dentisti)</span>
             </button>
 
-            <!-- ⚡ LOCANDA DIGITALE -->
+            <!-- ⚖️ LEXIS AI (STUDI LEGALI) -->
+            <button onclick="quickOpenCreate('lexis')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-yellow-600/20 hover:text-white border border-transparent hover:border-yellow-500/30 transition text-xs font-bold" title="Lexis AI (Segreteria Legale H24)">
+              <span class="shrink-0 text-base">⚖️</span> <span class="sidebar-text">Lexis AI (Avvocati)</span>
+            </button>
+
+            <!-- 🍽️ LOCANDA DIGITALE -->
             <button onclick="quickOpenCreate('locanda')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold" title="Locanda Digitale (Video 3D & Menu)">
               <span class="shrink-0 text-base">🍽️</span> <span class="sidebar-text">Locanda Digitale</span>
             </button>
 
-            <!-- ⚡ ETERNIA -->
-            <button onclick="quickOpenCreate('eternia')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold" title="ETERNIA (Memoriali QR & Pet)">
-              <span class="shrink-0 text-base">🕊️</span> <span class="sidebar-text">ETERNIA (Memoriali QR)</span>
+            <!-- 🏛️ FORMA & MATERIA -->
+            <button onclick="quickOpenCreate('forma_materia')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold" title="Forma & Materia (Rendering Neurale 4K)">
+              <span class="shrink-0 text-base">🏛️</span> <span class="sidebar-text">Forma &amp; Materia</span>
             </button>
 
-            <!-- ⚡ LOVE -->
+            <!-- 📡 AURA PROXIMITY -->
+            <button onclick="quickOpenCreate('aura')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold" title="AURA Proximity (Virtual Mesh Radar)">
+              <span class="shrink-0 text-base">📡</span> <span class="sidebar-text">AURA Proximity</span>
+            </button>
+
+            <!-- 🕊️ ETERNIA -->
+            <button onclick="quickOpenCreate('eternia')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold" title="ETERNIA (Memoriali QR & Pet)">
+              <span class="shrink-0 text-base">🕊️</span> <span class="sidebar-text">ETERNIA (Memoriali)</span>
+            </button>
+
+            <!-- 💍 LOVE -->
             <button onclick="quickOpenCreate('love')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-pink-600/20 hover:text-white border border-transparent hover:border-pink-500/30 transition text-xs font-bold" title="LOVE (Partecipazioni Digitali)">
               <span class="shrink-0 text-base">💍</span> <span class="sidebar-text">LOVE (Partecipazioni)</span>
             </button>
 
+            <!-- 🍷 SMART EXPERIENCE -->
             <button onclick="quickOpenCreate('experience')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold" title="Smart Experience Page (Ristoranti)">
-              <span class="shrink-0 text-base">🍷</span> <span class="sidebar-text">Smart Experience Page</span>
+              <span class="shrink-0 text-base">🍷</span> <span class="sidebar-text">Smart Experience</span>
             </button>
 
-            <button onclick="quickOpenCreate('social')" class="w-full px-3 py-2.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-indigo-600/20 hover:text-white border border-transparent hover:border-indigo-500/30 transition text-xs font-bold" title="SocialEngine Carousel Creator">
+            <!-- 📊 CAROUSEL SOCIAL -->
+            <button onclick="quickOpenCreate('social')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-indigo-600/20 hover:text-white border border-transparent hover:border-indigo-500/30 transition text-xs font-bold" title="SocialEngine Carousel Creator">
               <span class="shrink-0 text-base">📊</span> <span class="sidebar-text">Carousel Engine</span>
             </button>  
             
-            <!-- SITEENGINE PRO -->
+            <!-- 🌐 SITEENGINE PRO -->
             <div class="space-y-1">
               <button onclick="quickOpenCreate('html')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-blue-600/20 hover:text-white border border-transparent hover:border-blue-500/30 transition text-xs font-bold" title="SiteEngine Pro (Siti Web)">
                 <span class="shrink-0 text-base">🌐</span> <span class="sidebar-text">SiteEngine Pro (Siti)</span>
@@ -160,15 +177,17 @@
               </a>
             </div>
 
+            <!-- 🎬 VISION UGC -->
             <button onclick="quickOpenCreate('vision')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-pink-600/20 hover:text-white border border-transparent hover:border-pink-500/30 transition text-xs font-bold" title="Vision UGC Video">
               <span class="shrink-0 text-base">🎬</span> <span class="sidebar-text">Vision UGC Video</span>
             </button>
+
+            <!-- 🏠 HOMETOUR / DRIVEMOTION -->
             <button onclick="quickOpenCreate('video')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-emerald-600/20 hover:text-white border border-transparent hover:border-emerald-500/30 transition text-xs font-bold" title="HomeTour / DriveMotion">
               <span class="shrink-0 text-base">🏠</span> <span class="sidebar-text">HomeTour / DriveMotion</span>
             </button>
-            <button onclick="quickOpenCreate('voice_ai')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold" title="Voice AI (Dentis / Lexis / Concierge)">
-              <span class="shrink-0 text-base">📞</span> <span class="sidebar-text">Voice AI (Dentis/Lexis)</span>
-            </button>
+
+            <!-- 🔑 LICENZE SOFTWARE -->
             <button onclick="quickOpenCreate('license')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold" title="Licenze (VeloMotion / Omnia)">
               <span class="shrink-0 text-base">🔑</span> <span class="sidebar-text">Licenze (Velo/Omnia)</span>
             </button>
@@ -182,7 +201,7 @@
           </div>
           
           <div class="space-y-1 text-xs">
-            <!-- 1. Lamesola Riccardo (Forma & Materia) -->
+            <!-- 1. Lamesola Riccardo -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">lamesola.riccardo@...</span>
@@ -190,6 +209,7 @@
                 </summary>
                 <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 sidebar-text">
                     <a href="https://supabase.com/dashboard/project/scoiflppeeosbknxeslw" target="_blank" class="block text-amber-400 font-bold hover:underline">🏛️ Forma &amp; Materia</a>
+                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-cyan-400 hover:underline">🏎️ DriveMotion RADAR</a>
                 </div>
             </details>
 
@@ -224,7 +244,7 @@
                     <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
                 </summary>
                 <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 sidebar-text">
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-orange-400 hover:underline">🏨 Concierge24</a>
+                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-orange-400 hover:underline font-bold">🏨 Concierge24</a>
                     <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-cyan-400 hover:underline">🤖 NexusAI</a>
                 </div>
             </details>
@@ -236,7 +256,7 @@
                     <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
                 </summary>
                 <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 sidebar-text">
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-cyan-300 hover:underline">🦷 Dentis</a>
+                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-cyan-300 hover:underline font-bold">🦷 Dentis</a>
                     <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-purple-400 hover:underline">📦 Portale DB (S2 / AURA)</a>
                 </div>
             </details>
@@ -270,7 +290,7 @@
         <!-- 🐙 SEZIONE GITHUB REPOSITORIES -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-[11px] uppercase font-bold text-gray-500 tracking-wider mb-2 flex items-center justify-between sidebar-text">
-            <span>GitHub Repos (19 Repo)</span> <i class="fa-brands fa-github text-xs"></i>
+            <span>GitHub Repos</span> <i class="fa-brands fa-github text-xs"></i>
           </div>
 
           <details class="group">
@@ -279,9 +299,12 @@
                 <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
             </summary>
             <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 max-h-48 overflow-y-auto text-[11px] sidebar-text">
+                <a href="https://github.com/Rickym2025/Dentis" target="_blank" class="block text-cyan-400 font-bold hover:underline truncate">🦷 Dentis</a>
+                <a href="https://github.com/Rickym2025/Lexis" target="_blank" class="block text-yellow-400 font-bold hover:underline truncate">⚖️ Lexis</a>
                 <a href="https://github.com/Rickym2025/Forma-Materia" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🏛️ forma-materia</a>
                 <a href="https://github.com/Rickym2025/aura" target="_blank" class="block text-cyan-400 font-bold hover:underline truncate">📡 aura</a>
                 <a href="https://github.com/Rickym2025/locandadigitale" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🍽️ locandadigitale</a>
+                <a href="https://github.com/Rickym2025/drive_motion_radar" target="_blank" class="block text-cyan-300 font-bold hover:underline truncate">🏎️ drive-motion-radar</a>
                 <a href="https://github.com/Rickym2025/eternia" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🕊️ eternia</a>
                 <a href="https://github.com/Rickym2025/love" target="_blank" class="block text-pink-400 font-bold hover:underline truncate">💍 love</a>
                 <a href="https://github.com/Rickym2025/experience" target="_blank" class="block text-purple-400 font-bold hover:underline truncate">🍷 experience</a>
@@ -289,8 +312,6 @@
                 <a href="https://github.com/Rickym2025/site-engine" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🌐 site-engine</a>
                 <a href="https://github.com/Rickym2025/vision" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🎬 vision</a>
                 <a href="https://github.com/Rickym2025/free-energy" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">☀️ free-energy</a>
-                <a href="https://github.com/Rickym2025/Dentis" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🦷 Dentis</a>
-                <a href="https://github.com/Rickym2025/Lexis" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">⚖️ Lexis</a>
                 <a href="https://github.com/Rickym2025/VeloMotion" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">⚡ VeloMotion</a>
                 <a href="https://github.com/Rickym2025/nexus" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🤖 nexus</a>
                 <a href="https://github.com/Rickym2025/OmniaStudio" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🔒 OmniaStudio</a>
@@ -357,15 +378,18 @@
             </div>
         </div>
 
-        <!-- FILTRI PRODOTTI (CON FORMA & MATERIA) -->
+        <!-- FILTRI PRODOTTI (CON CONCIERGE, DENTIS E LEXIS SEPARATI) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">PRODOTTO / CATEGORIA</label>
                 <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
-                    <option value="all">Tutti i Prodotti (20)</option>
-                    <option value="forma_materia">🏛️ Forma &amp; Materia (Rendering Neurale 4K)</option>
-                    <option value="aura">📡 AURA Proximity (Virtual Mesh Radar)</option>
-                    <option value="locanda">🍽️ Locanda Digitale (Video 3D &amp; Menu)</option>
+                    <option value="all">Tutti i Prodotti</option>
+                    <option value="concierge">🏨 Concierge24 (Hotel &amp; B&amp;B)</option>
+                    <option value="dentis">🦷 Dentis AI (Dentisti)</option>
+                    <option value="lexis">⚖️ Lexis AI (Avvocati)</option>
+                    <option value="locanda">🍽️ Locanda Digitale (Living Menu 3D)</option>
+                    <option value="forma_materia">🏛️ Forma &amp; Materia (Rendering 4K)</option>
+                    <option value="aura">📡 AURA Proximity (Virtual Radar)</option>
                     <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
                     <option value="love">💍 LOVE (Partecipazioni Digitali)</option>
                     <option value="experience">🍷 Smart Experience Page (Ristoranti)</option>
@@ -373,7 +397,6 @@
                     <option value="html">🌐 SiteEngine Pro (Siti Web)</option>
                     <option value="vision">🎬 Vision UGC Video</option>
                     <option value="video">🏠 HomeTour &amp; DriveMotion</option>
-                    <option value="voice_ai">📞 Voice AI (Dentis/Lexis/Concierge)</option>
                     <option value="chatbot">💬 NexusAI Chatbot</option>
                     <option value="license">🔑 Licenze (VeloMotion/Omnia)</option>
                     <option value="solar">☀️ Free Energy (Fotovoltaico)</option>
@@ -461,34 +484,37 @@
 
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Nome Cliente / Azienda</label>
-            <input type="text" id="c-name" required placeholder="Es. Studio Tecnico Arch. Rossi" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+            <input type="text" id="c-name" required placeholder="Es. Sanadent s.r.l." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
         </div>
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Email</label>
-                <input type="email" id="c-email" placeholder="studio@email.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+                <input type="email" id="c-email" placeholder="sanadent.ferrara@gmail.com" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
             </div>
             <div>
-                <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Telefono / WhatsApp</label>
+                <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Telefono / WhatsApp (o Test)</label>
                 <input type="text" id="c-phone" placeholder="+393401234567" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
             </div>
         </div>
         <div class="grid grid-cols-3 gap-4">
             <div class="col-span-2">
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Titolo Servizio / Progetto</label>
-                <input type="text" id="c-title" required value="Forma & Materia • Atelier Pro 4K" placeholder="Titolo" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+                <input type="text" id="c-title" required value="Dentis AI • Serena PRO" placeholder="Titolo" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prezzo (€)</label>
-                <input type="number" id="c-price" value="249" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold text-amber-400 font-mono">
+                <input type="number" id="c-price" value="149" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold text-amber-400 font-mono">
             </div>
         </div>
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prodotto Ecosistema</label>
             <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold">
-                <option value="forma_materia" selected>🏛️ Forma &amp; Materia (Rendering Neurale 4K)</option>
+                <option value="concierge">🏨 Concierge24 (Assistente Vocale Hotel &amp; B&amp;B)</option>
+                <option value="dentis" selected>🦷 Dentis AI (Receptionist Telefonica Dentisti)</option>
+                <option value="lexis">⚖️ Lexis AI (Segreteria Vocale Avvocati)</option>
+                <option value="locanda">🍽️ Locanda Digitale (Living 3D Menu &amp; Marketing)</option>
+                <option value="forma_materia">🏛️ Forma &amp; Materia (Rendering Neurale 4K)</option>
                 <option value="aura">📡 AURA Proximity (Virtual Mesh Radar)</option>
-                <option value="locanda">🍽️ Locanda Digitale (Video 3D &amp; Menu)</option>
                 <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
                 <option value="love">💍 LOVE (Partecipazioni Digitali)</option>
                 <option value="ares">🏋️ AresAI (Fitness RPG &amp; Arena)</option>
@@ -496,7 +522,6 @@
                 <option value="html">🌐 SiteEngine Pro (Sito Web / Link HTML)</option>
                 <option value="vision">🎬 Vision UGC Video</option>
                 <option value="video">🏠 HomeTour / DriveMotion Video</option>
-                <option value="voice_ai">📞 Voice AI (Dentis/Lexis/Concierge)</option>
                 <option value="license">🔑 Licenza Software (VeloMotion/Omnia)</option>
             </select>
         </div>
@@ -508,11 +533,11 @@
             </div>
         </div>
         <div id="link-input-box">
-            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">URL Destinazione / Studio</label>
-            <input type="url" id="c-url" placeholder="https://formamateria.rmstudio.app/studio" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+            <label class="block text-xs font-bold uppercase text-gray-400 mb-1" id="c-url-label">Sito Web della Struttura / Clinica (per Scraping AI)</label>
+            <input type="url" id="c-url" placeholder="https://www.sanadent.it/" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-mono">
         </div>
         <button type="submit" id="c-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-4 rounded-xl text-xs uppercase tracking-wider mt-4 shadow-lg shadow-purple-600/30 active:scale-95 transition">
-            Salva e Registra Progetto
+            Salva, Registra e Avvia Demo AI
         </button>
       </form>
     </div>
