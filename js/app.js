@@ -241,7 +241,7 @@ async function togglePayment(id, current) {
 }
 
 async function handleDelete(id) {
-    if (!confirm("Eliminare definitivamente questo record?")) return;
+    if (!confirm("Eliminare definitivamente questo record dal Portale?")) return;
     try {
         const { error } = await supabaseClient.from('portal_videos').delete().eq('id', id);
         if (error) throw error;
@@ -281,22 +281,21 @@ async function handleCreateSubmit(e) {
     const price = parseFloat(document.getElementById('c-price').value) || 0;
     const siteUrl = document.getElementById('c-url').value.trim();
 
-    // 🦷 DENTIS & ⚖️ LEXIS: Invio al vero Webhook di n8n
+    // 🦷 DENTIS & ⚖️ LEXIS: Invio al Webhook n8n per setup studio e scraper
     if (type === 'dentis' || type === 'lexis') {
-        btn.innerText = "Attivazione AI & Scraper in corso...";
-        
-        let pianoNorm = 'trial';
-        if (price >= 299) pianoNorm = 'enterprise';
-        else if (price >= 149) pianoNorm = 'pro';
+        btn.innerText = "Configurazione AI & Scraper in corso...";
+
+        // Se nel form non inserisci un'email reale, o metti una mail interna, non mandiamo notifiche al cliente finale
+        const targetEmail = email || 'info@rmstudio.app';
 
         const payload = {
             "Nome Agenzia": clientName,
-            "Email": email || 'info@studiorossi.it',
+            "Email": targetEmail,
             "Telefono": phone || '+3904251675950',
-            "Piano": pianoNorm,
+            "Piano": 'trial',
             "Sito Web": siteUrl,
             "Settore": type === 'lexis' ? 'legale' : 'odontoiatria',
-            "Fonte": "Command Center Portale"
+            "Fonte": "Command Center Portale (Bozza Speculativa)"
         };
 
         try {
@@ -308,7 +307,7 @@ async function handleCreateSubmit(e) {
 
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-            alert(`✨ ${type === 'lexis' ? 'Chiara AI' : 'Serena AI'} avviata per ${clientName}!\nAccount creato, credenziali inviate e scraper in azione.`);
+            alert(`✨ ${type === 'lexis' ? 'Chiara AI' : 'Serena AI'} registrata con successo per ${clientName}!\n\nL'ambiente di prova è pronto e lo scraper AI è stato avviato.`);
             closeCreationModal();
             setTimeout(loadMasterData, 1500);
         } catch (err) {
