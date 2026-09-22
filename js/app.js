@@ -61,9 +61,9 @@ function toggleModalFields() {
     const urlLabel = document.getElementById('c-url-label');
 
     const config = {
+        concierge: { title: "Concierge24 • Giulia Voice Assistant H24", price: 179, url: "https://www.ilducadeste.it/", label: "Sito Web Struttura Ricettiva (Hotel / B&B)" },
         dentis: { title: "Dentis AI • Serena PRO", price: 149, url: "https://www.sanadent.it/", label: "Sito Web Studio Dentistico (per Scraping AI)" },
         lexis: { title: "Lexis AI • Chiara PRO", price: 149, url: "https://www.studiolegale.it/", label: "Sito Web Studio Legale (per Scraping AI)" },
-        concierge: { title: "Concierge24 • Ricarica Pro", price: 179, url: "https://www.hotel.it/", label: "Sito Web Hotel / B&B" },
         forma_materia: { title: "Forma & Materia • Atelier Pro 4K", price: 249, url: "https://formamateria.rmstudio.app/studio", label: "URL Destinazione Studio" },
         locanda: { title: "Locanda Digitale • Living 3D Menu", price: 169, url: "https://locandadigitale.rmstudio.app/menu.html?slug=locale", label: "URL Living Menu 3D" },
         aura: { title: "AURA • Pro Mensile", price: 19, url: "https://aura.rmstudio.app/radar.html", label: "URL Stanza Radar" },
@@ -217,9 +217,9 @@ function renderMasterTable(data) {
                 </button>
             </td>
             <td class="p-4 text-right space-x-1 whitespace-nowrap">
-                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2 py-1 rounded-lg text-xs font-bold" title="WA">WA</button>
-                <button onclick="openMessageModal('${p.id}', 'mail')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-xs font-bold" title="Mail">Mail</button>
-                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="WA">WA</button>
+                <button onclick="openMessageModal('${p.id}', 'mail')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Mail">Mail</button>
+                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded cursor-pointer" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
             </td>
         `;
         container.appendChild(tr);
@@ -267,7 +267,7 @@ function closeCreationModal() {
     if (m) { m.classList.remove('flex'); m.classList.add('hidden'); }
 }
 
-// 4. SUBMIT FORM CREAZIONE PROGETTI
+// 4. SUBMIT FORM CREAZIONE PROGETTI (CONCIERGE, DENTIS, LEXIS & EXPERIENCE)
 async function handleCreateSubmit(e) {
     e.preventDefault();
     const btn = document.getElementById('c-btn');
@@ -281,12 +281,45 @@ async function handleCreateSubmit(e) {
     const price = parseFloat(document.getElementById('c-price').value) || 0;
     const siteUrl = document.getElementById('c-url').value.trim();
 
-    // 🦷 DENTIS & ⚖️ LEXIS: Invio al Webhook n8n per setup studio e scraper
+    // 🏨 CONCIERGE24: Invio a Webhook n8n per setup hotel & scraper
+    if (type === 'concierge') {
+        btn.innerText = "Configurazione Giulia AI & Scraper Hotel...";
+        const targetEmail = email || 'info@hotel.it';
+
+        const payload = {
+            "Nome Agenzia": clientName,
+            "Email": targetEmail,
+            "Telefono": phone,
+            "Piano": 'trial',
+            "Sito Web": siteUrl,
+            "Fonte": "Command Center Portale (Bozza Speculativa)"
+        };
+
+        try {
+            const res = await fetch('https://n8n.rmstudio.app/webhook/nuova-registrazione', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            alert(`✨ Giulia AI configurata con successo per ${clientName}!\n\nLa struttura è stata creata, lo scraper AI ha estratto le regole dell'hotel e nessuna email è stata inviata al cliente.`);
+            closeCreationModal();
+            setTimeout(loadMasterData, 1500);
+        } catch (err) {
+            alert("⚠️ Errore attivazione Concierge24: " + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = orig;
+        }
+        return;
+    }
+
+    // 🦷 DENTIS & ⚖️ LEXIS: Invio a Webhook n8n per setup studio & scraper
     if (type === 'dentis' || type === 'lexis') {
         btn.innerText = "Configurazione AI & Scraper in corso...";
-
-        // Se nel form non inserisci un'email reale, o metti una mail interna, non mandiamo notifiche al cliente finale
-        const targetEmail = email || 'info@rmstudio.app';
+        const targetEmail = email || 'info@studiorossi.it';
 
         const payload = {
             "Nome Agenzia": clientName,
