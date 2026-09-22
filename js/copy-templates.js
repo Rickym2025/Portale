@@ -2,15 +2,23 @@
 
 window.activeDispatchProjectId = null;
 
-// CLAUSOLA ANTI-SPAM & OPT-OUT GDPR UFFICIALE
-const GDPR_OPT_OUT_FOOTER = `\n\n---\nComunicazione informativa B2B inviata ai sensi del Regolamento UE 2016/679 (GDPR). Se non desidera ricevere ulteriori aggiornamenti o informative su questa tecnologia, risponda semplicemente "CANCELLA" a questo messaggio e il Suo recapito verrà rimosso immediatamente dai nostri archivi.\nRM Studio • Ariano nel Polesine (RO) / Ferrara • riccardo@rmstudio.app`;
+// RECAPITO UFFICIALE RICCARDO MODENA
+const MY_PHONE_DISPLAY = "+39 349 525 8418";
 
-// 🔗 RISOLUZIONE INTELLIGENTE LINK DEMO (Evita di rimandare il cliente sul suo stesso sito)
+// CLAUSOLA ANTI-SPAM & OPT-OUT GDPR UFFICIALE
+const GDPR_OPT_OUT_FOOTER = `\n\n---\nComunicazione informativa B2B inviata ai sensi del Regolamento UE 2016/679 (GDPR). Se non desidera ricevere ulteriori aggiornamenti o informative su questa tecnologia, risponda semplicemente "CANCELLA" a questo messaggio e il Suo recapito verrà rimosso immediatamente dai nostri archivi.\nRM Studio • Ariano nel Polesine (RO) / Ferrara • Tel. ${MY_PHONE_DISPLAY} • riccardo@rmstudio.app`;
+
+// 🔗 RISOLUZIONE INTELLIGENTE LINK DEMO REALE & TRACCIATO
 function resolveDemoLink(item) {
-    if (item.content_url && item.content_url.includes('rmstudio.app') && !item.content_url.includes('google')) {
+    // 1. Se ha un ambiente dedicato generato su rmstudio.app (es. config dentis o lexis con studio_id)
+    if (item.content_url && item.content_url.includes('rmstudio.app') && !item.content_url.includes('view') && !item.content_url.includes('google')) {
         return item.content_url;
     }
-
+    // 2. Link tracciato ufficiale del Portale (registra le visite del lead e aggiorna il contatore)
+    if (item.id) {
+        return `https://portale.rmstudio.app/view?id=${item.id}`;
+    }
+    // 3. Fallback sul sito ufficiale del prodotto
     const saasDemos = {
         concierge: 'https://concierge24.rmstudio.app',
         dentis: 'https://dentis.rmstudio.app',
@@ -26,8 +34,7 @@ function resolveDemoLink(item) {
         vision: 'https://vision.rmstudio.app',
         video: 'https://hometour.rmstudio.app'
     };
-
-    return saasDemos[item.portal_type] || `https://portale.rmstudio.app/view?id=${item.id}`;
+    return saasDemos[item.portal_type] || 'https://rmstudio.app';
 }
 
 function generateWhatsAppCopy(item) {
@@ -36,7 +43,7 @@ function generateWhatsAppCopy(item) {
 
     // 🏨 Concierge24
     if (item.portal_type === 'concierge') {
-        return `Buongiorno ${name}! 👋\n\nVi contatto direttamente dal territorio (RM Studio, software house a Ferrara/Rovigo): supportiamo le strutture ricettive nell'azzerare le chiamate perse e alleggerire il carico del ricevimento, soprattutto sui turni notturni e festivi.\n\nAbbiamo sviluppato *Concierge24*, un assistente vocale AI ("Giulia") che risponde al centralino H24 nella lingua nativa dell'ospite (EN, DE, FR, IT), gestisce check-in notturni, regole della casa, colazione e invia mappe interattive dei ristoranti direttamente sullo smartphone del turista.\n\nPotete ascoltare una simulazione dal vivo qui:\n👉 ${link}\n\nFunziona a consumo, senza canoni fissi obbligatori. Fatemi sapere se può esservi utile per le notti!`;
+        return `Buongiorno ${name}! 👋\n\nVi contatto direttamente dal territorio (RM Studio, Ferrara/Rovigo): supportiamo le strutture ricettive nell'azzerare le chiamate perse e alleggerire il carico del ricevimento, soprattutto sui turni notturni (23:00–07:00) e festivi.\n\nAbbiamo sviluppato *Concierge24*, un assistente vocale AI ("Giulia") che risponde al centralino H24 nella lingua nativa dell'ospite (EN, DE, FR, IT), gestisce check-in notturni, regole della casa, colazione e invia mappe interattive dei ristoranti direttamente sullo smartphone del turista.\n\nPotete visionare la proposta riservata e ascoltare la voce di Giulia qui:\n👉 ${link}\n\nFunziona a consumo, senza canoni fissi obbligatori. Fatemi sapere se può esservi utile per le notti!`;
     }
 
     // 🦷 Dentis AI
@@ -62,19 +69,19 @@ function generateEmailCopy(item) {
 
     // 🏨 Concierge24 (Hotel & Strutture Ricettive)
     if (item.portal_type === 'concierge') {
-        text = `OGGETTO: 🏨 Centralino notturno e assistenza multilingua H24 per ${name}\n\nGentile Direzione di ${name},\n\nLe scrivo direttamente dal territorio (RM Studio, software house attiva a Ferrara e Rovigo) conoscendo bene quanto sia oggi complesso per le strutture ricettive garantire una copertura costante e qualificata del front-desk, in particolare durante la fascia notturna (23:00–07:00), i weekend e i periodi di forte afflusso.\n\nPer sollevare il personale ed evitare che telefonate o richieste di ospiti internazionali restino senza risposta, abbiamo sviluppato **Concierge24**: un assistente vocale e multimediale basato su intelligenza artificiale ("Giulia") pensato specificamente per l'ospitalità alberghiera:\n\n- **Risposta telefonica istantanea H24:** parla in tempo reale nella lingua madre dell'ospite (inglese, tedesco, francese, spagnolo, italiano) con dizione e pause naturali;\n- **Gestione completa dei dubbi ricorrenti:** fornisce istruzioni precise su check-in tardivo, orari colazione, parcheggio, deposito bagagli e regole della struttura;\n- **Concierge turistico interattivo:** suggerisce ristoranti tipici e luoghi d'interesse del territorio entro 35 km, inviando mappe e percorsi stradali direttamente sullo schermo dello smartphone dell'ospite durante la chiamata;\n- **Controllo e trasparenza totale:** il responsabile dell'hotel riceve via email la trascrizione, il riassunto e la registrazione audio della conversazione solo se vi sono reali necessità operative o segnalazioni in camera.\n\nNon richiediamo alcun canone fisso mensile vincolante: il servizio opera a consumo con 15 minuti di prova gratuiti già attivi per consentirvi di ascoltare la resa vocale dal vivo:\n👉 ${link}\n\nQualora desideraste effettuare una breve simulazione di 5 minuti sul centralino o ricevere maggiori dettagli, resto volentieri a vostra completa disposizione.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Sviluppo Tecnologie B2B\nTel / WhatsApp: +39 351 550 5854`;
+        text = `OGGETTO: 🏨 Centralino notturno e assistenza multilingua H24 per ${name}\n\nGentile Direzione di ${name},\n\nLe scrivo direttamente dal territorio (RM Studio, software house attiva a Ferrara e Rovigo) conoscendo bene quanto sia oggi complesso per le strutture ricettive garantire una copertura costante e qualificata del front-desk, in particolare durante la fascia notturna (23:00–07:00), i weekend e i periodi di forte afflusso.\n\nPer sollevare il personale ed evitare che telefonate o richieste di ospiti internazionali restino senza risposta, abbiamo sviluppato **Concierge24**: un assistente vocale e multimediale basato su intelligenza artificiale ("Giulia") pensato specificamente per l'ospitalità alberghiera:\n\n- **Risposta telefonica istantanea H24:** parla in tempo reale nella lingua madre dell'ospite (inglese, tedesco, francese, spagnolo, italiano) con dizione e pause naturali;\n- **Gestione completa dei dubbi ricorrenti:** fornisce istruzioni precise su check-in tardivo, orari colazione, parcheggio, deposito bagagli e regole della struttura;\n- **Concierge turistico interattivo:** suggerisce ristoranti tipici e luoghi d'interesse del territorio entro 35 km, inviando mappe e percorsi stradali direttamente sullo schermo dello smartphone dell'ospite durante la chiamata;\n- **Controllo e trasparenza totale:** il responsabile dell'hotel riceve via email la trascrizione, il riassunto e la registrazione audio della conversazione solo se vi sono reali necessità operative o segnalazioni in camera.\n\nNon richiediamo alcun canone fisso mensile vincolante: il servizio opera a consumo con 15 minuti di prova gratuiti per consentirvi di testare la tecnologia dal vivo.\n\nPuò visionare la proposta riservata predisposta per ${name} a questo indirizzo:\n👉 ${link}\n*(oppure ascoltare una simulazione vocale aperta di Giulia su https://concierge24.rmstudio.app)*\n\nQualora desideraste effettuare una breve simulazione di 5 minuti sul centralino o ricevere maggiori dettagli, resto volentieri a vostra completa disposizione.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Sviluppo Tecnologie B2B\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
     }
     // 🦷 Dentis AI (Studi Dentistici)
     else if (item.portal_type === 'dentis') {
-        text = `OGGETTO: 🦷 Gestione chiamate fuori orario e prime visite per ${name}\n\nGentile Direzione di ${name},\n\nLe scrivo direttamente da Ferrara/Rovigo (RM Studio, software house specializzata in automazioni per il settore sanitario e professionale).\n\nSappiamo bene che durante le visite alla poltrona, la pausa pranzo o nei momenti in cui la segreteria è impegnata al banco con un paziente, ogni telefonata che trova linea occupata o senza risposta rappresenta una prima visita o un trattamento urgente che rischia di rivolgersi a un'altra struttura.\n\nPer risolvere questo collo di bottiglia abbiamo sviluppato **Dentis**, una receptionist telefonica AI ("Serena") addestrata specificamente sulle dinamiche odontoiatriche:\n\n- **Risposta immediata al 2° squillo H24:** accoglie i pazienti con tono caloroso ed empatico anche la sera, nei weekend o durante le chiusure;\n- **Triage delle urgenze odontoiatriche:** riconosce il dolore acuto o i traumi canalizzandoli negli slot prioritari;\n- **Sincronizzazione agenda e no-show azzerati:** fissa le prime visite su Google Calendar d'appoggio e invia promemoria automatici via WhatsApp ai pazienti il giorno prima dell'appuntamento (riducendo le disdette dell'80%).\n\nÈ possibile effettuare una chiamata di prova vocale gratuita senza alcun vincolo né inserimento di carta direttamente da qui:\n👉 ${link}\n\nResto a vostra disposizione per qualsiasi verifica o configurazione personalizzata.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Tecnologie Mediche B2B\nTel / WhatsApp: +39 351 550 5854`;
+        text = `OGGETTO: 🦷 Gestione chiamate fuori orario e prime visite per ${name}\n\nGentile Direzione di ${name},\n\nLe scrivo direttamente da Ferrara/Rovigo (RM Studio, software house specializzata in automazioni per il settore sanitario e professionale).\n\nSappiamo bene che durante le visite alla poltrona, la pausa pranzo o nei momenti in cui la segreteria è impegnata al banco con un paziente, ogni telefonata che trova linea occupata o senza risposta rappresenta una prima visita o un trattamento urgente che rischia di rivolgersi a un'altra struttura.\n\nPer risolvere questo collo di bottiglia abbiamo sviluppato **Dentis**, una receptionist telefonica AI ("Serena") addestrata specificamente sulle dinamiche odontoiatriche:\n\n- **Risposta immediata al 2° squillo H24:** accoglie i pazienti con tono caloroso ed empatico anche la sera, nei weekend o durante le chiusure;\n- **Triage delle urgenze odontoiatriche:** riconosce il dolore acuto o i traumi canalizzandoli negli slot prioritari;\n- **Sincronizzazione agenda e no-show azzerati:** fissa le prime visite su Google Calendar d'appoggio e invia promemoria automatici via WhatsApp ai pazienti il giorno prima dell'appuntamento (riducendo le disdette dell'80%).\n\nLa scheda tecnica dell'assistente con le regole del vostro studio è consultabile qui:\n👉 ${link}\n*(Numero di prova sandbox nazionale abilitato: +39 0425 167 5950)*\n\nResto a vostra disposizione per qualsiasi verifica o configurazione personalizzata.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Tecnologie Mediche B2B\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
     }
     // ⚖️ Lexis AI (Studi Legali)
     else if (item.portal_type === 'lexis') {
-        text = `OGGETTO: ⚖️ Reperibilità telefonica qualificata H24 per ${name}\n\nGentile Avvocato / Direzione di ${name},\n\nLe scrivo dallo studio software RM Studio (Ferrara/Rovigo). Conosciamo bene quanto gli impegni in udienza, le trasferte e le riunioni con i clienti rendano complessa la costante reperibilità telefonica dello studio legale, con il rischio che nuove richieste di patrocinio o consulenze urgenti rimangano senza riscontro.\n\nAbbiamo sviluppato **Lexis AI** ("Chiara"), una segreteria telefonica vocale avanzata calibrata sulle esigenze dell'avvocatura:\n\n- **Registro rigorosamente formale ("del Lei"):** tutela dell'immagine e del prestigio dello studio con massima riservatezza (GDPR);\n- **Filtro delle richieste e prime consulenze:** raccoglie i dettagli del caso, verifica le disponibilità e notifica immediatamente il professionista via email con trascrizione e sintesi;\n- **Attivazione senza modifiche di linea:** funziona tramite una semplice deviazione di chiamata attiva solo su occupato o fuori orario.\n\nPuò verificare il funzionamento ed effettuare una prova dal vivo qui:\n👉 ${link}\n\nResto a Sua completa disposizione per qualsiasi approfondimento.\n\nCordiali saluti,\nRiccardo Modena\nRM Studio • Sistemi Software per Professionisti\nTel / WhatsApp: +39 351 550 5854`;
+        text = `OGGETTO: ⚖️ Reperibilità telefonica qualificata H24 per ${name}\n\nGentile Avvocato / Direzione di ${name},\n\nLe scrivo dallo studio software RM Studio (Ferrara/Rovigo). Conosciamo bene quanto gli impegni in udienza, le trasferte e le riunioni con i clienti rendano complessa la costante reperibilità telefonica dello studio legale, con il rischio che nuove richieste di patrocinio o consulenze urgenti rimangano senza riscontro.\n\nAbbiamo sviluppato **Lexis AI** ("Chiara"), una segreteria telefonica vocale avanzata calibrata sulle esigenze dell'avvocatura:\n\n- **Registro rigorosamente formale ("del Lei"):** tutela dell'immagine e del prestigio dello studio con massima riservatezza (GDPR);\n- **Filtro delle richieste e prime consulenze:** raccoglie i dettagli del caso, verifica le disponibilità e notifica immediatamente il professionista via email con trascrizione e sintesi;\n- **Attivazione senza modifiche di linea:** funziona tramite una semplice deviazione di chiamata attiva solo su occupato o fuori orario.\n\nPuò verificare il funzionamento ed effettuare una prova dal vivo qui:\n👉 ${link}\n*(Numero di prova dedicato: +39 0425 167 5950)*\n\nResto a Sua completa disposizione per qualsiasi approfondimento.\n\nCordiali saluti,\nRiccardo Modena\nRM Studio • Sistemi Software per Professionisti\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
     }
     // Default
     else {
-        text = `OGGETTO: 💡 Proposta di innovazione digitale per ${name}\n\nGentile ${name},\n\nLe scrivo da RM Studio (Ferrara/Rovigo): sviluppiamo soluzioni software e intelligenze artificiali volte a ottimizzare il flusso di lavoro e la conversione delle attività del nostro territorio.\n\nAbbiamo predisposto una dimostrazione tecnica riservata alla vostra attività, consultabile qui:\n👉 ${link}\n\nRestiamo a disposizione per qualsiasi prova dal vivo o chiarimento.\n\nUn cordiale saluto,\nRiccardo Modena | RM Studio`;
+        text = `OGGETTO: 💡 Proposta di innovazione digitale per ${name}\n\nGentile ${name},\n\nLe scrivo da RM Studio (Ferrara/Rovigo): sviluppiamo soluzioni software e intelligenze artificiali volte a ottimizzare il flusso di lavoro e la conversione delle attività del nostro territorio.\n\nAbbiamo predisposto una dimostrazione tecnica riservata alla vostra attività, consultabile qui:\n👉 ${link}\n\nRestiamo a disposizione per qualsiasi prova dal vivo o chiarimento.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Sviluppo Tecnologie B2B\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
     }
 
     return text + GDPR_OPT_OUT_FOOTER;
@@ -200,7 +207,7 @@ async function executeResendDirectSend() {
         loadMasterData();
 
     } catch (err) {
-        alert("⚠️ Errore invio con Resend: " + err.message + "\nAssicurati che il webhook 'invia-email-proposta' sia attivo su n8n.");
+        alert("⚠️ Errore invio con Resend: " + err.message + "\nAssicurati che il workflow 'Invia Email Proposta Resend' sia attivo su n8n.");
     } finally {
         btn.disabled = false;
         btn.innerHTML = originalText;
