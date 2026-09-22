@@ -46,56 +46,77 @@ function onRestaurantSelectedFromSheet() {
     document.getElementById('c-price').value = 390;
 }
 
-// 3. GESTIONE VISIBILITÀ CAMPI E TITOLI NELLA MODALE (CON METODO BOUNTY/LOCANDA AGGIORNATO)
+// 3. GESTIONE VISIBILITÀ CAMPI E TITOLI NELLA MODALE PER OGNI SAAS
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
     const titleInput = document.getElementById('c-title');
     const priceInput = document.getElementById('c-price');
     const urlInput = document.getElementById('c-url');
+    const urlLabel = document.getElementById('c-url-label');
 
     if (titleInput) {
-        if (t === 'forma_materia') {
+        if (t === 'dentis') {
+            titleInput.value = "Dentis AI • Serena PRO";
+            if (priceInput) priceInput.value = 149;
+            if (urlInput) urlInput.placeholder = "https://www.sanadent.it/";
+            if (urlLabel) urlLabel.innerText = "Sito Web dello Studio Dentistico (per Scraping AI)";
+        } else if (t === 'lexis') {
+            titleInput.value = "Lexis AI • Chiara PRO";
+            if (priceInput) priceInput.value = 149;
+            if (urlInput) urlInput.placeholder = "https://www.studiolegale.it/";
+            if (urlLabel) urlLabel.innerText = "Sito Web dello Studio Legale (per Scraping AI)";
+        } else if (t === 'concierge') {
+            titleInput.value = "Concierge24 • Ricarica Pro";
+            if (priceInput) priceInput.value = 179;
+            if (urlInput) urlInput.placeholder = "https://www.hotel.it/";
+            if (urlLabel) urlLabel.innerText = "Sito Web Struttura Ricettiva (Hotel / B&B)";
+        } else if (t === 'forma_materia') {
             titleInput.value = "Forma & Materia • Atelier Pro 4K";
             if (priceInput) priceInput.value = 249;
             if (urlInput) urlInput.placeholder = "https://formamateria.rmstudio.app/studio";
+            if (urlLabel) urlLabel.innerText = "URL Studio / Render";
         } else if (t === 'aura') {
             titleInput.value = "AURA • Pro Mensile (Virtual Mesh Radar)";
             if (priceInput) priceInput.value = 19;
-            if (urlInput) urlInput.placeholder = "https://aura.rmstudio.app/radar.html?room=convoy-main";
+            if (urlInput) urlInput.placeholder = "https://aura.rmstudio.app/radar.html";
+            if (urlLabel) urlLabel.innerText = "URL Stanza Radar";
         } else if (t === 'locanda') {
             titleInput.value = "Locanda Digitale • Living 3D Menu & Marketing";
             if (priceInput) priceInput.value = 169;
-            if (urlInput) urlInput.placeholder = "https://locandadigitale.rmstudio.app/menu.html?slug=pizzeria-esempio";
+            if (urlInput) urlInput.placeholder = "https://locandadigitale.rmstudio.app/menu.html?slug=locale";
+            if (urlLabel) urlLabel.innerText = "URL Living Menu 3D";
         } else if (t === 'eternia') {
             titleInput.value = "ETERNIA • Memoriale QR";
             if (priceInput) priceInput.value = 79;
             if (urlInput) urlInput.placeholder = "https://eternia.rmstudio.app";
+            if (urlLabel) urlLabel.innerText = "URL Memoriale";
         } else if (t === 'love') {
             titleInput.value = "LOVE • Partecipazioni Digitali";
             if (priceInput) priceInput.value = 149;
             if (urlInput) urlInput.placeholder = "https://love.rmstudio.app";
+            if (urlLabel) urlLabel.innerText = "URL Partecipazione";
         } else if (t === 'experience') {
             titleInput.value = "Smart Experience Page";
             if (priceInput) priceInput.value = 390;
             if (urlInput) urlInput.placeholder = "https://www.ristorante-esempio.it";
+            if (urlLabel) urlLabel.innerText = "Sito Web del Ristorante (per Scraping AI)";
             fetchPendingRestaurantsFromSheet();
         } else if (t === 'social') {
             titleInput.value = "Carousel Engine";
             if (priceInput) priceInput.value = 29;
             if (urlInput) urlInput.placeholder = "https://social.rmstudio.app";
+            if (urlLabel) urlLabel.innerText = "URL di Destinazione";
         } else if (t === 'html') {
-            titleInput.value = "Sito Web";
+            titleInput.value = "SiteEngine Pro • Sito Web";
             if (priceInput) priceInput.value = 400;
-            if (urlInput) urlInput.placeholder = "https://sitengine.rmstudio.app";
+            if (urlInput) urlInput.placeholder = "https://sitengine.rmstudio.app/lead";
+            if (urlLabel) urlLabel.innerText = "URL Sito Web";
         } else if (t === 'vision') {
             titleInput.value = "Vision UGC Video";
             if (priceInput) priceInput.value = 50;
         } else if (t === 'video') {
             titleInput.value = "HomeTour Video";
             if (priceInput) priceInput.value = 59;
-        } else if (t === 'voice_ai') {
-            titleInput.value = "Voice AI Assistente";
-            if (priceInput) priceInput.value = 149;
         } else if (t === 'license') {
             titleInput.value = "Licenza Software";
             if (priceInput) priceInput.value = 290;
@@ -209,12 +230,18 @@ function renderMasterTable(data) {
         const openDaysAgo = getDaysAgo(p.updated_at);
 
         let typeBadge = '';
-        if (p.portal_type === 'aura') {
-            typeBadge = `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">aura</span>`;
+        if (p.portal_type === 'dentis') {
+            typeBadge = `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">🦷 dentis</span>`;
+        } else if (p.portal_type === 'lexis') {
+            typeBadge = `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">⚖️ lexis</span>`;
+        } else if (p.portal_type === 'concierge') {
+            typeBadge = `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">🏨 concierge</span>`;
+        } else if (p.portal_type === 'aura') {
+            typeBadge = `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">📡 aura</span>`;
         } else if (p.portal_type === 'forma_materia') {
-            typeBadge = `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">f&amp;m</span>`;
+            typeBadge = `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">🏛️ f&amp;m</span>`;
         } else if (p.portal_type === 'locanda') {
-            typeBadge = `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">locanda</span>`;
+            typeBadge = `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">🍽️ locanda</span>`;
         } else {
             typeBadge = `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase block w-max mx-auto">${p.portal_type || 'html'}</span>`;
         }
@@ -319,15 +346,17 @@ function openClosingPitchModal(projectId) {
     if (!project) return;
 
     const name = project.client_name || 'Titolare';
-    const title = project.title || 'il vostro locale';
+    const title = project.title || 'il vostro studio';
     const portalUrl = `https://portale.rmstudio.app/view?id=${project.id}`;
     const phone = project.client_phone ? project.client_phone.replace(/\D/g, '') : '';
 
     let text = "";
-    if (project.portal_type === 'locanda') {
+    if (project.portal_type === 'dentis') {
+        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di verificare l'anteprima della receptionist vocale Serena per ${title}.\n\nSe attivate Serena PRO questa settimana, **vi includiamo GRATIS l'integrazione completa del gateway WhatsApp per i promemoria automatici ai pazienti del giorno dopo** (abbatte i mancati appuntamenti del 72%)!\n\nPotete sbloccare il servizio direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi supporto!`;
+    } else if (project.portal_type === 'locanda') {
         text = `Ciao ${name}! 👋\n\nHo visto che hai dato un'occhiata all'anteprima del vostro Living 3D Menu per ${title}.\n\nCi tenevo a farti sapere che sbloccando la proposta questa settimana, oltre ai piatti animati a 60 FPS vi configuriamo **INCLUSO nel pacchetto il Bancomat dei Compleanni automatico su WhatsApp e lo Scudo Recensioni a 5 stelle per Google Maps**! 🎂🍷\n\nPuoi sbloccare il progetto direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi chiarimento!`;
     } else {
-        text = `Ciao ${name}! 👋\n\nHo visto che hai avuto modo di esplorare l'anteprima della Smart Experience Page creata per ${title}.\n\nCi tenevo a dirti che, sbloccandola questa settimana per metterla online sul vostro dominio, **includiamo GRATIS nei 390€ un Jingle Audio d'Autore personalizzato (valore 150€)** realizzato dal nostro studio musicale FF Edizioni, pronto da usare per le vostre Stories e Reel Instagram! 🎵🍷\n\nPuoi rivedere l'anteprima e sbloccarla qui:\n${portalUrl}\n\nResto a disposizione!`;
+        text = `Ciao ${name}! 👋\n\nHo visto che hai avuto modo di esplorare l'anteprima creata per ${title}.\n\nSbloccandola questa settimana, **includiamo GRATIS un Jingle Audio d'Autore personalizzato (valore 150€)** realizzato dal nostro studio musicale FF Edizioni!\n\nPuoi rivedere l'anteprima e sbloccarla qui:\n${portalUrl}\n\nResto a disposizione!`;
     }
 
     document.getElementById('copy-text-area').value = text;
@@ -388,18 +417,63 @@ function closeCreationModal() {
     document.getElementById('creation-modal').classList.add('hidden'); 
 }
 
+// 4. SUBMIT CREAZIONE PROGETTO: DISPATCH INTELLIGENTE SUI VERI WEBHOOK N8N
 async function handleCreateSubmit(e) {
     e.preventDefault();
     const btn = document.getElementById('c-btn');
     const originalText = btn.innerText;
     btn.disabled = true;
-    btn.innerText = "Salvataggio progetto in corso...";
 
     const type = document.getElementById('c-type').value;
+    const clientName = document.getElementById('c-name').value.trim();
+    const email = document.getElementById('c-email').value.trim();
+    const phone = document.getElementById('c-phone').value.trim();
+    const price = parseFloat(document.getElementById('c-price').value) || 0;
+    const siteUrl = document.getElementById('c-url').value.trim();
 
+    // 🦷 DENTIS & ⚖️ LEXIS: Invio diretto al Webhook di Registrazione & Scraper
+    if (type === 'dentis' || type === 'lexis') {
+        btn.innerText = "Configurazione Voice AI & Avvio Scraper in corso...";
+        
+        let pianoNorm = 'trial';
+        if (price >= 299) pianoNorm = 'enterprise';
+        else if (price >= 149) pianoNorm = 'pro';
+
+        const payload = {
+            "Nome Agenzia": clientName,
+            "Email": email || 'info@studiorossi.it',
+            "Telefono": phone || '+3904251675950',
+            "Piano": pianoNorm,
+            "Sito Web": siteUrl,
+            "Settore": type === 'lexis' ? 'legale' : 'odontoiatria',
+            "Fonte": "Command Center Portale"
+        };
+
+        try {
+            const res = await fetch('https://n8n.rmstudio.app/webhook/studio-registrazione', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) throw new Error(`Il server n8n ha risposto con codice ${res.status}`);
+
+            alert(`✨ ${type === 'lexis' ? 'Chiara AI' : 'Serena AI'} configurata con successo per ${clientName}!\n\nL'account Supabase è stato creato, le credenziali sono state inviate via email e lo scraper AI è stato avviato sul sito.`);
+            closeCreationModal();
+            // Attendi 1.5s per dare tempo a n8n di scrivere su portal_videos S2
+            setTimeout(loadMasterData, 1500);
+        } catch (err) {
+            alert("⚠️ Errore attivazione Voice AI: " + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = originalText;
+        }
+        return;
+    }
+
+    // 🍷 EXPERIENCE: Generazione con Scraper Taste
     if (type === 'experience') {
         btn.innerText = "Analisi AI del Ristorante in corso (può richiedere 20s)...";
-        const siteUrl = document.getElementById('c-url').value;
         if (!siteUrl) {
             alert("Inserisci l'URL del sito del ristorante nel campo Destinazione.");
             btn.disabled = false;
@@ -413,8 +487,8 @@ async function handleCreateSubmit(e) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     site_url: siteUrl,
-                    phone: document.getElementById('c-phone').value || '',
-                    nome_ristorante: document.getElementById('c-name').value || ''
+                    phone: phone,
+                    nome_ristorante: clientName
                 })
             });
 
@@ -438,32 +512,34 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    const fd = new FormData();
-    fd.append('client_name', document.getElementById('c-name').value);
-    fd.append('email', document.getElementById('c-email').value || '');
-    fd.append('client_phone', document.getElementById('c-phone').value || '');
-    fd.append('title', document.getElementById('c-title').value);
-    fd.append('price', document.getElementById('c-price').value);
-    fd.append('portal_type', type);
+    // TUTTI GLI ALTRI PRODOTTI: Inserimento Diretto su Supabase S2 (portal_videos)
+    btn.innerText = "Salvataggio progetto su Supabase...";
+    try {
+        const { error } = await supabaseClient.from('portal_videos').insert([{
+            client_name: clientName,
+            client_email: email,
+            client_phone: phone,
+            title: document.getElementById('c-title').value,
+            price_euro: price,
+            portal_type: type,
+            content_url: siteUrl,
+            is_paid: false,
+            sent_at: new Date().toISOString(),
+            first_email_sent: false,
+            views_count: 0
+        }]);
 
-    if (type === 'video' || type === 'carousel' || type === 'vision') {
-        const fileInput = document.getElementById('c-file');
-        for (let i = 0; i < fileInput.files.length; i++) { fd.append(`file_${i}`, fileInput.files[i]); }
-    } else {
-        fd.append('external_url', document.getElementById('c-url').value);
-    }
+        if (error) throw error;
 
-    const ok = await triggerN8NCreate(fd);
-    if (ok) {
-        alert("Progetto registrato con successo!");
+        alert("Progetto registrato con successo nel Portale!");
         closeCreationModal();
         await loadMasterData();
-    } else {
-        alert("Errore creazione.");
+    } catch (err) {
+        alert("Errore salvataggio: " + err.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerText = originalText;
     }
-    
-    btn.disabled = false;
-    btn.innerText = originalText;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -499,18 +575,3 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 sidebar.classList.remove('sidebar-collapsed');
                 newWidth = Math.min(Math.max(newWidth, 220), 480);
-                sidebar.style.width = `${newWidth}px`;
-                localStorage.setItem('sidebar_width', newWidth);
-                localStorage.setItem('sidebar_collapsed', 'false');
-            }
-        };
-
-        const mouseUpHandler = () => {
-            resizer.classList.remove('resizing');
-            document.removeEventListener('mousemove', mouseMoveHandler);
-            document.removeEventListener('mouseup', mouseUpHandler);
-        };
-
-        resizer.addEventListener('mousedown', mouseDownHandler);
-    }
-});
