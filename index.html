@@ -7,7 +7,7 @@
 
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -51,6 +51,9 @@
         .font-display {
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
         .glass {
             background: rgba(11, 11, 15, 0.95);
             backdrop-filter: blur(16px);
@@ -71,7 +74,7 @@
       </div>
       <form onsubmit="handleLoginSubmit(event)">
           <input type="password" id="admin-password" placeholder="Inserisci Password..." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl px-4 py-3.5 text-center text-white outline-none focus:border-purple-500 transition-all mb-4 text-base font-semibold">
-          <button type="submit" id="login-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-purple-600/30 text-sm uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95">
+          <button type="submit" id="login-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-3.5 rounded-xl transition-all shadow-lg shadow-purple-600/30 text-sm uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
             <i class="fa-solid fa-key"></i> Sblocca Ecosistema
           </button>
       </form>
@@ -109,7 +112,7 @@
           </a>
         </nav>
 
-        <!-- ⚡ CREA PROGETTO RAPIDO (SEPARATO E CHIARO) -->
+        <!-- ⚡ CREA PROGETTO RAPIDO (CON CONCIERGE, DENTIS E LEXIS DISTINTI) -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-xs uppercase font-bold text-purple-400 tracking-wider mb-2 flex items-center justify-between sidebar-text">
             <span>+ Crea Progetto Rapido</span>
@@ -117,17 +120,17 @@
           </div>
           
           <div class="space-y-1 font-semibold text-sm">
-            <!-- 🏨 CONCIERGE24 (TURISMO & HOTEL) -->
-            <button onclick="quickOpenCreate('concierge')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-orange-600/20 hover:text-white border border-transparent hover:border-orange-500/30 transition text-xs font-bold" title="Concierge24 (Assistente Vocale Hotel & B&B)">
+            <!-- 🏨 CONCIERGE24 -->
+            <button onclick="quickOpenCreate('concierge')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-orange-600/20 hover:text-white border border-transparent hover:border-orange-500/30 transition text-xs font-bold" title="Concierge24 (Hotel & B&B)">
               <span class="shrink-0 text-base">🏨</span> <span class="sidebar-text">Concierge24 (Hotel)</span>
             </button>
 
-            <!-- 🦷 DENTIS AI (STUDI DENTISTICI) -->
+            <!-- 🦷 DENTIS AI -->
             <button onclick="quickOpenCreate('dentis')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold" title="Dentis AI (Receptionist Dentisti)">
               <span class="shrink-0 text-base">🦷</span> <span class="sidebar-text">Dentis AI (Dentisti)</span>
             </button>
 
-            <!-- ⚖️ LEXIS AI (STUDI LEGALI) -->
+            <!-- ⚖️ LEXIS AI -->
             <button onclick="quickOpenCreate('lexis')" class="w-full px-3 py-2 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-yellow-600/20 hover:text-white border border-transparent hover:border-yellow-500/30 transition text-xs font-bold" title="Lexis AI (Segreteria Legale H24)">
               <span class="shrink-0 text-base">⚖️</span> <span class="sidebar-text">Lexis AI (Avvocati)</span>
             </button>
@@ -194,14 +197,13 @@
           </div>
         </div>
 
-        <!-- 🗄️ SEZIONE SUPABASE PROJECTS (I 7 ACCOUNT UFFICIALI) -->
+        <!-- 🗄️ SEZIONE SUPABASE PROJECTS (7 ACCOUNT) -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-[11px] uppercase font-bold text-gray-500 tracking-wider mb-2 flex items-center justify-between sidebar-text">
             <span>Supabase Projects (7 Account)</span> <i class="fa-solid fa-database text-xs"></i>
           </div>
           
           <div class="space-y-1 text-xs">
-            <!-- 1. Lamesola Riccardo -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">lamesola.riccardo@...</span>
@@ -213,7 +215,6 @@
                 </div>
             </details>
 
-            <!-- 2. Modena -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">modena.riccardo@...</span>
@@ -225,7 +226,6 @@
                 </div>
             </details>
 
-            <!-- 3. Bottega -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">labottegadeldelta@...</span>
@@ -237,7 +237,6 @@
                 </div>
             </details>
 
-            <!-- 4. Turismo -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">assistente.turismo@...</span>
@@ -249,7 +248,6 @@
                 </div>
             </details>
 
-            <!-- 5. SmartAI -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">smartai.riccardo@...</span>
@@ -261,7 +259,6 @@
                 </div>
             </details>
 
-            <!-- 6. FF Edizioni -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">ff.edizioni@...</span>
@@ -273,7 +270,6 @@
                 </div>
             </details>
 
-            <!-- 7. Lamesola Shop -->
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">lamesolashop@...</span>
@@ -285,40 +281,6 @@
                 </div>
             </details>
           </div>
-        </div>
-
-        <!-- 🐙 SEZIONE GITHUB REPOSITORIES -->
-        <div class="pt-2 border-t border-zinc-900/80">
-          <div class="text-[11px] uppercase font-bold text-gray-500 tracking-wider mb-2 flex items-center justify-between sidebar-text">
-            <span>GitHub Repos</span> <i class="fa-brands fa-github text-xs"></i>
-          </div>
-
-          <details class="group">
-            <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between text-xs" title="GitHub Repositories">
-                <span class="sidebar-text">Rickym2025</span>
-                <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
-            </summary>
-            <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 max-h-48 overflow-y-auto text-[11px] sidebar-text">
-                <a href="https://github.com/Rickym2025/Dentis" target="_blank" class="block text-cyan-400 font-bold hover:underline truncate">🦷 Dentis</a>
-                <a href="https://github.com/Rickym2025/Lexis" target="_blank" class="block text-yellow-400 font-bold hover:underline truncate">⚖️ Lexis</a>
-                <a href="https://github.com/Rickym2025/Forma-Materia" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🏛️ forma-materia</a>
-                <a href="https://github.com/Rickym2025/aura" target="_blank" class="block text-cyan-400 font-bold hover:underline truncate">📡 aura</a>
-                <a href="https://github.com/Rickym2025/locandadigitale" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🍽️ locandadigitale</a>
-                <a href="https://github.com/Rickym2025/drive_motion_radar" target="_blank" class="block text-cyan-300 font-bold hover:underline truncate">🏎️ drive-motion-radar</a>
-                <a href="https://github.com/Rickym2025/eternia" target="_blank" class="block text-amber-400 font-bold hover:underline truncate">🕊️ eternia</a>
-                <a href="https://github.com/Rickym2025/love" target="_blank" class="block text-pink-400 font-bold hover:underline truncate">💍 love</a>
-                <a href="https://github.com/Rickym2025/experience" target="_blank" class="block text-purple-400 font-bold hover:underline truncate">🍷 experience</a>
-                <a href="https://github.com/Rickym2025/Portale" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">📦 Portale</a>
-                <a href="https://github.com/Rickym2025/site-engine" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🌐 site-engine</a>
-                <a href="https://github.com/Rickym2025/vision" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🎬 vision</a>
-                <a href="https://github.com/Rickym2025/free-energy" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">☀️ free-energy</a>
-                <a href="https://github.com/Rickym2025/VeloMotion" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">⚡ VeloMotion</a>
-                <a href="https://github.com/Rickym2025/nexus" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🤖 nexus</a>
-                <a href="https://github.com/Rickym2025/OmniaStudio" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🔒 OmniaStudio</a>
-                <a href="https://github.com/Rickym2025/HomeTour" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🏠 HomeTour</a>
-                <a href="https://github.com/Rickym2025/DriveMotion" target="_blank" class="block text-gray-400 hover:text-purple-400 truncate">🏎️ DriveMotion</a>
-            </div>
-          </details>
         </div>
 
         <!-- UTILITY AUTOMAZIONI & STRIPE -->
@@ -333,7 +295,7 @@
         </div>
       </div>
 
-      <button onclick="logout()" class="w-full px-3.5 py-3 rounded-xl flex items-center gap-3 text-gray-400 hover:text-red-400 hover:bg-red-500/10 text-xs font-bold transition mt-4" title="Disconnetti Account">
+      <button onclick="logout()" class="w-full px-3.5 py-3 rounded-xl flex items-center gap-3 text-gray-400 hover:text-red-400 hover:bg-red-500/10 text-xs font-bold transition mt-4 cursor-pointer" title="Disconnetti Account">
         <i class="fa-solid fa-right-from-bracket shrink-0"></i> <span class="sidebar-text">Disconnetti</span>
       </button>
     </aside>
@@ -352,7 +314,7 @@
               <p class="text-sm text-gray-400 mt-1">Gestisci le proposte e i pagamenti di tutti i 20 SaaS RM Studio in tempo reale.</p>
             </div>
             <div class="flex items-center gap-3">
-              <button onclick="openCreationModal()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-purple-600/20 active:scale-95">
+              <button onclick="openCreationModal()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-purple-600/20 active:scale-95 cursor-pointer">
                   + Nuovo Progetto
               </button>
             </div>
@@ -378,7 +340,7 @@
             </div>
         </div>
 
-        <!-- FILTRI PRODOTTI (CON CONCIERGE, DENTIS E LEXIS SEPARATI) -->
+        <!-- FILTRI PRODOTTI (SEPARATI PER TUTTI I VERTICALI) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">PRODOTTO / CATEGORIA</label>
@@ -397,9 +359,7 @@
                     <option value="html">🌐 SiteEngine Pro (Siti Web)</option>
                     <option value="vision">🎬 Vision UGC Video</option>
                     <option value="video">🏠 HomeTour &amp; DriveMotion</option>
-                    <option value="chatbot">💬 NexusAI Chatbot</option>
                     <option value="license">🔑 Licenze (VeloMotion/Omnia)</option>
-                    <option value="solar">☀️ Free Energy (Fotovoltaico)</option>
                 </select>
             </div>
             <div>
@@ -467,7 +427,7 @@
     <div class="glass p-8 rounded-3xl max-w-lg w-full border border-zinc-800 shadow-2xl">
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-xl font-display font-bold text-white">Crea Nuovo Progetto / Proposta</h3>
-        <button onclick="closeCreationModal()" class="text-gray-400 hover:text-white text-xl font-bold">&times;</button>
+        <button onclick="closeCreationModal()" class="text-gray-400 hover:text-white text-xl font-bold cursor-pointer">&times;</button>
       </div>
 
       <form id="create-project-form" onsubmit="handleCreateSubmit(event)" class="space-y-4">
@@ -483,43 +443,43 @@
         </div>
 
         <div>
-            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Nome Cliente / Azienda</label>
-            <input type="text" id="c-name" required placeholder="Es. Sanadent s.r.l." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Nome Cliente / Struttura</label>
+            <input type="text" id="c-name" required placeholder="Es. Hotel Il Duca d'Este / Sanadent" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
         </div>
         <div class="grid grid-cols-2 gap-4">
             <div>
-                <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Email</label>
-                <input type="email" id="c-email" placeholder="sanadent.ferrara@gmail.com" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+                <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Email Ufficiale</label>
+                <input type="email" id="c-email" placeholder="info@azienda.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
             </div>
             <div>
-                <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Telefono / WhatsApp (o Test)</label>
-                <input type="text" id="c-phone" placeholder="+393401234567" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+                <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Telefono / WhatsApp</label>
+                <input type="text" id="c-phone" placeholder="+39 0532..." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
             </div>
         </div>
         <div class="grid grid-cols-3 gap-4">
             <div class="col-span-2">
-                <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Titolo Servizio / Progetto</label>
-                <input type="text" id="c-title" required value="Dentis AI • Serena PRO" placeholder="Titolo" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+                <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Titolo Servizio / Proposta</label>
+                <input type="text" id="c-title" required value="Concierge24 • Giulia Voice Assistant H24" placeholder="Titolo" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prezzo (€)</label>
-                <input type="number" id="c-price" value="149" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold text-amber-400 font-mono">
+                <input type="number" id="c-price" value="179" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold text-amber-400 font-mono">
             </div>
         </div>
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prodotto Ecosistema</label>
             <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold">
-                <option value="concierge">🏨 Concierge24 (Assistente Vocale Hotel &amp; B&amp;B)</option>
-                <option value="dentis" selected>🦷 Dentis AI (Receptionist Telefonica Dentisti)</option>
+                <option value="concierge" selected>🏨 Concierge24 (Assistente Vocale Hotel &amp; B&amp;B)</option>
+                <option value="dentis">🦷 Dentis AI (Receptionist Telefonica Dentisti)</option>
                 <option value="lexis">⚖️ Lexis AI (Segreteria Vocale Avvocati)</option>
                 <option value="locanda">🍽️ Locanda Digitale (Living 3D Menu &amp; Marketing)</option>
                 <option value="forma_materia">🏛️ Forma &amp; Materia (Rendering Neurale 4K)</option>
                 <option value="aura">📡 AURA Proximity (Virtual Mesh Radar)</option>
                 <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
                 <option value="love">💍 LOVE (Partecipazioni Digitali)</option>
-                <option value="ares">🏋️ AresAI (Fitness RPG &amp; Arena)</option>
                 <option value="experience">🍷 Smart Experience Page (Ristoranti)</option>
                 <option value="html">🌐 SiteEngine Pro (Sito Web / Link HTML)</option>
+                <option value="social">📊 Carousel Engine (Social Creator)</option>
                 <option value="vision">🎬 Vision UGC Video</option>
                 <option value="video">🏠 HomeTour / DriveMotion Video</option>
                 <option value="license">🔑 Licenza Software (VeloMotion/Omnia)</option>
@@ -533,32 +493,85 @@
             </div>
         </div>
         <div id="link-input-box">
-            <label class="block text-xs font-bold uppercase text-gray-400 mb-1" id="c-url-label">Sito Web della Struttura / Clinica (per Scraping AI)</label>
-            <input type="url" id="c-url" placeholder="https://www.sanadent.it/" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-mono">
+            <label class="block text-xs font-bold uppercase text-gray-400 mb-1" id="c-url-label">Sito Web Struttura / Lead (per Demo &amp; Scraping)</label>
+            <input type="url" id="c-url" placeholder="https://www.hotel.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-mono">
         </div>
-        <button type="submit" id="c-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-4 rounded-xl text-xs uppercase tracking-wider mt-4 shadow-lg shadow-purple-600/30 active:scale-95 transition">
-            Salva, Registra e Avvia Demo AI
+        <button type="submit" id="c-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-4 rounded-xl text-xs uppercase tracking-wider mt-4 shadow-lg shadow-purple-600/30 active:scale-95 transition cursor-pointer">
+            Salva Bozza Speculativa (Zero Email)
         </button>
       </form>
     </div>
   </div>
 
-  <!-- MODALE MESSAGGI PRONTI WA / EMAIL -->
+  <!-- ── MODALE CENTRO SPEDIZIONE: RESEND & WHATSAPP (CON ANTI-SPAM GDPR) ── -->
   <div id="copy-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
-    <div class="glass p-8 rounded-3xl max-w-lg w-full border border-zinc-800 shadow-2xl">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-lg font-display font-bold text-white flex items-center gap-2"><i class="fa-solid fa-comment-dots text-purple-400"></i> Copy Pronto da Inviare</h3>
-        <button onclick="closeCopyModal()" class="text-gray-400 hover:text-white text-xl font-bold">&times;</button>
+    <div class="glass p-6 md:p-8 rounded-3xl max-w-xl w-full border border-zinc-800 shadow-2xl space-y-4">
+      
+      <!-- HEADER MODALE -->
+      <div class="flex justify-between items-center border-b border-zinc-800 pb-3">
+        <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-paper-plane"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-display font-black text-white" id="modal-dispatch-title">Centro Spedizione Proposta</h3>
+                <span class="text-xs text-zinc-400 font-medium">Invia con Resend (@rmstudio.app) o via WhatsApp</span>
+            </div>
+        </div>
+        <button onclick="closeCopyModal()" class="text-gray-400 hover:text-white text-xl font-bold cursor-pointer">&times;</button>
       </div>
-      <textarea id="copy-text-area" readonly class="w-full h-48 bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-gray-200 outline-none resize-none font-mono mb-4 leading-relaxed"></textarea>
-      <div class="flex gap-3">
-          <button onclick="executeCopyText()" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-xl text-xs transition">
-            <i class="fa-solid fa-copy"></i> Copia Testo
+
+      <!-- DESTINATARIO E OGGETTO MODIFICABILI AL VOLO -->
+      <div id="modal-email-fields" class="space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                  <label class="block text-[10px] font-black uppercase tracking-wider text-zinc-400 mb-1">Destinatario</label>
+                  <input type="email" id="modal-to-email" placeholder="cliente@email.it" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-2.5 text-xs text-white outline-none focus:border-blue-500 font-mono">
+              </div>
+              <div>
+                  <label class="block text-[10px] font-black uppercase tracking-wider text-zinc-400 mb-1">Mittente Ufficiale</label>
+                  <input type="text" readonly value="Riccardo Modena <riccardo@rmstudio.app>" class="w-full bg-[#101015] border border-zinc-900 rounded-xl p-2.5 text-xs text-zinc-500 cursor-not-allowed">
+              </div>
+          </div>
+          <div>
+              <label class="block text-[10px] font-black uppercase tracking-wider text-zinc-400 mb-1">Oggetto Email</label>
+              <input type="text" id="modal-subject" placeholder="Oggetto..." class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-2.5 text-xs text-blue-300 font-bold outline-none focus:border-blue-500">
+          </div>
+      </div>
+
+      <!-- CORPO DEL MESSAGGIO (MODIFICABILE PRIMA DI SPEDIRE) -->
+      <div>
+          <label class="block text-[10px] font-black uppercase tracking-wider text-zinc-400 mb-1 flex items-center justify-between">
+              <span>Testo del Messaggio</span>
+              <span class="text-[10px] text-zinc-500">Puoi personalizzarlo prima di cliccare invia</span>
+          </label>
+          <textarea id="copy-text-area" rows="8" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-xs text-gray-200 outline-none resize-y font-mono leading-relaxed focus:border-blue-500"></textarea>
+      </div>
+
+      <!-- BADGE ANTI-SPAM & GDPR RASSICURANTE -->
+      <div class="p-3 bg-emerald-950/20 border border-emerald-500/30 rounded-xl flex items-center gap-2.5 text-[11px] text-emerald-400">
+          <i class="fa-solid fa-shield-halved text-sm shrink-0"></i>
+          <span><b>Protezione Anti-Spam Resend:</b> Rapporto testo/link naturale 80/20, clausola di opt-out GDPR inclusa e autenticazione DKIM/SPF attiva.</span>
+      </div>
+
+      <!-- PULSANTI AZIONE -->
+      <div class="flex gap-2 pt-2">
+          <!-- TASTO RESEND DIRETTO -->
+          <button id="btn-send-resend" onclick="executeResendDirectSend()" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 cursor-pointer active:scale-95">
+              <i class="fa-solid fa-paper-plane"></i> Spedisci con Resend
           </button>
-          <a id="copy-wa-direct-link" target="_blank" href="#" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3.5 rounded-xl text-xs text-center transition flex items-center justify-center gap-2">
-            <i class="fa-brands fa-whatsapp"></i> Apri WhatsApp
+
+          <!-- TASTO WHATSAPP -->
+          <a id="copy-wa-direct-link" target="_blank" href="#" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-extrabold py-3.5 rounded-xl text-xs text-center transition flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95">
+              <i class="fa-brands fa-whatsapp text-sm"></i> Apri WhatsApp
           </a>
+
+          <!-- TASTO COPIA APPUNTI -->
+          <button onclick="executeCopyText()" class="px-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold py-3.5 rounded-xl text-xs transition cursor-pointer" title="Copia testo negli appunti">
+              <i class="fa-solid fa-copy"></i>
+          </button>
       </div>
+
     </div>
   </div>
 
