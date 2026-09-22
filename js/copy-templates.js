@@ -7,7 +7,22 @@ function generateWhatsAppCopy(item) {
         ? `${window.location.origin}/vision-preview?token=${item.token}`
         : (item.portal_type === 'forma_materia' 
             ? (item.content_url || `https://formamateria.rmstudio.app/studio`)
-            : `https://portale.rmstudio.app/view?id=${item.id}`);
+            : (item.content_url || `https://portale.rmstudio.app/view?id=${item.id}`));
+
+    // 🦷 Messaggio Dentis AI (Studi Dentistici)
+    if (item.portal_type === 'dentis') {
+        return `Ciao ${name}! 👋\n\nHo visto la vostra ricerca per la segreteria e, per non rischiare di perdere visite o urgenze mentre selezionate e formate la nuova figura, vi ho pre-configurato la receptionist AI per lo studio:\n👉 ${link}\n\nSi chiama Serena: risponde in voce naturale al 2° squillo H24, gestisce le urgenze, risponde alle domande su orari e prestazioni e sincronizza gli appuntamenti direttamente in agenda con promemoria automatici via WhatsApp.\n\nPotete provarla dal vivo senza impegno. Fatemi sapere cosa ne pensate! 🦷📞`;
+    }
+
+    // ⚖️ Messaggio Lexis AI (Studi Legali & Avvocati)
+    if (item.portal_type === 'lexis') {
+        return `Gentile ${name}, buongiorno.\n\nAbbiamo riservato per il Suo studio la dimostrazione operativa della segreteria telefonica vocale AI per professionisti legali:\n👉 ${link}\n\nSi chiama Chiara: adotta un registro rigorosamente formale (\"del Lei\"), risponde fuori orario e su linea occupata per raccogliere i dettagli delle nuove richieste di consulenza, notificando immediatamente lo studio via email e WhatsApp con trascrizione e sintesi.\n\nResto a disposizione per una prova diretta. Cordiali saluti.`;
+    }
+
+    // 🏨 Messaggio Concierge24 (Hotel & Strutture Ricettive)
+    if (item.portal_type === 'concierge') {
+        return `Ciao ${name}! 👋\n\nHo visto la vostra struttura ricettiva e vi ho preparato una demo interattiva di *Concierge24*:\n👉 ${link}\n\nÈ l'assistente vocale e multimediale AI (\"Giulia\") che risponde in lingua nativa agli ospiti H24 (italiano, inglese, tedesco, ecc.), invia sullo smartphone orari di check-in, parcheggio e regole della casa, e consiglia i migliori ristoranti e attrazioni locali entro 35 km con mappe interattive in tempo reale! 🏨✨\n\nDateci un'occhiata e fatemi sapere cosa ne pensate!`;
+    }
 
     // 🍽️ Messaggio personalizzato Locanda Digitale (Living 3D Menu & Metodo Bounty)
     if (item.portal_type === 'locanda') {
@@ -35,12 +50,27 @@ function generateWhatsAppCopy(item) {
 
 function generateEmailCopy(item) {
     const name = item.client_name || 'Gentile Titolare';
-    const title = item.title || 'il vostro locale';
+    const title = item.title || 'il vostro studio';
     const link = item.portal_type === 'vision' 
         ? `${window.location.origin}/vision-preview?token=${item.token}`
         : (item.portal_type === 'forma_materia' 
             ? (item.content_url || `https://formamateria.rmstudio.app/studio`)
-            : `https://portale.rmstudio.app/view?id=${item.id}`);
+            : (item.content_url || `https://portale.rmstudio.app/view?id=${item.id}`));
+
+    // 🦷 Email Dentis AI
+    if (item.portal_type === 'dentis') {
+        return `OGGETTO: 🦷 Gestione chiamate e prime visite per ${title} (durante la selezione del personale)\n\nGentile ${name},\n\nAbbiamo configurato per il vostro studio una dimostrazione attiva della receptionist telefonica AI Dentis ("Serena"), consultabile a questo indirizzo riservato:\n${link}\n\nMentre siete alla ricerca della nuova figura di front office, Dentis garantisce che nessuna chiamata e nessuna urgenza vadano perse durante le pause pranzo, la sera o quando la linea è occupata:\n- Risposta vocale immediata e naturale H24 entro il 2° squillo;\n- Triage urgenze e fissaggio prime visite;\n- Promemoria WhatsApp automatici ai pazienti per azzerare i buchi in poltrona.\n\nRestiamo a disposizione per qualsiasi test o configurazione personalizzata.\n\nUn cordiale saluto,\nRiccardo Modena | RM Studio`;
+    }
+
+    // ⚖️ Email Lexis AI
+    if (item.portal_type === 'lexis') {
+        return `OGGETTO: ⚖️ Segreteria telefonica vocale H24 e accoglienza prime consulenze - ${title}\n\nGentile ${name},\n\nAbbiamo predisposto una linea dimostrativa dedicata a "${title}" per la segreteria telefonica con intelligenza artificiale Lexis AI ("Chiara"), accessibile qui:\n${link}\n\nLexis AI è progettata su misura per gli studi legali:\n- Registro formale ("del Lei") e rispetto del segreto professionale;\n- Reperibilità attiva fuori orario (notti, weekend, udienze) e su linea occupata;\n- Notifica immediata di ogni contatto qualificato con riassunto del caso e registrazione audio.\n\nRestiamo a Sua completa disposizione per qualsiasi approfondimento.\n\nCordiali saluti,\nRiccardo Modena | RM Studio`;
+    }
+
+    // 🏨 Email Concierge24
+    if (item.portal_type === 'concierge') {
+        return `OGGETTO: 🏨 Centralino notturno e concierge multimediale multilingua H24 per ${title}\n\nGentile ${name},\n\nAbbiamo allestito una demo personalizzata di Concierge24 per la vostra struttura, accessibile a questo link:\n${link}\n\nConcierge24 ("Giulia") solleva il personale della reception parlando in tempo reale con i turisti nella loro lingua madre:\n- Assistenza vocale H24 su check-in tardivo, parcheggio e regole della struttura;\n- Suggerimenti turistici con invio immediato di mappe GPS e schede sul telefono dell'ospite;\n- Nessun canone mensile obbligatorio (modello pay-as-you-go flessibile).\n\nRestiamo a disposizione per qualsiasi prova dal vivo.\n\nUn cordiale saluto,\nRiccardo Modena | RM Studio`;
+    }
 
     // 🍽️ Email personalizzata Locanda Digitale
     if (item.portal_type === 'locanda') {
