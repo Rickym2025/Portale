@@ -8,33 +8,40 @@ const MY_PHONE_DISPLAY = "+39 349 525 8418";
 // CLAUSOLA ANTI-SPAM & OPT-OUT GDPR UFFICIALE
 const GDPR_OPT_OUT_FOOTER = `\n\n---\nComunicazione informativa B2B inviata ai sensi del Regolamento UE 2016/679 (GDPR). Se non desidera ricevere ulteriori aggiornamenti o informative su questa tecnologia, risponda semplicemente "CANCELLA" a questo messaggio e il Suo recapito verrà rimosso immediatamente dai nostri archivi.\nRM Studio • Ariano nel Polesine (RO) / Ferrara • Tel. ${MY_PHONE_DISPLAY} • riccardo@rmstudio.app`;
 
-// 🔗 RISOLUZIONE INTELLIGENTE LINK DEMO REALE & TRACCIATO
+// 🔗 RISOLUZIONE LINK DEMO VOCALE REALE & FUNZIONANTE
 function resolveDemoLink(item) {
-    // 1. Se ha un ambiente dedicato generato su rmstudio.app (es. config dentis o lexis con studio_id)
+    // 1. Per Concierge24: link diretto alla chiamata vocale di Giulia (chat.html)
+    if (item.portal_type === 'concierge') {
+        if (item.content_url && item.content_url.includes('chat')) {
+            return item.content_url;
+        }
+        const strutId = item.project_id || 'hotel_miramare_scacchi';
+        return `https://concierge24.rmstudio.app/chat?struttura_id=${strutId}`;
+    }
+
+    // 2. Per Dentis e Lexis: link alla configurazione reale dello studio su Hetzner
+    if ((item.portal_type === 'dentis' || item.portal_type === 'lexis') && item.content_url && item.content_url.includes('dentis-app.rmstudio.app')) {
+        return item.content_url;
+    }
+
+    // 3. Se l'URL inserito è già su un sottodominio rmstudio.app valido
     if (item.content_url && item.content_url.includes('rmstudio.app') && !item.content_url.includes('view') && !item.content_url.includes('google')) {
         return item.content_url;
     }
-    // 2. Link tracciato ufficiale del Portale (registra le visite del lead e aggiorna il contatore)
-    if (item.id) {
-        return `https://portale.rmstudio.app/view?id=${item.id}`;
-    }
-    // 3. Fallback sul sito ufficiale del prodotto
+
+    // 4. Mappa demo ufficiali per gli altri SaaS
     const saasDemos = {
-        concierge: 'https://concierge24.rmstudio.app',
-        dentis: 'https://dentis.rmstudio.app',
-        lexis: 'https://lexis.rmstudio.app',
         locanda: 'https://locandadigitale.rmstudio.app',
         forma_materia: 'https://formamateria.rmstudio.app/studio',
         aura: 'https://aura.rmstudio.app/radar.html',
         eternia: 'https://eternia.rmstudio.app',
         love: 'https://love.rmstudio.app',
         experience: 'https://experience.rmstudio.app',
-        html: 'https://sitengine.rmstudio.app',
-        social: 'https://social.rmstudio.app',
-        vision: 'https://vision.rmstudio.app',
-        video: 'https://hometour.rmstudio.app'
+        dentis: 'https://dentis.rmstudio.app',
+        lexis: 'https://lexis.rmstudio.app'
     };
-    return saasDemos[item.portal_type] || 'https://rmstudio.app';
+
+    return saasDemos[item.portal_type] || `https://portale.rmstudio.app/view?id=${item.id}`;
 }
 
 function generateWhatsAppCopy(item) {
@@ -43,7 +50,7 @@ function generateWhatsAppCopy(item) {
 
     // 🏨 Concierge24
     if (item.portal_type === 'concierge') {
-        return `Buongiorno ${name}! 👋\n\nVi contatto direttamente dal territorio (RM Studio, Ferrara/Rovigo): supportiamo le strutture ricettive nell'azzerare le chiamate perse e alleggerire il carico del ricevimento, soprattutto sui turni notturni (23:00–07:00) e festivi.\n\nAbbiamo sviluppato *Concierge24*, un assistente vocale AI ("Giulia") che risponde al centralino H24 nella lingua nativa dell'ospite (EN, DE, FR, IT), gestisce check-in notturni, regole della casa, colazione e invia mappe interattive dei ristoranti direttamente sullo smartphone del turista.\n\nPotete visionare la proposta riservata e ascoltare la voce di Giulia qui:\n👉 ${link}\n\nFunziona a consumo, senza canoni fissi obbligatori. Fatemi sapere se può esservi utile per le notti!`;
+        return `Buongiorno ${name}! 👋\n\nVi contatto direttamente dal territorio (RM Studio, Ferrara/Rovigo): supportiamo le strutture ricettive nell'azzerare le chiamate perse e alleggerire il carico del ricevimento, soprattutto sui turni notturni (23:00–07:00) e festivi.\n\nAbbiamo sviluppato *Concierge24*, un assistente vocale AI ("Giulia") che risponde al centralino H24 nella lingua nativa dell'ospite (EN, DE, FR, IT), gestisce check-in notturni, regole della casa, colazione e invia mappe interattive dei ristoranti direttamente sullo smartphone del turista.\n\nPotete avviare una chiamata vocale di prova con Giulia cliccando qui:\n👉 ${link}\n\nFunziona a consumo, senza canoni fissi obbligatori. Fatemi sapere se può esservi utile per le notti!`;
     }
 
     // 🦷 Dentis AI
@@ -62,14 +69,13 @@ function generateWhatsAppCopy(item) {
 
 function generateEmailCopy(item) {
     const name = item.client_name || 'Gentile Direzione';
-    const title = item.title || 'la vostra struttura';
     const link = resolveDemoLink(item);
 
     let text = "";
 
     // 🏨 Concierge24 (Hotel & Strutture Ricettive)
     if (item.portal_type === 'concierge') {
-        text = `OGGETTO: 🏨 Centralino notturno e assistenza multilingua H24 per ${name}\n\nGentile Direzione di ${name},\n\nLe scrivo direttamente dal territorio (RM Studio, software house attiva a Ferrara e Rovigo) conoscendo bene quanto sia oggi complesso per le strutture ricettive garantire una copertura costante e qualificata del front-desk, in particolare durante la fascia notturna (23:00–07:00), i weekend e i periodi di forte afflusso.\n\nPer sollevare il personale ed evitare che telefonate o richieste di ospiti internazionali restino senza risposta, abbiamo sviluppato **Concierge24**: un assistente vocale e multimediale basato su intelligenza artificiale ("Giulia") pensato specificamente per l'ospitalità alberghiera:\n\n- **Risposta telefonica istantanea H24:** parla in tempo reale nella lingua madre dell'ospite (inglese, tedesco, francese, spagnolo, italiano) con dizione e pause naturali;\n- **Gestione completa dei dubbi ricorrenti:** fornisce istruzioni precise su check-in tardivo, orari colazione, parcheggio, deposito bagagli e regole della struttura;\n- **Concierge turistico interattivo:** suggerisce ristoranti tipici e luoghi d'interesse del territorio entro 35 km, inviando mappe e percorsi stradali direttamente sullo schermo dello smartphone dell'ospite durante la chiamata;\n- **Controllo e trasparenza totale:** il responsabile dell'hotel riceve via email la trascrizione, il riassunto e la registrazione audio della conversazione solo se vi sono reali necessità operative o segnalazioni in camera.\n\nNon richiediamo alcun canone fisso mensile vincolante: il servizio opera a consumo con 15 minuti di prova gratuiti per consentirvi di testare la tecnologia dal vivo.\n\nPuò visionare la proposta riservata predisposta per ${name} a questo indirizzo:\n👉 ${link}\n*(oppure ascoltare una simulazione vocale aperta di Giulia su https://concierge24.rmstudio.app)*\n\nQualora desideraste effettuare una breve simulazione di 5 minuti sul centralino o ricevere maggiori dettagli, resto volentieri a vostra completa disposizione.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Sviluppo Tecnologie B2B\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
+        text = `OGGETTO: 🏨 Centralino notturno e assistenza multilingua H24 per ${name}\n\nGentile Direzione di ${name},\n\nLe scrivo direttamente dal territorio (RM Studio, software house attiva a Ferrara e Rovigo) conoscendo bene quanto sia oggi complesso per le strutture ricettive garantire una copertura costante e qualificata del front-desk, in particolare durante la fascia notturna (23:00–07:00), i weekend e i periodi di forte afflusso.\n\nPer sollevare il personale ed evitare che telefonate o richieste di ospiti internazionali restino senza risposta, abbiamo sviluppato **Concierge24**: un assistente vocale e multimediale basato su intelligenza artificiale ("Giulia") pensato specificamente per l'ospitalità alberghiera:\n\n- **Risposta telefonica istantanea H24:** parla in tempo reale nella lingua madre dell'ospite (inglese, tedesco, francese, spagnolo, italiano) con dizione e pause naturali;\n- **Gestione completa dei dubbi ricorrenti:** fornisce istruzioni precise su check-in tardivo, orari colazione, parcheggio, deposito bagagli e regole della struttura;\n- **Concierge turistico interattivo:** suggerisce ristoranti tipici e luoghi d'interesse del territorio entro 35 km, inviando mappe e percorsi stradali direttamente sullo schermo dello smartphone dell'ospite durante la chiamata;\n- **Controllo e trasparenza totale:** il responsabile dell'hotel riceve via email la trascrizione, il riassunto e la registrazione audio della conversazione solo se vi sono reali necessità operative o segnalazioni in camera.\n\nNon richiediamo alcun canone fisso mensile vincolante: il servizio opera a consumo con 15 minuti di prova gratuiti per consentirvi di testare la tecnologia dal vivo.\n\nPuò avviare una chiamata di prova vocale immediata con Giulia da smartphone o PC cliccando qui:\n👉 ${link}\n*(Tocchi il pulsante con il microfono per iniziare a parlare con l'assistente)*\n\nQualora desideraste effettuare una breve simulazione di 5 minuti sul centralino o ricevere maggiori dettagli, resto volentieri a vostra completa disposizione.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Sviluppo Tecnologie B2B\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
     }
     // 🦷 Dentis AI (Studi Dentistici)
     else if (item.portal_type === 'dentis') {
