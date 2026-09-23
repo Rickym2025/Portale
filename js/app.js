@@ -207,7 +207,7 @@ function renderMasterTable(data) {
                 <input type="text" value="${p.title || ''}" placeholder="Titolo" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-200 font-bold w-full">
             </td>
             <td class="p-4">
-                <a href="${p.content_url || portalUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-purple-400 border border-zinc-800 px-3 py-1.5 rounded-lg text-xs font-bold transition truncate max-w-[130px]">
+                <a href="${portalUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-purple-400 border border-zinc-800 px-3 py-1.5 rounded-lg text-xs font-bold transition truncate max-w-[130px]">
                     <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Link
                 </a>
             </td>
