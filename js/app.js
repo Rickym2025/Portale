@@ -130,6 +130,55 @@ function applyFilters() {
     renderMasterTable(filtered);
 }
 
+// 🎯 GESTIONE RESET VISITE & STATO LETTURA PULITO
+async function handleViewsChange(id, value) {
+    const count = parseInt(value, 10);
+    const validCount = isNaN(count) || count < 0 ? 0 : count;
+    const isOpened = validCount > 0;
+
+    const payload = {
+        views_count: validCount,
+        is_opened: isOpened
+    };
+
+    try {
+        const { error } = await supabaseClient.from('portal_videos').update(payload).eq('id', id);
+        if (error) throw error;
+
+        // Aggiorna lo stato in memoria e rinfresca la UI
+        const proj = (window.allProjects || []).find(p => p.id === id);
+        if (proj) {
+            proj.views_count = validCount;
+            proj.is_opened = isOpened;
+        }
+        applyFilters();
+    } catch (err) {
+        alert("Errore aggiornamento visite: " + err.message);
+    }
+}
+
+// 🎯 GESTIONE UNIFICATA CHECKBOX OUTREACH (WHATSAPP O EMAIL)
+async function handleOutreachToggle(id, isChecked) {
+    const payload = {
+        is_whatsapp_sent: isChecked,
+        first_email_sent: isChecked
+    };
+
+    try {
+        const { error } = await supabaseClient.from('portal_videos').update(payload).eq('id', id);
+        if (error) throw error;
+
+        const proj = (window.allProjects || []).find(p => p.id === id);
+        if (proj) {
+            proj.is_whatsapp_sent = isChecked;
+            proj.first_email_sent = isChecked;
+        }
+        applyFilters();
+    } catch (err) {
+        alert("Errore aggiornamento stato invio: " + err.message);
+    }
+}
+
 function renderMasterTable(data) {
     let rev = 0, paidCount = 0, total = data.length;
     data.forEach(p => {
@@ -164,8 +213,14 @@ function renderMasterTable(data) {
 
         const isPaid = p.is_paid === true || p.is_paid === "true";
         const views = parseInt(p.views_count || 0, 10);
-        const isRead = views > 0 || p.is_opened === true;
+        
+        // 🔒 UN PROGETTO È LETTO SOLO SE LE VISITE SONO > 0 E IS_OPENED È VERO
+        const isOpenedFlag = p.is_opened === true || p.is_opened === "true";
+        const isRead = views > 0 && isOpenedFlag;
+
         const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
+        const waSent = p.is_whatsapp_sent === true || p.is_whatsapp_sent === "true";
+        const isContacted = waSent || emailSent;
         
         // 🔒 URL SICURO: Finché non è pagato, apre SEMPRE la pagina con filigrana view.html!
         const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
@@ -176,29 +231,36 @@ function renderMasterTable(data) {
         const openDateFormatted = p.updated_at ? new Date(p.updated_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const openDaysAgo = getDaysAgo(p.updated_at);
 
+        // 🏷️ BADGES COMPATTI CON WHITESPACE-NOWRAP (NON VANNO MAI A CAPO)
         const badges = {
-            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🍽️ locanda</span>`,
-            radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🏎️ radar</span>`,
-            nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🤖 nexus</span>`,
-            dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🦷 dentis</span>`,
-            lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">⚖️ lexis</span>`,
-            concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🏨 concierge</span>`,
-            forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🏛️ f&amp;m</span>`,
-            aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">📡 aura</span>`,
-            eternia: `<span class="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🕊️ eternia</span>`,
-            love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">💍 love</span>`,
-            html: `<span class="bg-blue-500/10 text-blue-300 border border-blue-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🌐 siteengine</span>`
+            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ locanda</span>`,
+            radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏎️ radar</span>`,
+            nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🤖 nexus</span>`,
+            dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
+            lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚖️ lexis</span>`,
+            concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
+            forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏛️ f&amp;m</span>`,
+            aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📡 aura</span>`,
+            eternia: `<span class="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🕊️ eternia</span>`,
+            love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💍 love</span>`,
+            html: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`
         };
 
-        const typeBadge = badges[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">${p.portal_type || 'html'}</span>`;
+        const typeBadge = badges[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">${p.portal_type || 'html'}</span>`;
 
+        // 🔥 IL TASTO VIP COMPARE SOLO SE REALMENTE LETTO (views > 0) E NON ANCORA PAGATO
         let closingPitchBtn = '';
         if (isRead && !isPaid) {
             closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2 py-1 rounded-lg text-xs font-black transition animate-pulse" title="Pitch Chiusura Dedicato"><i class="fa-solid fa-fire"></i> VIP</button>`;
         }
 
+        // Indicatori canali usati per il contatto
+        let channelIndicators = '';
+        if (waSent) channelIndicators += `<i class="fa-brands fa-whatsapp text-emerald-400 text-xs" title="Inviato su WhatsApp"></i>`;
+        if (emailSent) channelIndicators += `<i class="fa-solid fa-envelope text-blue-400 text-xs" title="Inviato via Email"></i>`;
+
         tr.innerHTML = `
-            <td class="p-4 text-center">
+            <td class="p-4 text-center whitespace-nowrap min-w-[125px]">
                 ${typeBadge}
                 <span class="font-mono text-xs text-gray-400 block mt-1 font-bold">#${p.id ? p.id.substring(0, 4).toUpperCase() : '---'}</span>
             </td>
@@ -210,25 +272,28 @@ function renderMasterTable(data) {
             <td class="p-4">
                 <input type="text" value="${p.title || ''}" placeholder="Titolo" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-200 font-bold w-full">
             </td>
-            <td class="p-4">
-                <a href="${targetUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 ${isPaid ? 'text-emerald-400 border-emerald-500/30' : 'text-purple-300 border-zinc-800'} border px-3 py-1.5 rounded-lg text-xs font-bold transition truncate max-w-[140px] shadow-sm">
-                    <i class="fa-solid ${isPaid ? 'fa-globe' : 'fa-eye'} text-[10px]"></i> ${isPaid ? 'Sito Live' : '👁️ Bozza'}
+            <td class="p-4 whitespace-nowrap">
+                <a href="${targetUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 ${isPaid ? 'text-emerald-400 border-emerald-500/30' : 'text-purple-300 border-zinc-800'} border px-3 py-1.5 rounded-lg text-xs font-bold transition truncate max-w-[140px] shadow-sm whitespace-nowrap">
+                    <i class="fa-solid ${isPaid ? 'fa-globe' : 'fa-eye'} text-[10px]"></i> ${isPaid ? 'Sito Live' : 'Bozza'}
                 </a>
             </td>
             <td class="p-4">
                 <input type="number" value="${p.price_euro || 0}" onchange="updateSupabaseField('${p.id}', 'price_euro', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-black text-purple-400 focus:border-purple-500 text-xs font-mono">
             </td>
             <td class="p-4 text-center">
-                <input type="number" value="${views}" onchange="updateSupabaseField('${p.id}', 'views_count', this.value)" class="w-12 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-blue-400 focus:border-purple-500 text-xs font-mono">
+                <input type="number" value="${views}" min="0" onchange="handleViewsChange('${p.id}', this.value)" class="w-12 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-blue-400 focus:border-purple-500 text-xs font-mono cursor-pointer" title="Modifica visite (imposta 0 per resettare lo stato a Non Letta)">
             </td>
-            <td class="p-4 text-center">
-                <input type="checkbox" ${p.is_whatsapp_sent ? 'checked' : ''} onchange="updateSupabaseField('${p.id}', 'is_whatsapp_sent', this.checked)" class="w-4 h-4 text-purple-600 bg-zinc-900 border-zinc-800 rounded">
+            <td class="p-4 text-center whitespace-nowrap">
+                <div class="flex items-center justify-center gap-1.5">
+                    <input type="checkbox" ${isContacted ? 'checked' : ''} onchange="handleOutreachToggle('${p.id}', this.checked)" class="w-4 h-4 text-purple-600 bg-zinc-900 border-zinc-800 rounded cursor-pointer" title="Segna come inviato/contattato (WA o Email)">
+                    ${channelIndicators}
+                </div>
             </td>
             <td class="p-4 text-xs whitespace-nowrap">
                 <div class="space-y-1">
-                    ${emailSent ? `<div class="text-purple-400 font-bold text-[11px]"><i class="fa-solid fa-paper-plane"></i> Inviata ${sendDateFormatted || ''} <span class="text-gray-500 font-normal">(${sendDaysAgo || 'Oggi'})</span></div>` : ''}
+                    ${emailSent ? `<div class="text-blue-400 font-bold text-[11px]"><i class="fa-solid fa-paper-plane"></i> Email Inviata ${sendDateFormatted || ''} <span class="text-gray-500 font-normal">(${sendDaysAgo || 'Oggi'})</span></div>` : ''}
                     ${isRead 
-                        ? `<div class="text-green-400 font-extrabold text-[11px]"><i class="fa-solid fa-eye animate-pulse"></i> Letta (${views || 1}v) ${openDateFormatted || ''} <span class="text-emerald-500 font-bold">(${openDaysAgo || 'Oggi'})</span></div>` 
+                        ? `<div class="text-green-400 font-extrabold text-[11px]"><i class="fa-solid fa-eye animate-pulse"></i> Letta (${views}v) ${openDateFormatted || ''} <span class="text-emerald-500 font-bold">(${openDaysAgo || 'Oggi'})</span></div>` 
                         : `<div class="text-zinc-500 text-[11px] font-bold"><i class="fa-solid fa-eye-slash"></i> Non ancora letta</div>`
                     }
                 </div>
@@ -240,9 +305,9 @@ function renderMasterTable(data) {
             </td>
             <td class="p-4 text-right space-x-1 whitespace-nowrap">
                 ${closingPitchBtn}
-                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="WA">WA</button>
-                <button onclick="openMessageModal('${p.id}', 'mail')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Mail">Mail</button>
-                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded cursor-pointer" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Invia WhatsApp">WA</button>
+                <button onclick="openMessageModal('${p.id}', 'mail')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Invia Email con Resend">Mail</button>
+                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded cursor-pointer" title="Elimina Progetto"><i class="fa-solid fa-trash-can text-xs"></i></button>
             </td>
         `;
         container.appendChild(tr);
