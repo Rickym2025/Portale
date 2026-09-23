@@ -8,13 +8,11 @@
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Base e reset */
         html, body {
             margin: 0;
             padding: 0;
         }
 
-        /* 🔒 LOCK DI SICUREZZA AD ALTEZZA FISSA: Solo per schermi Desktop */
         @media (min-width: 1024px) {
             html, body {
                 height: 100dvh;
@@ -31,7 +29,6 @@
                 radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
         }
 
-        /* 🔒 PATTERN DI SFONDO DIAGONALE DEL LOGO RM STUDIO */
         body::before {
             content: "";
             position: absolute;
@@ -44,7 +41,6 @@
             z-index: -1;
         }
 
-        /* 🪐 STILE RESPONSIVO DEL SISTEMA ORBITALE INLINE */
         .orbit-container {
             position: relative;
             margin: 40px auto 20px auto;
@@ -181,7 +177,7 @@
             background: #020204;
         }
         
-        /* 🔒 FILIGRANA IBRIDA AD ALTA VISIBILITÀ (BIANCO/NERO HYBRID CONTRAST) */
+        /* 🔒 FILIGRANA DISCRETA, ELEGANTE E PROTETTIVA */
         .watermark-pattern {
             position: absolute;
             inset: 0;
@@ -189,29 +185,27 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: 65px;
-            padding: 30px;
+            gap: 130px;
+            padding: 40px;
             pointer-events: none;
             z-index: 50;
             overflow: hidden;
             user-select: none;
+            opacity: 0.09; /* Opacità morbida: non copre i testi ma protegge */
         }
         
         .watermark-logo-item {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transform: rotate(-28deg);
+            gap: 10px;
+            transform: rotate(-26deg);
             will-change: transform;
-            opacity: 0.22;
         }
 
         .watermark-logo-item img {
-            width: 140px;
+            width: 120px;
             height: auto;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.85)) grayscale(100%) brightness(170%);
+            filter: grayscale(100%) brightness(150%);
         }
 
         .watermark-label {
@@ -219,13 +213,8 @@
             font-size: 11px;
             font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.25em;
             color: #ffffff;
-            background: rgba(0, 0, 0, 0.45);
-            padding: 2px 10px;
-            border-radius: 6px;
-            border: 1px dashed rgba(255, 255, 255, 0.35);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
             white-space: nowrap;
         }
 
@@ -258,10 +247,10 @@
         <!-- Render Area Dinamica -->
         <div class="player-wrapper flex-1 min-h-[280px] sm:min-h-[350px] lg:min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
             
-            <!-- WATERMARK CON LOGO E DICITURA RIPETUTI -->
+            <!-- WATERMARK LEGGERO CON LOGO -->
             <div id="watermark-layer" class="watermark-pattern"></div>
 
-            <!-- 1. VIDEO PLAYER (Per file MP4 reali) -->
+            <!-- 1. VIDEO PLAYER (MP4) -->
             <video id="player-video" 
                    class="hidden w-full h-full object-contain rounded-2xl bg-black"
                    style="transform: translate3d(0,0,0); backface-visibility: hidden; will-change: transform;"
@@ -281,7 +270,7 @@
                 <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-right text-xs"></i></button>
             </div>
 
-            <!-- 3. ANTEPRIMA SITO WEB / WEB APP INTERATTIVA -->
+            <!-- 3. ANTEPRIMA SITO WEB INTERATTIVO -->
             <div id="html-preview-container" class="hidden w-full h-full flex flex-col items-center justify-center p-6 text-center z-20 bg-[#020204]">
                 <div class="w-16 h-16 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4" id="html-preview-icon">
                     <i class="fa-solid fa-laptop-code text-2xl text-purple-400"></i>
@@ -311,11 +300,11 @@
         </div>
     </div>
 
-    <!-- 🌌 CONTENITORE DINAMICO PER L'ORBITA -->
+    <!-- CONTENITORE PER L'ORBITA -->
     <div id="ecosystem-orbit-container" class="orbit-container"></div>
 
     <!-- ========================================================================= -->
-    <!-- OVERLAY A SCHERMO INTERO CON SWITCHER FORMATI E FILIGRANA POTENZIATA      -->
+    <!-- OVERLAY A SCHERMO INTERO CON SWITCHER FORMATI E FILIGRANA DISCRETA        -->
     <!-- ========================================================================= -->
     <div id="fullscreen-iframe-overlay" class="hidden fixed inset-0 bg-[#050508] z-[9999] flex flex-col">
         
@@ -326,7 +315,7 @@
                     <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-6 w-auto">
                 </a>
                 
-                <!-- 🌐 SWITCHER DEI 3 FORMAT ARCHITETTURALI (SITEENGINE PRO) -->
+                <!-- 🌐 SWITCHER DEI 3 FORMAT ARCHITETTURALI -->
                 <div id="siteengine-template-switcher" class="hidden items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
                     <span class="text-[9px] font-mono text-zinc-400 px-2 uppercase font-bold hidden md:inline">Stile:</span>
                     <button onclick="switchTemplate(5)" id="btn-t-5" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm cursor-pointer whitespace-nowrap">
@@ -340,7 +329,7 @@
                     </button>
                 </div>
 
-                <!-- 🍷 SELETTORE DUAL VISTA PER I RISTORANTI (SMART EXPERIENCE) -->
+                <!-- 🍷 SELETTORE DUAL VISTA RISTORANTI -->
                 <div id="view-mode-selector" class="hidden items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
                     <button onclick="switchPreviewMode('experience')" id="btn-view-experience" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap">
                         🍷 Smart Experience Page
@@ -355,13 +344,13 @@
                 <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:brightness-110 text-white font-extrabold px-3 sm:px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.35)] cursor-pointer whitespace-nowrap">
                     <i class="fa-solid fa-lock"></i> Sblocca • €400
                 </button>
-                <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-3 py-2.5 rounded-xl transition-all cursor-pointer">
+                <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-3.5 sm:px-4 py-2.5 rounded-xl transition-all cursor-pointer">
                     <i class="fa-solid fa-xmark"></i> <span class="hidden sm:inline">Chiudi</span>
                 </button>
             </div>
         </div>
     
-        <!-- Iframe con Filigrana Sovrapposta Visibile a 360° -->
+        <!-- Iframe con Filigrana Sovrapposta Morbida -->
         <div class="flex-1 w-full h-full relative bg-black overflow-hidden">
             <div id="overlay-watermark" class="watermark-pattern"></div>
             <iframe id="fullscreen-iframe" class="w-full h-full border-none bg-[#07080c]" src=""></iframe>
@@ -378,7 +367,7 @@
         let imagesArray = [];
         let currentActiveTemplate = 5;
 
-        // 🔒 GENERAZIONE FILIGRANA IBRIDA AD ALTO CONTRASTO
+        // 🔒 GENERATORE FILIGRANA MORBIDA, ELEGANTE E PROTETTIVA
         function generateWatermarks(containerId, count) {
             const layer = document.getElementById(containerId);
             if (layer) {
@@ -396,10 +385,9 @@
             }
         }
 
-        generateWatermarks('watermark-layer', 24);
-        generateWatermarks('overlay-watermark', 40);
+        generateWatermarks('watermark-layer', 16);
+        generateWatermarks('overlay-watermark', 24);
 
-        // 🌌 CARICAMENTO DINAMICO SISTEMA ORBITALE
         async function loadOrbitalEcosystem() {
             try {
                 const url = 'https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/orbit-template.html';
@@ -413,13 +401,14 @@
             }
         }
 
-        // 🔄 SWITCHER TEMPLATE IN TEMPO REALE (?template_id=X)
+        // 🔄 SWITCHER TEMPLATE IN TEMPO REALE CON ANTI-CACHE
         function switchTemplate(templateId) {
             if (!videoData || !videoData.content_url) return;
             currentActiveTemplate = templateId;
             const iframe = document.getElementById('fullscreen-iframe');
             const cleanUrl = videoData.content_url.split('?')[0];
-            iframe.src = `${cleanUrl}?template_id=${templateId}`;
+            // Anti-cache param per forzare il refresh immediato
+            iframe.src = `${cleanUrl}?template_id=${templateId}&_t=${Date.now()}`;
 
             [5, 10, 2].forEach(id => {
                 const btn = document.getElementById(`btn-t-${id}`);
@@ -431,7 +420,6 @@
             });
         }
 
-        // 🍷 DUAL VISTA RISTORAZIONE
         function switchPreviewMode(mode) {
             if (!videoData) return;
             const iframe = document.getElementById('fullscreen-iframe');
@@ -531,7 +519,6 @@
             updatePriceButtons();
         });
 
-        // AGGIORNAMENTO DINAMICO DEI PULSANTI PREZZO
         function updatePriceButtons() {
             if (!videoData) return;
             const priceVal = parseFloat(videoData.price_euro || 400);
@@ -584,7 +571,7 @@
                 if (experienceSwitcher) experienceSwitcher.classList.add('hidden');
                 
                 const cleanUrl = videoData.content_url.split('?')[0];
-                iframe.src = `${cleanUrl}?template_id=${currentActiveTemplate}`;
+                iframe.src = `${cleanUrl}?template_id=${currentActiveTemplate}&_t=${Date.now()}`;
             } else if (videoData.portal_type === 'experience') {
                 if (experienceSwitcher) {
                     experienceSwitcher.classList.remove('hidden');
