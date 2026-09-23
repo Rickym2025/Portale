@@ -293,10 +293,20 @@ async function togglePayment(id, current) {
 }
 
 async function handleDelete(id) {
-    if (!confirm("Eliminare definitivamente questo record dal Portale?")) return;
+    if (!confirm("Eliminare definitivamente questo record dal Portale e da tutti i database?")) return;
     try {
-        const { error } = await supabaseClient.from('portal_videos').delete().eq('id', id);
-        if (error) throw error;
+        // Chiama il webhook n8n che cancella sia da S1 (omnia_sites) che da S2 e R2
+        const res = await fetch('https://n8n.rmstudio.app/webhook/delete-portal-video', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id })
+        });
+        
+        if (!res.ok) {
+            // Fallback diretto su S2 se n8n è offline
+            await supabaseClient.from('portal_videos').delete().eq('id', id);
+        }
+
         await loadMasterData();
     } catch (err) {
         alert("Errore cancellazione: " + err.message);
