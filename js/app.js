@@ -145,7 +145,6 @@ async function handleViewsChange(id, value) {
         const { error } = await supabaseClient.from('portal_videos').update(payload).eq('id', id);
         if (error) throw error;
 
-        // Aggiorna lo stato in memoria e rinfresca la UI
         const proj = (window.allProjects || []).find(p => p.id === id);
         if (proj) {
             proj.views_count = validCount;
@@ -231,24 +230,24 @@ function renderMasterTable(data) {
         const openDateFormatted = p.updated_at ? new Date(p.updated_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const openDaysAgo = getDaysAgo(p.updated_at);
 
-        // 🏷️ BADGES COMPATTI CON WHITESPACE-NOWRAP (NON VANNO MAI A CAPO)
+        // 🏷️ BADGES COMPATTI CON WHITESPACE-NOWRAP
         const badges = {
-            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ locanda</span>`,
-            radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏎️ radar</span>`,
-            nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🤖 nexus</span>`,
-            dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
-            lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚖️ lexis</span>`,
-            concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
-            forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏛️ f&amp;m</span>`,
-            aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📡 aura</span>`,
-            eternia: `<span class="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🕊️ eternia</span>`,
-            love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💍 love</span>`,
-            html: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`
+            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ locanda</span>`,
+            radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏎️ radar</span>`,
+            nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🤖 nexus</span>`,
+            dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
+            lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚖️ lexis</span>`,
+            concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
+            forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏛️ f&amp;m</span>`,
+            aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📡 aura</span>`,
+            eternia: `<span class="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🕊️ eternia</span>`,
+            love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💍 love</span>`,
+            html: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`
         };
 
-        const typeBadge = badges[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">${p.portal_type || 'html'}</span>`;
+        const typeBadge = badges[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">${p.portal_type || 'html'}</span>`;
 
-        // 🔥 IL TASTO VIP COMPARE SOLO SE REALMENTE LETTO (views > 0) E NON ANCORA PAGATO
+        // 🔥 IL TASTO VIP COMPARE SOLO SE LETTO E NON ANCORA PAGATO
         let closingPitchBtn = '';
         if (isRead && !isPaid) {
             closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2 py-1 rounded-lg text-xs font-black transition animate-pulse" title="Pitch Chiusura Dedicato"><i class="fa-solid fa-fire"></i> VIP</button>`;
@@ -258,6 +257,33 @@ function renderMasterTable(data) {
         let channelIndicators = '';
         if (waSent) channelIndicators += `<i class="fa-brands fa-whatsapp text-emerald-400 text-xs" title="Inviato su WhatsApp"></i>`;
         if (emailSent) channelIndicators += `<i class="fa-solid fa-envelope text-blue-400 text-xs" title="Inviato via Email"></i>`;
+
+        // 🚦 PIPELINE LOGICA A 3 STATI (NON INVIATA / INVIATA / LETTA)
+        let statusHtml = '';
+        if (isRead) {
+            statusHtml = `
+                <div class="text-green-400 font-extrabold text-[11px]">
+                    <i class="fa-solid fa-eye animate-pulse"></i> Letta (${views}v) ${openDateFormatted || ''} 
+                    <span class="text-emerald-500 font-bold">(${openDaysAgo || 'Oggi'})</span>
+                </div>
+            `;
+        } else if (isContacted) {
+            statusHtml = `
+                <div class="space-y-0.5">
+                    <div class="text-amber-400 font-bold text-[11px]">
+                        <i class="fa-solid fa-paper-plane"></i> Inviata ${sendDateFormatted || ''} 
+                        <span class="text-zinc-500 font-normal">(${sendDaysAgo || 'Oggi'})</span>
+                    </div>
+                    <div class="text-zinc-500 text-[10px] font-medium pl-4">In attesa di apertura</div>
+                </div>
+            `;
+        } else {
+            statusHtml = `
+                <div class="text-zinc-500 text-[11px] font-semibold flex items-center gap-1.5">
+                    <i class="fa-regular fa-clock text-zinc-600"></i> Non ancora inviata
+                </div>
+            `;
+        }
 
         tr.innerHTML = `
             <td class="p-4 text-center whitespace-nowrap min-w-[125px]">
@@ -290,13 +316,7 @@ function renderMasterTable(data) {
                 </div>
             </td>
             <td class="p-4 text-xs whitespace-nowrap">
-                <div class="space-y-1">
-                    ${emailSent ? `<div class="text-blue-400 font-bold text-[11px]"><i class="fa-solid fa-paper-plane"></i> Email Inviata ${sendDateFormatted || ''} <span class="text-gray-500 font-normal">(${sendDaysAgo || 'Oggi'})</span></div>` : ''}
-                    ${isRead 
-                        ? `<div class="text-green-400 font-extrabold text-[11px]"><i class="fa-solid fa-eye animate-pulse"></i> Letta (${views}v) ${openDateFormatted || ''} <span class="text-emerald-500 font-bold">(${openDaysAgo || 'Oggi'})</span></div>` 
-                        : `<div class="text-zinc-500 text-[11px] font-bold"><i class="fa-solid fa-eye-slash"></i> Non ancora letta</div>`
-                    }
-                </div>
+                ${statusHtml}
             </td>
             <td class="p-4">
                 <button onclick="togglePayment('${p.id}', ${isPaid})" class="px-2.5 py-1 rounded-full text-[11px] font-bold transition cursor-pointer ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
