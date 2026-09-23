@@ -192,14 +192,14 @@
             gap: 50px;
             padding: 20px;
             pointer-events: none;
-            z-index: 20;
+            z-index: 40;
             overflow: hidden;
-            opacity: 0.12;
+            opacity: 0.13;
             user-select: none;
         }
         
         .watermark-logo {
-            width: 130px;
+            width: 140px;
             height: auto;
             transform: rotate(-30deg);
             filter: grayscale(100%) brightness(200%);
@@ -265,7 +265,7 @@
                 </div>
                 <h3 class="text-white text-lg font-bold mb-1" id="html-preview-title">Applicazione Interattiva Pronta</h3>
                 <p class="text-xs text-gray-400 max-w-sm mb-5" id="html-preview-desc">Abbiamo predisposto la tua applicazione interattiva. Clicca il pulsante qui sotto per provarla ed esplorarla in tempo reale a schermo intero.</p>
-                <button onclick="openFullscreenWebsite()" class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all active:scale-95 shadow-[0_0_15px_rgba(147,51,234,0.35)]">
+                <button onclick="openFullscreenWebsite()" class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all active:scale-95 shadow-[0_0_15px_rgba(147,51,234,0.35)] cursor-pointer">
                     <i class="fa-solid fa-expand animate-bounce"></i> Esplora a Schermo Intero
                 </button>
             </div>
@@ -283,7 +283,7 @@
         <!-- Footer Actions -->
         <div class="shrink-0 flex items-center justify-center pt-4 border-t border-gray-800/60">
             <button id="actionBtn" onclick="handleAction()" 
-                    class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-[0_0_35px_rgba(147,51,234,0.65)] flex items-center justify-center gap-3 animate-pulse">
+                    class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-[0_0_35px_rgba(147,51,234,0.65)] flex items-center justify-center gap-3 animate-pulse cursor-pointer">
             </button>
         </div>
     </div>
@@ -291,59 +291,60 @@
     <!-- 🌌 CONTENITORE DINAMICO PER L'ORBITA -->
     <div id="ecosystem-orbit-container" class="orbit-container"></div>
 
-    <!-- OVERLAY A SCHERMO INTERO CON SELETTORE DUAL VIEW -->
+    <!-- ========================================================================= -->
+    <!-- OVERLAY A SCHERMO INTERO CON SWITCHER FORMATI SITEENGINE E VISTE RISTORO   -->
+    <!-- ========================================================================= -->
     <div id="fullscreen-iframe-overlay" class="hidden fixed inset-0 bg-[#050508] z-[9999] flex flex-col">
-        <!-- Barra superiore dell'overlay con Selettore Viste -->
-        <div class="h-16 shrink-0 bg-[#0b0b0f] border-b border-gray-900/80 flex items-center justify-between px-6">
-            <div class="flex items-center gap-4">
-                <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-6 w-auto">
+        
+        <!-- Barra superiore dell'overlay -->
+        <div class="h-16 shrink-0 bg-[#0b0e0f] border-b border-gray-900/80 flex items-center justify-between px-4 sm:px-6">
+            <div class="flex items-center gap-3 sm:gap-4 overflow-x-auto max-w-[65%] sm:max-w-none">
+                <a href="https://rmstudio.app" target="_blank">
+                    <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-6 w-auto shrink-0">
+                </a>
                 
-                <!-- SELETTORE DUAL VISTA PER IL RISTORATORE (Nascosto se AURA o Locanda pura) -->
-                <div id="view-mode-selector" class="hidden sm:flex items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl">
-                    <button onclick="switchPreviewMode('experience')" id="btn-view-experience" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition">
+                <!-- 🌐 SELETTORE A 3 STILI D'AUTORE PER SITEENGINE (PORTAL_TYPE: HTML / SITEENGINE) -->
+                <div id="siteengine-template-switcher" class="hidden items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
+                    <span class="text-[9px] font-mono text-zinc-400 px-2 uppercase font-bold hidden md:inline">Stile:</span>
+                    <button onclick="switchTemplate(5)" id="btn-t-5" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm cursor-pointer whitespace-nowrap">
+                        🏛️ 05. Bento Studio
+                    </button>
+                    <button onclick="switchTemplate(10)" id="btn-t-10" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap">
+                        🏰 10. Dimore Lusso
+                    </button>
+                    <button onclick="switchTemplate(2)" id="btn-t-2" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap">
+                        ✨ 02. Atelier d'Autore
+                    </button>
+                </div>
+
+                <!-- 🍷 SELETTORE DUAL VISTA PER IL RISTORATORE (SMART EXPERIENCE) -->
+                <div id="view-mode-selector" class="hidden items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
+                    <button onclick="switchPreviewMode('experience')" id="btn-view-experience" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap">
                         🍷 Smart Experience Page
                     </button>
-                    <button onclick="switchPreviewMode('website')" id="btn-view-website" class="px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition">
+                    <button onclick="switchPreviewMode('website')" id="btn-view-website" class="px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition whitespace-nowrap">
                         🌐 Vedi sul Vostro Sito Attuale
                     </button>
                 </div>
             </div>
     
-            <div class="flex items-center gap-4">
-                <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)]">
+            <div class="flex items-center gap-3">
+                <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:brightness-110 text-white font-extrabold px-4 sm:px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] cursor-pointer">
                 </button>
-                <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-4 py-2.5 rounded-xl transition-all">
-                    <i class="fa-solid fa-xmark"></i> Esci dall'anteprima
+                <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-3.5 sm:px-4 py-2.5 rounded-xl transition-all cursor-pointer">
+                    <i class="fa-solid fa-xmark"></i> <span class="hidden sm:inline">Chiudi</span>
                 </button>
             </div>
         </div>
     
-        <!-- Iframe con Filigrana -->
-        <div class="flex-1 w-full h-full relative bg-black">
-            <div id="overlay-watermark" class="watermark-pattern opacity-[0.06]"></div>
+        <!-- Iframe con Filigrana Sovrapposta -->
+        <div class="flex-1 w-full h-full relative bg-black overflow-hidden">
+            <div id="overlay-watermark" class="watermark-pattern"></div>
             <iframe id="fullscreen-iframe" class="w-full h-full border-none bg-black" src=""></iframe>
         </div>
     </div>
     
     <script>
-        function switchPreviewMode(mode) {
-            if (!videoData) return;
-            const iframe = document.getElementById('fullscreen-iframe');
-            const btnExp = document.getElementById('btn-view-experience');
-            const btnWeb = document.getElementById('btn-view-website');
-        
-            if (mode === 'experience') {
-                iframe.src = videoData.content_url;
-                if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition";
-                if (btnWeb) btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
-            } else {
-                const originalSite = videoData.client_phone || 'https://www.tenutacastelvenezze.it';
-                iframe.src = `https://demo.rmstudio.app/?site=${encodeURIComponent(originalSite)}&bot_id=${videoData.client_email || 'nexus_landing'}`;
-                if (btnWeb) btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition";
-                if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition";
-            }
-        }
-
         const supabaseUrl = 'https://jhijfulhntlhcytbhcly.supabase.co'; 
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ'; 
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
@@ -351,7 +352,9 @@
         let videoData = null;
         let currentSlideIdx = 0;
         let imagesArray = [];
+        let currentActiveTemplate = 5;
 
+        // 🔒 GENERATORE FILIGRANA PROTETTIVA RM STUDIO
         function generateWatermarks(containerId, count) {
             const layer = document.getElementById(containerId);
             if (layer) {
@@ -367,17 +370,56 @@
         }
 
         generateWatermarks('watermark-layer', 28);
-        generateWatermarks('overlay-watermark', 40);
+        generateWatermarks('overlay-watermark', 44);
 
+        // 🌌 CARICAMENTO DINAMICO SISTEMA ORBITALE DA GITHUB
         async function loadOrbitalEcosystem() {
             try {
                 const url = 'https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/orbit-template.html';
                 const res = await fetch(url);
                 if (!res.ok) throw new Error("Errore fetch GitHub");
                 let html = await res.text();
-                document.getElementById('ecosystem-orbit-container').innerHTML = html;
+                const container = document.getElementById('ecosystem-orbit-container');
+                if (container) container.innerHTML = html;
             } catch (err) {
                 console.warn("Impossibile caricare l'ecosistema orbitale dinamicamente:", err);
+            }
+        }
+
+        // 🔄 CAMBIO TEMPLATE ISTANTANEO PER SITEENGINE (?template_id=X)
+        function switchTemplate(templateId) {
+            if (!videoData || !videoData.content_url) return;
+            currentActiveTemplate = templateId;
+            const iframe = document.getElementById('fullscreen-iframe');
+            const cleanUrl = videoData.content_url.split('?')[0];
+            iframe.src = `${cleanUrl}?template_id=${templateId}`;
+
+            [5, 10, 2].forEach(id => {
+                const btn = document.getElementById(`btn-t-${id}`);
+                if (btn) {
+                    btn.className = id === templateId
+                        ? "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm cursor-pointer whitespace-nowrap"
+                        : "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap";
+                }
+            });
+        }
+
+        // 🍷 DUAL VISTA PER I RISTORANTI (EXPERIENCE VS SITO ORIGINALE)
+        function switchPreviewMode(mode) {
+            if (!videoData) return;
+            const iframe = document.getElementById('fullscreen-iframe');
+            const btnExp = document.getElementById('btn-view-experience');
+            const btnWeb = document.getElementById('btn-view-website');
+        
+            if (mode === 'experience') {
+                iframe.src = videoData.content_url;
+                if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap";
+                if (btnWeb) btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition whitespace-nowrap";
+            } else {
+                const originalSite = videoData.client_phone || 'https://www.tenutacastelvenezze.it';
+                iframe.src = `https://demo.rmstudio.app/?site=${encodeURIComponent(originalSite)}&bot_id=${videoData.client_email || 'nexus_landing'}`;
+                if (btnWeb) btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap";
+                if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition whitespace-nowrap";
             }
         }
 
@@ -388,6 +430,7 @@
             const id = params.get('id');
             if (!id) return alert("ID non valido");
 
+            // Incremento visite e tracciamento apertura
             const { data: currentData } = await supabaseClient
                 .from('portal_videos')
                 .select('views_count')
@@ -432,7 +475,7 @@
                     document.getElementById('player-carousel').classList.remove('hidden');
                 }
             } 
-            else if (data.portal_type === 'html' || data.portal_type === 'experience' || data.portal_type === 'aura' || data.portal_type === 'locanda') {
+            else if (data.portal_type === 'html' || data.portal_type === 'siteengine' || data.portal_type === 'experience' || data.portal_type === 'aura' || data.portal_type === 'locanda') {
                 if (data.portal_type === 'aura') {
                     const iconBox = document.getElementById('html-preview-icon');
                     if (iconBox) iconBox.innerHTML = `<i class="fa-solid fa-crosshairs text-2xl text-cyan-400"></i>`;
@@ -443,6 +486,11 @@
                     if (iconBox) iconBox.innerHTML = `<i class="fa-solid fa-utensils text-2xl text-amber-400"></i>`;
                     document.getElementById('html-preview-title').innerText = "Living 3D Menu & Motore Tavoli";
                     document.getElementById('html-preview-desc').innerText = "Il menu 3D con omaggio al tavolo e Macchina dei Compleanni è pronto. Clicca sotto per testarlo a schermo intero come un cliente reale.";
+                } else if (data.portal_type === 'html' || data.portal_type === 'siteengine') {
+                    const iconBox = document.getElementById('html-preview-icon');
+                    if (iconBox) iconBox.innerHTML = `<i class="fa-solid fa-compass-drafting text-2xl text-purple-400"></i>`;
+                    document.getElementById('html-preview-title').innerText = "Sito Web d'Autore Pronto";
+                    document.getElementById('html-preview-desc').innerText = "Abbiamo generato l'anteprima navigabile con i tuoi progetti reali. Clicca sotto per esplorarla e confrontare i diversi layout.";
                 }
 
                 document.getElementById('html-preview-container').classList.remove('hidden');
@@ -453,7 +501,7 @@
                 document.getElementById('player-link').classList.remove('hidden');
             }
 
-            const priceVal = parseFloat(data.price_euro);
+            const priceVal = parseFloat(data.price_euro || 400);
             const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
 
             if (data.is_paid === true || data.is_paid === "true") {
@@ -461,8 +509,8 @@
                 document.getElementById('overlay-watermark').classList.add('hidden'); 
                 
                 const btn = document.getElementById('actionBtn');
-                if (data.portal_type === 'html' || data.portal_type === 'link') {
-                    btn.innerHTML = `<i class="fa-solid fa-globe"></i> Visita il Sito Web`;
+                if (data.portal_type === 'html' || data.portal_type === 'siteengine' || data.portal_type === 'link') {
+                    btn.innerHTML = `<i class="fa-solid fa-globe"></i> Visita il Sito Web Sbloccato`;
                 } else if (data.portal_type === 'aura') {
                     btn.innerHTML = `<i class="fa-solid fa-crosshairs"></i> Apri Radar Operativo`;
                 } else if (data.portal_type === 'locanda') {
@@ -474,7 +522,7 @@
                 btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] flex items-center justify-center gap-3";
                 btn.classList.remove('animate-pulse'); 
             } else {
-                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca Progetto €${formattedPrice}`;
+                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca Progetto • €${formattedPrice}`;
             }
         });
 
@@ -483,11 +531,36 @@
             const overlay = document.getElementById('fullscreen-iframe-overlay');
             const iframe = document.getElementById('fullscreen-iframe');
             
-            iframe.src = videoData.content_url;
+            // Attiva selettore a 3 stili per SiteEngine
+            const siteEngineSwitcher = document.getElementById('siteengine-template-switcher');
+            const experienceSwitcher = document.getElementById('view-mode-selector');
+
+            if (videoData.portal_type === 'html' || videoData.portal_type === 'siteengine') {
+                if (siteEngineSwitcher) {
+                    siteEngineSwitcher.classList.remove('hidden');
+                    siteEngineSwitcher.classList.add('flex');
+                }
+                if (experienceSwitcher) experienceSwitcher.classList.add('hidden');
+                
+                const cleanUrl = videoData.content_url.split('?')[0];
+                iframe.src = `${cleanUrl}?template_id=${currentActiveTemplate}`;
+            } else if (videoData.portal_type === 'experience') {
+                if (experienceSwitcher) {
+                    experienceSwitcher.classList.remove('hidden');
+                    experienceSwitcher.classList.add('flex');
+                }
+                if (siteEngineSwitcher) siteEngineSwitcher.classList.add('hidden');
+                iframe.src = videoData.content_url;
+            } else {
+                if (siteEngineSwitcher) siteEngineSwitcher.classList.add('hidden');
+                if (experienceSwitcher) experienceSwitcher.classList.add('hidden');
+                iframe.src = videoData.content_url;
+            }
+
             overlay.classList.remove('hidden');
 
             const overlayBtn = document.getElementById('overlayActionBtn');
-            const priceVal = parseFloat(videoData.price_euro);
+            const priceVal = parseFloat(videoData.price_euro || 400);
             const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
 
             if (videoData.is_paid === true || videoData.is_paid === "true") {
@@ -549,9 +622,9 @@
                             project_id: videoData.id,
                             email: videoData.client_email,
                             title: videoData.title,
-                            price: parseFloat(videoData.price_euro),
+                            price: parseFloat(videoData.price_euro || 400),
                             origin: window.location.origin,
-                            portal_type: videoData.portal_type || 'locanda'
+                            portal_type: videoData.portal_type === 'html' ? 'siteengine' : (videoData.portal_type || 'siteengine')
                         })
                     });
 
@@ -564,8 +637,8 @@
                         throw new Error("URL di pagamento non ricevuto");
                     }
                 } catch (err) {
-                    alert("Impossibile avviare il pagamento. Riprova più tardi.");
-                    console.error(err);
+                    alert("Impossibile avviare il pagamento. Apertura supporto diretto WhatsApp...");
+                    window.open("https://wa.me/393478951801?text=Vorrei%20sbloccare%20la%20proposta%20ID%20" + (videoData.id || ''), "_blank");
                     btn.disabled = false;
                     overlayBtn.disabled = false;
                     btn.innerHTML = originalText;
