@@ -311,14 +311,9 @@ Ciao! Siamo allineati e pronti a lavorare sull'ecosistema SiteEngine Pro e Porta
    - \`immagine_hero\`: Solo la copertina o sfondo panoramico d'impatto sopra la piega.
    - \`galleria\`: Solo progetti, cantieri, ambienti, attrezzature e realizzazioni (nessun primo piano personale).
    - \`proprieta\`: Array dedicato alle schede immobile/progetto con metrature, prezzo e dettagli (specifico per il Template 10).
-   - Ogni volta che l'utente richiede un JSON per un nuovo lead (architetto, medico, avvocato, ecc.), l'IA DEVE generare SEMPRE e SENZA ECCEZIONI la struttura completa comprensiva di:
-       - "faq": Array obbligatorio di 4 domande e risposte iper-settoriali (es. pratiche edilizie e direzione lavori se architetto; detrazione 19% e visite se medico; tariffe forensi L. 124 se avvocato). Non omettere MAI la chiave "faq", altrimenti scattano i paracadute hardcoded dei template.
-       - "logo_url": Solo il file del logo (renderizzato automaticamente in Header e Footer).
-       - "foto_profilo": Solo il ritratto / primo piano del professionista (usato solo per la bio e la fiducia nella Hero). È VIETATO inserire volti personali nell'array "galleria".
-       - "immagine_hero": Solo la copertina o sfondo panoramico d'impatto sopra la piega.
-       - "galleria": Solo progetti, cantieri, ambienti, attrezzature e realizzazioni reali.
-       - "proprieta": Schede con metrature e dettagli (per la visualizzazione in stile Dimore/Template 10).
-       - "whatsapp_custom_hook": Messaggio di aggancio caldo, geolocalizzato e con il tono confidenziale (Tu o Lei a seconda del rapporto).
+   - "faq": Array obbligatorio di 4 domande e risposte iper-settoriali (es. pratiche edilizie e direzione lavori se architetto; detrazione 19% e visite se medico; tariffe forensi L. 124 se avvocato). Non omettere MAI la chiave "faq", altrimenti scattano i paracadute hardcoded dei template.
+   - "proprieta": Schede con metrature e dettagli (per la visualizzazione in stile Dimore/Template 10).
+   - "whatsapp_custom_hook": Messaggio di aggancio caldo, geolocalizzato e con il tono confidenziale (Tu o Lei a seconda del rapporto).
 3. **Zero Invio Email Automatico:** La creazione o l'aggiornamento di una bozza tramite \`omnia-quick-generate\` non deve MAI inviare email al cliente. Salva i record in S1/S2 e notifica Riccardo su Telegram. L'invio dell'email avviene unicamente su comando manuale dal Portale (\`invia-email-proposta\`).
 4. **Prevenzione Errore 409 (Duplicate Key):** Nel workflow n8n \`SiteEngine\`, il nodo Supabase opera sempre con Delete preventivo (\`omnia_sites\` con filter su \`slug\`) prima di Create, garantendo che i siti si aggiornino sempre senza mai andare in blocco per chiave duplicata.
 5. **Risoluzione view.html con Filigrana e Template Switcher:** I siti con \`portal_type === 'html'\` atterrano su \`view?id=...\` mostrando in alto il selettore dei 3 format (\`05. Bento\`, \`10. Dimore\`, \`02. Atelier\` con parametro URL \`?template_id=X\`), la filigrana di protezione ibrida ad alta visibilità (attiva finché \`is_paid: false\`) e il pulsante di sblocco a €400 collegato a Stripe.
