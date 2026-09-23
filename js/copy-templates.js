@@ -74,12 +74,24 @@ function resolveDemoLink(item) {
         return item.content_url || `https://experience.rmstudio.app`;
     }
 
-    // 11. Se punta già a un link valido rmstudio
+    // 11. SiteEngine Pro (Sito Web / Landing Professionale)
+    if (item.portal_type === 'html' || item.portal_type === 'siteengine') {
+        if (item.content_url && item.content_url.includes('sitengine.rmstudio.app') && !item.content_url.includes('view')) {
+            return item.content_url;
+        }
+        // Se c'è un ID tracciato del Portale con filigrana
+        if (item.id) {
+            return `https://portale.rmstudio.app/view?id=${item.id}`;
+        }
+        return `https://sitengine.rmstudio.app/${slug}`;
+    }
+
+    // 12. Se punta già a un link valido rmstudio
     if (item.content_url && item.content_url.includes('rmstudio.app') && !item.content_url.includes('view') && !item.content_url.includes('google')) {
         return item.content_url;
     }
 
-    // 12. Link tracciato Portale di default
+    // 13. Link tracciato Portale di default
     if (item.id) {
         return `https://portale.rmstudio.app/view?id=${item.id}`;
     }
@@ -91,6 +103,15 @@ function generateWhatsAppCopy(item) {
     const name = item.client_name || 'Titolare';
     const title = item.title || 'Progetto';
     const link = resolveDemoLink(item);
+
+    // 🌐 SiteEngine Pro (Sito Web / Landing d'Autore per Professionisti)
+    if (item.portal_type === 'html' || item.portal_type === 'siteengine') {
+        // Se nel record è presente un hook personalizzato creato per il lead, usalo
+        if (item.whatsapp_custom_hook) {
+            return `${item.whatsapp_custom_hook}\n\n👉 ${link}\n\nPuoi provarla direttamente dal tuo smartphone. Fammi sapere cosa ne pensi! 😊`;
+        }
+        return `Ciao ${name}! 👋\n\nStavo analizzando la presenza online del tuo studio/attività e ho notato che i tuoi progetti meritano una cornice visiva di livello superiore rispetto ai soliti siti web lenti o dispersivi.\n\nTi ho preparato questa bozza interattiva navigabile a 60 FPS senza impegno:\n👉 ${link}\n\nÈ ottimizzata al millimetro per smartphone, si carica in 0.3 secondi reali e include il blog gestibile direttamente da cellulare senza password. Inoltre puoi testare diversi layout d'autore al volo!\n\nDagli un'occhiata dal telefono e dimmi che ne pensi! 😊`;
+    }
 
     // 🍽️ Locanda Digitale (Living 3D Menu & Metodo Bounty)
     if (item.portal_type === 'locanda') {
@@ -152,14 +173,18 @@ function generateWhatsAppCopy(item) {
 }
 
 function generateEmailCopy(item) {
-    const name = item.client_name || 'Gentile Direzione';
+    const name = item.client_name || 'Gentile Professionista';
     const title = item.title || 'il vostro business';
     const link = resolveDemoLink(item);
 
     let text = "";
 
+    // 🌐 SiteEngine Pro (Email Istituzionale ad Alta Conversione)
+    if (item.portal_type === 'html' || item.portal_type === 'siteengine') {
+        text = `OGGETTO: 🌐 Anteprima riservata del nuovo portale web d'autore per ${name}\n\nGentile ${name},\n\nLe scrivo da RM Studio (Ferrara / Rovigo): sviluppiamo piattaforme web e landing page professionali basate sulle neuroscienze cognitive, progettate specificamente per valorizzare il posizionamento di studi professionali e imprese.\n\nAnalizzando la presenza online del Suo studio, abbiamo elaborato una bozza di anteprima navigabile ad alte prestazioni, visionabile direttamente a questo link riservato:\n👉 ${link}\n\nA differenza dei tradizionali siti web realizzati su WordPress (spesso appesantiti da decine di plugin, lenti al caricamento e vulnerabili), la nostra architettura proprietaria SiteEngine Pro offre vantaggi concreti immediati:\n\n- Velocità estrema di caricamento (0.3 secondi reali, Core Web Vitals 99/100 certificati da Google);\n- Impaginazione a cannocchiale studiata per azzerare l'attrito cognitivo e guidare il visitatore verso il contatto diretto su WhatsApp o via telefono;\n- Dati strutturati Schema.org integrati per posizionare lo studio al vertice delle ricerche locali su Google Maps;\n- Blog integrato aggiornabile in totale mobilità dallo smartphone tramite Magic Link sicuro, senza necessità di ricordare alcuna password;\n- Nessun abbonamento mensile obbligatorio: licenza una tantum con hosting ultra-veloce, certificato SSL e manutenzione inclusi per il primo anno.\n\nPuò visualizzare liberamente la bozza anche dal Suo smartphone. Se l'impostazione rispecchia l'identità del Suo studio, possiamo collegarla in poche ore al Suo dominio personale definitivo.\n\nResto a Sua completa disposizione per qualsiasi confronto o personalizzazione.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Soluzioni Software & Sviluppo Web B2B\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
+    }
     // 🍽️ Locanda Digitale
-    if (item.portal_type === 'locanda') {
+    else if (item.portal_type === 'locanda') {
         text = `OGGETTO: 🍽️ Anteprima Living 3D Menu & Motore Clienti H24 per ${name}\n\nGentile Direzione di ${name},\n\nAbbiamo elaborato una dimostrazione interattiva su misura per il vostro locale, accessibile direttamente a questo link riservato:\n👉 ${link}\n\nLocanda Digitale non è un semplice menu digitale in PDF: trasforma le vostre portate forti in video 3D ad alta fluidità (60 FPS) visibili direttamente dallo smartphone dei clienti al tavolo, velocizza le comande su WhatsApp e integra il sistema automatizzato che cattura i contatti dei clienti per riempire i coperti con il Bancomat dei Compleanni a -10 giorni, proteggendo inoltre le recensioni del locale su Google Maps.\n\nRestiamo a completa disposizione per qualsiasi prova dal vivo o personalizzazione grafica.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Tecnologie per la Ristorazione\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
     }
     // 🏎️ DriveMotion RADAR
