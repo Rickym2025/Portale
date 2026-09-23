@@ -110,20 +110,43 @@ function toggleSidebar() {
     localStorage.setItem('sidebar_collapsed', isCol ? 'true' : 'false');
 }
 
+// 🎯 APPLICAZIONE FILTRI CON SUPPORTO A "STATO LETTURA / INVIO"
 function applyFilters() {
     const fType = document.getElementById('filter-type')?.value || 'all';
     const fName = (document.getElementById('filter-name')?.value || '').toLowerCase().trim();
     const fPaid = document.getElementById('filter-paid')?.value || 'all';
+    const fStatus = document.getElementById('filter-status')?.value || 'all';
 
     const filtered = (window.allProjects || []).filter(p => {
+        // 1. Filtro Tipo SaaS
         if (fType !== 'all' && p.portal_type !== fType) return false;
+
+        // 2. Filtro Nome / Email / Titolo
         const match = (p.client_name || '').toLowerCase().includes(fName) || 
                       (p.client_email || '').toLowerCase().includes(fName) || 
                       (p.title || '').toLowerCase().includes(fName);
         if (!match) return false;
+
+        // 3. Filtro Pagamento
         const isPaid = p.is_paid === true || p.is_paid === "true";
         if (fPaid === 'paid' && !isPaid) return false;
         if (fPaid === 'unpaid' && isPaid) return false;
+
+        // 4. Filtro Stato Lettura / Invio
+        if (fStatus !== 'all') {
+            const views = parseInt(p.views_count || 0, 10);
+            const isOpenedFlag = p.is_opened === true || p.is_opened === "true";
+            const isRead = views > 0 && isOpenedFlag;
+
+            const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
+            const waSent = p.is_whatsapp_sent === true || p.is_whatsapp_sent === "true";
+            const isContacted = waSent || emailSent;
+
+            if (fStatus === 'read' && !isRead) return false;
+            if (fStatus === 'sent' && (!isContacted || isRead)) return false;
+            if (fStatus === 'unsent' && (isContacted || isRead)) return false;
+        }
+
         return true;
     });
 
@@ -202,7 +225,7 @@ function renderMasterTable(data) {
     container.innerHTML = '';
 
     if (data.length === 0) {
-        container.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-gray-400 font-semibold text-base">Nessun progetto trovato.</td></tr>`;
+        container.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-gray-400 font-semibold text-base">Nessun progetto trovato con i filtri attivi.</td></tr>`;
         return;
     }
 
@@ -213,7 +236,7 @@ function renderMasterTable(data) {
         const isPaid = p.is_paid === true || p.is_paid === "true";
         const views = parseInt(p.views_count || 0, 10);
         
-        // 🔒 UN PROGETTO È LETTO SOLO SE LE VISITE SONO > 0 E IS_OPENED È VERO
+        // 🔒 Un progetto è letto SOLO se le visite sono > 0 e is_opened è true
         const isOpenedFlag = p.is_opened === true || p.is_opened === "true";
         const isRead = views > 0 && isOpenedFlag;
 
@@ -247,18 +270,16 @@ function renderMasterTable(data) {
 
         const typeBadge = badges[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">${p.portal_type || 'html'}</span>`;
 
-        // 🔥 IL TASTO VIP COMPARE SOLO SE LETTO E NON ANCORA PAGATO
         let closingPitchBtn = '';
         if (isRead && !isPaid) {
             closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2 py-1 rounded-lg text-xs font-black transition animate-pulse" title="Pitch Chiusura Dedicato"><i class="fa-solid fa-fire"></i> VIP</button>`;
         }
 
-        // Indicatori canali usati per il contatto
         let channelIndicators = '';
         if (waSent) channelIndicators += `<i class="fa-brands fa-whatsapp text-emerald-400 text-xs" title="Inviato su WhatsApp"></i>`;
         if (emailSent) channelIndicators += `<i class="fa-solid fa-envelope text-blue-400 text-xs" title="Inviato via Email"></i>`;
 
-        // 🚦 PIPELINE LOGICA A 3 STATI (NON INVIATA / INVIATA / LETTA)
+        // 🚦 PIPELINE STATI
         let statusHtml = '';
         if (isRead) {
             statusHtml = `
