@@ -166,7 +166,10 @@ function renderMasterTable(data) {
         const views = parseInt(p.views_count || 0, 10);
         const isRead = views > 0 || p.is_opened === true;
         const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
+        
+        // 🔒 URL SICURO: Finché non è pagato, apre SEMPRE la pagina con filigrana view.html!
         const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
+        const targetUrl = isPaid ? (p.content_url || portalUrl) : portalUrl;
 
         const sendDateFormatted = p.sent_at ? new Date(p.sent_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const sendDaysAgo = getDaysAgo(p.sent_at);
@@ -183,7 +186,8 @@ function renderMasterTable(data) {
             forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🏛️ f&amp;m</span>`,
             aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">📡 aura</span>`,
             eternia: `<span class="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🕊️ eternia</span>`,
-            love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">💍 love</span>`
+            love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">💍 love</span>`,
+            html: `<span class="bg-blue-500/10 text-blue-300 border border-blue-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">🌐 siteengine</span>`
         };
 
         const typeBadge = badges[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">${p.portal_type || 'html'}</span>`;
@@ -201,21 +205,21 @@ function renderMasterTable(data) {
             <td class="p-4">
                 <input type="text" value="${p.client_name || ''}" placeholder="Nome Cliente" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-extrabold text-white text-sm block w-full mb-1">
                 <input type="email" value="${p.client_email || ''}" placeholder="Email" onchange="updateSupabaseField('${p.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block">
-                <input type="text" value="${p.client_phone || ''}" placeholder="Telefono" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block">
+                <input type="text" value="${p.client_phone || ''}" placeholder="Telefono" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block font-mono">
             </td>
             <td class="p-4">
                 <input type="text" value="${p.title || ''}" placeholder="Titolo" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-200 font-bold w-full">
             </td>
             <td class="p-4">
-                <a href="${portalUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-purple-400 border border-zinc-800 px-3 py-1.5 rounded-lg text-xs font-bold transition truncate max-w-[130px]">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Link
+                <a href="${targetUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 ${isPaid ? 'text-emerald-400 border-emerald-500/30' : 'text-purple-300 border-zinc-800'} border px-3 py-1.5 rounded-lg text-xs font-bold transition truncate max-w-[140px] shadow-sm">
+                    <i class="fa-solid ${isPaid ? 'fa-globe' : 'fa-eye'} text-[10px]"></i> ${isPaid ? 'Sito Live' : '👁️ Bozza'}
                 </a>
             </td>
             <td class="p-4">
-                <input type="number" value="${p.price_euro || 0}" onchange="updateSupabaseField('${p.id}', 'price_euro', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-black text-purple-400 focus:border-purple-500 text-xs">
+                <input type="number" value="${p.price_euro || 0}" onchange="updateSupabaseField('${p.id}', 'price_euro', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-black text-purple-400 focus:border-purple-500 text-xs font-mono">
             </td>
             <td class="p-4 text-center">
-                <input type="number" value="${views}" onchange="updateSupabaseField('${p.id}', 'views_count', this.value)" class="w-12 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-blue-400 focus:border-purple-500 text-xs">
+                <input type="number" value="${views}" onchange="updateSupabaseField('${p.id}', 'views_count', this.value)" class="w-12 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-blue-400 focus:border-purple-500 text-xs font-mono">
             </td>
             <td class="p-4 text-center">
                 <input type="checkbox" ${p.is_whatsapp_sent ? 'checked' : ''} onchange="updateSupabaseField('${p.id}', 'is_whatsapp_sent', this.checked)" class="w-4 h-4 text-purple-600 bg-zinc-900 border-zinc-800 rounded">
@@ -230,7 +234,7 @@ function renderMasterTable(data) {
                 </div>
             </td>
             <td class="p-4">
-                <button onclick="togglePayment('${p.id}', ${isPaid})" class="px-2.5 py-1 rounded-full text-[11px] font-bold transition ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
+                <button onclick="togglePayment('${p.id}', ${isPaid})" class="px-2.5 py-1 rounded-full text-[11px] font-bold transition cursor-pointer ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
                     ${isPaid ? '✓ Pagato' : '● Attesa'}
                 </button>
             </td>
@@ -292,10 +296,10 @@ async function togglePayment(id, current) {
     loadMasterData();
 }
 
+// 🗑️ ELIMINAZIONE COMPLETA SINCRONIZZATA (S1, S2 E R2)
 async function handleDelete(id) {
     if (!confirm("Eliminare definitivamente questo record dal Portale e da tutti i database?")) return;
     try {
-        // Chiama il webhook n8n che cancella sia da S1 (omnia_sites) che da S2 e R2
         const res = await fetch('https://n8n.rmstudio.app/webhook/delete-portal-video', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -303,7 +307,6 @@ async function handleDelete(id) {
         });
         
         if (!res.ok) {
-            // Fallback diretto su S2 se n8n è offline
             await supabaseClient.from('portal_videos').delete().eq('id', id);
         }
 
@@ -482,7 +485,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // TUTTI GLI ALTRI PRODOTTI
+    // TUTTI GLI ALTRI PRODOTTI (INCLUSO SITEENGINE PRO)
     btn.innerText = "Salvataggio Supabase...";
     try {
         const { error } = await supabaseClient.from('portal_videos').insert([{
