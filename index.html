@@ -340,11 +340,11 @@
             </div>
         </div>
 
-        <!-- FILTRI PRODOTTI (SEPARATI PER TUTTI I VERTICALI) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
+        <!-- FILTRI PRODOTTI (4 COLONNE: CATEGORIA / RICERCA / STATO LETTURA / PAGAMENTO) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 bg-[#0b0b0f] border border-zinc-900 p-4 rounded-2xl shadow-xl">
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">PRODOTTO / CATEGORIA</label>
-                <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
+                <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-xs sm:text-sm text-white outline-none focus:border-purple-500 font-bold">
                     <option value="all">Tutti i Prodotti</option>
                     <option value="concierge">🏨 Concierge24 (Hotel &amp; B&amp;B)</option>
                     <option value="dentis">🦷 Dentis AI (Dentisti)</option>
@@ -364,12 +364,21 @@
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">CERCA CLIENTE O LEAD</label>
-                <input type="text" id="filter-name" placeholder="Cerca nome, email o azienda..." oninput="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+                <input type="text" id="filter-name" placeholder="Cerca nome, email o azienda..." oninput="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-xs sm:text-sm text-white outline-none focus:border-purple-500 font-semibold">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-purple-400 mb-1.5">STATO LETTURA / INVIO</label>
+                <select id="filter-status" onchange="applyFilters()" class="w-full bg-[#15151a] border border-purple-500/40 rounded-xl p-3 text-xs sm:text-sm text-white outline-none focus:border-purple-500 font-bold">
+                    <option value="all">Tutti gli stati lettura</option>
+                    <option value="read">🟢 Lette (Aperte dal cliente)</option>
+                    <option value="sent">🟡 Inviate (In attesa apertura)</option>
+                    <option value="unsent">⚪ Non ancora inviate (Bozze)</option>
+                </select>
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">STATO PAGAMENTO</label>
-                <select id="filter-paid" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-bold">
-                    <option value="all">Tutti gli stati</option>
+                <select id="filter-paid" onchange="applyFilters()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3 text-xs sm:text-sm text-white outline-none focus:border-purple-500 font-bold">
+                    <option value="all">Tutti i pagamenti</option>
                     <option value="paid">✓ Pagati</option>
                     <option value="unpaid">● In Attesa di Pagamento</option>
                 </select>
