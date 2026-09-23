@@ -76,14 +76,11 @@ function resolveDemoLink(item) {
 
     // 11. SiteEngine Pro (Sito Web / Landing Professionale)
     if (item.portal_type === 'html' || item.portal_type === 'siteengine') {
-        if (item.content_url && item.content_url.includes('sitengine.rmstudio.app') && !item.content_url.includes('view')) {
-            return item.content_url;
-        }
-        // Se c'è un ID tracciato del Portale con filigrana
-        if (item.id) {
+        // Se non è ancora pagato, invia SEMPRE il link protetto da filigrana del Portale!
+        if ((item.is_paid === false || item.is_paid === "false") && item.id) {
             return `https://portale.rmstudio.app/view?id=${item.id}`;
         }
-        return `https://sitengine.rmstudio.app/${slug}`;
+        return item.content_url || `https://sitengine.rmstudio.app/${slug}`;
     }
 
     // 12. Se punta già a un link valido rmstudio
