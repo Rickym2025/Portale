@@ -181,7 +181,7 @@
             background: #020204;
         }
         
-        /* 🔒 FILIGRANA RM STUDIO DIAGONALE INTERNA */
+        /* 🔒 FILIGRANA IBRIDA AD ALTA VISIBILITÀ (BIANCO/NERO HYBRID CONTRAST) */
         .watermark-pattern {
             position: absolute;
             inset: 0;
@@ -189,21 +189,44 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: 50px;
-            padding: 20px;
+            gap: 65px;
+            padding: 30px;
             pointer-events: none;
-            z-index: 40;
+            z-index: 50;
             overflow: hidden;
-            opacity: 0.13;
             user-select: none;
         }
         
-        .watermark-logo {
+        .watermark-logo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transform: rotate(-28deg);
+            will-change: transform;
+            opacity: 0.22;
+        }
+
+        .watermark-logo-item img {
             width: 140px;
             height: auto;
-            transform: rotate(-30deg);
-            filter: grayscale(100%) brightness(200%);
-            will-change: transform;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.85)) grayscale(100%) brightness(170%);
+        }
+
+        .watermark-label {
+            font-family: monospace;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 2px 10px;
+            border-radius: 6px;
+            border: 1px dashed rgba(255, 255, 255, 0.35);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            white-space: nowrap;
         }
 
         video::-internal-media-controls-download-button { display:none !important; }
@@ -235,7 +258,7 @@
         <!-- Render Area Dinamica -->
         <div class="player-wrapper flex-1 min-h-[280px] sm:min-h-[350px] lg:min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
             
-            <!-- WATERMARK CON LOGO IN DIAGONALE RIPETUTO -->
+            <!-- WATERMARK CON LOGO E DICITURA RIPETUTI -->
             <div id="watermark-layer" class="watermark-pattern"></div>
 
             <!-- 1. VIDEO PLAYER (Per file MP4 reali) -->
@@ -258,7 +281,7 @@
                 <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-right text-xs"></i></button>
             </div>
 
-            <!-- 3. ANTEPRIMA SITO WEB / WEB APP INTERATTIVA (HTML, EXPERIENCE, AURA, LOCANDA 3D MENU) -->
+            <!-- 3. ANTEPRIMA SITO WEB / WEB APP INTERATTIVA -->
             <div id="html-preview-container" class="hidden w-full h-full flex flex-col items-center justify-center p-6 text-center z-20 bg-[#020204]">
                 <div class="w-16 h-16 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4" id="html-preview-icon">
                     <i class="fa-solid fa-laptop-code text-2xl text-purple-400"></i>
@@ -280,7 +303,7 @@
             </div>
         </div>
 
-        <!-- Footer Actions -->
+        <!-- Footer Actions Principale -->
         <div class="shrink-0 flex items-center justify-center pt-4 border-t border-gray-800/60">
             <button id="actionBtn" onclick="handleAction()" 
                     class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-[0_0_35px_rgba(147,51,234,0.65)] flex items-center justify-center gap-3 animate-pulse cursor-pointer">
@@ -292,18 +315,18 @@
     <div id="ecosystem-orbit-container" class="orbit-container"></div>
 
     <!-- ========================================================================= -->
-    <!-- OVERLAY A SCHERMO INTERO CON SWITCHER FORMATI SITEENGINE E VISTE RISTORO   -->
+    <!-- OVERLAY A SCHERMO INTERO CON SWITCHER FORMATI E FILIGRANA POTENZIATA      -->
     <!-- ========================================================================= -->
     <div id="fullscreen-iframe-overlay" class="hidden fixed inset-0 bg-[#050508] z-[9999] flex flex-col">
         
-        <!-- Barra superiore dell'overlay -->
-        <div class="h-16 shrink-0 bg-[#0b0e0f] border-b border-gray-900/80 flex items-center justify-between px-4 sm:px-6">
-            <div class="flex items-center gap-3 sm:gap-4 overflow-x-auto max-w-[65%] sm:max-w-none">
-                <a href="https://rmstudio.app" target="_blank">
-                    <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-6 w-auto shrink-0">
+        <!-- Barra superiore dell'overlay con Selettori e Pulsante Sblocco -->
+        <div class="h-16 shrink-0 bg-[#0b0e12] border-b border-gray-900/80 flex items-center justify-between px-3 sm:px-6">
+            <div class="flex items-center gap-2 sm:gap-4 overflow-x-auto max-w-[65%] sm:max-w-none">
+                <a href="https://rmstudio.app" target="_blank" class="shrink-0">
+                    <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-6 w-auto">
                 </a>
                 
-                <!-- 🌐 SELETTORE A 3 STILI D'AUTORE PER SITEENGINE (PORTAL_TYPE: HTML / SITEENGINE) -->
+                <!-- 🌐 SWITCHER DEI 3 FORMAT ARCHITETTURALI (SITEENGINE PRO) -->
                 <div id="siteengine-template-switcher" class="hidden items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
                     <span class="text-[9px] font-mono text-zinc-400 px-2 uppercase font-bold hidden md:inline">Stile:</span>
                     <button onclick="switchTemplate(5)" id="btn-t-5" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm cursor-pointer whitespace-nowrap">
@@ -317,7 +340,7 @@
                     </button>
                 </div>
 
-                <!-- 🍷 SELETTORE DUAL VISTA PER IL RISTORATORE (SMART EXPERIENCE) -->
+                <!-- 🍷 SELETTORE DUAL VISTA PER I RISTORANTI (SMART EXPERIENCE) -->
                 <div id="view-mode-selector" class="hidden items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
                     <button onclick="switchPreviewMode('experience')" id="btn-view-experience" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap">
                         🍷 Smart Experience Page
@@ -328,19 +351,20 @@
                 </div>
             </div>
     
-            <div class="flex items-center gap-3">
-                <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:brightness-110 text-white font-extrabold px-4 sm:px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.3)] cursor-pointer">
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:brightness-110 text-white font-extrabold px-3 sm:px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.35)] cursor-pointer whitespace-nowrap">
+                    <i class="fa-solid fa-lock"></i> Sblocca • €400
                 </button>
-                <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-3.5 sm:px-4 py-2.5 rounded-xl transition-all cursor-pointer">
+                <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-3 py-2.5 rounded-xl transition-all cursor-pointer">
                     <i class="fa-solid fa-xmark"></i> <span class="hidden sm:inline">Chiudi</span>
                 </button>
             </div>
         </div>
     
-        <!-- Iframe con Filigrana Sovrapposta -->
+        <!-- Iframe con Filigrana Sovrapposta Visibile a 360° -->
         <div class="flex-1 w-full h-full relative bg-black overflow-hidden">
             <div id="overlay-watermark" class="watermark-pattern"></div>
-            <iframe id="fullscreen-iframe" class="w-full h-full border-none bg-black" src=""></iframe>
+            <iframe id="fullscreen-iframe" class="w-full h-full border-none bg-[#07080c]" src=""></iframe>
         </div>
     </div>
     
@@ -354,25 +378,28 @@
         let imagesArray = [];
         let currentActiveTemplate = 5;
 
-        // 🔒 GENERATORE FILIGRANA PROTETTIVA RM STUDIO
+        // 🔒 GENERAZIONE FILIGRANA IBRIDA AD ALTO CONTRASTO
         function generateWatermarks(containerId, count) {
             const layer = document.getElementById(containerId);
             if (layer) {
                 layer.innerHTML = ""; 
                 for (let i = 0; i < count; i++) {
-                    const img = document.createElement('img');
-                    img.src = "https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png";
-                    img.className = "watermark-logo select-none";
-                    img.setAttribute('oncontextmenu', 'return false;');
-                    layer.appendChild(img);
+                    const item = document.createElement('div');
+                    item.className = "watermark-logo-item select-none";
+                    item.setAttribute('oncontextmenu', 'return false;');
+                    item.innerHTML = `
+                        <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio">
+                        <span class="watermark-label">Bozza Riservata • RM Studio</span>
+                    `;
+                    layer.appendChild(item);
                 }
             }
         }
 
-        generateWatermarks('watermark-layer', 28);
-        generateWatermarks('overlay-watermark', 44);
+        generateWatermarks('watermark-layer', 24);
+        generateWatermarks('overlay-watermark', 40);
 
-        // 🌌 CARICAMENTO DINAMICO SISTEMA ORBITALE DA GITHUB
+        // 🌌 CARICAMENTO DINAMICO SISTEMA ORBITALE
         async function loadOrbitalEcosystem() {
             try {
                 const url = 'https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/orbit-template.html';
@@ -386,7 +413,7 @@
             }
         }
 
-        // 🔄 CAMBIO TEMPLATE ISTANTANEO PER SITEENGINE (?template_id=X)
+        // 🔄 SWITCHER TEMPLATE IN TEMPO REALE (?template_id=X)
         function switchTemplate(templateId) {
             if (!videoData || !videoData.content_url) return;
             currentActiveTemplate = templateId;
@@ -404,7 +431,7 @@
             });
         }
 
-        // 🍷 DUAL VISTA PER I RISTORANTI (EXPERIENCE VS SITO ORIGINALE)
+        // 🍷 DUAL VISTA RISTORAZIONE
         function switchPreviewMode(mode) {
             if (!videoData) return;
             const iframe = document.getElementById('fullscreen-iframe');
@@ -430,7 +457,7 @@
             const id = params.get('id');
             if (!id) return alert("ID non valido");
 
-            // Incremento visite e tracciamento apertura
+            // Incremento visite e tracciamento
             const { data: currentData } = await supabaseClient
                 .from('portal_videos')
                 .select('views_count')
@@ -450,7 +477,7 @@
             videoData = data;
 
             document.getElementById('title').innerText = data.title || "Il tuo Progetto";
-            document.getElementById('badge').innerText = data.portal_type;
+            document.getElementById('badge').innerText = data.portal_type || "Progetto";
             document.getElementById('client-name').innerText = data.client_name || "Cliente";
             
             if (data.sent_at) {
@@ -501,37 +528,51 @@
                 document.getElementById('player-link').classList.remove('hidden');
             }
 
-            const priceVal = parseFloat(data.price_euro || 400);
-            const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
+            updatePriceButtons();
+        });
 
-            if (data.is_paid === true || data.is_paid === "true") {
+        // AGGIORNAMENTO DINAMICO DEI PULSANTI PREZZO
+        function updatePriceButtons() {
+            if (!videoData) return;
+            const priceVal = parseFloat(videoData.price_euro || 400);
+            const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
+            const isPaid = videoData.is_paid === true || videoData.is_paid === "true";
+
+            const btn = document.getElementById('actionBtn');
+            const overlayBtn = document.getElementById('overlayActionBtn');
+
+            if (isPaid) {
                 document.getElementById('watermark-layer').classList.add('hidden'); 
                 document.getElementById('overlay-watermark').classList.add('hidden'); 
                 
-                const btn = document.getElementById('actionBtn');
-                if (data.portal_type === 'html' || data.portal_type === 'siteengine' || data.portal_type === 'link') {
-                    btn.innerHTML = `<i class="fa-solid fa-globe"></i> Visita il Sito Web Sbloccato`;
-                } else if (data.portal_type === 'aura') {
-                    btn.innerHTML = `<i class="fa-solid fa-crosshairs"></i> Apri Radar Operativo`;
-                } else if (data.portal_type === 'locanda') {
-                    btn.innerHTML = `<i class="fa-solid fa-utensils"></i> Apri Living Menu 3D al Tavolo`;
-                } else {
-                    btn.innerHTML = `<i class="fa-solid fa-lock-open"></i> Scarica in HD`;
+                const paidText = (videoData.portal_type === 'html' || videoData.portal_type === 'siteengine' || videoData.portal_type === 'link')
+                    ? `<i class="fa-solid fa-globe"></i> Visita il Sito Web Sbloccato`
+                    : (videoData.portal_type === 'aura' ? `<i class="fa-solid fa-crosshairs"></i> Apri Radar Operativo` : `<i class="fa-solid fa-check"></i> Progetto Sbloccato`);
+
+                if (btn) {
+                    btn.innerHTML = paidText;
+                    btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] flex items-center justify-center gap-3 cursor-pointer";
+                    btn.classList.remove('animate-pulse');
                 }
-                
-                btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] flex items-center justify-center gap-3";
-                btn.classList.remove('animate-pulse'); 
+                if (overlayBtn) {
+                    overlayBtn.innerHTML = `<i class="fa-solid fa-check"></i> Sbloccato`;
+                    overlayBtn.className = "bg-green-600 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider cursor-pointer";
+                }
             } else {
-                document.getElementById('actionBtn').innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca Progetto • €${formattedPrice}`;
+                if (btn) {
+                    btn.innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca Progetto • €${formattedPrice}`;
+                }
+                if (overlayBtn) {
+                    overlayBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca • €${formattedPrice}`;
+                }
             }
-        });
+        }
 
         function openFullscreenWebsite() {
             if (!videoData) return;
             const overlay = document.getElementById('fullscreen-iframe-overlay');
             const iframe = document.getElementById('fullscreen-iframe');
             
-            // Attiva selettore a 3 stili per SiteEngine
             const siteEngineSwitcher = document.getElementById('siteengine-template-switcher');
             const experienceSwitcher = document.getElementById('view-mode-selector');
 
@@ -558,23 +599,7 @@
             }
 
             overlay.classList.remove('hidden');
-
-            const overlayBtn = document.getElementById('overlayActionBtn');
-            const priceVal = parseFloat(videoData.price_euro || 400);
-            const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
-
-            if (videoData.is_paid === true || videoData.is_paid === "true") {
-                document.getElementById('overlay-watermark').classList.add('hidden');
-                if (videoData.portal_type === 'aura') {
-                    overlayBtn.innerHTML = `<i class="fa-solid fa-crosshairs"></i> Apri Radar`;
-                } else if (videoData.portal_type === 'locanda') {
-                    overlayBtn.innerHTML = `<i class="fa-solid fa-utensils"></i> Apri Living Menu`;
-                } else {
-                    overlayBtn.innerHTML = `<i class="fa-solid fa-globe"></i> Visita il Sito`;
-                }
-            } else {
-                overlayBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca €${formattedPrice}`;
-            }
+            updatePriceButtons();
         }
 
         function closeFullscreenWebsite() {
@@ -610,9 +635,9 @@
                 const originalText = btn.innerHTML;
                 
                 btn.disabled = true;
-                overlayBtn.disabled = true;
-                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Generazione pagamento...`;
-                overlayBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Attendi...`;
+                if (overlayBtn) overlayBtn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Connessione Stripe...`;
+                if (overlayBtn) overlayBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Attendi...`;
 
                 try {
                     const res = await fetch('https://n8n.rmstudio.app/webhook/crea-sessione-stripe', {
@@ -620,8 +645,8 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             project_id: videoData.id,
-                            email: videoData.client_email,
-                            title: videoData.title,
+                            email: videoData.client_email || "cliente@rmstudio.app",
+                            title: videoData.title || "Sblocco Sito Web & Dominio",
                             price: parseFloat(videoData.price_euro || 400),
                             origin: window.location.origin,
                             portal_type: videoData.portal_type === 'html' ? 'siteengine' : (videoData.portal_type || 'siteengine')
@@ -637,10 +662,10 @@
                         throw new Error("URL di pagamento non ricevuto");
                     }
                 } catch (err) {
-                    alert("Impossibile avviare il pagamento. Apertura supporto diretto WhatsApp...");
+                    alert("Impossibile avviare il pagamento. Apertura diretta WhatsApp con Riccardo...");
                     window.open("https://wa.me/393478951801?text=Vorrei%20sbloccare%20la%20proposta%20ID%20" + (videoData.id || ''), "_blank");
                     btn.disabled = false;
-                    overlayBtn.disabled = false;
+                    if (overlayBtn) overlayBtn.disabled = false;
                     btn.innerHTML = originalText;
                 }
             }
