@@ -84,7 +84,7 @@
                 </form>
             </div>
 
-            <!-- Colonna Destra: Pannello Utility Rapido Completo -->
+            <!-- Colonna Destra: Pannello Utility Rapido -->
             <div class="lg:col-span-4 bg-[#0b0b0f]/60 border border-zinc-900/80 p-5 rounded-[28px] backdrop-blur-xl space-y-4 text-left shadow-xl flex flex-col justify-between">
                 <div class="shrink-0">
                     <h3 class="text-xs font-bold text-white flex items-center gap-2">
@@ -95,11 +95,11 @@
                 </div>
 
                 <div class="space-y-3 flex-grow flex flex-col justify-center">
-                    <!-- BOTTONE 1: COPIA TEMPLATE MASTER UNIVERSALE COMPLETO -->
+                    <!-- BOTTONE 1: COPIA TEMPLATE MASTER UNIVERSALE -->
                     <div class="bg-[#121217] border border-zinc-800 p-3.5 rounded-2xl space-y-2">
                         <span class="text-[8px] font-mono text-cyan-400 uppercase tracking-widest font-black block">Template Master Universale</span>
                         <h4 class="text-xs font-bold text-white leading-tight">Modello Completo (Logo, Render, Schede)</h4>
-                        <p class="text-[10px] text-gray-400 leading-snug">Copia il modello JSON universale comprensivo di logo, foto profilo, immagini hero, galleria, schede progetto, recensioni e blog posts.</p>
+                        <p class="text-[10px] text-gray-400 leading-snug">Copia il modello JSON universale comprensivo di logo_url, foto_profilo, immagine_hero, galleria, schede proprieta, recensioni e blog_posts.</p>
                         <button 
                             id="btn-copy-template" 
                             onclick="copyTemplateJSON()" 
@@ -109,11 +109,11 @@
                         </button>
                     </div>
 
-                    <!-- BOTTONE 2: COPIA PROMPT ALLINEAMENTO COGNITIVO COMPLETO -->
+                    <!-- BOTTONE 2: COPIA PROMPT ALLINEAMENTO COGNITIVO INTEGRATO -->
                     <div class="bg-[#121217] border border-zinc-800 p-3.5 rounded-2xl space-y-2">
                         <span class="text-[8px] font-mono text-purple-400 uppercase tracking-widest font-black block">Allineamento Sessioni AI</span>
                         <h4 class="text-xs font-bold text-white leading-tight">Prompt di Allineamento Cognitivo</h4>
-                        <p class="text-[10px] text-gray-400 leading-snug">Incolla questo prompt all'inizio di ogni chat per allineare l'IA sulle regole dei 10 layout, eliminazione bug e database S1/S2.</p>
+                        <p class="text-[10px] text-gray-400 leading-snug">Incolla questo prompt all'inizio di ogni chat per allineare l'IA sulle regole dei 10 layout, la Regola dei Media e le direttive zero email automatiche.</p>
                         <button 
                             id="btn-copy-prompt" 
                             onclick="copyAlignmentPrompt()" 
@@ -214,7 +214,7 @@
             }
         });
 
-        // 📋 FUNZIONE 1: COPIA IL TEMPLATE MASTER COMPLETO DI TUTTE LE CHIAVI
+        // 📋 FUNZIONE 1: COPIA IL TEMPLATE MASTER UNIVERSALE
         function copyTemplateJSON() {
             const template = {
               "nome_cliente": "Studio Professionale D'Autore",
@@ -239,23 +239,14 @@
                   "cta2": "Esplora i Progetti"
                 },
                 "servizi": [
-                  { 
-                    "titolo": "Interior Design Sartoriale", 
-                    "description": "Progettazione su misura degli spazi abitativi con arredi esclusivi e materiali nobili." 
-                  },
-                  { 
-                    "titolo": "Spazi Commerciali & Hospitality", 
-                    "description": "Rinnovamento ad alto impatto visivo di negozi, bar, pasticcerie e locali pubblici." 
-                  },
-                  { 
-                    "titolo": "Direzione Lavori & Cantieri", 
-                    "description": "Gestione tecnica integrata del cantiere, conformità normativa e rispetto dei cronoprogrammi." 
-                  }
+                  { "titolo": "Interior Design Sartoriale", "description": "Progettazione su misura degli spazi abitativi con arredi esclusivi e materiali nobili." },
+                  { "titolo": "Spazi Commerciali & Hospitality", "description": "Rinnovamento ad alto impatto visivo di negozi, bar, pasticcerie e locali pubblici." },
+                  { "titolo": "Direzione Lavori & Cantieri", "description": "Gestione tecnica integrata del cantiere, conformità normativa e rispetto dei cronoprogrammi." }
                 ],
                 "social_proof": "Laurea Specialistica allo IUAV con oltre 15 anni di esperienza nella progettazione di interni e architettura su misura.",
                 "brand_color": "#8B5CF6",
                 "email": "studio@professionale.it",
-                "indirizzo": "Viale Roma 10, Milano (MI)",
+                "indirizzo": "Via Roma 10, Milano (MI)",
                 "telefono": "+393491234567",
                 "piva": "IT01234567890",
                 "orari": {
@@ -274,7 +265,7 @@
                 "proprieta": [
                   {
                     "titolo": "Living & Boiserie a LED",
-                    "localita": "Porto Viro (RO)",
+                    "localita": "Milano (MI)",
                     "prezzo": "Progetto Residenziale",
                     "dettagli": "Boiserie in noce cannettato • Gole luminose calde",
                     "immagine": "/progetto1.jpg"
@@ -307,9 +298,24 @@
             });
         }
 
-        // 📋 FUNZIONE 2: COPIA IL PROMPT DI ALLINEAMENTO COGNITIVO
+        // 📋 FUNZIONE 2: COPIA IL PROMPT DI ALLINEAMENTO COGNITIVO COMPLETO
         function copyAlignmentPrompt() {
-            const prompt = `# PROMPT DI ALLINEAMENTO COGNITIVO • RM STUDIO\n\nCiao! Siamo allineati e pronti a ripartire. Ecco le specifiche attuali su cui siamo agganciati:\n\n1. **Infrastruttura Unificata:** Ogni sito d'autore vive interamente dentro la singola riga \`omnia_sites.site_data\` (S1), inclusi i post del blog (array \`blog_posts\`), le recensioni (array \`recensioni\`), il logo (\`logo_url\`), la foto (\`foto_profilo\`) e i progetti (\`galleria\` e \`proprieta\`).\n2. **Logica Blog Ibrida:** Le pagine \`/blog\` e \`/blog/[postSlug]\` leggono ed uniscono dinamicamente sia gli articoli pre-caricati nel JSON (\`blog_posts\`) sia i post scritti dal vivo dai clienti via pannello \`/admin\` (tabella \`omnia_posts\`), rimuovendo i duplicati per slug.\n3. **Cancellazione Incrociata Sincrona:** Il webhook di eliminazione del portale (\`delete-portal-video\`) elimina contemporaneamente sia la riga di tracciamento del portale in S2 (\`portal_videos\`) sia la riga del sito in S1 (\`omnia_sites\`) usando lo slug estratto, per poi procedere asincronamente con la cancellazione dei file fisici R2.\n4. **Risoluzione Attrito view.html:** I siti vengono visualizzati con watermark protettivo diagonale finché \`is_paid: false\` e includono in alto il selettore istantaneo dei template con sovrascrittura URL (\`?template_id=X\`) e il pulsante per lo sblocco Stripe a €400.\n\nProcediamo con i prossimi sviluppi in conformità a queste regole d'ingegneria stabilite.`;
+            const prompt = `# PROMPT DI ALLINEAMENTO COGNITIVO • RM STUDIO (Aggiornato Settembre 2026)
+
+Ciao! Siamo allineati e pronti a lavorare sull'ecosistema SiteEngine Pro e Portale Master. Ecco le specifiche ferree a cui attenersi:
+
+1. **Infrastruttura Unificata:** Ogni sito d'autore vive interamente dentro la singola riga \`omnia_sites.site_data\` (S1), inclusi i post del blog (\`blog_posts\`), le recensioni (\`recensioni\`), il logo (\`logo_url\`), la foto del professionista (\`foto_profilo\`) e i progetti (\`galleria\` e \`proprieta\`).
+2. **REGOLA D'ORO DEI MEDIA NEL JSON (Assoluta):**
+   - \`logo_url\`: Solo il logo grafico dello studio/attività (renderizzato automaticamente sia nell'Header che nel Footer di tutti i 10 template).
+   - \`foto_profilo\`: Solo il ritratto / primo piano della persona o del fondatore (usato esclusivamente per la scheda biografica e la fiducia nella Hero). È VIETATO inserirlo nell'array \`galleria\`.
+   - \`immagine_hero\`: Solo la copertina o sfondo panoramico d'impatto sopra la piega.
+   - \`galleria\`: Solo progetti, cantieri, ambienti, attrezzature e realizzazioni (nessun primo piano personale).
+   - \`proprieta\`: Array dedicato alle schede immobile/progetto con metrature, prezzo e dettagli (specifico per il Template 10).
+3. **Zero Invio Email Automatico:** La creazione o l'aggiornamento di una bozza tramite \`omnia-quick-generate\` non deve MAI inviare email al cliente. Salva i record in S1/S2 e notifica Riccardo su Telegram. L'invio dell'email avviene unicamente su comando manuale dal Portale (\`invia-email-proposta\`).
+4. **Prevenzione Errore 409 (Duplicate Key):** Nel workflow n8n \`SiteEngine\`, il nodo Supabase opera sempre con Delete preventivo (\`omnia_sites\` con filter su \`slug\`) prima di Create, garantendo che i siti si aggiornino sempre senza mai andare in blocco per chiave duplicata.
+5. **Risoluzione view.html con Filigrana e Template Switcher:** I siti con \`portal_type === 'html'\` atterrano su \`view?id=...\` mostrando in alto il selettore dei 3 format (\`05. Bento\`, \`10. Dimore\`, \`02. Atelier\` con parametro URL \`?template_id=X\`), la filigrana di protezione ibrida ad alta visibilità (attiva finché \`is_paid: false\`) e il pulsante di sblocco a €400 collegato a Stripe.
+
+Procediamo con i prossimi sviluppi in conformità a queste regole d'ingegneria stabilite.`;
 
             navigator.clipboard.writeText(prompt).then(() => {
                 const btn = document.getElementById('btn-copy-prompt');
