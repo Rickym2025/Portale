@@ -246,7 +246,8 @@ function renderMasterTable(data) {
         
         // 🔒 URL SICURO: Finché non è pagato, apre SEMPRE la pagina con filigrana view.html!
         const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
-        const targetUrl = isPaid ? (p.content_url || portalUrl) : portalUrl;
+        // Se clicchi tu dal portale, aggiunge &admin=true per non sporcare le statistiche di lettura!
+        const targetUrl = isPaid ? (p.content_url || portalUrl) : `${portalUrl}&admin=true`;
 
         const sendDateFormatted = p.sent_at ? new Date(p.sent_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const sendDaysAgo = getDaysAgo(p.sent_at);
