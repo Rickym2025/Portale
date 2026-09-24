@@ -302,31 +302,28 @@
     <div id="ecosystem-orbit-container" class="orbit-container"></div>
 
     <!-- ========================================================================= -->
-    <!-- OVERLAY A SCHERMO INTERO CON SWITCHER FORMATI E FILIGRANA                 -->
+    <!-- OVERLAY A SCHERMO INTERO CON SWITCHER DEI 3 FORMAT ARCHITETTURA           -->
     <!-- ========================================================================= -->
     <div id="fullscreen-iframe-overlay" class="hidden fixed inset-0 bg-[#050508] z-[9999] flex flex-col">
         
-        <!-- Barra superiore dell'overlay con Selettori e Pulsante Sblocco -->
+        <!-- Barra superiore dell'overlay con i 3 stili e Pulsante Sblocco -->
         <div class="h-16 shrink-0 bg-[#0b0e12] border-b border-gray-900/80 flex items-center justify-between px-3 sm:px-6">
             <div class="flex items-center gap-2 sm:gap-4 overflow-x-auto max-w-[65%] sm:max-w-none">
                 <a href="https://rmstudio.app" target="_blank" class="shrink-0">
                     <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-6 w-auto">
                 </a>
                 
-                <!-- 🌐 SWITCHER FORMATI PER SITEENGINE (PORTAL_TYPE: HTML / SITEENGINE) -->
-                <div id="siteengine-template-switcher" class="hidden items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
-                    <span class="text-[9px] font-mono text-zinc-400 px-2 uppercase font-bold hidden md:inline">Varianti:</span>
-                    <button onclick="switchTemplate(null)" id="btn-t-orig" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm cursor-pointer whitespace-nowrap">
-                        Default
-                    </button>
-                    <button onclick="switchTemplate(5)" id="btn-t-5" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap">
-                        Bento
+                <!-- 🌐 I 3 FORMAT PERFETTI PER L'ARCHITETTURA (SENZA DOPPIONI NÉ PSICOLOGI) -->
+                <div id="siteengine-template-switcher" class="hidden items-center gap-1.5 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
+                    <span class="text-[9px] font-mono text-zinc-400 px-2 uppercase font-bold hidden md:inline">Varianti Stile:</span>
+                    <button onclick="switchTemplate(5)" id="btn-t-5" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm cursor-pointer whitespace-nowrap">
+                        🏛️ 05. Bento Studio
                     </button>
                     <button onclick="switchTemplate(10)" id="btn-t-10" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap">
-                        Dimore
+                        🏰 10. Dimore d'Autore
                     </button>
-                    <button onclick="switchTemplate(7)" id="btn-t-7" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap">
-                        Empatico
+                    <button onclick="switchTemplate(2)" id="btn-t-2" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap">
+                        ✨ 02. Atelier d'Autore
                     </button>
                 </div>
 
@@ -345,13 +342,13 @@
                 <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:brightness-110 text-white font-extrabold px-3 sm:px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.35)] cursor-pointer whitespace-nowrap">
                     <i class="fa-solid fa-lock"></i> Sblocca • €400
                 </button>
-                <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-3.5 sm:px-4 py-2.5 rounded-xl transition-all cursor-pointer">
+                <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-3 py-2.5 rounded-xl transition-all cursor-pointer">
                     <i class="fa-solid fa-xmark"></i> <span class="hidden sm:inline">Chiudi</span>
                 </button>
             </div>
         </div>
     
-        <!-- Iframe con Filigrana Sovrapposta Morbida -->
+        <!-- Iframe con Filigrana Sovrapposta -->
         <div class="flex-1 w-full h-full relative bg-black overflow-hidden">
             <div id="overlay-watermark" class="watermark-pattern"></div>
             <iframe id="fullscreen-iframe" class="w-full h-full border-none bg-[#07080c]" src=""></iframe>
@@ -366,7 +363,7 @@
         let videoData = null;
         let currentSlideIdx = 0;
         let imagesArray = [];
-        let activeTemplateOverride = null;
+        let activeTemplateOverride = 5; // Default iniziale impostato su 5
 
         // 🔒 GENERATORE FILIGRANA MORBIDA, ELEGANTE E PROTETTIVA
         function generateWatermarks(containerId, count) {
@@ -402,31 +399,20 @@
             }
         }
 
-        // 🔄 SWITCHER TEMPLATE IN TEMPO REALE CON ANTI-CACHE
+        // 🔄 SWITCHER TEMPLATE PERFETTO PER ARCHITETTURA (5, 10, 2)
         function switchTemplate(templateId) {
             if (!videoData || !videoData.content_url) return;
             activeTemplateOverride = templateId;
             const iframe = document.getElementById('fullscreen-iframe');
             const cleanUrl = videoData.content_url.split('?')[0];
             
-            // Se templateId è null, carica il layout originale del DB
-            if (templateId === null) {
-                iframe.src = `${cleanUrl}?_t=${Date.now()}`;
-            } else {
-                iframe.src = `${cleanUrl}?template_id=${templateId}&_t=${Date.now()}`;
-            }
+            // Passa template_id e timestamp per forzare il refresh immediato
+            iframe.src = `${cleanUrl}?template_id=${templateId}&_t=${Date.now()}`;
 
-            const buttons = [
-                { id: 'btn-t-orig', active: templateId === null },
-                { id: 'btn-t-5', active: templateId === 5 },
-                { id: 'btn-t-10', active: templateId === 10 },
-                { id: 'btn-t-7', active: templateId === 7 }
-            ];
-
-            buttons.forEach(b => {
-                const btn = document.getElementById(b.id);
+            [5, 10, 2].forEach(id => {
+                const btn = document.getElementById(`btn-t-${id}`);
                 if (btn) {
-                    btn.className = b.active
+                    btn.className = id === templateId
                         ? "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm cursor-pointer whitespace-nowrap"
                         : "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap";
                 }
@@ -492,7 +478,7 @@
                 document.getElementById('sent-date').innerText = "Non ancora inviato";
             }
             
-            // RENDERING DINAMICO IBRIDO PER TUTTI I FORMATI
+            // RENDERING DINAMICO IBRIDO
             const isDirectVideoFile = data.content_url && (data.content_url.endsWith('.mp4') || data.content_url.includes('.r2.dev') || data.content_url.includes('/video_'));
 
             if (data.portal_type === 'video' || (data.portal_type === 'locanda' && isDirectVideoFile)) {
@@ -587,11 +573,8 @@
                 }
                 if (experienceSwitcher) experienceSwitcher.classList.add('hidden');
                 
-                // 🔄 CARICA IL LAYOUT ORIGINALE DEL DATABASE SENZA FORZARE TEMPLATE_ID=5
                 const cleanUrl = videoData.content_url.split('?')[0];
-                iframe.src = activeTemplateOverride 
-                    ? `${cleanUrl}?template_id=${activeTemplateOverride}&_t=${Date.now()}`
-                    : `${cleanUrl}?_t=${Date.now()}`;
+                iframe.src = `${cleanUrl}?template_id=${activeTemplateOverride}&_t=${Date.now()}`;
             } else if (videoData.portal_type === 'experience') {
                 if (experienceSwitcher) {
                     experienceSwitcher.classList.remove('hidden');
