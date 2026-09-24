@@ -191,7 +191,7 @@
             z-index: 50;
             overflow: hidden;
             user-select: none;
-            opacity: 0.09; /* Opacità morbida: non copre i testi ma protegge */
+            opacity: 0.09;
         }
         
         .watermark-logo-item {
@@ -246,8 +246,6 @@
 
         <!-- Render Area Dinamica -->
         <div class="player-wrapper flex-1 min-h-[280px] sm:min-h-[350px] lg:min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
-            
-            <!-- WATERMARK LEGGERO CON LOGO -->
             <div id="watermark-layer" class="watermark-pattern"></div>
 
             <!-- 1. VIDEO PLAYER (MP4) -->
@@ -304,7 +302,7 @@
     <div id="ecosystem-orbit-container" class="orbit-container"></div>
 
     <!-- ========================================================================= -->
-    <!-- OVERLAY A SCHERMO INTERO CON SWITCHER FORMATI E FILIGRANA DISCRETA        -->
+    <!-- OVERLAY A SCHERMO INTERO CON SWITCHER FORMATI E FILIGRANA                 -->
     <!-- ========================================================================= -->
     <div id="fullscreen-iframe-overlay" class="hidden fixed inset-0 bg-[#050508] z-[9999] flex flex-col">
         
@@ -315,17 +313,20 @@
                     <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-6 w-auto">
                 </a>
                 
-                <!-- 🌐 SWITCHER DEI 3 FORMAT ARCHITETTURALI -->
+                <!-- 🌐 SWITCHER FORMATI PER SITEENGINE (PORTAL_TYPE: HTML / SITEENGINE) -->
                 <div id="siteengine-template-switcher" class="hidden items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
-                    <span class="text-[9px] font-mono text-zinc-400 px-2 uppercase font-bold hidden md:inline">Stile:</span>
-                    <button onclick="switchTemplate(5)" id="btn-t-5" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm cursor-pointer whitespace-nowrap">
-                        🏛️ 05. Bento Studio
+                    <span class="text-[9px] font-mono text-zinc-400 px-2 uppercase font-bold hidden md:inline">Varianti:</span>
+                    <button onclick="switchTemplate(null)" id="btn-t-orig" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm cursor-pointer whitespace-nowrap">
+                        Default
+                    </button>
+                    <button onclick="switchTemplate(5)" id="btn-t-5" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap">
+                        Bento
                     </button>
                     <button onclick="switchTemplate(10)" id="btn-t-10" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap">
-                        🏰 10. Dimore Lusso
+                        Dimore
                     </button>
-                    <button onclick="switchTemplate(2)" id="btn-t-2" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap">
-                        ✨ 02. Atelier d'Autore
+                    <button onclick="switchTemplate(7)" id="btn-t-7" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap">
+                        Empatico
                     </button>
                 </div>
 
@@ -365,7 +366,7 @@
         let videoData = null;
         let currentSlideIdx = 0;
         let imagesArray = [];
-        let currentActiveTemplate = 5;
+        let activeTemplateOverride = null;
 
         // 🔒 GENERATORE FILIGRANA MORBIDA, ELEGANTE E PROTETTIVA
         function generateWatermarks(containerId, count) {
@@ -404,16 +405,28 @@
         // 🔄 SWITCHER TEMPLATE IN TEMPO REALE CON ANTI-CACHE
         function switchTemplate(templateId) {
             if (!videoData || !videoData.content_url) return;
-            currentActiveTemplate = templateId;
+            activeTemplateOverride = templateId;
             const iframe = document.getElementById('fullscreen-iframe');
             const cleanUrl = videoData.content_url.split('?')[0];
-            // Anti-cache param per forzare il refresh immediato
-            iframe.src = `${cleanUrl}?template_id=${templateId}&_t=${Date.now()}`;
+            
+            // Se templateId è null, carica il layout originale del DB
+            if (templateId === null) {
+                iframe.src = `${cleanUrl}?_t=${Date.now()}`;
+            } else {
+                iframe.src = `${cleanUrl}?template_id=${templateId}&_t=${Date.now()}`;
+            }
 
-            [5, 10, 2].forEach(id => {
-                const btn = document.getElementById(`btn-t-${id}`);
+            const buttons = [
+                { id: 'btn-t-orig', active: templateId === null },
+                { id: 'btn-t-5', active: templateId === 5 },
+                { id: 'btn-t-10', active: templateId === 10 },
+                { id: 'btn-t-7', active: templateId === 7 }
+            ];
+
+            buttons.forEach(b => {
+                const btn = document.getElementById(b.id);
                 if (btn) {
-                    btn.className = id === templateId
+                    btn.className = b.active
                         ? "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm cursor-pointer whitespace-nowrap"
                         : "px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap";
                 }
@@ -443,21 +456,25 @@
 
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id');
+            const isAdmin = params.get('admin') === 'true'; // 🛡️ Riconosce se sei tu ad aprire il link
+
             if (!id) return alert("ID non valido");
 
-            // Incremento visite e tracciamento
-            const { data: currentData } = await supabaseClient
-                .from('portal_videos')
-                .select('views_count')
-                .eq('id', id)
-                .single();
-
-            if (currentData) {
-                const newCount = (currentData.views_count || 0) + 1;
-                await supabaseClient
+            // 🛡️ TRACCIAMENTO VISITE: Si attiva SOLO se NON è l'admin a testare!
+            if (!isAdmin) {
+                const { data: currentData } = await supabaseClient
                     .from('portal_videos')
-                    .update({ views_count: newCount, is_opened: true })
-                    .eq('id', id);
+                    .select('views_count')
+                    .eq('id', id)
+                    .single();
+
+                if (currentData) {
+                    const newCount = (currentData.views_count || 0) + 1;
+                    await supabaseClient
+                        .from('portal_videos')
+                        .update({ views_count: newCount, is_opened: true })
+                        .eq('id', id);
+                }
             }
 
             const { data, error } = await supabaseClient.from('portal_videos').select('*').eq('id', id).single();
@@ -570,8 +587,11 @@
                 }
                 if (experienceSwitcher) experienceSwitcher.classList.add('hidden');
                 
+                // 🔄 CARICA IL LAYOUT ORIGINALE DEL DATABASE SENZA FORZARE TEMPLATE_ID=5
                 const cleanUrl = videoData.content_url.split('?')[0];
-                iframe.src = `${cleanUrl}?template_id=${currentActiveTemplate}&_t=${Date.now()}`;
+                iframe.src = activeTemplateOverride 
+                    ? `${cleanUrl}?template_id=${activeTemplateOverride}&_t=${Date.now()}`
+                    : `${cleanUrl}?_t=${Date.now()}`;
             } else if (videoData.portal_type === 'experience') {
                 if (experienceSwitcher) {
                     experienceSwitcher.classList.remove('hidden');
