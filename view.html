@@ -4,15 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Area Clienti - RM Studio</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+    
     <style>
+        /* Base e reset */
         html, body {
             margin: 0;
             padding: 0;
+            font-family: 'Inter', sans-serif;
         }
 
+        /* 🔒 LOCK DI SICUREZZA AD ALTEZZA FISSA: Solo per schermi Desktop */
         @media (min-width: 1024px) {
             html, body {
                 height: 100dvh;
@@ -29,6 +37,7 @@
                 radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
         }
 
+        /* 🔒 PATTERN DI SFONDO DIAGONALE DEL LOGO RM STUDIO */
         body::before {
             content: "";
             position: absolute;
@@ -41,6 +50,7 @@
             z-index: -1;
         }
 
+        /* 🪐 STILE RESPONSIVO DEL SISTEMA ORBITALE INLINE RIPRISTINATO INTEGRALMENTE */
         .orbit-container {
             position: relative;
             margin: 40px auto 20px auto;
@@ -177,7 +187,7 @@
             background: #020204;
         }
         
-        /* 🔒 FILIGRANA DISCRETA, ELEGANTE E PROTETTIVA */
+        /* 🔒 FILIGRANA IBRIDA AD ALTA VISIBILITÀ (CHIARO E SCURO) */
         .watermark-pattern {
             position: absolute;
             inset: 0;
@@ -185,8 +195,8 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
-            gap: 130px;
-            padding: 40px;
+            gap: 120px;
+            padding: 30px;
             pointer-events: none;
             z-index: 50;
             overflow: hidden;
@@ -203,21 +213,22 @@
         }
 
         .watermark-logo-item img {
-            width: 120px;
+            width: 130px;
             height: auto;
-            filter: grayscale(100%) brightness(150%);
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)) grayscale(100%) brightness(160%);
         }
 
         .watermark-label {
-            font-family: monospace;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            font-weight: 900;
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.25em;
             color: #ffffff;
             white-space: nowrap;
         }
 
+        /* 🔒 PROTEZIONE CONTROLLI VIDEO ANTI-DOWNLOAD */
         video::-internal-media-controls-download-button { display:none !important; }
         video::-webkit-media-controls-enclosure { overflow:hidden !important; }
         video::-webkit-media-controls-panel { width: calc(100% + 30px) !important; }
@@ -227,28 +238,44 @@
 </head>
 <body class="text-gray-200 min-h-[100dvh] w-screen flex flex-col lg:items-center lg:justify-center p-3 md:p-6 overflow-y-auto lg:overflow-hidden selection:bg-purple-600 selection:text-white relative">
 
-    <div class="w-full max-w-5xl h-auto lg:h-full lg:max-h-[96dvh] bg-[#0b0b0f]/95 border border-gray-900/80 backdrop-blur-xl rounded-3xl p-5 md:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-10 shrink-0">
+    <!-- 👑 BADGE ISPETTORE ADMIN: VISIBILE SOLO SE APERTO CON ADMIN=TRUE -->
+    <div id="admin-indicator-bar" class="hidden fixed top-3 left-1/2 -translate-x-1/2 z-[10000] bg-amber-500/20 border border-amber-500/40 backdrop-blur-xl px-4 py-1.5 rounded-full text-[11px] font-mono font-bold text-amber-300 shadow-2xl items-center gap-2">
+        <i class="fa-solid fa-user-shield animate-pulse"></i>
+        <span>Modalità Ispettore Admin (Visite non conteggiate)</span>
+    </div>
+
+    <!-- MAIN CARD DI CONSEGNA PROGETTO -->
+    <div class="w-full max-w-5xl h-auto lg:h-full lg:max-h-[96dvh] bg-[#0b0b0f]/95 border border-zinc-900 backdrop-blur-xl rounded-3xl p-5 md:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-10 shrink-0">
         
-        <!-- Header -->
-        <div class="shrink-0 flex flex-wrap items-center gap-3 mb-4 pb-4 border-b border-gray-900/60 w-full">
-            <a href="https://rmstudio.app/" target="_blank" class="flex items-center">
-                <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio Logo" class="h-8 w-auto">
-            </a>
-            <span id="badge" class="bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-purple-500/20">Progetto</span>
-            <h1 id="title" class="text-base md:text-lg font-black text-white tracking-tight">Caricamento in corso...</h1>
-            <span class="text-gray-800 hidden md:inline">•</span>
-            <p class="text-xs text-gray-500">
-                Preparato per: <span class="text-purple-400 font-bold" id="client-name">...</span> 
-                <span class="mx-1.5 text-gray-800">•</span> 
-                Inviato il: <span class="text-gray-400" id="sent-date">--/--/----</span>
-            </p>
+        <!-- Header del Portale -->
+        <div class="shrink-0 flex flex-wrap items-center justify-between gap-3 mb-4 pb-4 border-b border-zinc-900 w-full">
+            <div class="flex items-center gap-3">
+                <a href="https://rmstudio.app/" target="_blank" class="flex items-center">
+                    <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio Logo" class="h-8 w-auto">
+                </a>
+                <span id="badge" class="bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase px-2.5 py-1 rounded-full border border-purple-500/20">Progetto</span>
+                <div>
+                    <h1 id="title" class="text-base md:text-lg font-black text-white tracking-tight">Caricamento in corso...</h1>
+                    <p class="text-xs text-zinc-400">
+                        Preparato per: <span class="text-purple-400 font-bold" id="client-name">...</span> 
+                        <span class="mx-1 text-zinc-700">•</span> 
+                        Inviato il: <span class="text-zinc-400" id="sent-date">--/--/----</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Prezzo Ufficiale di Sblocco -->
+            <div class="flex items-center gap-2 bg-zinc-900/90 border border-zinc-800 px-3.5 py-1.5 rounded-xl">
+                <span class="text-[10px] uppercase font-mono text-zinc-400 font-bold">Quota Sblocco:</span>
+                <span id="header-price-display" class="font-mono font-black text-amber-400 text-sm">€400</span>
+            </div>
         </div>
 
         <!-- Render Area Dinamica -->
-        <div class="player-wrapper flex-1 min-h-[280px] sm:min-h-[350px] lg:min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-gray-900/60 overflow-hidden shadow-inner relative">
+        <div class="player-wrapper flex-1 min-h-[280px] sm:min-h-[350px] lg:min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-zinc-900 overflow-hidden shadow-inner relative">
             <div id="watermark-layer" class="watermark-pattern"></div>
 
-            <!-- 1. VIDEO PLAYER (MP4) -->
+            <!-- 1. VIDEO PLAYER (MP4 con controlli protetti) -->
             <video id="player-video" 
                    class="hidden w-full h-full object-contain rounded-2xl bg-black"
                    style="transform: translate3d(0,0,0); backface-visibility: hidden; will-change: transform;"
@@ -261,60 +288,60 @@
                 <source src="" type="video/mp4">
             </video>
 
-            <!-- 2. CAROSELLO IMMAGINI -->
+            <!-- 2. CAROSELLO IMMAGINI CON CONTROLLI AVANTI/INDIETRO -->
             <div id="player-carousel" class="hidden w-full h-full relative flex items-center justify-center bg-black">
                 <img id="carousel-img" src="" class="w-full h-full object-contain select-none rounded-2xl" oncontextmenu="return false;">
                 <button onclick="prevSlide()" class="absolute left-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-left text-xs"></i></button>
                 <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-right text-xs"></i></button>
             </div>
 
-            <!-- 3. ANTEPRIMA SITO WEB INTERATTIVO -->
+            <!-- 3. ANTEPRIMA UNIVERSALE APPLICAZIONI & DEMO AI -->
             <div id="html-preview-container" class="hidden w-full h-full flex flex-col items-center justify-center p-6 text-center z-20 bg-[#020204]">
-                <div class="w-16 h-16 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4" id="html-preview-icon">
+                <div class="w-16 h-16 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4" id="html-preview-icon">
                     <i class="fa-solid fa-laptop-code text-2xl text-purple-400"></i>
                 </div>
                 <h3 class="text-white text-lg font-bold mb-1" id="html-preview-title">Applicazione Interattiva Pronta</h3>
-                <p class="text-xs text-gray-400 max-w-sm mb-5" id="html-preview-desc">Abbiamo predisposto la tua applicazione interattiva. Clicca il pulsante qui sotto per provarla ed esplorarla in tempo reale a schermo intero.</p>
-                <button onclick="openFullscreenWebsite()" class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all active:scale-95 shadow-[0_0_15px_rgba(147,51,234,0.35)] cursor-pointer">
-                    <i class="fa-solid fa-expand animate-bounce"></i> Esplora a Schermo Intero
+                <p class="text-xs text-zinc-400 max-w-sm mb-5" id="html-preview-desc">Abbiamo predisposto la tua applicazione interattiva. Clicca sotto per aprirla ed esplorarla a schermo intero.</p>
+                <button onclick="openFullscreenWebsite()" class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:brightness-110 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all active:scale-95 shadow-[0_0_20px_rgba(147,51,234,0.35)] cursor-pointer">
+                    <i class="fa-solid fa-expand animate-bounce"></i> Esplora Anteprima a Schermo Intero
                 </button>
             </div>
 
-            <!-- 4. LINK ESTERNO / DEMO -->
+            <!-- 4. LINK ESTERNO -->
             <div id="player-link" class="hidden text-center p-6 z-30">
                 <div class="w-14 h-14 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mx-auto mb-3">
                     <i class="fa-solid fa-arrow-up-right-from-square text-lg text-purple-400"></i>
                 </div>
                 <h3 class="text-white text-lg font-bold mb-1">Link Esterno / Demo</h3>
-                <a id="external-link-btn" href="" target="_blank" class="inline-flex items-center gap-2 bg-[#121217] border border-gray-800 px-5 py-2.5 mt-3 rounded-xl text-xs font-bold hover:border-purple-500 transition-all">Apri Progetto</a>
+                <a id="external-link-btn" href="" target="_blank" class="inline-flex items-center gap-2 bg-[#121217] border border-zinc-800 px-5 py-2.5 mt-3 rounded-xl text-xs font-bold hover:border-purple-500 transition-all">Apri Progetto</a>
             </div>
         </div>
 
         <!-- Footer Actions Principale -->
-        <div class="shrink-0 flex items-center justify-center pt-4 border-t border-gray-800/60">
+        <div class="shrink-0 flex items-center justify-center pt-4 border-t border-zinc-900">
             <button id="actionBtn" onclick="handleAction()" 
-                    class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] hover:shadow-[0_0_35px_rgba(147,51,234,0.65)] flex items-center justify-center gap-3 animate-pulse cursor-pointer">
+                    class="w-full sm:w-auto bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:brightness-110 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(147,51,234,0.35)] flex items-center justify-center gap-3 animate-pulse cursor-pointer">
             </button>
         </div>
     </div>
 
-    <!-- CONTENITORE PER L'ORBITA -->
+    <!-- 🪐 CONTENITORE DINAMICO PER L'ORBITA DI RICCARDO -->
     <div id="ecosystem-orbit-container" class="orbit-container"></div>
 
     <!-- ========================================================================= -->
-    <!-- OVERLAY A SCHERMO INTERO CON SWITCHER DEI 3 FORMAT ARCHITETTURA           -->
+    <!-- OVERLAY A SCHERMO INTERO: TUTTI I 21 SAAS CON CONTROLLI CONTESTUALI       -->
     <!-- ========================================================================= -->
     <div id="fullscreen-iframe-overlay" class="hidden fixed inset-0 bg-[#050508] z-[9999] flex flex-col">
         
-        <!-- Barra superiore dell'overlay con i 3 stili e Pulsante Sblocco -->
-        <div class="h-16 shrink-0 bg-[#0b0e12] border-b border-gray-900/80 flex items-center justify-between px-3 sm:px-6">
+        <!-- Barra superiore dell'overlay con Selettori e Pulsante Sblocco -->
+        <div class="h-16 shrink-0 bg-[#0a0b10] border-b border-zinc-800 flex items-center justify-between px-3 sm:px-6">
             <div class="flex items-center gap-2 sm:gap-4 overflow-x-auto max-w-[65%] sm:max-w-none">
                 <a href="https://rmstudio.app" target="_blank" class="shrink-0">
                     <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-6 w-auto">
                 </a>
                 
-                <!-- 🌐 I 3 FORMAT PERFETTI PER L'ARCHITETTURA (SENZA DOPPIONI NÉ PSICOLOGI) -->
-                <div id="siteengine-template-switcher" class="hidden items-center gap-1.5 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
+                <!-- 🌐 SWITCHER A 3 STILI PER SITEENGINE PRO (PORTAL_TYPE: HTML / SITEENGINE) -->
+                <div id="siteengine-template-switcher" class="hidden items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
                     <span class="text-[9px] font-mono text-zinc-400 px-2 uppercase font-bold hidden md:inline">Varianti Stile:</span>
                     <button onclick="switchTemplate(5)" id="btn-t-5" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition shadow-sm cursor-pointer whitespace-nowrap">
                         🏛️ 05. Bento Studio
@@ -327,28 +354,34 @@
                     </button>
                 </div>
 
-                <!-- 🍷 SELETTORE DUAL VISTA RISTORANTI -->
+                <!-- 🍷 SELETTORE DUAL VISTA RISTORANTI (SMART EXPERIENCE) -->
                 <div id="view-mode-selector" class="hidden items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
                     <button onclick="switchPreviewMode('experience')" id="btn-view-experience" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap">
                         🍷 Smart Experience Page
                     </button>
-                    <button onclick="switchPreviewMode('website')" id="btn-view-website" class="px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition whitespace-nowrap">
+                    <button onclick="switchPreviewMode('website')" id="btn-view-website" class="px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition whitespace-nowrap">
                         🌐 Vedi sul Vostro Sito Attuale
                     </button>
+                </div>
+
+                <!-- 🏷️ BADGE DI CONTESTO PER TUTTI GLI ALTRI 18 SAAS -->
+                <div id="contextual-saas-badge" class="hidden items-center gap-2 bg-zinc-900 border border-zinc-800 px-3 py-1.5 rounded-xl text-xs font-bold text-zinc-300 shrink-0">
+                    <span id="context-saas-icon">⚡</span>
+                    <span id="context-saas-label" class="font-mono text-[11px] truncate max-w-[160px]">Demo Live</span>
                 </div>
             </div>
     
             <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-                <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:brightness-110 text-white font-extrabold px-3 sm:px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(147,51,234,0.35)] cursor-pointer whitespace-nowrap">
-                    <i class="fa-solid fa-lock"></i> Sblocca • €400
+                <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:brightness-110 text-white font-extrabold px-3 sm:px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-purple-600/30 cursor-pointer whitespace-nowrap">
+                    <i class="fa-solid fa-lock"></i> Sblocca Progetto
                 </button>
-                <button onclick="closeFullscreenWebsite()" class="text-gray-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-3 py-2.5 rounded-xl transition-all cursor-pointer">
+                <button onclick="closeFullscreenWebsite()" class="text-zinc-400 hover:text-white flex items-center gap-1.5 text-xs font-bold bg-white/5 border border-white/10 px-3.5 sm:px-4 py-2.5 rounded-xl transition-all cursor-pointer">
                     <i class="fa-solid fa-xmark"></i> <span class="hidden sm:inline">Chiudi</span>
                 </button>
             </div>
         </div>
     
-        <!-- Iframe con Filigrana Sovrapposta -->
+        <!-- Iframe con Filigrana Sovrapposta Morbida -->
         <div class="flex-1 w-full h-full relative bg-black overflow-hidden">
             <div id="overlay-watermark" class="watermark-pattern"></div>
             <iframe id="fullscreen-iframe" class="w-full h-full border-none bg-[#07080c]" src=""></iframe>
@@ -363,9 +396,10 @@
         let videoData = null;
         let currentSlideIdx = 0;
         let imagesArray = [];
-        let activeTemplateOverride = 5; // Default iniziale impostato su 5
+        let currentActiveTemplate = 5;
+        let isAdminViewer = false;
 
-        // 🔒 GENERATORE FILIGRANA MORBIDA, ELEGANTE E PROTETTIVA
+        // 🔒 GENERATORE FILIGRANA IBRIDA (9% OPACITÀ - CHIARO & SCURO)
         function generateWatermarks(containerId, count) {
             const layer = document.getElementById(containerId);
             if (layer) {
@@ -386,6 +420,7 @@
         generateWatermarks('watermark-layer', 16);
         generateWatermarks('overlay-watermark', 24);
 
+        // 🌌 CARICAMENTO DINAMICO SISTEMA ORBITALE
         async function loadOrbitalEcosystem() {
             try {
                 const url = 'https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/orbit-template.html';
@@ -399,14 +434,54 @@
             }
         }
 
-        // 🔄 SWITCHER TEMPLATE PERFETTO PER ARCHITETTURA (5, 10, 2)
+        // 🔗 RISOLUTORE UNIVERSALE URL DEMO PER TUTTI I 21 SAAS
+        function resolveLiveDemoUrl(data) {
+            if (!data) return "https://rmstudio.app";
+            const type = data.portal_type || 'html';
+            const name = data.client_name || 'demo';
+            const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+
+            // Se ha già un link valido diretto e completo
+            if (data.content_url && data.content_url.startsWith('http') && !data.content_url.includes('view?id=') && !data.content_url.includes('view.html')) {
+                return data.content_url;
+            }
+
+            // Mappature intelligenti d'emergenza basate su slug e tipo per tutti i 21 SaaS
+            const map = {
+                concierge: `https://concierge24.rmstudio.app/chat?struttura_id=${slug}`,
+                dentis: `https://dentis-app.rmstudio.app/config.html`,
+                lexis: `https://dentis-app.rmstudio.app/lexis-config.html`,
+                locanda: `https://locandadigitale.rmstudio.app/menu.html?slug=${slug}`,
+                radar: `https://drivemotion-radar.rmstudio.app/dashboard.html`,
+                forma_materia: `https://formamateria.rmstudio.app/studio.html`,
+                aura: `https://aura.rmstudio.app/radar.html`,
+                eternia: `https://eternia.rmstudio.app/agency/${slug}`,
+                love: `https://love.rmstudio.app/agency/${slug}`,
+                experience: `https://experience.rmstudio.app/${slug}`,
+                sitengine: `https://sitengine.rmstudio.app/${slug.replace(/_/g, '-')}`,
+                html: `https://sitengine.rmstudio.app/${slug.replace(/_/g, '-')}`,
+                ares: `https://ares.rmstudio.app/atleta.html`,
+                free_energy: `https://free-energy.rmstudio.app/dashboard`,
+                velomotion: `https://velomotion.rmstudio.app/dashboard`,
+                omniastudio: `https://omniastudio.rmstudio.app`,
+                social: `https://social.rmstudio.app`,
+                hometour: `https://hometour.rmstudio.app`,
+                drivemotion: `https://drivemotion.rmstudio.app`,
+                vision: `https://vision.rmstudio.app`,
+                ff_edizioni: `https://ff-edizioni.rmstudio.app`,
+                ff: `https://ff-edizioni.rmstudio.app`
+            };
+
+            return map[type] || `https://sitengine.rmstudio.app/${slug.replace(/_/g, '-')}`;
+        }
+
+        // 🔄 SWITCHER TEMPLATE SITEENGINE (5, 10, 2)
         function switchTemplate(templateId) {
-            if (!videoData || !videoData.content_url) return;
-            activeTemplateOverride = templateId;
+            if (!videoData) return;
+            currentActiveTemplate = templateId;
             const iframe = document.getElementById('fullscreen-iframe');
-            const cleanUrl = videoData.content_url.split('?')[0];
+            const cleanUrl = resolveLiveDemoUrl(videoData).split('?')[0];
             
-            // Passa template_id e timestamp per forzare il refresh immediato
             iframe.src = `${cleanUrl}?template_id=${templateId}&_t=${Date.now()}`;
 
             [5, 10, 2].forEach(id => {
@@ -419,21 +494,23 @@
             });
         }
 
+        // 🍷 DUAL VISTA RISTORANTI
         function switchPreviewMode(mode) {
             if (!videoData) return;
             const iframe = document.getElementById('fullscreen-iframe');
             const btnExp = document.getElementById('btn-view-experience');
             const btnWeb = document.getElementById('btn-view-website');
+            const demoUrl = resolveLiveDemoUrl(videoData);
         
             if (mode === 'experience') {
-                iframe.src = videoData.content_url;
+                iframe.src = `${demoUrl}?_t=${Date.now()}`;
                 if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap";
                 if (btnWeb) btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition whitespace-nowrap";
             } else {
                 const originalSite = videoData.client_phone || 'https://www.tenutacastelvenezze.it';
-                iframe.src = `https://demo.rmstudio.app/?site=${encodeURIComponent(originalSite)}&bot_id=${videoData.client_email || 'nexus_landing'}`;
+                iframe.src = `https://demo.rmstudio.app/?site=${encodeURIComponent(originalSite)}&bot_id=${videoData.client_email || 'nexus_bot'}`;
                 if (btnWeb) btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap";
-                if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition whitespace-nowrap";
+                if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition whitespace-nowrap";
             }
         }
 
@@ -442,12 +519,19 @@
 
             const params = new URLSearchParams(window.location.search);
             const id = params.get('id');
-            const isAdmin = params.get('admin') === 'true'; // 🛡️ Riconosce se sei tu ad aprire il link
+            isAdminViewer = params.get('admin') === 'true' || localStorage.getItem('rm_admin') === 'true';
 
-            if (!id) return alert("ID non valido");
+            if (!id) return alert("ID progetto non valido");
 
-            // 🛡️ TRACCIAMENTO VISITE: Si attiva SOLO se NON è l'admin a testare!
-            if (!isAdmin) {
+            // 👑 SE È L'ADMIN, MOSTRA IL BADGE E DISATTIVA IL TRACCIAMENTO VISITE
+            if (isAdminViewer) {
+                const indicator = document.getElementById('admin-indicator-bar');
+                if (indicator) {
+                    indicator.classList.remove('hidden');
+                    indicator.classList.add('flex');
+                }
+            } else {
+                // TRACCIAMENTO VISITE REALI DEL CLIENTE
                 const { data: currentData } = await supabaseClient
                     .from('portal_videos')
                     .select('views_count')
@@ -464,7 +548,7 @@
             }
 
             const { data, error } = await supabaseClient.from('portal_videos').select('*').eq('id', id).single();
-            if (error || !data) return alert("Contenuto non trovato");
+            if (error || !data) return alert("Proposta o progetto non trovato");
             videoData = data;
 
             document.getElementById('title').innerText = data.title || "Il tuo Progetto";
@@ -477,11 +561,16 @@
             } else {
                 document.getElementById('sent-date').innerText = "Non ancora inviato";
             }
-            
-            // RENDERING DINAMICO IBRIDO
-            const isDirectVideoFile = data.content_url && (data.content_url.endsWith('.mp4') || data.content_url.includes('.r2.dev') || data.content_url.includes('/video_'));
 
-            if (data.portal_type === 'video' || (data.portal_type === 'locanda' && isDirectVideoFile)) {
+            // Calcolo e formattazione Prezzo
+            const priceVal = parseFloat(data.price_euro || 400);
+            const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
+            document.getElementById('header-price-display').innerText = `€${formattedPrice}`;
+            
+            // RENDERING DINAMICO IBRIDO PER TUTTI I 21 SAAS
+            const isDirectVideo = data.content_url && (data.content_url.endsWith('.mp4') || data.content_url.includes('.r2.dev') || data.content_url.includes('/video_'));
+
+            if (data.portal_type === 'video' || (data.portal_type === 'locanda' && isDirectVideo)) {
                 const p = document.getElementById('player-video');
                 p.src = data.content_url;
                 p.classList.remove('hidden');
@@ -493,30 +582,45 @@
                     document.getElementById('player-carousel').classList.remove('hidden');
                 }
             } 
-            else if (data.portal_type === 'html' || data.portal_type === 'siteengine' || data.portal_type === 'experience' || data.portal_type === 'aura' || data.portal_type === 'locanda') {
-                if (data.portal_type === 'aura') {
-                    const iconBox = document.getElementById('html-preview-icon');
-                    if (iconBox) iconBox.innerHTML = `<i class="fa-solid fa-crosshairs text-2xl text-cyan-400"></i>`;
-                    document.getElementById('html-preview-title').innerText = "Radar Tattico AURA Configurato";
-                    document.getElementById('html-preview-desc').innerText = "La tua stanza virtual mesh è pronta all'uso. Clicca sotto per aprire la schermata radar a pieno schermo.";
-                } else if (data.portal_type === 'locanda') {
-                    const iconBox = document.getElementById('html-preview-icon');
-                    if (iconBox) iconBox.innerHTML = `<i class="fa-solid fa-utensils text-2xl text-amber-400"></i>`;
-                    document.getElementById('html-preview-title').innerText = "Living 3D Menu & Motore Tavoli";
-                    document.getElementById('html-preview-desc').innerText = "Il menu 3D con omaggio al tavolo e Macchina dei Compleanni è pronto. Clicca sotto per testarlo a schermo intero come un cliente reale.";
-                } else if (data.portal_type === 'html' || data.portal_type === 'siteengine') {
-                    const iconBox = document.getElementById('html-preview-icon');
-                    if (iconBox) iconBox.innerHTML = `<i class="fa-solid fa-compass-drafting text-2xl text-purple-400"></i>`;
-                    document.getElementById('html-preview-title').innerText = "Sito Web d'Autore Pronto";
-                    document.getElementById('html-preview-desc').innerText = "Abbiamo generato l'anteprima navigabile con i tuoi progetti reali. Clicca sotto per esplorarla e confrontare i diversi layout.";
-                }
+            else {
+                // CONFIGURAZIONE SCHEDA PER TUTTE LE APPLICAZIONI WEB & VOICE
+                const iconBox = document.getElementById('html-preview-icon');
+                const titleEl = document.getElementById('html-preview-title');
+                const descEl = document.getElementById('html-preview-desc');
+
+                const appProfiles = {
+                    concierge: { icon: "fa-hotel text-orange-400", title: "Concierge24 • Giulia Voice Assistant", desc: "Assistente vocale AI H24 e concierge turistico multilingua per hotel e B&B." },
+                    dentis: { icon: "fa-tooth text-cyan-400", title: "Dentis AI • Serena Voice Receptionist", desc: "Centralino vocale H24 e triage delle urgenze odontoiatriche su linea dedicata." },
+                    lexis: { icon: "fa-scale-balanced text-yellow-400", title: "Lexis AI • Chiara Voice Assistant", desc: "Segreteria telefonica formale con trascrizione e sintesi automatica delle prime consulenze." },
+                    locanda: { icon: "fa-utensils text-amber-400", title: "Locanda Digitale • Living 3D Menu", desc: "Menu 3D a 60 FPS con comande 1-click su WhatsApp e Bancomat dei Compleanni." },
+                    radar: { icon: "fa-car-side text-cyan-300", title: "DriveMotion RADAR • Arbitraggio Auto", desc: "Sourcing predittivo di auto da privati con perizia AI del margine lordo." },
+                    forma_materia: { icon: "fa-monument text-amber-300", title: "Forma & Materia • Studio 4K", desc: "Motore neurale di conversione da schizzo o CAD a render fotorealistico 4K." },
+                    aura: { icon: "fa-crosshairs text-cyan-400", title: "AURA Proximity • Virtual Radar", desc: "Radar di prossimità vettoriale e chat tattica mesh P2P senza installazione app." },
+                    eternia: { icon: "fa-dove text-amber-300", title: "ETERNIA • Memoriali QR d'Autore", desc: "Portali memoriali eterni per onoranze funebri con biografo AI e libro ricordi." },
+                    love: { icon: "fa-ring text-pink-400", title: "LOVE • Partecipazioni Digitali", desc: "Partecipazioni con apertura 3D della busta, RSVP intolleranze e Maxischermo live." },
+                    experience: { icon: "fa-wine-glass text-amber-400", title: "Smart Experience Page • Ristorazione", desc: "E-menu interattivo con Maître Virtuale e abbinamento vini d'autore." },
+                    html: { icon: "fa-compass-drafting text-purple-400", title: "SiteEngine Pro • Sito Web d'Autore", desc: "Landing page e blog monolitico ad altissima conversione per professionisti." },
+                    siteengine: { icon: "fa-compass-drafting text-purple-400", title: "SiteEngine Pro • Sito Web d'Autore", desc: "Landing page e blog monolitico ad altissima conversione per professionisti." },
+                    ares: { icon: "fa-dumbbell text-purple-400", title: "AresAI • Personal Trainer RPG", desc: "Voice coach vocale per sala pesi, XP in tempo reale e dieta fotografica." },
+                    free_energy: { icon: "fa-solar-panel text-amber-400", title: "Free Energy • CRM Fotovoltaico", desc: "Piattaforma di progettazione CAD satellitare e gestione trattative impianti solari." },
+                    velomotion: { icon: "fa-bicycle text-yellow-400", title: "VeloMotion • Sblocco BES3", desc: "Piattaforma officina di sblocco software a 32 km/h per motori Bosch Smart System." },
+                    omniastudio: { icon: "fa-shield-halved text-purple-400", title: "OmniaStudio • AI Offline Privata", desc: "Intelligenza Artificiale locale 100% offline per avvocati, commercialisti e consulenti." },
+                    social: { icon: "fa-images text-indigo-400", title: "Carousel Creator • SocialEngine", desc: "Generatore autonomo di caroselli e post kit grafici persuasivi per LinkedIn e Instagram." },
+                    hometour: { icon: "fa-house text-emerald-400", title: "HomeTour • Video Reel Immobiliari", desc: "Regia AI cinematografica che trasforma foto piatte in video tour 3D." },
+                    drivemotion: { icon: "fa-car text-cyan-300", title: "DriveMotion • Video Automotive", desc: "Video commerciali cinematografici con sostituzione automatica dello sfondo piazzale." },
+                    vision: { icon: "fa-video text-pink-400", title: "Vision UGC • Influencer Virtuali", desc: "Generazione video promozionali con testimonial iper-realistici per campagne social." },
+                    ff_edizioni: { icon: "fa-music text-purple-400", title: "FF Edizioni • Servizi Musicali SIAE", desc: "Brani musicali e jingle promozionali composti su misura con il Maestro Fausto Fusetti." },
+                    nexus: { icon: "fa-robot text-cyan-400", title: "NexusAI • Shadow-Proxy Sales Overlay", desc: "Assistente virtuale iniettato direttamente sul sito web del cliente." }
+                };
+
+                const p = appProfiles[data.portal_type] || { icon: "fa-laptop-code text-purple-400", title: "Applicazione Web Pronta", desc: "Applicazione interattiva configurata per il cliente." };
+
+                if (iconBox) iconBox.innerHTML = `<i class="fa-solid ${p.icon} text-2xl"></i>`;
+                if (titleEl) titleEl.innerText = p.title;
+                if (descEl) descEl.innerText = p.desc;
 
                 document.getElementById('html-preview-container').classList.remove('hidden');
                 openFullscreenWebsite();
-            } 
-            else if (data.portal_type === 'link') {
-                document.getElementById('external-link-btn').href = data.content_url;
-                document.getElementById('player-link').classList.remove('hidden');
             }
 
             updatePriceButtons();
@@ -535,10 +639,7 @@
                 document.getElementById('watermark-layer').classList.add('hidden'); 
                 document.getElementById('overlay-watermark').classList.add('hidden'); 
                 
-                const paidText = (videoData.portal_type === 'html' || videoData.portal_type === 'siteengine' || videoData.portal_type === 'link')
-                    ? `<i class="fa-solid fa-globe"></i> Visita il Sito Web Sbloccato`
-                    : (videoData.portal_type === 'aura' ? `<i class="fa-solid fa-crosshairs"></i> Apri Radar Operativo` : `<i class="fa-solid fa-check"></i> Progetto Sbloccato`);
-
+                const paidText = `<i class="fa-solid fa-check"></i> Progetto Sbloccato • Visita Live`;
                 if (btn) {
                     btn.innerHTML = paidText;
                     btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-12 py-5 rounded-2xl text-base md:text-lg uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] flex items-center justify-center gap-3 cursor-pointer";
@@ -549,15 +650,12 @@
                     overlayBtn.className = "bg-green-600 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider cursor-pointer";
                 }
             } else {
-                if (btn) {
-                    btn.innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca Progetto • €${formattedPrice}`;
-                }
-                if (overlayBtn) {
-                    overlayBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca • €${formattedPrice}`;
-                }
+                if (btn) btn.innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca Progetto • €${formattedPrice}`;
+                if (overlayBtn) overlayBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Sblocca • €${formattedPrice}`;
             }
         }
 
+        // 🚀 APERTURA SCHERMO INTERO UNIVERSALE
         function openFullscreenWebsite() {
             if (!videoData) return;
             const overlay = document.getElementById('fullscreen-iframe-overlay');
@@ -565,27 +663,47 @@
             
             const siteEngineSwitcher = document.getElementById('siteengine-template-switcher');
             const experienceSwitcher = document.getElementById('view-mode-selector');
+            const contextBadge = document.getElementById('contextual-saas-badge');
+            const contextIcon = document.getElementById('context-saas-icon');
+            const contextLabel = document.getElementById('context-saas-label');
 
-            if (videoData.portal_type === 'html' || videoData.portal_type === 'siteengine') {
+            const type = videoData.portal_type || 'html';
+            const demoUrl = resolveLiveDemoUrl(videoData);
+
+            // Resetta visibilità controlli specifici
+            if (siteEngineSwitcher) siteEngineSwitcher.classList.add('hidden');
+            if (experienceSwitcher) experienceSwitcher.classList.add('hidden');
+            if (contextBadge) contextBadge.classList.add('hidden');
+
+            if (type === 'html' || type === 'siteengine') {
                 if (siteEngineSwitcher) {
                     siteEngineSwitcher.classList.remove('hidden');
                     siteEngineSwitcher.classList.add('flex');
                 }
-                if (experienceSwitcher) experienceSwitcher.classList.add('hidden');
-                
-                const cleanUrl = videoData.content_url.split('?')[0];
-                iframe.src = `${cleanUrl}?template_id=${activeTemplateOverride}&_t=${Date.now()}`;
-            } else if (videoData.portal_type === 'experience') {
+                const cleanUrl = demoUrl.split('?')[0];
+                iframe.src = `${cleanUrl}?template_id=${currentActiveTemplate}&_t=${Date.now()}`;
+            } else if (type === 'experience') {
                 if (experienceSwitcher) {
                     experienceSwitcher.classList.remove('hidden');
                     experienceSwitcher.classList.add('flex');
                 }
-                if (siteEngineSwitcher) siteEngineSwitcher.classList.add('hidden');
-                iframe.src = videoData.content_url;
+                iframe.src = `${demoUrl}?_t=${Date.now()}`;
             } else {
-                if (siteEngineSwitcher) siteEngineSwitcher.classList.add('hidden');
-                if (experienceSwitcher) experienceSwitcher.classList.add('hidden');
-                iframe.src = videoData.content_url;
+                // Per tutti gli altri SaaS (Concierge, Dentis, Lexis, Locanda, Radar, ecc.)
+                if (contextBadge) {
+                    contextBadge.classList.remove('hidden');
+                    contextBadge.classList.add('flex');
+                    
+                    const icons = { 
+                        concierge: "🏨", dentis: "🦷", lexis: "⚖️", locanda: "🍽️", 
+                        radar: "🏎️", forma_materia: "🏛️", aura: "📡", eternia: "🕊️", 
+                        love: "💍", ares: "🏋️", free_energy: "☀️", velomotion: "⚡",
+                        omniastudio: "💼", social: "📊", vision: "🎬", nexus: "🤖" 
+                    };
+                    if (contextIcon) contextIcon.innerText = icons[type] || "⚡";
+                    if (contextLabel) contextLabel.innerText = `${videoData.client_name || 'Demo'} (${type})`;
+                }
+                iframe.src = `${demoUrl}${demoUrl.includes('?') ? '&' : '?'}_t=${Date.now()}`;
             }
 
             overlay.classList.remove('hidden');
@@ -617,7 +735,7 @@
                         const a = document.createElement('a'); a.href = url; a.download = `slide_${i + 1}.jpg`; a.click();
                     });
                 } else {
-                    window.open(videoData.content_url, '_blank');
+                    window.open(resolveLiveDemoUrl(videoData), '_blank');
                 }
             } else {
                 const btn = document.getElementById('actionBtn');
@@ -636,10 +754,10 @@
                         body: JSON.stringify({
                             project_id: videoData.id,
                             email: videoData.client_email || "cliente@rmstudio.app",
-                            title: videoData.title || "Sblocco Sito Web & Dominio",
+                            title: videoData.title || "Sblocco Servizio Definitivo",
                             price: parseFloat(videoData.price_euro || 400),
                             origin: window.location.origin,
-                            portal_type: videoData.portal_type === 'html' ? 'siteengine' : (videoData.portal_type || 'siteengine')
+                            portal_type: videoData.portal_type || 'siteengine'
                         })
                     });
 
