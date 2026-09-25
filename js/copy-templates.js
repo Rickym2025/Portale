@@ -76,6 +76,7 @@ function resolveDemoLink(item) {
 
     // 11. SiteEngine Pro (Sito Web / Landing Professionale)
     if (item.portal_type === 'html' || item.portal_type === 'siteengine') {
+        // Se non è ancora pagato, invia SEMPRE il link protetto da filigrana del Portale!
         if ((item.is_paid === false || item.is_paid === "false") && item.id) {
             return `https://portale.rmstudio.app/view?id=${item.id}`;
         }
@@ -95,7 +96,7 @@ function resolveDemoLink(item) {
     return 'https://rmstudio.app';
 }
 
-// 💬 WHATSAPP COPY: BREVI, SCORREVOLI E FORMALI ("DEL LEI")
+// 💬 WHATSAPP COPY: BREVI, ESSENZIALI E FORMALI ("DEL LEI")
 function generateWhatsAppCopy(item) {
     const name = item.client_name || 'Gentile Professionista';
     const title = item.title || 'Progetto';
@@ -106,37 +107,37 @@ function generateWhatsAppCopy(item) {
         if (item.whatsapp_custom_hook) {
             return `${item.whatsapp_custom_hook}\n\n👉 ${link}\n\nPuò visionare la bozza dal Suo smartphone. Resto a disposizione per qualsiasi chiarimento.`;
         }
-        return `Buongiorno ${name}. Le scrivo da RM Studio (Ferrara/Rovigo): seguendo i professionisti del territorio, mi sono permesso di preparare senza impegno una bozza dimostrativa per il nuovo sito web del Suo studio, ottimizzata a 60 FPS per smartphone:\n\n👉 ${link}\n\nPuò aprirla direttamente dal telefono e confrontare 3 varianti di stile in testata. Mi farebbe piacere avere un Suo parere!`;
+        return `Buongiorno ${name}. Le scrivo da RM Studio (Ferrara/Rovigo): seguendo i professionisti del territorio, Le ho preparato senza impegno una bozza dimostrativa per il nuovo sito web del Suo studio, ottimizzata a 60 FPS per smartphone:\n\n👉 ${link}\n\nPuò visionarla direttamente dal telefono e testare le varianti di stile. Mi farebbe piacere avere un Suo riscontro!`;
     }
 
     // 🍽️ Locanda Digitale (Living 3D Menu & Compleanni)
     if (item.portal_type === 'locanda') {
-        return `Buongiorno ${name}. Complimenti per la cucina del vostro locale! Vi ho configurato questa dimostrazione del Living 3D Menu con comande rapide WhatsApp e sistema per i compleanni:\n\n👉 ${link}\n\nSi apre al volo da smartphone senza installare app. Dategli un'occhiata, mi farebbe molto piacere un vostro riscontro!`;
+        return `Buongiorno ${name}. Complimenti per la cucina del vostro locale! Vi ho preparato una dimostrazione del Living 3D Menu al tavolo con comande WhatsApp e programma compleanni:\n\n👉 ${link}\n\nSi apre al volo da smartphone senza installare app. Dategli un'occhiata, mi farebbe molto piacere un vostro parere!`;
     }
 
     // 🏎️ DriveMotion RADAR (Sourcing Privati)
     if (item.portal_type === 'radar') {
-        return `Buongiorno ${name}. Da RM Studio (Ferrara/Rovigo) supportiamo i commercianti d'auto nell'acquisizione delle migliori occasioni da privati (scansione Subito/AutoScout h24 con perizia AI del margine):\n\n👉 ${link}\n\nSe desidera fare un test senza impegno sulla Sua provincia, resto a completa disposizione.`;
+        return `Buongiorno ${name}. Da RM Studio supportiamo i commercianti d'auto nell'acquisizione delle migliori occasioni da privati prima delle aste (scansione Subito/AutoScout h24 con perizia AI del margine):\n\n👉 ${link}\n\nSe desidera fare una prova senza impegno sul territorio, resto a Sua completa disposizione.`;
     }
 
     // 🏛️ Forma & Materia (Render 4K da Schizzo)
     if (item.portal_type === 'forma_materia') {
-        return `Buongiorno ${name}. Per il Suo studio di progettazione ho configurato questa stanza su Forma & Materia: converte schizzi a mano libera o file CAD in render fotorealistici 4K in 20 secondi, leggendo anche le Sue note a penna:\n\n👉 ${link}\n\nÈ 100% web senza installare software. Mi dica cosa ne pensa!`;
+        return `Buongiorno ${name}. Per il Suo studio di progettazione ho configurato questa stanza su Forma & Materia: converte schizzi a mano libera o file CAD in render fotorealistici 4K in 20 secondi, interpretando anche le Sue note a penna:\n\n👉 ${link}\n\nÈ 100% web senza installare software. Mi dica cosa ne pensa!`;
     }
 
     // 📡 AURA Proximity (Radar Mesh & Sicurezza)
     if (item.portal_type === 'aura') {
-        return `Buongiorno ${name}. Ho attivato la stanza dimostrativa su AURA Proximity: radar mesh P2P da browser, Co-Pilota vocale in vivavoce e rilevamento uomo a terra D.Lgs. 81/08:\n\n👉 ${link}\n\nFunziona direttamente da smartphone senza installare app. Fatemi sapere se riuscite a provarlo sul campo!`;
+        return `Buongiorno ${name}. Ho attivato la stanza dimostrativa su AURA Proximity: radar mesh P2P da browser, Co-Pilota vocale in vivavoce e rilevamento uomo a terra D.Lgs. 81/08:\n\n👉 ${link}\n\nFunziona direttamente da smartphone senza installare app. Fatemi sapere se riuscite a testarlo sul campo!`;
     }
 
     // 🕊️ ETERNIA (Memoriali QR d'Autore)
     if (item.portal_type === 'eternia') {
-        return `Gentile Direzione di ${name}, buongiorno. Abbiamo attivato per la Sua impresa l'ambiente riservato di ETERNIA: portali memoriali digitali con QR d'autore, biografo AI e libro ricordi per sollevare le famiglie:\n\n👉 ${link}\n\nRestiamo a completa disposizione per qualsiasi chiarimento.`;
+        return `Gentile Direzione di ${name}, buongiorno. Abbiamo attivato per la Sua impresa l'ambiente riservato di ETERNIA: portali memoriali digitali con QR d'autore, biografo AI e libro ricordi per sollevare le famiglie con eleganza:\n\n👉 ${link}\n\nRestiamo a completa disposizione per qualsiasi chiarimento.`;
     }
 
     // 💍 LOVE (Partecipazioni Digitali)
     if (item.portal_type === 'love') {
-        return `Buongiorno ${name}. Ho configurato per la Vostra agenzia lo studio riservato su LOVE per le partecipazioni digitali d'autore (busta 3D con ceralacca, RSVP intolleranze catering e maxischermo per la sala):\n\n👉 ${link}\n\nDategli un'occhiata da smartphone, spero sia di vostro gradimento!`;
+        return `Buongiorno ${name}. Ho configurato per la Vostra agenzia lo studio riservato su LOVE per le partecipazioni digitali d'autore (busta 3D con ceralacca, RSVP intolleranze catering e maxischermo per la sala ricevimenti):\n\n👉 ${link}\n\nDategli un'occhiata da smartphone, spero sia di vostro gradimento!`;
     }
 
     // 🤖 NexusAI (Chatbot Shadow-Proxy)
@@ -146,12 +147,12 @@ function generateWhatsAppCopy(item) {
 
     // 🏨 Concierge24 (Assistente Vocale Notturno)
     if (item.portal_type === 'concierge') {
-        return `Buongiorno Direzione di ${name}. Da Ferrara/Rovigo supportiamo le strutture ricettive con Concierge24: l'assistente vocale AI che risponde al centralino H24 nella lingua dell'ospite e gestisce check-in notturni e info:\n\n👉 ${link}\n\n(Toccando il microfono può avviare una chiamata di prova con Giulia). Resto a disposizione!`;
+        return `Buongiorno Direzione di ${name}. Da Ferrara/Rovigo supportiamo le strutture ricettive con Concierge24: l'assistente vocale AI che risponde al centralino H24 nella lingua dell'ospite e gestisce check-in notturni e info:\n\n👉 ${link}\n\n(Toccando il microfono può fare una chiamata di prova con Giulia). Resto a disposizione!`;
     }
 
     // 🦷 Dentis AI (Receptionist Odontoiatrica)
     if (item.portal_type === 'dentis') {
-        return `Buongiorno Direzione di ${name}. Per evitare chiamate perse fuori orario o a linee occupate, abbiamo configurato per lo studio Serena, la segreteria telefonica AI che gestisce triage e promemoria WhatsApp:\n\n👉 ${link}\n\nPuò testare la linea di prova direttamente dal link. Resto a disposizione per qualsiasi riscontro!`;
+        return `Buongiorno Direzione di ${name}. Per evitare chiamate perse fuori orario o a linee occupate, abbiamo configurato per lo studio Serena, la segreteria telefonica AI che gestisce triage e promemoria WhatsApp:\n\n👉 ${link}\n\nPuò testare la linea di prova dal link. Resto a disposizione per qualsiasi chiarimento!`;
     }
 
     // ⚖️ Lexis AI (Segreteria Legale Formale)
@@ -168,7 +169,7 @@ function generateWhatsAppCopy(item) {
     return `Buongiorno ${name}. Ho completato l'elaborazione riservata per la Sua attività: *"${title}"*.\n\nPuò visionare l'anteprima protetta direttamente qui:\n👉 ${link}\n\nResto a completa disposizione per qualsiasi chiarimento.`;
 }
 
-// 📧 EMAIL COPY: FORMALI ("DEL LEI"), STRUTTURATE E CON OGGETTI AD ALTA APERTURA
+// 📧 EMAIL COPY: FORMALI ("DEL LEI"), STRUTTURATE E CON OGGETTI ISTITUZIONALI
 function generateEmailCopy(item) {
     const name = item.client_name || 'Gentile Professionista';
     const title = item.title || 'la Sua attività';
@@ -218,7 +219,7 @@ function generateEmailCopy(item) {
     }
     // ⚖️ Lexis AI
     else if (item.portal_type === 'lexis') {
-        text = `OGGETTO: Reperibilità qualificata e filtro prime consulenze per ${name}\n\nGentile Avvocato / Direzione di ${name},\n\nLe scrivo dallo studio software RM Studio (Ferrara/Rovigo). Conosciamo bene quanto gli impegni in udienza e le riunioni rendano complessa la costante reperibilità telefonica dello studio legale, con il rischio che nuove richieste di patrocinio o consulenze rimangano senza riscontro.\n\nAbbiamo sviluppato **Lexis AI** ("Chiara"), una segreteria vocale avanzata calibrata sulle esigenze dell'avvocatura:\n\n- **Registro rigorosamente formale ("del Lei"):** tutela dell'immagine e del prestigio dello studio con massima riservatezza (GDPR);\n- **Filtro delle richieste e prime consulenze:** raccoglie i dettagli del caso, verifica le disponibilità e notifica immediatamente il professionista via email con trascrizione e sintesi;\n- **Attivazione senza modifiche di linea:** funziona tramite una semplice deviazione di chiamata attiva solo su occupato o fuori orario.\n\nPuò verificare il funzionamento ed effettuare una prova dal vivo qui:\n👉 ${link}\n*(Numero di prova dedicato: +39 0425 167 5950)*\n\nResto a Sua completa disposizione per qualsiasi approfondimento.\n\nCordiali saluti,\nRiccardo Modena\nRM Studio • Sistemi Software per Professionisti\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
+        text = `OGGETTO: Reperibilità qualificata e filtro prime consulenze per ${name}\n\nGentile Avvocato / Direzione di ${name},\n\nLe scrivo dallo studio software RM Studio (Ferrara/Rovigo). Conosciamo bene quanto gli impegni in udienza e le riunioni rendano complessa la costante reperibilità telefonica dello studio legale, con il rischio che nuove richieste di patrocinio o consulenze rimangano senza riscontro.\n\nAbbiamo sviluppato **Lexis AI** ("Chiara"), una segreteria vocale avanzata calibrata sulle esigenze dell'avvocatura:\n\n- **Registro rigorosamente formale ("del Lei"):** tutela dell'immagine e del prestigio dello studio con massima riservatezza (GDPR);\n- **Filtro delle richieste e prime consulenze:** raccoglie i dettagli del caso, verifica le disponibilità e notifica immediatamente il professionista via email con trascrizione e sintesi;\n- **Attivazione senza modifiche di linea:** funziona tramite una semplice deviazione di chiamata attiva solo su occupato o fuori orario.\n\nPuò verificare il funzionamento ed effettuare una prova dal link. Cordiali saluti.`;
     }
     // 🍷 Smart Experience
     else if (item.portal_type === 'experience') {
@@ -278,13 +279,33 @@ function openMessageModal(id, type) {
         textarea.value = waText;
 
         const phone = (item.client_phone || '').replace(/[^0-9]/g, '');
-        const waUrl = phone 
-            ? `https://wa.me/${phone}?text=${encodeURIComponent(waText)}`
-            : `https://wa.me/?text=${encodeURIComponent(waText)}`;
+        
+        // 🔍 CHECK PREVENTIVO DI ESISTENZA WHATSAPP
+        waBtn.onclick = async (e) => {
+            e.preventDefault();
+            waBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Verifica...`;
+            
+            try {
+                const checkRes = await fetch(`https://n8n.rmstudio.app/webhook/check-whatsapp?phone=${phone}`);
+                const checkData = await checkRes.json();
+                
+                if (checkData.exists === false) {
+                    alert(`⚠️ Il numero ${phone} NON risulta registrato su WhatsApp (potrebbe essere un numero fisso).\n\nTi consigliamo di procedere con l'invio tramite Email (Resend).`);
+                    openMessageModal(item.id, 'mail');
+                    return;
+                }
+            } catch (err) {
+                console.warn("Check WhatsApp offline, procedo con apertura:", err);
+            } finally {
+                waBtn.innerHTML = `<i class="fa-brands fa-whatsapp text-sm"></i> Apri WhatsApp`;
+            }
 
-        waBtn.href = waUrl;
-        waBtn.onclick = () => {
+            const waUrl = phone 
+                ? `https://wa.me/${phone}?text=${encodeURIComponent(waText)}`
+                : `https://wa.me/?text=${encodeURIComponent(waText)}`;
+            
             updateSupabaseField(item.id, 'is_whatsapp_sent', true);
+            window.open(waUrl, '_blank');
             closeCopyModal();
         };
     }
