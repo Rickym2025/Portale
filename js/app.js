@@ -345,13 +345,12 @@ function renderMasterTable(data) {
                     ${isPaid ? '✓ Pagato' : '● Attesa'}
                 </button>
             </td>
-            <td class="p-4">
-                <input type="text" 
-                       value="${p.notes || ''}" 
-                       placeholder="Aggiungi nota CRM..." 
-                       onchange="updateSupabaseField('${p.id}', 'notes', this.value)" 
-                       class="bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-xs text-zinc-300 w-full focus:border-purple-500 outline-none" 
-                       title="Appunti e note trattativa">
+            <td class="p-4 min-w-[220px]">
+                <textarea rows="2" 
+                          placeholder="Aggiungi nota CRM..." 
+                          onchange="updateSupabaseField('${p.id}', 'notes', this.value)" 
+                          class="bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-xs text-zinc-200 w-full focus:border-purple-500 outline-none resize-none leading-relaxed font-sans" 
+                          title="Appunti e note trattativa">${p.notes || ''}</textarea>
             </td>
             <td class="p-4 text-right space-x-1 whitespace-nowrap">
                 ${closingPitchBtn}
