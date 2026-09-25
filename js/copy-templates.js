@@ -280,7 +280,7 @@ function openMessageModal(id, type) {
 
         const phone = (item.client_phone || '').replace(/[^0-9]/g, '');
         
-        // 🔍 CHECK PREVENTIVO DI ESISTENZA WHATSAPP
+        // 🔍 CHECK PREVENTIVO DI ESISTENZA WHATSAPP (NON BLOCCANTE)
         waBtn.onclick = async (e) => {
             e.preventDefault();
             waBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Verifica...`;
@@ -290,9 +290,11 @@ function openMessageModal(id, type) {
                 const checkData = await checkRes.json();
                 
                 if (checkData.exists === false) {
-                    alert(`⚠️ Il numero ${phone} NON risulta registrato su WhatsApp (potrebbe essere un numero fisso).\n\nTi consigliamo di procedere con l'invio tramite Email (Resend).`);
-                    openMessageModal(item.id, 'mail');
-                    return;
+                    const forceOpen = confirm(`⚠️ Il controllo automatico segnala che il numero ${phone} potrebbe non essere su WhatsApp (o è un fisso).\n\nVuoi comunque provare ad aprire WhatsApp? Clicca 'Annulla' per inviare invece via Email.`);
+                    if (!forceOpen) {
+                        openMessageModal(item.id, 'mail');
+                        return;
+                    }
                 }
             } catch (err) {
                 console.warn("Check WhatsApp offline, procedo con apertura:", err);
