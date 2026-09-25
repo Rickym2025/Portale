@@ -10,230 +10,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
     
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
-
-        @media (min-width: 1024px) {
-            html, body {
-                height: 100dvh;
-                overflow: hidden;
-            }
-        }
-
-        body {
-            position: relative;
-            background-color: #030306;
-            background-image: 
-                radial-gradient(circle at 10% 10%, rgba(147, 51, 234, 0.22) 0%, transparent 45%),
-                radial-gradient(circle at 90% 90%, rgba(219, 39, 119, 0.18) 0%, transparent 45%),
-                radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
-        }
-
-        body::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: url("https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png");
-            background-repeat: repeat;
-            background-size: 150px auto;
-            opacity: 0.035;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .orbit-container {
-            position: relative;
-            margin: 40px auto 20px auto;
-            width: 290px;
-            height: 290px;
-            z-index: 50;
-            display: block;
-            flex-shrink: 0;
-        }
-
-        @media (min-width: 1024px) {
-            .orbit-container {
-                position: absolute;
-                top: 24px;
-                left: 24px;
-                margin: 0;
-                width: 320px;
-                height: 320px;
-            }
-        }
-
-        .orbit-ring {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border: 1px dashed rgba(147, 51, 234, 0.25);
-            border-radius: 50%;
-            animation: spin-orbit 55s linear infinite;
-            transform-style: preserve-3d;
-        }
-
-        .orbit-ring:hover {
-            animation-play-state: paused;
-        }
-
-        .orbit-wrapper {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            transform: translate(-50%, -50%);
-            animation: spin-orbit-reverse 55s linear infinite;
-            transform-style: preserve-3d;
-        }
-
-        .orbit-ring:hover .orbit-wrapper {
-            animation-play-state: paused;
-        }
-
-        .orbit-item {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .orbit-link {
-            display: flex !important;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            background: #0a0a0c !important;
-            border: 1px solid rgba(147, 51, 234, 0.3) !important;
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6) !important;
-            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .orbit-link:hover {
-            border-color: #00e5ff !important;
-            transform: scale(1.15);
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4) !important;
-        }
-
-        .orbit-img {
-            width: 28px !important;
-            height: 28px !important;
-            object-fit: contain;
-            border-radius: 50%;
-        }
-
-        .orbit-center-photo {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 2px solid #9333ea;
-            box-shadow: 0 0 25px rgba(147, 51, 234, 0.5);
-            z-index: 2;
-            overflow: hidden;
-        }
-
-        .orbit-center-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .pulse-ring-element {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 95px;
-            height: 95px;
-            border-radius: 50%;
-            background: rgba(147, 51, 234, 0.08);
-            animation: pulse-ring-anim 2.5s infinite;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        @keyframes spin-orbit {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes spin-orbit-reverse {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(-360deg); }
-        }
-
-        @keyframes pulse-ring-anim {
-            0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.6; }
-            50% { transform: translate(-50%, -50%) scale(1.35); opacity: 0; }
-            100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.6; }
-        }
-
-        .player-wrapper { 
-            position: relative; 
-            overflow: hidden; 
-            background: #020204;
-        }
-        
-        /* 🔒 FILIGRANA DISCRETA, ELEGANTE E PROTETTIVA (9% OPACITÀ) */
-        .watermark-pattern {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 130px;
-            padding: 40px;
-            pointer-events: none;
-            z-index: 50;
-            overflow: hidden;
-            user-select: none;
-            opacity: 0.09;
-        }
-        
-        .watermark-logo-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transform: rotate(-26deg);
-            will-change: transform;
-        }
-
-        .watermark-logo-item img {
-            width: 120px;
-            height: auto;
-            filter: grayscale(100%) brightness(150%);
-        }
-
-        .watermark-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.25em;
-            color: #ffffff;
-            white-space: nowrap;
-        }
-
-        video::-internal-media-controls-download-button { display:none !important; }
-        video::-webkit-media-controls-enclosure { overflow:hidden !important; }
-        video::-webkit-media-controls-panel { width: calc(100% + 30px) !important; }
-        video::-webkit-media-controls-settings-button { display: none !important; }
-        video::-webkit-media-controls-overflow-button { display: none !important; }
-    </style>
+    <!-- 🎨 STILI MODULARI ISOLATI -->
+    <link rel="stylesheet" href="css/view.css">
 </head>
 <body class="text-gray-200 min-h-[100dvh] w-screen flex flex-col lg:items-center lg:justify-center p-3 md:p-6 overflow-y-auto lg:overflow-hidden selection:bg-purple-600 selection:text-white relative">
 
-    <!-- 👑 BADGE ISPETTORE ADMIN: VISIBILE SOLO SE APERTO CON ADMIN=TRUE -->
+    <!-- 👑 BADGE ISPETTORE ADMIN: ATTIVO SOLO CON &admin=true -->
     <div id="admin-indicator-bar" class="hidden fixed top-3 left-1/2 -translate-x-1/2 z-[10000] bg-amber-500/20 border border-amber-500/40 backdrop-blur-xl px-4 py-1.5 rounded-full text-[11px] font-mono font-bold text-amber-300 shadow-2xl items-center gap-2">
         <i class="fa-solid fa-user-shield animate-pulse"></i>
         <span>Modalità Ispettore Admin (Visite non conteggiate)</span>
@@ -259,11 +43,11 @@
                 </div>
             </div>
 
-            <!-- Prezzo Neuromarketing in evidenza -->
+            <!-- Prezzo Neuromarketing & Pulsante Offerta -->
             <div class="flex items-center gap-2.5">
                 <button type="button" onclick="openOfferModal()" class="bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm">
                     <i class="fa-solid fa-gift text-amber-400"></i>
-                    <span>Cosa include l'offerta?</span>
+                    <span>Cosa include?</span>
                 </button>
                 <div class="flex items-center gap-2 bg-[#10131d] border border-emerald-500/30 px-3.5 py-1.5 rounded-xl">
                     <div class="text-right">
@@ -330,19 +114,18 @@
     <div id="ecosystem-orbit-container" class="orbit-container"></div>
 
     <!-- ========================================================================= -->
-    <!-- OVERLAY A SCHERMO INTERO: 3 PULSANTI FISICI IN TESTATA + LOGO GRANDE      -->
+    <!-- OVERLAY A SCHERMO INTERO: 3 PULSANTI FISICI + LOGO GRANDE                 -->
     <!-- ========================================================================= -->
     <div id="fullscreen-iframe-overlay" class="hidden fixed inset-0 bg-[#050508] z-[9999] flex flex-col">
         
         <!-- Barra superiore dell'overlay -->
         <div class="h-16 shrink-0 bg-[#0a0b10] border-b border-zinc-800 flex items-center justify-between px-3 sm:px-6">
             <div class="flex items-center gap-3 sm:gap-4 overflow-x-auto max-w-[65%] sm:max-w-none">
-                <!-- LOGO RM STUDIO INGRANDITO E NITIDO -->
                 <a href="https://rmstudio.app" target="_blank" class="shrink-0">
                     <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-8 sm:h-9 w-auto">
                 </a>
                 
-                <!-- 🌐 I 3 PULSANTI FISICI SETTORIALI (ZERO MENU A TENDINA) -->
+                <!-- 🌐 I 3 PULSANTI FISICI SETTORIALI GENERATI DINAMICAMENTE -->
                 <div id="siteengine-template-switcher" class="hidden items-center gap-1.5 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
                     <span class="text-[9px] font-mono text-zinc-400 px-2 uppercase font-bold hidden md:inline">Varianti Stile:</span>
                     <div id="sector-templates-container" class="flex items-center gap-1"></div>
@@ -366,13 +149,12 @@
             </div>
     
             <div class="flex items-center gap-2 sm:gap-3 shrink-0">
-                <!-- TASTO COSA COMPRENDE L'OFFERTA SEMPRE VISIBILE -->
                 <button type="button" onclick="openOfferModal()" class="bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shadow-sm">
                     <i class="fa-solid fa-gift text-amber-400"></i>
                     <span>Cosa include?</span>
                 </button>
 
-                <!-- TASTO SBLOCCO CON DOPPIO PREZZO ANCORAGGIO -->
+                <!-- TASTO SBLOCCO ANCORAGGIO -->
                 <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:brightness-110 text-white font-extrabold px-3 sm:px-5 py-2 rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-emerald-500/25 cursor-pointer whitespace-nowrap flex items-center gap-2">
                     <span class="line-through text-emerald-200/60 font-mono text-[11px]">€1.500</span>
                     <span class="text-white font-black">Sblocca a € 400</span>
@@ -392,12 +174,11 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 🎁 MODALE / POPUP: DETTAGLIO VALORE REALE, ANCORAGGIO & SCARSITÀ TEMPORALE -->
+    <!-- 🎁 MODALE / POPUP: DETTAGLIO VALORE, ANCORAGGIO & SCARSITÀ TEMPORALE       -->
     <!-- ========================================================================= -->
     <div id="offer-modal" class="hidden fixed inset-0 z-[10002] bg-black/85 backdrop-blur-md p-4 flex items-center justify-center overflow-y-auto">
         <div class="bg-[#0e1017] border border-zinc-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative text-left my-auto space-y-6">
             
-            <!-- Header Modale con Scadenza Dinamica 10 Giorni -->
             <div class="flex items-start justify-between border-b border-zinc-800 pb-4">
                 <div class="space-y-1.5">
                     <div class="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30">
@@ -411,9 +192,8 @@
                 </button>
             </div>
 
-            <!-- Tabella Comparativa di Valore Reale (Stacking Value) -->
+            <!-- Stacking Value -->
             <div class="space-y-3 text-xs sm:text-sm text-zinc-300">
-                
                 <div class="flex items-start justify-between gap-3 p-3 rounded-2xl bg-zinc-900/60 border border-zinc-800/80">
                     <div class="flex items-start gap-3">
                         <div class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0 border border-purple-500/20 text-sm">
@@ -422,7 +202,7 @@
                         <div>
                             <h4 class="font-bold text-white text-xs sm:text-sm">Progettazione Sito &amp; 3 Varianti di Stile</h4>
                             <p class="text-[11px] text-zinc-400 mt-0.5 leading-relaxed font-light">
-                                Scegli liberamente quale dei 3 stili preferisci: carichiamo i tuoi progetti, rimuoviamo la filigrana e pubblichiamo la versione definitiva.
+                                Scegli liberamente quale stile preferisci: carichiamo i tuoi contenuti, rimuoviamo la filigrana e pubblichiamo la versione finale.
                             </p>
                         </div>
                     </div>
@@ -437,7 +217,7 @@
                         <div>
                             <h4 class="font-bold text-white text-xs sm:text-sm">Indirizzo Web Personale &amp; Spazio Cloud per 1 Anno</h4>
                             <p class="text-[11px] text-zinc-400 mt-0.5 leading-relaxed font-light">
-                                Registrazione del nome esclusivo dello studio (es: <span class="text-purple-300 font-mono">www.tuostudio.it</span>). Zero pratiche tecniche a tuo carico.
+                                Registrazione del nome esclusivo dello studio (es: <span class="text-purple-300 font-mono">www.tuostudio.it</span>). Nessun pensiero tecnico.
                             </p>
                         </div>
                     </div>
@@ -473,7 +253,6 @@
                     </div>
                     <span class="font-mono text-zinc-500 line-through text-xs shrink-0">€ 200</span>
                 </div>
-
             </div>
 
             <!-- Prezzo Finale con Sconto 73% Evidenziato -->
@@ -504,499 +283,8 @@
         </div>
     </div>
     
-    <script>
-        const supabaseUrl = 'https://jhijfulhntlhcytbhcly.supabase.co'; 
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ'; 
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
-        let videoData = null;
-        let currentSlideIdx = 0;
-        let imagesArray = [];
-        let currentActiveTemplate = null;
-        let isAdminViewer = false;
-
-        // 🎯 MATRICE DEI 3 FORMAT ARCHITETTURALI IDEALI PER SETTORE
-        const SECTOR_TRIO_TEMPLATES = {
-            psicologia: [
-                { id: 7, label: "🌿 07. L'Empatico" },
-                { id: 8, label: "🕊️ 08. La Sorgente" },
-                { id: 9, label: "🌲 09. Il Sentiero" }
-            ],
-            architettura: [
-                { id: 5, label: "🏛️ 05. Bento Studio" },
-                { id: 10, label: "🏰 10. Dimore d'Autore" },
-                { id: 2, label: "✨ 02. Atelier d'Autore" }
-            ],
-            legale: [
-                { id: 4, label: "⚖️ 04. L'Autorità" },
-                { id: 8, label: "🕊️ 08. La Sorgente" },
-                { id: 1, label: "🛡️ 01. Il Guardiano" }
-            ],
-            medicina: [
-                { id: 3, label: "🩺 03. Il Chirurgo" },
-                { id: 7, label: "🌿 07. L'Empatico" },
-                { id: 1, label: "🛡️ 01. Il Guardiano" }
-            ],
-            sicurezza: [
-                { id: 1, label: "🛡️ 01. Il Guardiano" },
-                { id: 4, label: "⚖️ 04. L'Autorità" },
-                { id: 6, label: "🎬 06. Il Regista" }
-            ],
-            default: [
-                { id: 5, label: "🏛️ 05. Bento Studio" },
-                { id: 10, label: "🏰 10. Dimore d'Autore" },
-                { id: 7, label: "🌿 07. L'Empatico" }
-            ]
-        };
-
-        function detectSectorGroup(data) {
-            if (!data) return 'default';
-            const textToScan = `${data.client_name || ''} ${data.title || ''} ${data.notes || ''} ${data.content_url || ''}`.toLowerCase();
-
-            if (textToScan.includes('psicolog') || textToScan.includes('terap') || textToScan.includes('counsel') || textToScan.includes('mente')) {
-                return 'psicologia';
-            }
-            if (textToScan.includes('arch') || textToScan.includes('design') || textToScan.includes('interior') || textToScan.includes('geometr')) {
-                return 'architettura';
-            }
-            if (textToScan.includes('avvocat') || textToScan.includes('legale') || textToScan.includes('studio leg') || textToScan.includes('notaio') || textToScan.includes('commercialist')) {
-                return 'legale';
-            }
-            if (textToScan.includes('medic') || textToScan.includes('chirurg') || textToScan.includes('dentist') || textToScan.includes('odontoiatr') || textToScan.includes('sanadent') || textToScan.includes('clinica')) {
-                return 'medicina';
-            }
-            if (textToScan.includes('vigilanza') || textToScan.includes('sicurezza') || textToScan.includes('cantiere') || textToScan.includes('guardi')) {
-                return 'sicurezza';
-            }
-
-            return 'default';
-        }
-
-        // 🔒 GENERATORE FILIGRANA IBRIDA (9% OPACITÀ)
-        function generateWatermarks(containerId, count) {
-            const layer = document.getElementById(containerId);
-            if (layer) {
-                layer.innerHTML = ""; 
-                for (let i = 0; i < count; i++) {
-                    const item = document.createElement('div');
-                    item.className = "watermark-logo-item select-none";
-                    item.setAttribute('oncontextmenu', 'return false;');
-                    item.innerHTML = `
-                        <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio">
-                        <span class="watermark-label">Bozza Riservata • RM Studio</span>
-                    `;
-                    layer.appendChild(item);
-                }
-            }
-        }
-
-        generateWatermarks('watermark-layer', 16);
-        generateWatermarks('overlay-watermark', 24);
-
-        async function loadOrbitalEcosystem() {
-            try {
-                const url = 'https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/orbit-template.html';
-                const res = await fetch(url);
-                if (!res.ok) throw new Error("Errore fetch GitHub");
-                let html = await res.text();
-                const container = document.getElementById('ecosystem-orbit-container');
-                if (container) container.innerHTML = html;
-            } catch (err) {
-                console.warn("Impossibile caricare l'ecosistema orbitale dinamicamente:", err);
-            }
-        }
-
-        function resolveLiveDemoUrl(data) {
-            if (!data) return "https://rmstudio.app";
-            const type = data.portal_type || 'html';
-            const name = data.client_name || 'demo';
-            const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
-
-            if (data.content_url && data.content_url.startsWith('http') && !data.content_url.includes('view?id=') && !data.content_url.includes('view.html')) {
-                return data.content_url;
-            }
-
-            const map = {
-                concierge: `https://concierge24.rmstudio.app/chat?struttura_id=${slug}`,
-                dentis: `https://dentis-app.rmstudio.app/config.html`,
-                lexis: `https://dentis-app.rmstudio.app/lexis-config.html`,
-                locanda: `https://locandadigitale.rmstudio.app/menu.html?slug=${slug}`,
-                radar: `https://drivemotion-radar.rmstudio.app/dashboard.html`,
-                forma_materia: `https://formamateria.rmstudio.app/studio.html`,
-                aura: `https://aura.rmstudio.app/radar.html`,
-                eternia: `https://eternia.rmstudio.app/agency/${slug}`,
-                love: `https://love.rmstudio.app/agency/${slug}`,
-                experience: `https://experience.rmstudio.app/${slug}`,
-                sitengine: `https://sitengine.rmstudio.app/${slug.replace(/_/g, '-')}`,
-                html: `https://sitengine.rmstudio.app/${slug.replace(/_/g, '-')}`,
-                ares: `https://ares.rmstudio.app/atleta.html`,
-                free_energy: `https://free-energy.rmstudio.app/dashboard`,
-                velomotion: `https://velomotion.rmstudio.app/dashboard`,
-                omniastudio: `https://omniastudio.rmstudio.app`,
-                social: `https://social.rmstudio.app`,
-                hometour: `https://hometour.rmstudio.app`,
-                drivemotion: `https://drivemotion.rmstudio.app`,
-                vision: `https://vision.rmstudio.app`,
-                ff_edizioni: `https://ff-edizioni.rmstudio.app`,
-                ff: `https://ff-edizioni.rmstudio.app`
-            };
-
-            return map[type] || `https://sitengine.rmstudio.app/${slug.replace(/_/g, '-')}`;
-        }
-
-        // 🔄 SWITCHER TEMPLATE CON I 3 PULSANTI FISICI
-        function switchTemplate(templateId) {
-            if (!videoData || !videoData.content_url) return;
-            currentActiveTemplate = templateId;
-            const iframe = document.getElementById('fullscreen-iframe');
-            const cleanUrl = resolveLiveDemoUrl(videoData).split('?')[0];
-
-            iframe.src = `${cleanUrl}?template_id=${templateId}&_t=${Date.now()}`;
-
-            const sectorGroup = detectSectorGroup(videoData);
-            const trio = SECTOR_TRIO_TEMPLATES[sectorGroup] || SECTOR_TRIO_TEMPLATES.default;
-
-            trio.forEach(t => {
-                const btn = document.getElementById(`btn-trio-${t.id}`);
-                if (btn) {
-                    btn.className = t.id === templateId
-                        ? "px-3 py-1.5 rounded-lg text-xs font-black bg-purple-600 text-white transition shadow-md cursor-pointer whitespace-nowrap"
-                        : "px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap";
-                }
-            });
-        }
-
-        function switchPreviewMode(mode) {
-            if (!videoData) return;
-            const iframe = document.getElementById('fullscreen-iframe');
-            const btnExp = document.getElementById('btn-view-experience');
-            const btnWeb = document.getElementById('btn-view-website');
-            const demoUrl = resolveLiveDemoUrl(videoData);
-        
-            if (mode === 'experience') {
-                iframe.src = `${demoUrl}?_t=${Date.now()}`;
-                if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap";
-                if (btnWeb) btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition whitespace-nowrap";
-            } else {
-                const originalSite = videoData.client_phone || 'https://www.tenutacastelvenezze.it';
-                iframe.src = `https://demo.rmstudio.app/?site=${encodeURIComponent(originalSite)}&bot_id=${videoData.client_email || 'nexus_bot'}`;
-                if (btnWeb) btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap";
-                if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition whitespace-nowrap";
-            }
-        }
-
-        function openOfferModal() {
-            const modal = document.getElementById('offer-modal');
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
-        }
-
-        function closeOfferModal() {
-            const modal = document.getElementById('offer-modal');
-            if (modal) {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', async () => {
-            await loadOrbitalEcosystem();
-
-            // Calcolo Scadenza 10 Giorni da oggi
-            const deadlineDate = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000);
-            const deadlineFormatted = deadlineDate.toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
-            const scarcityEl = document.getElementById('modal-scarcity-text');
-            if (scarcityEl) {
-                scarcityEl.innerText = `Offerta riservata valida fino al ${deadlineFormatted}`;
-            }
-
-            const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
-            isAdminViewer = params.get('admin') === 'true' || localStorage.getItem('rm_admin') === 'true';
-
-            if (!id) return alert("ID progetto non valido");
-
-            if (isAdminViewer) {
-                const indicator = document.getElementById('admin-indicator-bar');
-                if (indicator) {
-                    indicator.classList.remove('hidden');
-                    indicator.classList.add('flex');
-                }
-            } else {
-                const { data: currentData } = await supabaseClient
-                    .from('portal_videos')
-                    .select('views_count')
-                    .eq('id', id)
-                    .single();
-
-                if (currentData) {
-                    const newCount = (currentData.views_count || 0) + 1;
-                    await supabaseClient
-                        .from('portal_videos')
-                        .update({ views_count: newCount, is_opened: true })
-                        .eq('id', id);
-                }
-            }
-
-            const { data, error } = await supabaseClient.from('portal_videos').select('*').eq('id', id).single();
-            if (error || !data) return alert("Proposta o progetto non trovato");
-            videoData = data;
-
-            document.getElementById('title').innerText = data.title || "Il tuo Progetto";
-            document.getElementById('badge').innerText = data.portal_type || "Progetto";
-            document.getElementById('client-name').innerText = data.client_name || "Cliente";
-            
-            if (data.sent_at) {
-                const dateObj = new Date(data.sent_at);
-                document.getElementById('sent-date').innerText = dateObj.toLocaleDateString('it-IT') + ' alle ' + dateObj.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
-            } else {
-                document.getElementById('sent-date').innerText = "Non ancora inviato";
-            }
-
-            const priceVal = parseFloat(data.price_euro || 400);
-            const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
-            document.getElementById('header-price-display').innerText = `€ ${formattedPrice}`;
-            
-            const isDirectVideo = data.content_url && (data.content_url.endsWith('.mp4') || data.content_url.includes('.r2.dev') || data.content_url.includes('/video_'));
-
-            if (data.portal_type === 'video' || (data.portal_type === 'locanda' && isDirectVideo)) {
-                const p = document.getElementById('player-video');
-                p.src = data.content_url;
-                p.classList.remove('hidden');
-            } 
-            else if (data.portal_type === 'carousel') {
-                imagesArray = typeof data.carousel_images === 'string' ? JSON.parse(data.carousel_images) : data.carousel_images;
-                if (imagesArray.length > 0) {
-                    document.getElementById('carousel-img').src = imagesArray[0];
-                    document.getElementById('player-carousel').classList.remove('hidden');
-                }
-            } 
-            else {
-                const iconBox = document.getElementById('html-preview-icon');
-                const titleEl = document.getElementById('html-preview-title');
-                const descEl = document.getElementById('html-preview-desc');
-
-                const appProfiles = {
-                    concierge: { icon: "fa-hotel text-orange-400", title: "Concierge24 • Giulia Voice Assistant", desc: "Assistente vocale AI H24 e concierge turistico multilingua per hotel e B&B." },
-                    dentis: { icon: "fa-tooth text-cyan-400", title: "Dentis AI • Serena Voice Receptionist", desc: "Centralino vocale H24 e triage delle urgenze odontoiatriche su linea dedicata." },
-                    lexis: { icon: "fa-scale-balanced text-yellow-400", title: "Lexis AI • Chiara Voice Assistant", desc: "Segreteria telefonica formale con trascrizione e sintesi automatica delle prime consulenze." },
-                    locanda: { icon: "fa-utensils text-amber-400", title: "Locanda Digitale • Living 3D Menu", desc: "Menu 3D a 60 FPS con comande 1-click su WhatsApp e Bancomat dei Compleanni." },
-                    radar: { icon: "fa-car-side text-cyan-300", title: "DriveMotion RADAR • Arbitraggio Auto", desc: "Sourcing predittivo di auto da privati con perizia AI del margine lordo." },
-                    forma_materia: { icon: "fa-monument text-amber-300", title: "Forma & Materia • Studio 4K", desc: "Motore neurale di conversione da schizzo o CAD a render fotorealistico 4K." },
-                    aura: { icon: "fa-crosshairs text-cyan-400", title: "AURA Proximity • Virtual Radar", desc: "Radar di prossimità vettoriale e chat tattica mesh P2P senza installazione app." },
-                    eternia: { icon: "fa-dove text-amber-300", title: "ETERNIA • Memoriali QR d'Autore", desc: "Portali memoriali eterni per onoranze funebri con biografo AI e libro ricordi." },
-                    love: { icon: "fa-ring text-pink-400", title: "LOVE • Partecipazioni Digitali", desc: "Partecipazioni con apertura 3D della busta, RSVP intolleranze e Maxischermo live." },
-                    experience: { icon: "fa-wine-glass text-amber-400", title: "Smart Experience Page • Ristorazione", desc: "E-menu interattivo con Maître Virtuale e abbinamento vini d'autore." },
-                    html: { icon: "fa-compass-drafting text-purple-400", title: "SiteEngine Pro • Sito Web d'Autore", desc: "Landing page e blog monolitico ad altissima conversione per professionisti." },
-                    siteengine: { icon: "fa-compass-drafting text-purple-400", title: "SiteEngine Pro • Sito Web d'Autore", desc: "Landing page e blog monolitico ad altissima conversione per professionisti." },
-                    ares: { icon: "fa-dumbbell text-purple-400", title: "AresAI • Personal Trainer RPG", desc: "Voice coach vocale per sala pesi, XP in tempo reale e dieta fotografica." },
-                    free_energy: { icon: "fa-solar-panel text-amber-400", title: "Free Energy • CRM Fotovoltaico", desc: "Piattaforma di progettazione CAD satellitare e gestione trattative impianti solari." },
-                    velomotion: { icon: "fa-bicycle text-yellow-400", title: "VeloMotion • Sblocco BES3", desc: "Piattaforma officina di sblocco software a 32 km/h per motori Bosch Smart System." },
-                    omniastudio: { icon: "fa-shield-halved text-purple-400", title: "OmniaStudio • AI Offline Privata", desc: "Intelligenza Artificiale locale 100% offline per avvocati, commercialisti e consulenti." },
-                    social: { icon: "fa-images text-indigo-400", title: "Carousel Creator • SocialEngine", desc: "Generatore autonomo di caroselli e post kit grafici persuasivi per LinkedIn e Instagram." },
-                    hometour: { icon: "fa-house text-emerald-400", title: "HomeTour • Video Reel Immobiliari", desc: "Regia AI cinematografica che trasforma foto piatte in video tour 3D." },
-                    drivemotion: { icon: "fa-car text-cyan-300", title: "DriveMotion • Video Automotive", desc: "Video commerciali cinematografici con sostituzione automatica dello sfondo piazzale." },
-                    vision: { icon: "fa-video text-pink-400", title: "Vision UGC • Influencer Virtuali", desc: "Generazione video promozionali con testimonial iper-realistici per campagne social." },
-                    ff_edizioni: { icon: "fa-music text-purple-400", title: "FF Edizioni • Servizi Musicali SIAE", desc: "Brani musicali e jingle promozionali composti su misura con il Maestro Fausto Fusetti." },
-                    nexus: { icon: "fa-robot text-cyan-400", title: "NexusAI • Shadow-Proxy Sales Overlay", desc: "Assistente virtuale iniettato direttamente sul sito web del cliente." }
-                };
-
-                const p = appProfiles[data.portal_type] || { icon: "fa-laptop-code text-purple-400", title: "Applicazione Web Pronta", desc: "Applicazione interattiva configurata per il cliente." };
-
-                if (iconBox) iconBox.innerHTML = `<i class="fa-solid ${p.icon} text-2xl"></i>`;
-                if (titleEl) titleEl.innerText = p.title;
-                if (descEl) descEl.innerText = p.desc;
-
-                document.getElementById('html-preview-container').classList.remove('hidden');
-                openFullscreenWebsite();
-            }
-
-            updatePriceButtons();
-        });
-
-        function updatePriceButtons() {
-            if (!videoData) return;
-            const priceVal = parseFloat(videoData.price_euro || 400);
-            const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
-            const isPaid = videoData.is_paid === true || videoData.is_paid === "true";
-
-            const btn = document.getElementById('actionBtn');
-            const overlayBtn = document.getElementById('overlayActionBtn');
-
-            if (isPaid) {
-                document.getElementById('watermark-layer').classList.add('hidden'); 
-                document.getElementById('overlay-watermark').classList.add('hidden'); 
-                
-                const paidText = `<i class="fa-solid fa-check"></i> Progetto Sbloccato • Visita Live`;
-                if (btn) {
-                    btn.innerHTML = paidText;
-                    btn.className = "w-full sm:w-auto bg-green-600 hover:bg-green-500 text-white font-black px-12 py-5 rounded-2xl text-base uppercase tracking-wider transition-all shadow-[0_0_30px_rgba(34,197,94,0.3)] flex items-center justify-center gap-3 cursor-pointer";
-                    btn.classList.remove('animate-pulse');
-                }
-                if (overlayBtn) {
-                    overlayBtn.innerHTML = `<i class="fa-solid fa-check"></i> Sbloccato`;
-                    overlayBtn.className = "bg-green-600 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider cursor-pointer";
-                }
-            } else {
-                if (btn) {
-                    btn.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <span class="line-through text-emerald-200/50 font-mono text-sm font-bold">€ 1.500</span>
-                            <span class="text-white font-black">Sblocca Offerta a € ${formattedPrice}</span>
-                        </div>
-                    `;
-                }
-                if (overlayBtn) {
-                    overlayBtn.innerHTML = `
-                        <div class="flex items-center gap-2">
-                            <span class="line-through text-emerald-200/50 font-mono text-[10px]">€1.500</span>
-                            <span>Sblocca a € ${formattedPrice}</span>
-                        </div>
-                    `;
-                }
-            }
-        }
-
-        // 🚀 APERTURA SCHERMO INTERO: CREAZIONE DEI 3 PULSANTI SETTORIALI
-        function openFullscreenWebsite() {
-            if (!videoData) return;
-            const overlay = document.getElementById('fullscreen-iframe-overlay');
-            const iframe = document.getElementById('fullscreen-iframe');
-            
-            const siteEngineSwitcher = document.getElementById('siteengine-template-switcher');
-            const experienceSwitcher = document.getElementById('view-mode-selector');
-            const contextBadge = document.getElementById('contextual-saas-badge');
-            const contextIcon = document.getElementById('context-saas-icon');
-            const contextLabel = document.getElementById('context-saas-label');
-
-            const type = videoData.portal_type || 'html';
-            const demoUrl = resolveLiveDemoUrl(videoData);
-
-            if (siteEngineSwitcher) siteEngineSwitcher.classList.add('hidden');
-            if (experienceSwitcher) experienceSwitcher.classList.add('hidden');
-            if (contextBadge) contextBadge.classList.add('hidden');
-
-            if (type === 'html' || type === 'siteengine') {
-                if (siteEngineSwitcher) {
-                    siteEngineSwitcher.classList.remove('hidden');
-                    siteEngineSwitcher.classList.add('flex');
-                }
-
-                // 🎯 CREAZIONE DEI 3 PULSANTI FISICI ORIZZONTALI (ZERO TENDINA)
-                const sectorGroup = detectSectorGroup(videoData);
-                const trio = SECTOR_TRIO_TEMPLATES[sectorGroup] || SECTOR_TRIO_TEMPLATES.default;
-                const container = document.getElementById('sector-templates-container');
-
-                if (container) {
-                    container.innerHTML = "";
-                    trio.forEach((t, idx) => {
-                        const btn = document.createElement('button');
-                        btn.id = `btn-trio-${t.id}`;
-                        btn.onclick = () => switchTemplate(t.id);
-                        btn.className = idx === 0 
-                            ? "px-3 py-1.5 rounded-lg text-xs font-black bg-purple-600 text-white transition shadow-md cursor-pointer whitespace-nowrap"
-                            : "px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap";
-                        btn.innerText = t.label;
-                        container.appendChild(btn);
-                    });
-                }
-
-                currentActiveTemplate = trio[0].id;
-                const cleanUrl = demoUrl.split('?')[0];
-                iframe.src = `${cleanUrl}?_t=${Date.now()}`;
-
-            } else if (type === 'experience') {
-                if (experienceSwitcher) {
-                    experienceSwitcher.classList.remove('hidden');
-                    experienceSwitcher.classList.add('flex');
-                }
-                iframe.src = `${demoUrl}?_t=${Date.now()}`;
-            } else {
-                if (contextBadge) {
-                    contextBadge.classList.remove('hidden');
-                    contextBadge.classList.add('flex');
-                    
-                    const icons = { concierge: "🏨", dentis: "🦷", lexis: "⚖️", locanda: "🍽️", radar: "🏎️", forma_materia: "🏛️", aura: "📡", eternia: "🕊️", love: "💍", ares: "🏋️", nexus: "🤖" };
-                    if (contextIcon) contextIcon.innerText = icons[type] || "⚡";
-                    if (contextLabel) contextLabel.innerText = `${videoData.client_name || 'Demo'} (${type})`;
-                }
-                iframe.src = `${demoUrl}${demoUrl.includes('?') ? '&' : '?'}_t=${Date.now()}`;
-            }
-
-            overlay.classList.remove('hidden');
-            updatePriceButtons();
-        }
-
-        function closeFullscreenWebsite() {
-            document.getElementById('fullscreen-iframe-overlay').classList.add('hidden');
-            document.getElementById('fullscreen-iframe').src = "";
-        }
-
-        function nextSlide() {
-            if (imagesArray.length === 0) return;
-            currentSlideIdx = (currentSlideIdx + 1) % imagesArray.length;
-            document.getElementById('carousel-img').src = imagesArray[currentSlideIdx];
-        }
-
-        function prevSlide() {
-            if (imagesArray.length === 0) return;
-            currentSlideIdx = (currentSlideIdx - 1 + imagesArray.length) % imagesArray.length;
-            document.getElementById('carousel-img').src = imagesArray[currentSlideIdx];
-        }
-
-        async function handleAction() {
-            if (videoData.is_paid === true || videoData.is_paid === "true") {
-                if (videoData.portal_type === 'carousel') {
-                    alert("Download delle immagini in corso...");
-                    imagesArray.forEach((url, i) => {
-                        const a = document.createElement('a'); a.href = url; a.download = `slide_${i + 1}.jpg`; a.click();
-                    });
-                } else {
-                    window.open(resolveLiveDemoUrl(videoData), '_blank');
-                }
-            } else {
-                const btn = document.getElementById('actionBtn');
-                const overlayBtn = document.getElementById('overlayActionBtn');
-                const originalText = btn.innerHTML;
-                
-                btn.disabled = true;
-                if (overlayBtn) overlayBtn.disabled = true;
-                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Connessione Stripe...`;
-                if (overlayBtn) overlayBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Attendi...`;
-
-                try {
-                    const res = await fetch('https://n8n.rmstudio.app/webhook/crea-sessione-stripe', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            project_id: videoData.id,
-                            email: videoData.client_email || "cliente@rmstudio.app",
-                            title: videoData.title || "Sblocco Servizio Definitivo",
-                            price: parseFloat(videoData.price_euro || 400),
-                            origin: window.location.origin,
-                            portal_type: videoData.portal_type || 'siteengine'
-                        })
-                    });
-
-                    if (!res.ok) throw new Error("Errore del server n8n");
-                    const data = await res.json();
-                    
-                    if (data.url) {
-                        window.location.href = data.url;
-                    } else {
-                        throw new Error("URL di pagamento non ricevuto");
-                    }
-                } catch (err) {
-                    alert("Impossibile avviare il pagamento. Apertura diretta WhatsApp con Riccardo...");
-                    window.open("https://wa.me/393478951801?text=Vorrei%20sbloccare%20la%20proposta%20ID%20" + (videoData.id || ''), "_blank");
-                    btn.disabled = false;
-                    if (overlayBtn) overlayBtn.disabled = false;
-                    btn.innerHTML = originalText;
-                }
-            }
-        }
-    </script>
+    <!-- 📦 SCRIPT MODULARI ESTERNI -->
+    <script src="js/view-data.js"></script>
+    <script src="js/view-ui.js"></script>
 </body>
 </html>
