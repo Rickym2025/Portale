@@ -345,6 +345,14 @@ function renderMasterTable(data) {
                     ${isPaid ? '✓ Pagato' : '● Attesa'}
                 </button>
             </td>
+            <td class="p-4">
+                <input type="text" 
+                       value="${p.notes || ''}" 
+                       placeholder="Aggiungi nota CRM..." 
+                       onchange="updateSupabaseField('${p.id}', 'notes', this.value)" 
+                       class="bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-xs text-zinc-300 w-full focus:border-purple-500 outline-none" 
+                       title="Appunti e note trattativa">
+            </td>
             <td class="p-4 text-right space-x-1 whitespace-nowrap">
                 ${closingPitchBtn}
                 <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Invia WhatsApp">WA</button>
