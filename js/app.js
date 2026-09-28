@@ -2,6 +2,33 @@ window.allProjects = [];
 window.sheetPendingRestaurants = [];
 window.loadMasterData = loadMasterData;
 
+// 🗜️ GESTIONE DENSITÀ TABELLA (COMPATTA VS ESPANSA)
+window.currentDensity = localStorage.getItem('portal_density') || 'compact';
+
+function toggleDensity() {
+    window.currentDensity = window.currentDensity === 'compact' ? 'expanded' : 'compact';
+    localStorage.setItem('portal_density', window.currentDensity);
+    updateDensityButtonUI();
+    applyFilters();
+}
+
+function updateDensityButtonUI() {
+    const btn = document.getElementById('btn-density-toggle');
+    const label = document.getElementById('density-label');
+    const icon = document.getElementById('density-icon');
+    if (!btn || !label || !icon) return;
+
+    if (window.currentDensity === 'compact') {
+        label.innerText = "Vista Espansa";
+        icon.className = "fa-solid fa-expand text-purple-400";
+        btn.classList.add('border-purple-500/40', 'bg-purple-950/20');
+    } else {
+        label.innerText = "Vista Compatta";
+        icon.className = "fa-solid fa-compress text-purple-400";
+        btn.classList.remove('border-purple-500/40', 'bg-purple-950/20');
+    }
+}
+
 // 1. CARICAMENTO DATI DA SUPABASE (S2 PORTALE)
 async function loadMasterData() {
     try {
@@ -110,7 +137,7 @@ function toggleSidebar() {
     localStorage.setItem('sidebar_collapsed', isCol ? 'true' : 'false');
 }
 
-// 🎯 APPLICAZIONE FILTRI CON SUPPORTO A "STATO LETTURA / INVIO"
+// 🎯 APPLICAZIONE FILTRI
 function applyFilters() {
     const fType = document.getElementById('filter-type')?.value || 'all';
     const fName = (document.getElementById('filter-name')?.value || '').toLowerCase().trim();
@@ -118,21 +145,17 @@ function applyFilters() {
     const fStatus = document.getElementById('filter-status')?.value || 'all';
 
     const filtered = (window.allProjects || []).filter(p => {
-        // 1. Filtro Tipo SaaS
         if (fType !== 'all' && p.portal_type !== fType) return false;
 
-        // 2. Filtro Nome / Email / Titolo
         const match = (p.client_name || '').toLowerCase().includes(fName) || 
                       (p.client_email || '').toLowerCase().includes(fName) || 
                       (p.title || '').toLowerCase().includes(fName);
         if (!match) return false;
 
-        // 3. Filtro Pagamento
         const isPaid = p.is_paid === true || p.is_paid === "true";
         if (fPaid === 'paid' && !isPaid) return false;
         if (fPaid === 'unpaid' && isPaid) return false;
 
-        // 4. Filtro Stato Lettura / Invio
         if (fStatus !== 'all') {
             const views = parseInt(p.views_count || 0, 10);
             const isOpenedFlag = p.is_opened === true || p.is_opened === "true";
@@ -225,18 +248,21 @@ function renderMasterTable(data) {
     container.innerHTML = '';
 
     if (data.length === 0) {
-        container.innerHTML = `<tr><td colspan="10" class="p-8 text-center text-gray-400 font-semibold text-base">Nessun progetto trovato con i filtri attivi.</td></tr>`;
+        container.innerHTML = `<tr><td colspan="11" class="p-8 text-center text-gray-400 font-semibold text-base">Nessun progetto trovato con i filtri attivi.</td></tr>`;
         return;
     }
 
+    const isCompact = window.currentDensity === 'compact';
+    const cellPadding = isCompact ? 'py-1.5 px-3' : 'p-4';
+
     data.forEach(p => {
         const tr = document.createElement('tr');
-        tr.className = "hover:bg-[#101015] transition border-b border-zinc-900/80";
+        tr.className = `hover:bg-[#101015] transition border-b border-zinc-900/80 ${isCompact ? 'text-xs' : 'text-sm'}`;
 
         const isPaid = p.is_paid === true || p.is_paid === "true";
         const views = parseInt(p.views_count || 0, 10);
         
-        // 🔒 Un progetto è letto SOLO se le visite sono > 0 e is_opened è true
+        // 🔒 UN PROGETTO È LETTO SOLO SE LE VISITE SONO > 0 E IS_OPENED È VERO
         const isOpenedFlag = p.is_opened === true || p.is_opened === "true";
         const isRead = views > 0 && isOpenedFlag;
 
@@ -244,58 +270,56 @@ function renderMasterTable(data) {
         const waSent = p.is_whatsapp_sent === true || p.is_whatsapp_sent === "true";
         const isContacted = waSent || emailSent;
         
-        // 🔒 URL SICURO: Finché non è pagato, apre SEMPRE la pagina con filigrana view.html!
-        const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}`;
-        // Se clicchi tu dal portale, aggiunge &admin=true per non sporcare le statistiche di lettura!
-        const targetUrl = isPaid ? (p.content_url || portalUrl) : `${portalUrl}&admin=true`;
+        // 🔒 URL SICURO: Finché non è pagato, apre con filigrana view.html (con admin=true se aperto da te)
+        const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}&admin=true`;
+        const targetUrl = isPaid ? (p.content_url || portalUrl) : portalUrl;
 
+        // 📅 DATA ORIGINALE DI PRIMA APERTURA
+        const openDate = p.opened_at || p.updated_at;
         const sendDateFormatted = p.sent_at ? new Date(p.sent_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const sendDaysAgo = getDaysAgo(p.sent_at);
-        const openDate = p.opened_at || p.updated_at;
         const openDateFormatted = openDate ? new Date(openDate).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const openDaysAgo = getDaysAgo(openDate);
 
-        // 🏷️ BADGES COMPATTI CON WHITESPACE-NOWRAP
+        // 🏷️ BADGES
         const badges = {
-            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ locanda</span>`,
-            radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏎️ radar</span>`,
-            nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🤖 nexus</span>`,
-            dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
-            lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚖️ lexis</span>`,
-            concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
-            forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏛️ f&amp;m</span>`,
-            aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📡 aura</span>`,
-            eternia: `<span class="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🕊️ eternia</span>`,
-            love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💍 love</span>`,
-            html: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`
+            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ locanda</span>`,
+            radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏎️ radar</span>`,
+            nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🤖 nexus</span>`,
+            dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
+            lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚖️ lexis</span>`,
+            concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
+            forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏛️ f&amp;m</span>`,
+            aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📡 aura</span>`,
+            eternia: `<span class="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🕊️ eternia</span>`,
+            love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💍 love</span>`,
+            html: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`
         };
 
-        const typeBadge = badges[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">${p.portal_type || 'html'}</span>`;
+        const typeBadge = badges[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap">${p.portal_type || 'html'}</span>`;
 
         let closingPitchBtn = '';
         if (isRead && !isPaid) {
-            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2 py-1 rounded-lg text-xs font-black transition animate-pulse" title="Pitch Chiusura Dedicato"><i class="fa-solid fa-fire"></i> VIP</button>`;
+            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2 py-1 rounded-lg text-xs font-black transition animate-pulse cursor-pointer" title="Pitch Chiusura Dedicato"><i class="fa-solid fa-fire"></i> VIP</button>`;
         }
 
         let channelIndicators = '';
         if (waSent) channelIndicators += `<i class="fa-brands fa-whatsapp text-emerald-400 text-xs" title="Inviato su WhatsApp"></i>`;
         if (emailSent) channelIndicators += `<i class="fa-solid fa-envelope text-blue-400 text-xs" title="Inviato via Email"></i>`;
 
-        // 🚦 PIPELINE STATI
+        // 🚦 PIPELINE STATI LETTURA & INVIO
         let statusHtml = '';
         if (isRead) {
             statusHtml = `
-                <div class="text-green-400 font-extrabold text-[11px]">
-                    <i class="fa-solid fa-eye animate-pulse"></i> Letta (${views}v) ${openDateFormatted || ''} 
-                    <span class="text-emerald-500 font-bold">(${openDaysAgo || 'Oggi'})</span>
+                <div class="text-emerald-400 font-extrabold text-[11px]">
+                    <i class="fa-solid fa-eye animate-pulse"></i> Letta (${views}v) <span class="text-emerald-500 font-bold">(${openDaysAgo || 'Oggi'})</span>
                 </div>
             `;
         } else if (isContacted) {
             statusHtml = `
                 <div class="space-y-0.5">
                     <div class="text-amber-400 font-bold text-[11px]">
-                        <i class="fa-solid fa-paper-plane"></i> Inviata ${sendDateFormatted || ''} 
-                        <span class="text-zinc-500 font-normal">(${sendDaysAgo || 'Oggi'})</span>
+                        <i class="fa-solid fa-paper-plane"></i> Inviata ${sendDateFormatted || ''} <span class="text-zinc-500 font-normal">(${sendDaysAgo || 'Oggi'})</span>
                     </div>
                     <div class="text-zinc-500 text-[10px] font-medium pl-4">In attesa di apertura</div>
                 </div>
@@ -308,60 +332,77 @@ function renderMasterTable(data) {
             `;
         }
 
+        // 🗜️ DIFFERENZIAZIONE VISIVA: COMPATTA VS ESPANSA
+        const clientCellContent = isCompact ? `
+            <div class="flex items-center gap-2">
+                <input type="text" value="${p.client_name || ''}" placeholder="Nome" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-bold text-white text-xs w-[140px] truncate">
+                <span class="text-zinc-600">•</span>
+                <input type="email" value="${p.client_email || ''}" placeholder="Email" onchange="updateSupabaseField('${p.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-[11px] text-zinc-400 w-[150px] truncate font-mono">
+                <span class="text-zinc-600">•</span>
+                <input type="text" value="${p.client_phone || ''}" placeholder="Tel" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-[11px] text-zinc-400 w-[110px] truncate font-mono">
+            </div>
+        ` : `
+            <input type="text" value="${p.client_name || ''}" placeholder="Nome Cliente" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-extrabold text-white text-sm block w-full mb-1">
+            <input type="email" value="${p.client_email || ''}" placeholder="Email" onchange="updateSupabaseField('${p.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block">
+            <input type="text" value="${p.client_phone || ''}" placeholder="Telefono" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block font-mono">
+        `;
+
+        const notesCellContent = isCompact ? `
+            <input type="text" value="${p.notes || ''}" placeholder="Nota CRM..." onchange="updateSupabaseField('${p.id}', 'notes', this.value)" class="bg-[#13141c] border border-zinc-800 rounded-lg p-1.5 text-xs text-zinc-300 w-full focus:border-purple-500 outline-none truncate" title="${p.notes || 'Aggiungi nota CRM'}">
+        ` : `
+            <textarea rows="2" placeholder="Aggiungi nota CRM..." onchange="updateSupabaseField('${p.id}', 'notes', this.value)" class="bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-xs text-zinc-200 w-full focus:border-purple-500 outline-none resize-none leading-relaxed font-sans" title="Appunti e note trattativa">${p.notes || ''}</textarea>
+        `;
+
         tr.innerHTML = `
-            <td class="p-4 text-center whitespace-nowrap min-w-[125px]">
+            <td class="${cellPadding} text-center whitespace-nowrap min-w-[110px]">
                 ${typeBadge}
-                <span class="font-mono text-xs text-gray-400 block mt-1 font-bold">#${p.id ? p.id.substring(0, 4).toUpperCase() : '---'}</span>
+                <span class="font-mono text-[10px] text-gray-500 block font-bold">#${p.id ? p.id.substring(0, 4).toUpperCase() : '---'}</span>
             </td>
-            <td class="p-4">
-                <input type="text" value="${p.client_name || ''}" placeholder="Nome Cliente" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-extrabold text-white text-sm block w-full mb-1">
-                <input type="email" value="${p.client_email || ''}" placeholder="Email" onchange="updateSupabaseField('${p.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block">
-                <input type="text" value="${p.client_phone || ''}" placeholder="Telefono" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block font-mono">
+            <td class="${cellPadding}">
+                ${clientCellContent}
             </td>
-            <td class="p-4">
-                <input type="text" value="${p.title || ''}" placeholder="Titolo" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-200 font-bold w-full">
+            <td class="${cellPadding}">
+                <input type="text" value="${p.title || ''}" placeholder="Titolo" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none ${isCompact ? 'text-xs' : 'text-xs font-bold'} text-gray-200 w-full truncate">
             </td>
-            <td class="p-4 whitespace-nowrap">
-                <a href="${targetUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 ${isPaid ? 'text-emerald-400 border-emerald-500/30' : 'text-purple-300 border-zinc-800'} border px-3 py-1.5 rounded-lg text-xs font-bold transition truncate max-w-[140px] shadow-sm whitespace-nowrap">
+            <td class="${cellPadding} whitespace-nowrap">
+                <a href="${targetUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 ${isPaid ? 'text-emerald-400 border-emerald-500/30' : 'text-purple-300 border-zinc-800'} border px-2.5 py-1 rounded-lg text-xs font-bold transition truncate max-w-[130px] shadow-sm whitespace-nowrap">
                     <i class="fa-solid ${isPaid ? 'fa-globe' : 'fa-eye'} text-[10px]"></i> ${isPaid ? 'Sito Live' : 'Bozza'}
                 </a>
             </td>
-            <td class="p-4">
-                <input type="number" value="${p.price_euro || 0}" onchange="updateSupabaseField('${p.id}', 'price_euro', this.value)" class="w-16 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-black text-purple-400 focus:border-purple-500 text-xs font-mono">
+            <td class="${cellPadding}">
+                <input type="number" value="${p.price_euro || 0}" onchange="updateSupabaseField('${p.id}', 'price_euro', this.value)" class="w-14 bg-[#15151a] border border-zinc-800 rounded-lg p-1 text-center font-bold text-purple-400 focus:border-purple-500 text-xs font-mono">
             </td>
-            <td class="p-4 text-center">
-                <input type="number" value="${views}" min="0" onchange="handleViewsChange('${p.id}', this.value)" class="w-12 bg-[#15151a] border border-zinc-800 rounded-lg p-1.5 text-center font-bold text-blue-400 focus:border-purple-500 text-xs font-mono cursor-pointer" title="Modifica visite (imposta 0 per resettare lo stato a Non Letta)">
+            <td class="${cellPadding} text-center">
+                <input type="number" value="${views}" min="0" onchange="handleViewsChange('${p.id}', this.value)" class="w-11 bg-[#15151a] border border-zinc-800 rounded-lg p-1 text-center font-bold text-blue-400 focus:border-purple-500 text-xs font-mono cursor-pointer" title="Modifica visite (imposta 0 per resettare)">
             </td>
-            <td class="p-4 text-center whitespace-nowrap">
-                <div class="flex items-center justify-center gap-1.5">
-                    <input type="checkbox" ${isContacted ? 'checked' : ''} onchange="handleOutreachToggle('${p.id}', this.checked)" class="w-4 h-4 text-purple-600 bg-zinc-900 border-zinc-800 rounded cursor-pointer" title="Segna come inviato/contattato (WA o Email)">
+            <td class="${cellPadding} text-center whitespace-nowrap">
+                <div class="flex items-center justify-center gap-1">
+                    <input type="checkbox" ${isContacted ? 'checked' : ''} onchange="handleOutreachToggle('${p.id}', this.checked)" class="w-3.5 h-3.5 text-purple-600 bg-zinc-900 border-zinc-800 rounded cursor-pointer" title="Segna inviato (WA o Mail)">
                     ${channelIndicators}
                 </div>
             </td>
-            <td class="p-4 text-xs whitespace-nowrap">
+            <td class="${cellPadding} text-xs whitespace-nowrap">
                 ${statusHtml}
             </td>
-            <td class="p-4">
-                <button onclick="togglePayment('${p.id}', ${isPaid})" class="px-2.5 py-1 rounded-full text-[11px] font-bold transition cursor-pointer ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
+            <td class="${cellPadding}">
+                <button onclick="togglePayment('${p.id}', ${isPaid})" class="px-2 py-0.5 rounded-full text-[10px] font-bold transition cursor-pointer ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
                     ${isPaid ? '✓ Pagato' : '● Attesa'}
                 </button>
             </td>
-            <td class="p-4 min-w-[220px]">
-                <textarea rows="2" 
-                          placeholder="Aggiungi nota CRM..." 
-                          onchange="updateSupabaseField('${p.id}', 'notes', this.value)" 
-                          class="bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-xs text-zinc-200 w-full focus:border-purple-500 outline-none resize-none leading-relaxed font-sans" 
-                          title="Appunti e note trattativa">${p.notes || ''}</textarea>
+            <td class="${cellPadding} min-w-[200px]">
+                ${notesCellContent}
             </td>
-            <td class="p-4 text-right space-x-1 whitespace-nowrap">
+            <td class="${cellPadding} text-right space-x-1 whitespace-nowrap">
                 ${closingPitchBtn}
                 <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Invia WhatsApp">WA</button>
-                <button onclick="openMessageModal('${p.id}', 'mail')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Invia Email con Resend">Mail</button>
-                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded cursor-pointer" title="Elimina Progetto"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                <button onclick="openMessageModal('${p.id}', 'mail')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Invia Email">Mail</button>
+                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded cursor-pointer" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
             </td>
         `;
         container.appendChild(tr);
     });
+
+    updateDensityButtonUI();
 }
 
 function openClosingPitchModal(projectId) {
@@ -462,7 +503,7 @@ async function handleCreateSubmit(e) {
     const siteUrl = document.getElementById('c-url').value.trim();
     const slug = clientName.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
 
-    // 🤖 NEXUSAI: Shadow-Proxy
+    // 🤖 NEXUSAI
     if (type === 'nexus') {
         btn.innerText = "Generazione Shadow-Proxy (15s)...";
         let targetUrl = siteUrl;
