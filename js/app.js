@@ -251,8 +251,9 @@ function renderMasterTable(data) {
 
         const sendDateFormatted = p.sent_at ? new Date(p.sent_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const sendDaysAgo = getDaysAgo(p.sent_at);
-        const openDateFormatted = p.updated_at ? new Date(p.updated_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
-        const openDaysAgo = getDaysAgo(p.updated_at);
+        const openDate = p.opened_at || p.updated_at;
+        const openDateFormatted = openDate ? new Date(openDate).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
+        const openDaysAgo = getDaysAgo(openDate);
 
         // 🏷️ BADGES COMPATTI CON WHITESPACE-NOWRAP
         const badges = {
