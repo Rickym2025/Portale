@@ -308,13 +308,18 @@
       
       <!-- TAB 1: MASTER HUB -->
       <section id="tab-master">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
             <div>
-              <h1 class="text-2xl md:text-3xl font-display font-black text-white">Master <span class="grad-text">Command Center</span></h1>
-              <p class="text-sm text-gray-400 mt-1">Gestisci le proposte e i pagamenti di tutti i 20 SaaS RM Studio in tempo reale.</p>
+              <h1 class="text-xl md:text-2xl font-display font-black text-white">Master <span class="grad-text">Command Center</span></h1>
+              <p class="text-xs text-gray-400 mt-0.5">Gestisci le proposte e i pagamenti di tutti i SaaS in tempo reale.</p>
             </div>
-            <div class="flex items-center gap-3">
-              <button onclick="openCreationModal()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-purple-600/20 active:scale-95 cursor-pointer">
+            <div class="flex items-center gap-2">
+              <!-- 🗜️ TASTO COMMUTATORE VISTA COMPATTA / ESPANSA -->
+              <button onclick="toggleDensity()" id="btn-density-toggle" class="bg-zinc-900 border border-zinc-800 hover:border-purple-500/50 text-zinc-300 hover:text-white font-bold px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm">
+                  <i class="fa-solid fa-compress text-purple-400" id="density-icon"></i>
+                  <span id="density-label">Vista Compatta</span>
+              </button>
+              <button onclick="openCreationModal()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-purple-600/20 active:scale-95 cursor-pointer">
                   + Nuovo Progetto
               </button>
             </div>
