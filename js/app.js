@@ -137,7 +137,7 @@ function toggleSidebar() {
     localStorage.setItem('sidebar_collapsed', isCol ? 'true' : 'false');
 }
 
-// 🎯 APPLICAZIONE FILTRI
+// 🎯 APPLICAZIONE FILTRI CON SUPPORTO A "STATO LETTURA / INVIO"
 function applyFilters() {
     const fType = document.getElementById('filter-type')?.value || 'all';
     const fName = (document.getElementById('filter-name')?.value || '').toLowerCase().trim();
@@ -145,17 +145,21 @@ function applyFilters() {
     const fStatus = document.getElementById('filter-status')?.value || 'all';
 
     const filtered = (window.allProjects || []).filter(p => {
+        // 1. Filtro Tipo SaaS
         if (fType !== 'all' && p.portal_type !== fType) return false;
 
+        // 2. Filtro Nome / Email / Titolo
         const match = (p.client_name || '').toLowerCase().includes(fName) || 
                       (p.client_email || '').toLowerCase().includes(fName) || 
                       (p.title || '').toLowerCase().includes(fName);
         if (!match) return false;
 
+        // 3. Filtro Pagamento
         const isPaid = p.is_paid === true || p.is_paid === "true";
         if (fPaid === 'paid' && !isPaid) return false;
         if (fPaid === 'unpaid' && isPaid) return false;
 
+        // 4. Filtro Stato Lettura / Invio
         if (fStatus !== 'all') {
             const views = parseInt(p.views_count || 0, 10);
             const isOpenedFlag = p.is_opened === true || p.is_opened === "true";
@@ -262,41 +266,42 @@ function renderMasterTable(data) {
         const isPaid = p.is_paid === true || p.is_paid === "true";
         const views = parseInt(p.views_count || 0, 10);
         
-        // 🔒 UN PROGETTO È LETTO SOLO SE LE VISITE SONO > 0 E IS_OPENED È VERO
+        // 🔒 Un progetto è letto SOLO se le visite sono > 0 e is_opened è true
         const isOpenedFlag = p.is_opened === true || p.is_opened === "true";
         const isRead = views > 0 && isOpenedFlag;
 
         const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
         const waSent = p.is_whatsapp_sent === true || p.is_whatsapp_sent === "true";
         const isContacted = waSent || emailSent;
+        const followupSent = p.followup_sent === true || p.followup_sent === "true";
         
         // 🔒 URL SICURO: Finché non è pagato, apre con filigrana view.html (con admin=true se aperto da te)
         const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}&admin=true`;
         const targetUrl = isPaid ? (p.content_url || portalUrl) : portalUrl;
 
-        // 📅 DATA ORIGINALE DI PRIMA APERTURA
+        // 📅 LETTURA DATA ORIGINALE DI PRIMA APERTURA
         const openDate = p.opened_at || p.updated_at;
         const sendDateFormatted = p.sent_at ? new Date(p.sent_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const sendDaysAgo = getDaysAgo(p.sent_at);
         const openDateFormatted = openDate ? new Date(openDate).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const openDaysAgo = getDaysAgo(openDate);
 
-        // 🏷️ BADGES
+        // 🏷️ BADGES COMPATTI
         const badges = {
-            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ locanda</span>`,
-            radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏎️ radar</span>`,
-            nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🤖 nexus</span>`,
-            dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
-            lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚖️ lexis</span>`,
-            concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
-            forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏛️ f&amp;m</span>`,
-            aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📡 aura</span>`,
-            eternia: `<span class="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🕊️ eternia</span>`,
-            love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💍 love</span>`,
-            html: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`
+            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ locanda</span>`,
+            radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏎️ radar</span>`,
+            nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🤖 nexus</span>`,
+            dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
+            lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚖️ lexis</span>`,
+            concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
+            forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏛️ f&amp;m</span>`,
+            aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📡 aura</span>`,
+            eternia: `<span class="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🕊️ eternia</span>`,
+            love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💍 love</span>`,
+            html: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`
         };
 
-        const typeBadge = badges[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap">${p.portal_type || 'html'}</span>`;
+        const typeBadge = badges[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap">${p.portal_type || 'html'}</span>`;
 
         let closingPitchBtn = '';
         if (isRead && !isPaid) {
@@ -307,7 +312,7 @@ function renderMasterTable(data) {
         if (waSent) channelIndicators += `<i class="fa-brands fa-whatsapp text-emerald-400 text-xs" title="Inviato su WhatsApp"></i>`;
         if (emailSent) channelIndicators += `<i class="fa-solid fa-envelope text-blue-400 text-xs" title="Inviato via Email"></i>`;
 
-        // 🚦 PIPELINE STATI LETTURA & INVIO
+        // 🚦 PIPELINE STATI LETTURA & INVIO (CON SUPPORTO 2° SOLLECITO 7GG)
         let statusHtml = '';
         if (isRead) {
             statusHtml = `
@@ -315,11 +320,21 @@ function renderMasterTable(data) {
                     <i class="fa-solid fa-eye animate-pulse"></i> Letta (${views}v) <span class="text-emerald-500 font-bold">(${openDaysAgo || 'Oggi'})</span>
                 </div>
             `;
+        } else if (followupSent) {
+            statusHtml = `
+                <div class="space-y-0.5">
+                    <div class="text-purple-400 font-black text-[11px] flex items-center gap-1.5">
+                        <i class="fa-solid fa-repeat text-purple-400"></i> 2° Sollecito (7gg)
+                    </div>
+                    <div class="text-zinc-500 text-[10px] pl-4 font-medium">In attesa di apertura</div>
+                </div>
+            `;
         } else if (isContacted) {
             statusHtml = `
                 <div class="space-y-0.5">
                     <div class="text-amber-400 font-bold text-[11px]">
-                        <i class="fa-solid fa-paper-plane"></i> Inviata ${sendDateFormatted || ''} <span class="text-zinc-500 font-normal">(${sendDaysAgo || 'Oggi'})</span>
+                        <i class="fa-solid fa-paper-plane"></i> Inviata ${sendDateFormatted || ''} 
+                        <span class="text-zinc-500 font-normal">(${sendDaysAgo || 'Oggi'})</span>
                     </div>
                     <div class="text-zinc-500 text-[10px] font-medium pl-4">In attesa di apertura</div>
                 </div>
@@ -389,7 +404,7 @@ function renderMasterTable(data) {
                     ${isPaid ? '✓ Pagato' : '● Attesa'}
                 </button>
             </td>
-            <td class="${cellPadding} min-w-[200px]">
+            <td class="${cellPadding} min-w-[220px]">
                 ${notesCellContent}
             </td>
             <td class="${cellPadding} text-right space-x-1 whitespace-nowrap">
