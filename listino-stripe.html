@@ -101,14 +101,14 @@
                     <input type="number" id="new-affiliate-commission" placeholder="Provvigione % (es. 15)" class="bg-[#151520] border border-zinc-700 rounded-xl p-3 text-xs font-bold text-white outline-none focus:border-amber-400">
                 </div>
                 <button onclick="salvaNuovoAffiliato()" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black font-black text-xs uppercase tracking-wider rounded-xl transition cursor-pointer shadow-lg flex items-center justify-center gap-2">
-                    <span>+ Registra Coupon su Stripe & Database</span>
+                    <span>+ Registra Coupon su Stripe &amp; Database</span>
                 </button>
             </div>
 
             <div class="bg-[#0b0b0f] border border-zinc-800 rounded-2xl overflow-hidden shadow-xl">
                 <div class="p-4 border-b border-zinc-800 bg-black/40 flex justify-between items-center">
                     <span class="text-xs font-bold text-white uppercase tracking-wider">Riepilogo Provvigioni per Affiliato</span>
-                    <button onclick="caricaDatiAffiliati()" class="text-xs text-amber-400 hover:underline"><i class="fa-solid fa-arrows-rotate"></i> Aggiorna</button>
+                    <button onclick="caricaDatiAffiliati()" class="text-xs text-amber-400 hover:underline cursor-pointer"><i class="fa-solid fa-arrows-rotate"></i> Aggiorna</button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs min-w-[900px]">
@@ -116,7 +116,7 @@
                             <tr>
                                 <th class="p-3.5">Codice / Nome</th>
                                 <th class="p-3.5">Provv. %</th>
-                                <th class="p-3.5">SaaS Venduti & Volume</th>
+                                <th class="p-3.5">SaaS Venduti &amp; Volume</th>
                                 <th class="p-3.5">Provvigione Totale</th>
                                 <th class="p-3.5">Già Saldato</th>
                                 <th class="p-3.5">Saldo da Pagare</th>
@@ -381,10 +381,22 @@
                     <div class="flex items-center gap-2"><span class="text-xl">🍷</span><h2 class="text-sm font-black text-amber-300 font-display">11. Smart Experience</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">experience</span>
                 </div>
-                <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
-                    <span class="text-gray-400 block text-[11px]">Sblocco Portale (€)</span>
-                    <input type="number" id="price-experience-sblocco" value="390" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
-                    <button onclick="saveLivePrice('experience', 'sblocco', 'price-experience-sblocco')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Starter (€)</span>
+                        <input type="number" id="price-experience-starter" value="190" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('experience', 'starter', 'price-experience-starter')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Signature (€)</span>
+                        <input type="number" id="price-experience-pro" value="350" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('experience', 'pro', 'price-experience-pro')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Royal SIAE (€)</span>
+                        <input type="number" id="price-experience-royal" value="600" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('experience', 'royal', 'price-experience-royal')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
                 </div>
             </div>
 
@@ -602,7 +614,7 @@
         <div class="bg-[#0b0b0f] border border-zinc-800 rounded-3xl max-w-sm w-full p-6 space-y-4 shadow-2xl">
             <div class="flex justify-between items-center border-b border-zinc-800 pb-3">
                 <h3 class="text-sm font-bold text-white font-display">Registra Bonifico Provvigione</h3>
-                <button onclick="chiudiModalePayout()" class="text-gray-400 hover:text-white text-xs">✕</button>
+                <button onclick="chiudiModalePayout()" class="text-gray-400 hover:text-white text-xs cursor-pointer">✕</button>
             </div>
             <p class="text-xs text-gray-400">Inserisci l'importo che hai bonificato all'affiliato per azzerare o scalare il saldo residuo:</p>
             <div class="space-y-3">
@@ -615,7 +627,7 @@
                     <input type="number" step="0.01" id="payout-amount" required class="w-full bg-[#151520] border border-zinc-700 rounded-xl p-2.5 text-sm text-white font-extrabold outline-none focus:border-emerald-400">
                 </div>
             </div>
-            <button onclick="confermaRegistrazionePayout()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-lg">
+            <button onclick="confermaRegistrazionePayout()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-lg cursor-pointer">
                 ✓ Conferma e Aggiorna Saldo
             </button>
         </div>
@@ -768,10 +780,10 @@
                             €${affPending.toFixed(2)}
                         </td>
                         <td class="p-3.5 text-right space-x-1 whitespace-nowrap">
-                            <button onclick="apriModalePayout('${aff.code}', '${aff.name}', ${affPending})" class="px-2.5 py-1.5 bg-emerald-600/20 text-emerald-300 hover:bg-emerald-600/40 border border-emerald-500/30 rounded-lg text-[11px] font-bold transition" title="Registra Bonifico Pagato">
+                            <button onclick="apriModalePayout('${aff.code}', '${aff.name}', ${affPending})" class="px-2.5 py-1.5 bg-emerald-600/20 text-emerald-300 hover:bg-emerald-600/40 border border-emerald-500/30 rounded-lg text-[11px] font-bold transition cursor-pointer" title="Registra Bonifico Pagato">
                                 💰 Salda
                             </button>
-                            <button onclick="eliminaAffiliato('${aff.id}', '${aff.code}')" class="text-gray-500 hover:text-red-400 p-1.5 transition" title="Elimina">
+                            <button onclick="eliminaAffiliato('${aff.id}', '${aff.code}')" class="text-gray-500 hover:text-red-400 p-1.5 transition cursor-pointer" title="Elimina">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </td>
@@ -826,20 +838,6 @@
             } catch (err) {
                 alert("Errore registrazione affiliato: " + err.message);
             }
-        }
-
-        function apriModalePayout(code, name, pendingAmount) {
-            activePayoutAffiliateCode = code;
-            document.getElementById('payout-affiliate-name').value = `${name} (${code})`;
-            document.getElementById('payout-amount').value = pendingAmount > 0 ? pendingAmount.toFixed(2) : 0;
-            document.getElementById('payout-modal').classList.remove('hidden');
-            document.getElementById('payout-modal').classList.add('flex');
-        }
-
-        function chiudiModalePayout() {
-            document.getElementById('payout-modal').classList.remove('flex');
-            document.getElementById('payout-modal').classList.add('hidden');
-            activePayoutAffiliateCode = null;
         }
 
         async function confermaRegistrazionePayout() {
