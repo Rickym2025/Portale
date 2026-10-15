@@ -95,7 +95,7 @@ function toggleModalFields() {
         love: { title: "LOVE • Agency Hub B2B (10 Nozze)", price: 490, url: "https://www.weddingplanner.it", label: "Sito Web Agenzia Wedding Planner" },
         forma_materia: { title: "Forma & Materia • Atelier Pro 4K", price: 249, url: "https://formamateria.rmstudio.app/studio", label: "URL Destinazione Studio" },
         aura: { title: "AURA • Pro Mensile", price: 19, url: "https://aura.rmstudio.app/radar.html", label: "URL Stanza Radar" },
-        experience: { title: "Smart Experience Page", price: 390, url: "https://www.ristorante.it", label: "Sito Web Ristorante (per Scraping AI)" },
+        experience: { title: "Smart Experience Page", price: 350, url: "https://www.ristorante.it", label: "Sito Web Ristorante (per Scraping AI)" },
         html: { title: "SiteEngine Pro • Sito Web", price: 400, url: "https://sitengine.rmstudio.app/lead", label: "URL Sito Web" },
         social: { title: "Carousel Engine", price: 29, url: "https://social.rmstudio.app", label: "URL Destinazione" },
         vision: { title: "Vision UGC Video", price: 50, url: "", label: "URL Destinazione" },
