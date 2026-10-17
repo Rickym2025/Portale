@@ -132,3 +132,174 @@ window.SAAS_APP_PROFILES = {
     ff_edizioni: { icon: "fa-music text-purple-400", title: "FF Edizioni • Servizi Musicali SIAE", desc: "Brani musicali e jingle promozionali composti su misura con il Maestro Fausto Fusetti." },
     nexus: { icon: "fa-robot text-cyan-400", title: "NexusAI • Shadow-Proxy Sales Overlay", desc: "Assistente virtuale iniettato direttamente sul sito web del cliente." }
 };
+
+// 🎁 DIZIONARIO DETTAGLI OFFERTA POLIMORFICO (NEUROMARKETING PER CIASCUN SAAS)
+window.SAAS_OFFER_DETAILS = {
+    html: {
+        badge: "Pacchetto Sito Web d'Autore",
+        title: "Cosa Comprende la Licenza Definitiva",
+        desc: "Tutto ciò che serve per la presenza online d'autore del tuo studio, senza complicazioni tecniche.",
+        anchorPrice: 1500,
+        discountText: "Risparmi € 1.100 (-73%)",
+        items: [
+            { icon: "fa-compass-drafting", color: "text-purple-400", title: "Progettazione Sito & 3 Varianti di Stile", desc: "Scegli liberamente quale stile preferisci: carichiamo i tuoi progetti e pubblichiamo la versione finale.", val: "€ 750" },
+            { icon: "fa-globe", color: "text-blue-400", title: "Indirizzo Web Personale & Spazio Cloud per 1 Anno", desc: "Registrazione del nome esclusivo dello studio (es: www.tuostudio.it). Zero pratiche a tuo carico.", val: "€ 250" },
+            { icon: "fa-pen-nib", color: "text-emerald-400", title: "Blog Diretto da Cellulare (Zero Password)", desc: "Tocchi 'Area Studio' dal telefono, inserisci solo il tuo numero e il PIN per pubblicare in 30 secondi.", val: "€ 300" },
+            { icon: "fa-map-location-dot", color: "text-amber-400", title: "Mappa Interattiva & Dati per Ricerche Google", desc: "I clienti trovano lo studio e avviano il navigatore. Codice ottimizzato per farti trovare nelle ricerche locali.", val: "€ 200" }
+        ],
+        ctaText: "Attiva e Metti Online il Sito"
+    },
+    siteengine: {
+        badge: "Pacchetto Sito Web d'Autore",
+        title: "Cosa Comprende la Licenza Definitiva",
+        desc: "Tutto ciò che serve per la presenza online d'autore del tuo studio, senza complicazioni tecniche.",
+        anchorPrice: 1500,
+        discountText: "Risparmi € 1.100 (-73%)",
+        items: [
+            { icon: "fa-compass-drafting", color: "text-purple-400", title: "Progettazione Sito & 3 Varianti di Stile", desc: "Scegli liberamente quale stile preferisci: carichiamo i tuoi progetti e pubblichiamo la versione finale.", val: "€ 750" },
+            { icon: "fa-globe", color: "text-blue-400", title: "Indirizzo Web Personale & Spazio Cloud per 1 Anno", desc: "Registrazione del nome esclusivo dello studio (es: www.tuostudio.it). Zero pratiche a tuo carico.", val: "€ 250" },
+            { icon: "fa-pen-nib", color: "text-emerald-400", title: "Blog Diretto da Cellulare (Zero Password)", desc: "Tocchi 'Area Studio' dal telefono, inserisci solo il tuo numero e il PIN per pubblicare in 30 secondi.", val: "€ 300" },
+            { icon: "fa-map-location-dot", color: "text-amber-400", title: "Mappa Interattiva & Dati per Ricerche Google", desc: "I clienti trovano lo studio e avviano il navigatore. Codice ottimizzato per farti trovare nelle ricerche locali.", val: "€ 200" }
+        ],
+        ctaText: "Attiva e Metti Online il Sito"
+    },
+    concierge: {
+        badge: "Suite Accoglienza Notturna & Turistica",
+        title: "Cosa Comprende Concierge24",
+        desc: "La receptionist AI che azzera le chiamate perse e gestisce il ricevimento h24 nella lingua nativa dell'ospite.",
+        anchorPrice: 750,
+        discountText: "Offerta Attivazione Riservata",
+        items: [
+            { icon: "fa-phone-volume", color: "text-orange-400", title: "Centralino Vocale AI H24 Multilingua (Giulia)", desc: "Risponde in voce naturale a qualsiasi ora in inglese, tedesco, francese, spagnolo e italiano.", val: "€ 350" },
+            { icon: "fa-clock", color: "text-blue-400", title: "Gestione Check-in Notturni e Regole Casa", desc: "Istruzioni automatiche su chiavi, parcheggio, orari colazione e deposito bagagli.", val: "€ 150" },
+            { icon: "fa-map", color: "text-emerald-400", title: "Concierge Turistico Territoriale (35 km)", desc: "Consiglia ristoranti e mete d'interesse inviando mappe interattive sullo smartphone dell'ospite.", val: "€ 150" },
+            { icon: "fa-envelope-open-text", color: "text-purple-400", title: "Report Istantaneo Trascrizione & Audio", desc: "L'albergo riceve notifica email con trascrizione e sintesi solo se ci sono urgenze operative.", val: "€ 100" }
+        ],
+        ctaText: "Attiva Concierge24 per la Struttura"
+    },
+    dentis: {
+        badge: "Presidio Telefonico & Prime Visite",
+        title: "Cosa Comprende Dentis AI",
+        desc: "La segreteria vocale per studi dentistici che risponde al secondo squillo e azzera i no-show.",
+        anchorPrice: 650,
+        discountText: "Promo Dedicata Studi Medici",
+        items: [
+            { icon: "fa-tooth", color: "text-cyan-400", title: "Receptionist Vocale H24 Serena (Subentro su Occupato)", desc: "Accoglie con calore ed empatia anche a linee occupate, durante le visite o a studio chiuso.", val: "€ 300" },
+            { icon: "fa-hospital", color: "text-red-400", title: "Triage Urgenze Odontoiatriche", desc: "Riconosce il dolore acuto canalizzandolo con priorità negli slot dell'agenda clinica.", val: "€ 150" },
+            { icon: "fa-calendar-check", color: "text-emerald-400", title: "Sincronizzazione Google Calendar", desc: "Fissa gli appuntamenti in tempo reale senza sovrapposizioni con la segreteria interna.", val: "€ 100" },
+            { icon: "fa-brands fa-whatsapp", color: "text-green-400", title: "Promemoria WhatsApp Automatici (-72% No-Show)", desc: "Invia promemoria ai pazienti il giorno prima abbattendo drasticamente le disdette a vuoto.", val: "€ 100" }
+        ],
+        ctaText: "Attiva Serena per il Tuo Studio"
+    },
+    lexis: {
+        badge: "Reperibilità Formale Studio Legale",
+        title: "Cosa Comprende Lexis AI",
+        desc: "La segreteria vocale qualificata che tutela l'immagine dello studio durante udienze e riunioni.",
+        anchorPrice: 650,
+        discountText: "Configurazione Istituzionale Riservata",
+        items: [
+            { icon: "fa-scale-balanced", color: "text-yellow-400", title: "Segreteria Vocale Formale Chiara ('del Lei')", desc: "Registro deontologico rigoroso con massima tutela del prestigio e della riservatezza (GDPR).", val: "€ 300" },
+            { icon: "fa-file-lines", color: "text-blue-400", title: "Filtro Qualificato Prime Consulenze", desc: "Raccoglie i dettagli del caso, verifica le disponibilità e genera una sintesi per l'avvocato.", val: "€ 150" },
+            { icon: "fa-phone-flip", color: "text-emerald-400", title: "Attivazione Istantanea Senza Cambio Numero", desc: "Funziona con una semplice deviazione di chiamata su occupato o fuori orario, senza costi di linea.", val: "€ 100" },
+            { icon: "fa-shield-halved", color: "text-purple-400", title: "Trascrizione Crittografata via Email", desc: "Notifica immediata con riassunto giuridico per richiamare solo i clienti in target.", val: "€ 100" }
+        ],
+        ctaText: "Attiva Chiara per lo Studio Legale"
+    },
+    locanda: {
+        badge: "Marketing della Ristorazione & Tavoli",
+        title: "Cosa Comprende Locanda Digitale",
+        desc: "La suite che trasforma i piatti in video 3D a 60 FPS e fidelizza i clienti al tavolo in automatico.",
+        anchorPrice: 690,
+        discountText: "Offerta Ristorazione Riservata",
+        items: [
+            { icon: "fa-utensils", color: "text-amber-400", title: "Living 3D Menu al Tavolo a 60 FPS", desc: "I piatti forti e le bottiglie si animano in video 3D dallo smartphone del cliente senza scaricare app.", val: "€ 300" },
+            { icon: "fa-cake-candles", color: "text-pink-400", title: "Bancomat dei Compleanni Automatico WhatsApp", desc: "Invia promozioni esclusive a -10 giorni dal compleanno per riempire i tavoli a inizio settimana.", val: "€ 200" },
+            { icon: "fa-shield-heart", color: "text-emerald-400", title: "Review Shield per Google Maps", desc: "Indirizza i clienti entusiasti a lasciare 5 stelle su Google intercettando i reclami in privato.", val: "€ 100" },
+            { icon: "fa-qrcode", color: "text-purple-400", title: "Grafiche QR Code Alta Risoluzione per i Tavoli", desc: "File pronti per la stampa con comande dirette inviate via WhatsApp alla cucina.", val: "€ 90" }
+        ],
+        ctaText: "Attiva Locanda Digitale per il Locale"
+    },
+    experience: {
+        badge: "E-Menu Sensoriale con Sommelier AI",
+        title: "Cosa Comprende Smart Experience",
+        desc: "La carta digitale interattiva che valorizza la cucina e aumenta gli ordini delle bottiglie in cantina.",
+        anchorPrice: 650,
+        discountText: "Offerta Signature Riservata",
+        items: [
+            { icon: "fa-wine-glass", color: "text-purple-400", title: "Sommelier AI & Wine Pairing per Piatto", desc: "Consiglia la bottiglia o il calice ideale per ogni portata aumentando lo scontrino medio.", val: "€ 250" },
+            { icon: "fa-wheat-awn", color: "text-amber-400", title: "Storytelling delle Materie Prime a Km 0", desc: "Schede emozionali con origine degli ingredienti, frollature ed eccellenze territoriali.", val: "€ 150" },
+            { icon: "fa-robot", color: "text-cyan-400", title: "Maître Virtuale Nexus H24", desc: "Risponde ai clienti su intolleranze, celiachia e guida alla prenotazione del tavolo.", val: "€ 150" },
+            { icon: "fa-map-pin", color: "text-emerald-400", title: "Navigatore GPS & Distanza Stradale in Tempo Reale", desc: "Calcola i tempi di percorrenza per i turisti e facilita l'arrivo al ristorante.", val: "€ 100" }
+        ],
+        ctaText: "Attiva Smart Experience per il Ristorante"
+    },
+    radar: {
+        badge: "Intelligence B2B Sourcing Auto da Privati",
+        title: "Cosa Comprende DriveMotion RADAR",
+        desc: "La piattaforma che intercetta le migliori auto da privati prima degli altri concessionari.",
+        anchorPrice: 490,
+        discountText: "Abbonamento Concessionario Dedicato",
+        items: [
+            { icon: "fa-radar", color: "text-cyan-400", title: "Scansione Continua H24 (Subito + FB + AutoScout)", desc: "Isola gli annunci di privati autentici nella tua provincia entro pochi minuti dalla pubblicazione.", val: "€ 200" },
+            { icon: "fa-brain", color: "text-purple-400", title: "Perizia Neurale del Margine Netto Reale", desc: "L'AI stima il valore di rivendita ed esclude difetti occulti evidenziando solo i veri affari.", val: "€ 150" },
+            { icon: "fa-paper-plane", color: "text-blue-400", title: "Alert Istantanei Telegram & Email con Contatto Diretto", desc: "Ricevi scheda con foto, difetti stimati e link WhatsApp diretto al privato venditore.", val: "€ 100" },
+            { icon: "fa-handshake", color: "text-emerald-400", title: "Zero Commissioni d'Asta sui Veicoli", desc: "Tratti direttamente con il privato senza intermediari o percentuali d'acquisto.", val: "€ 40" }
+        ],
+        ctaText: "Attiva RADAR per la Concessionaria"
+    },
+    forma_materia: {
+        badge: "Rendering Neurale 4K per Progettisti",
+        title: "Cosa Comprende Forma & Materia",
+        desc: "La tecnologia neurale che converte schizzi a mano libera e piante CAD in render 4K in 20 secondi.",
+        anchorPrice: 790,
+        discountText: "Licenza Studio Riservata",
+        items: [
+            { icon: "fa-wand-magic-sparkles", color: "text-amber-400", title: "Motore Neurale Schizzo-to-Render 4K in 20s", desc: "Carichi una foto del disegno o un wireframe e ottieni render fotorealistici istantanei.", val: "€ 350" },
+            { icon: "fa-pen-ruler", color: "text-purple-400", title: "Interprete Intelligente di Note & Frecce a Mano", desc: "Legge le annotazioni scritte a penna sul foglio applicando i materiali esatti indicati.", val: "€ 200" },
+            { icon: "fa-layer-group", color: "text-blue-400", title: "Depth Map 3D Senza Artefatti", desc: "Elimina le scritte e i tratti della matita restituendo superfici tridimensionali pulite.", val: "€ 140" },
+            { icon: "fa-image", color: "text-emerald-400", title: "Tavole Comparative con Logo Studio per Cantiere", desc: "Esportazione in alta definizione pronte per le presentazioni ai committenti.", val: "€ 100" }
+        ],
+        ctaText: "Attiva Forma & Materia per lo Studio"
+    },
+    aura: {
+        badge: "Radar di Prossimità & Sicurezza Lavoratori",
+        title: "Cosa Comprende AURA Proximity",
+        desc: "Il radar vettoriale e chat mesh P2P 100% web senza installazione di app.",
+        anchorPrice: 350,
+        discountText: "Promo Sicurezza Dedicata",
+        items: [
+            { icon: "fa-crosshairs", color: "text-cyan-400", title: "Radar Vettoriale 3D & Co-Pilota Vocale HD", desc: "Indicazioni audio in vivavoce e bussola per orientarsi nei gruppi in movimento.", val: "€ 150" },
+            { icon: "fa-person-falling", color: "text-red-400", title: "Rilevamento Uomo a Terra & Impatti (D.Lgs. 81/08)", desc: "Invio automatico di allarme e coordinate GPS via WhatsApp in caso di caduta o immobilità.", val: "€ 100" },
+            { icon: "fa-comments", color: "text-purple-400", title: "Chat Mesh P2P Privata Residente in RAM", desc: "Scambio dati sicuro a zero tracciamento su server per squadre operative.", val: "€ 100" }
+        ],
+        ctaText: "Attiva Stanza AURA Proximity"
+    },
+    eternia: {
+        badge: "Memoriali Digitali d'Autore & Agenzia",
+        title: "Cosa Comprende ETERNIA",
+        desc: "Portali memoriali interattivi ed eterni con QR Code per sollevare le famiglie con eleganza.",
+        anchorPrice: 850,
+        discountText: "Pacchetto Impresa Riservato",
+        items: [
+            { icon: "fa-qrcode", color: "text-amber-400", title: "Memoriale QR Perpetuo Stampabile in Tipografia", desc: "Pronto per ricordini cartacei, epigrafi e urne, navigabile da smartphone per sempre.", val: "€ 350" },
+            { icon: "fa-book-open", color: "text-purple-400", title: "Biografo AI con Storia di Vita in 3 Capitoli", desc: "Trasforma gli appunti della famiglia in una memoria solenne e toccante.", val: "€ 250" },
+            { icon: "fa-heart", color: "text-pink-400", title: "Libro dei Ricordi & Gesti Simbolici Interattivi", desc: "Condoglianze, lumini e pensieri dei conoscenti esportabili in PDF per i familiari.", val: "€ 150" },
+            { icon: "fa-building", color: "text-emerald-400", title: "Firma White-Label dell'Impresa Funebre", desc: "Il marchio della tua agenzia compare con prestigio nel footer di ogni memoriale.", val: "€ 100" }
+        ],
+        ctaText: "Attiva ETERNIA per l'Impresa"
+    },
+    love: {
+        badge: "Partecipazioni Nozze Interattive 3D",
+        title: "Cosa Comprende LOVE",
+        desc: "La suite digitale per partecipazioni nuziali d'autore con gestione lista invitati e maxischermo.",
+        anchorPrice: 650,
+        discountText: "Pacchetto Nozze Dedicato",
+        items: [
+            { icon: "fa-envelope", color: "text-pink-400", title: "Apertura 3D della Busta con Sigillo in Ceralacca", desc: "Esperienza cinematografica all'apertura da smartphone per stupire gli invitati.", val: "€ 250" },
+            { icon: "fa-utensils", color: "text-amber-400", title: "Modulo RSVP con Tabella Intolleranze Catering", desc: "Raccoglie adesioni e diete particolari esportando il file Excel pronto per lo chef.", val: "€ 150" },
+            { icon: "fa-brands fa-whatsapp", color: "text-green-400", title: "Spedizione WhatsApp 1-Tap alla Rubrica", desc: "Invio rapido e sicuro delle partecipazioni con link personalizzato.", val: "€ 100" },
+            { icon: "fa-tv", color: "text-purple-400", title: "Maxischermo Live & Photowall per la Sala Ricevimenti", desc: "Foto e messaggi degli invitati proiettati in diretta durante la festa.", val: "€ 150" }
+        ],
+        ctaText: "Attiva LOVE per il Matrimonio"
+    }
+};
