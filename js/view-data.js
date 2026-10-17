@@ -149,6 +149,22 @@ window.SAAS_OFFER_DETAILS = {
         ],
         ctaText: "Attiva e Metti Online il Sito"
     },
+
+    nexus: {
+        badge: "NexusAI • Venditore Virtuale H24",
+        title: "Cosa Comprende l'Attivazione di NexusAI Pro",
+        desc: "L'assistente AI autonomo che accoglie i visitatori del tuo sito web esistente e trasforma il traffico passivo in prenotazioni e contatti reali.",
+        anchorPrice: 290,
+        discountText: "Canone Mensile Senza Vincoli",
+        items: [
+            { icon: "fa-robot", color: "text-cyan-400", title: "Chatbot AI Addestrato sul tuo Menu e Servizi", desc: "Accoglie i visitatori h24, risponde a domande su orari, specialità, allergeni e prezzi in 1 secondo.", val: "€ 150" },
+            { icon: "fa-calendar-check", color: "text-emerald-400", title: "Modulo Raccolta Prenotazioni Tavoli e Contatti", desc: "Intercetta chi sta per abbandonare la pagina e raccoglie nome, telefono ed email per la prenotazione.", val: "€ 100" },
+            { icon: "fa-code", color: "text-purple-400", title: "Integrazione Invisibile (1 Sola Riga di Codice)", desc: "Funziona su qualsiasi sito esistente (WordPress, Wix, custom) senza modificare il codice o il layout grafico.", val: "€ 50" },
+            { icon: "fa-envelope-open-text", color: "text-blue-400", title: "Report Immediati & Notifiche Trascrizioni via Email", desc: "Ricevi i contatti e il riepilogo delle richieste dei clienti direttamente nella tua casella di posta.", val: "€ 50" }
+        ],
+        ctaText: "Attiva NexusAI Pro per il Tuo Sito"
+    },
+    
     siteengine: {
         badge: "Pacchetto Sito Web d'Autore",
         title: "Cosa Comprende la Licenza Definitiva",
