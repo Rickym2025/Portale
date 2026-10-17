@@ -575,9 +575,10 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🦷 DENTIS, ⚖️ LEXIS, 🍽️ ELENA & 🚀 VITTORIA (CORE MULTI-SETTORE)
+    // 🦷 DENTIS, ⚖️ LEXIS, 🍽️ ELENA & 🚀 VITTORIA (CORE MULTI-SETTORE CON AUTO-RILEVAMENTO)
     if (type === 'dentis' || type === 'lexis' || type === 'elena' || type === 'vittoria') {
         btn.innerText = "Configurazione AI & Scraper...";
+        
         let settore = 'odontoiatria';
         let defaultMail = 'info@studio.it';
 
@@ -588,6 +589,19 @@ async function handleCreateSubmit(e) {
             settore = 'ristorazione';
             defaultMail = 'info@ristorante.it';
         } else if (type === 'vittoria') {
+            settore = 'agenzia';
+            defaultMail = 'info@agenzia.it';
+        }
+
+        // 🛡️ Paracadute intelligente: rileva il settore reale dal nome dell'attività
+        const lowerName = clientName.toLowerCase();
+        if (lowerName.includes('ristoran') || lowerName.includes('pizzeri') || lowerName.includes('osteria') || lowerName.includes('trattoria') || lowerName.includes('bistrot')) {
+            settore = 'ristorazione';
+            defaultMail = 'info@ristorante.it';
+        } else if (lowerName.includes('avvocat') || lowerName.includes('legale') || lowerName.includes('studio leg')) {
+            settore = 'legale';
+            defaultMail = 'info@studiolegale.it';
+        } else if (lowerName.includes('agenzia') || lowerName.includes('marketing') || lowerName.includes('advertising') || lowerName.includes('media')) {
             settore = 'agenzia';
             defaultMail = 'info@agenzia.it';
         }
@@ -608,7 +622,7 @@ async function handleCreateSubmit(e) {
                 })
             });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            alert(`✨ Assistente Vocale (${type.toUpperCase()}) registrato per ${clientName}!`);
+            alert(`✨ Assistente Vocale (${settore.toUpperCase()}) registrato per ${clientName}!`);
             closeCreationModal(); 
             setTimeout(loadMasterData, 2000);
         } catch (err) { 
