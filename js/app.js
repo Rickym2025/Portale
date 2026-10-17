@@ -73,10 +73,10 @@ function onRestaurantSelectedFromSheet() {
     if (r.sito) document.getElementById('c-url').value = r.sito;
     if (r.telefono) document.getElementById('c-phone').value = r.telefono;
     document.getElementById('c-title').value = "Smart Experience Page";
-    document.getElementById('c-price').value = 390;
+    document.getElementById('c-price').value = 350;
 }
 
-// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I SAAS
+// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I 21 SAAS UFFICIALI
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
     const titleInput = document.getElementById('c-title');
@@ -85,22 +85,27 @@ function toggleModalFields() {
     const urlLabel = document.getElementById('c-url-label');
 
     const config = {
-        locanda: { title: "Locanda Digitale • Living 3D Menu & Compleanni", price: 169, url: "https://www.ristorante.it", label: "Sito Web o Pagina Social del Locale" },
-        radar: { title: "DriveMotion RADAR • Starter Salone", price: 99, url: "https://www.autosalone.it", label: "Sito Web dell'Autosalone / Concessionario" },
-        nexus: { title: "NexusAI • Sales Overlay Pro", price: 99, url: "https://www.azienda.it", label: "Sito Web Azienda (per Generazione Shadow-Proxy)" },
         concierge: { title: "Concierge24 • Giulia Voice Assistant H24", price: 179, url: "https://www.hotel.it", label: "Sito Web Struttura Ricettiva (Hotel / B&B)" },
         dentis: { title: "Dentis AI • Serena PRO", price: 149, url: "https://www.sanadent.it/", label: "Sito Web Studio Dentistico (per Scraping AI)" },
         lexis: { title: "Lexis AI • Chiara PRO", price: 149, url: "https://www.studiolegale.it/", label: "Sito Web Studio Legale (per Scraping AI)" },
-        eternia: { title: "ETERNIA • Hub Agenzia B2B (10 Cerimonie)", price: 690, url: "https://www.onoranzefunebri.it", label: "Sito Web dell'Impresa Funebre" },
-        love: { title: "LOVE • Agency Hub B2B (10 Nozze)", price: 490, url: "https://www.weddingplanner.it", label: "Sito Web Agenzia Wedding Planner" },
+        locanda: { title: "Locanda Digitale • Living 3D Menu & Compleanni", price: 169, url: "https://www.ristorante.it", label: "Sito Web o Pagina Social del Locale" },
+        radar: { title: "DriveMotion RADAR • Starter Salone", price: 99, url: "https://www.autosalone.it", label: "Sito Web dell'Autosalone / Concessionario" },
         forma_materia: { title: "Forma & Materia • Atelier Pro 4K", price: 249, url: "https://formamateria.rmstudio.app/studio", label: "URL Destinazione Studio" },
         aura: { title: "AURA • Pro Mensile", price: 19, url: "https://aura.rmstudio.app/radar.html", label: "URL Stanza Radar" },
+        eternia: { title: "ETERNIA • Hub Agenzia B2B (10 Cerimonie)", price: 690, url: "https://www.onoranzefunebri.it", label: "Sito Web dell'Impresa Funebre" },
+        love: { title: "LOVE • Agency Hub B2B (10 Nozze)", price: 490, url: "https://www.weddingplanner.it", label: "Sito Web Agenzia Wedding Planner" },
         experience: { title: "Smart Experience Page", price: 350, url: "https://www.ristorante.it", label: "Sito Web Ristorante (per Scraping AI)" },
         html: { title: "SiteEngine Pro • Sito Web", price: 400, url: "https://sitengine.rmstudio.app/lead", label: "URL Sito Web" },
-        social: { title: "Carousel Engine", price: 29, url: "https://social.rmstudio.app", label: "URL Destinazione" },
-        vision: { title: "Vision UGC Video", price: 50, url: "", label: "URL Destinazione" },
-        video: { title: "HomeTour Video", price: 59, url: "", label: "URL Destinazione" },
-        license: { title: "Licenza Software", price: 290, url: "", label: "URL Destinazione" }
+        hometour: { title: "HomeTour AI • Video Reel 3D", price: 59, url: "https://www.agenziaimmobiliare.it", label: "URL Immobile o Agenzia" },
+        drivemotion: { title: "DriveMotion • Video Auto Sfondo AI", price: 59, url: "https://www.autosalone.it", label: "Sito Web Concessionario / Auto" },
+        vision: { title: "Vision UGC • Influencer Virtuali AI", price: 120, url: "https://www.brand.it", label: "URL E-Commerce o Prodotto" },
+        nexus: { title: "NexusAI • Sales Overlay Pro", price: 99, url: "https://www.azienda.it", label: "Sito Web Azienda (per Shadow-Proxy)" },
+        ares: { title: "AresAI • Coach Hub B2B", price: 99, url: "https://ares.rmstudio.app", label: "Sito Palestra o Personal Trainer" },
+        free_energy: { title: "Free Energy • Start Pack 10.000 Crediti", price: 199, url: "https://free-energy.rmstudio.app", label: "Sito Azienda Installatrice Fotovoltaico" },
+        social: { title: "Carousel Engine Pro", price: 79, url: "https://social.rmstudio.app", label: "URL Sito Brand" },
+        omniastudio: { title: "OmniaStudio PRO • Licenza Lifetime", price: 699, url: "https://omniastudio.rmstudio.app", label: "URL Studio Professionale" },
+        velomotion: { title: "VeloMotion • Sblocco Bosch BES3", price: 290, url: "https://velomotion.rmstudio.app", label: "URL Officina / Rivenditore" },
+        ff: { title: "FF Edizioni • Jingle Commerciale Radio/Social", price: 250, url: "https://ff.rmstudio.app", label: "URL Azienda per Jingle Audio" }
     };
 
     if (config[t]) {
@@ -137,7 +142,7 @@ function toggleSidebar() {
     localStorage.setItem('sidebar_collapsed', isCol ? 'true' : 'false');
 }
 
-// 🎯 APPLICAZIONE FILTRI CON SUPPORTO A "STATO LETTURA / INVIO"
+// 🎯 APPLICAZIONE FILTRI
 function applyFilters() {
     const fType = document.getElementById('filter-type')?.value || 'all';
     const fName = (document.getElementById('filter-name')?.value || '').toLowerCase().trim();
@@ -145,21 +150,17 @@ function applyFilters() {
     const fStatus = document.getElementById('filter-status')?.value || 'all';
 
     const filtered = (window.allProjects || []).filter(p => {
-        // 1. Filtro Tipo SaaS
         if (fType !== 'all' && p.portal_type !== fType) return false;
 
-        // 2. Filtro Nome / Email / Titolo
         const match = (p.client_name || '').toLowerCase().includes(fName) || 
                       (p.client_email || '').toLowerCase().includes(fName) || 
                       (p.title || '').toLowerCase().includes(fName);
         if (!match) return false;
 
-        // 3. Filtro Pagamento
         const isPaid = p.is_paid === true || p.is_paid === "true";
         if (fPaid === 'paid' && !isPaid) return false;
         if (fPaid === 'unpaid' && isPaid) return false;
 
-        // 4. Filtro Stato Lettura / Invio
         if (fStatus !== 'all') {
             const views = parseInt(p.views_count || 0, 10);
             const isOpenedFlag = p.is_opened === true || p.is_opened === "true";
@@ -286,19 +287,30 @@ function renderMasterTable(data) {
         const openDateFormatted = openDate ? new Date(openDate).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const openDaysAgo = getDaysAgo(openDate);
 
-        // 🏷️ BADGES COMPATTI
+        // 🏷️ BADGES COMPLETI PER TUTTI I 21 SAAS
         const badges = {
-            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ locanda</span>`,
-            radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏎️ radar</span>`,
-            nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🤖 nexus</span>`,
+            concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
             dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
             lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚖️ lexis</span>`,
-            concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
+            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ locanda</span>`,
+            radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏎️ radar</span>`,
             forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏛️ f&amp;m</span>`,
             aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📡 aura</span>`,
             eternia: `<span class="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🕊️ eternia</span>`,
             love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💍 love</span>`,
-            html: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`
+            experience: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍷 experience</span>`,
+            html: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`,
+            siteengine: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`,
+            hometour: `<span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏠 hometour</span>`,
+            drivemotion: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🚗 drivemotion</span>`,
+            vision: `<span class="bg-pink-500/15 text-pink-300 border border-pink-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🎬 vision</span>`,
+            nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🤖 nexus</span>`,
+            ares: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏋️ ares</span>`,
+            free_energy: `<span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">☀️ solar</span>`,
+            social: `<span class="bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📊 social</span>`,
+            omniastudio: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💼 omniastudio</span>`,
+            velomotion: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚡ velomotion</span>`,
+            ff: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🎵 ff</span>`
         };
 
         const typeBadge = badges[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap">${p.portal_type || 'html'}</span>`;
@@ -503,7 +515,7 @@ function closeCreationModal() {
     if (m) { m.classList.remove('flex'); m.classList.add('hidden'); }
 }
 
-// 4. SUBMIT FORM: DISPATCH SU TUTTI I SAAS
+// 4. SUBMIT FORM: DISPATCH UNIVERSALE SU TUTTI I 21 SAAS
 async function handleCreateSubmit(e) {
     e.preventDefault();
     const btn = document.getElementById('c-btn');
@@ -656,7 +668,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // TUTTI GLI ALTRI PRODOTTI (INCLUSO SITEENGINE PRO)
+    // TUTTI GLI ALTRI PRODOTTI (SITEENGINE, HOMETOUR, DRIVEMOTION, VISION, ARES, FREE ENERGY, OMNIASTUDIO, VELOMOTION, FF, SOCIAL, FORMA&MATERIA, AURA)
     btn.innerText = "Salvataggio Supabase...";
     try {
         const { error } = await supabaseClient.from('portal_videos').insert([{
