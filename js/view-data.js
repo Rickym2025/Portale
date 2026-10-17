@@ -139,8 +139,11 @@ window.SAAS_OFFER_DETAILS = {
         badge: "NexusAI • Agente Venditore & Receptionist H24",
         title: "Cosa Comprende l'Attivazione di NexusAI Pro",
         desc: "L'assistente AI autonomo che accoglie i visitatori del tuo sito web esistente e converte il traffico passivo in prenotazioni e contatti reali.",
-        anchorPrice: 290,
+        anchorPrice: 350,
         discountText: "Abbonamento Mensile Senza Vincoli",
+        isRecurring: true,
+        periodText: "al mese • disdici quando vuoi",
+        cadenceLabel: "/mese",
         items: [
             { icon: "fa-robot", color: "text-cyan-400", title: "Chatbot AI Addestrato sul Tuo Menu e Servizi", desc: "Accoglie i visitatori h24, risponde a domande su orari, specialità, allergeni e prezzi in 1 secondo.", val: "€ 150" },
             { icon: "fa-calendar-check", color: "text-emerald-400", title: "Modulo Raccolta Prenotazioni Tavoli e Contatti", desc: "Intercetta chi sta per uscire dalla pagina e registra nome, telefono ed email del cliente.", val: "€ 100" },
