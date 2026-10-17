@@ -575,7 +575,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    / 🦷 DENTIS, ⚖️ LEXIS, 🍽️ ELENA & 🚀 VITTORIA (CORE MULTI-SETTORE)
+    // 🦷 DENTIS, ⚖️ LEXIS, 🍽️ ELENA & 🚀 VITTORIA (CORE MULTI-SETTORE)
     if (type === 'dentis' || type === 'lexis' || type === 'elena' || type === 'vittoria') {
         btn.innerText = "Configurazione AI & Scraper...";
         let settore = 'odontoiatria';
