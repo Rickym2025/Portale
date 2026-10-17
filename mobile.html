@@ -85,12 +85,13 @@
         <div class="bg-[#0b0b12] border border-zinc-800 p-3.5 rounded-2xl space-y-2 shadow-xl">
             <label class="block text-xs font-black uppercase tracking-wider text-purple-300 flex items-center justify-between">
                 <span>🎯 Settore di Attività del Lead</span>
-                <span id="sector-count-badge" class="text-[10px] font-mono text-zinc-400">21 Prodotti</span>
+                <span id="sector-count-badge" class="text-[10px] font-mono text-zinc-400">23 Prodotti</span>
             </label>
             <select id="sector-advisor" onchange="applySectorFilter()" class="w-full bg-[#13141f] border border-purple-500/40 focus:border-purple-400 rounded-xl p-3 text-xs text-white font-bold outline-none cursor-pointer">
-                <option value="all">-- Tutti i 21 SaaS (Nessun Filtro) --</option>
+                <option value="all">-- Tutti i 23 SaaS &amp; Voice (Nessun Filtro) --</option>
                 <option value="auto" selected>🏎️ Concessionarie Auto &amp; Saloni Usato</option>
                 <option value="ristorazione">🍽️ Ristoranti, Pizzerie, Bistrot &amp; Wine Bar</option>
+                <option value="agenzia">🚀 Agenzie di Marketing, Comunicazione &amp; Pubblicità</option>
                 <option value="architettura">🏛️ Architetti, Interior Designer &amp; Geometri</option>
                 <option value="immobiliare">🏠 Agenzie Immobiliari &amp; Costruttori</option>
                 <option value="medico">🦷 Studi Medici, Odontoiatri &amp; Cliniche</option>
@@ -109,7 +110,7 @@
             </select>
         </div>
 
-        <!-- GRIGLIA UNIFORME DINAMICA DEI 21 SAAS -->
+        <!-- GRIGLIA UNIFORME DINAMICA DEI 23 SAAS -->
         <div class="grid grid-cols-2 gap-2.5" id="saas-grid">
             <!-- Popolato e riordinato dinamicamente via JS -->
         </div>
@@ -179,7 +180,7 @@
                     <span class="text-xs text-zinc-300 font-bold truncate" id="deal-selected-saas-name">Prodotto</span>
                     <div class="flex items-center gap-1">
                         <span class="text-[10px] text-zinc-400 font-mono">Prezzo Offerta: €</span>
-                        <input type="number" id="special-price-input" class="w-16 bg-transparent text-emerald-400 font-mono font-black text-sm text-center outline-none" value="169">
+                        <input type="number" id="special-price-input" class="w-16 bg-transparent text-emerald-400 font-mono font-black text-sm text-center outline-none" value="149">
                     </div>
                 </div>
 
@@ -224,12 +225,14 @@
     </div>
 
     <script>
-        // 📚 I 21 SAAS ATTIVI DI RM STUDIO
+        // 📚 I 23 SAAS E MODULI VOCALI ATTIVI DI RM STUDIO
         const SAAS_CATALOG = {
             radar: { id: "radar", name: "DriveMotion RADAR", emoji: "🏎️", defaultPrice: 179, url: "https://drivemotion-radar.rmstudio.app", tag: "Sourcing Privati h24", cat: "Auto" },
             drivemotion: { id: "drivemotion", name: "DriveMotion Video", emoji: "🚗", defaultPrice: 59, url: "https://drivemotion.rmstudio.app", tag: "Video Auto Sfondo AI", cat: "Auto" },
-            locanda: { id: "locanda", name: "Locanda Digitale", emoji: "🍽️", defaultPrice: 169, url: "https://locandadigitale.rmstudio.app", tag: "Living 3D & Compleanni", cat: "Horeca" },
+            locanda: { id: "locanda", name: "Locanda Digitale", emoji: "🍕", defaultPrice: 169, url: "https://locandadigitale.rmstudio.app", tag: "Living 3D & Compleanni", cat: "Horeca" },
             experience: { id: "experience", name: "Smart Experience", emoji: "🍷", defaultPrice: 390, url: "https://experience.rmstudio.app", tag: "E-Menu con Maître AI", cat: "Horeca" },
+            elena: { id: "elena", name: "Elena AI Voice", emoji: "🍽️", defaultPrice: 149, url: "https://dentis-app.rmstudio.app/config.html", tag: "Hostess Tavoli H24", cat: "Voice Horeca" },
+            vittoria: { id: "vittoria", name: "Vittoria AI Voice", emoji: "🚀", defaultPrice: 149, url: "https://dentis-app.rmstudio.app/lexis-config.html", tag: "Centralino Lead Agenzie", cat: "Voice B2B" },
             forma_materia: { id: "forma_materia", name: "Forma & Materia", emoji: "🏛️", defaultPrice: 249, url: "https://formamateria.rmstudio.app", tag: "Schizzo to Render 4K", cat: "Architettura" },
             sitengine: { id: "sitengine", name: "SiteEngine Pro", emoji: "🌐", defaultPrice: 400, url: "https://sitengine.rmstudio.app", tag: "Landing & Blog Smart", cat: "Web B2B" },
             dentis: { id: "dentis", name: "Dentis AI", emoji: "🦷", defaultPrice: 149, url: "https://dentis.rmstudio.app", tag: "Receptionist Dentisti", cat: "Sanità" },
@@ -256,8 +259,12 @@
                 upsell: ['nexus', 'social']
             },
             ristorazione: {
-                primary: ['locanda', 'experience'],
+                primary: ['locanda', 'experience', 'elena'],
                 upsell: ['nexus', 'ff_edizioni', 'social']
+            },
+            agenzia: {
+                primary: ['vittoria', 'nexus'],
+                upsell: ['vision', 'social', 'sitengine', 'ff_edizioni']
             },
             architettura: {
                 primary: ['forma_materia', 'sitengine'],
@@ -398,7 +405,7 @@
             const sector = document.getElementById('sector-advisor').value;
             
             if (!sector || sector === 'all') {
-                document.getElementById('sector-count-badge').innerText = "21 Prodotti";
+                document.getElementById('sector-count-badge').innerText = "23 Prodotti";
                 activeBundleKeys = new Set([currentActiveKey]);
                 renderGrid();
                 renderBundleChips();
@@ -435,7 +442,6 @@
             const container = document.getElementById('bundle-chips-container');
             container.innerHTML = "";
 
-            // Mostra tutti i prodotti del settore corrente + quelli attivi
             const sector = document.getElementById('sector-advisor').value;
             const relevantKeys = (sector && sector !== 'all' && SECTOR_RECOMMENDATIONS[sector])
                 ? [...SECTOR_RECOMMENDATIONS[sector].primary, ...SECTOR_RECOMMENDATIONS[sector].upsell]
