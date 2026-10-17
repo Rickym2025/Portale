@@ -75,7 +75,15 @@ window.resolveLiveDemoUrl = function(data) {
     const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
 
     if (data.content_url && data.content_url.startsWith('http') && !data.content_url.includes('view?id=') && !data.content_url.includes('view.html')) {
-        return data.content_url;
+    // 🛡️ Paracadute: se il progetto è Elena ma il link salvato era il vecchio config.html dei dentisti, lo corregge al volo su elena-config.html
+    if (data.portal_type === 'elena' && data.content_url.includes('/config.html')) {
+        return data.content_url.replace('/config.html', '/elena-config.html');
+    }
+    // 🛡️ Paracadute analogo per Vittoria
+    if (data.portal_type === 'vittoria' && data.content_url.includes('/config.html')) {
+        return data.content_url.replace('/config.html', '/vittoria-config.html');
+    }
+    return data.content_url;
     }
 
     const map = {
