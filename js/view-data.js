@@ -80,10 +80,10 @@ window.resolveLiveDemoUrl = function(data) {
 
     const map = {
         concierge: `https://concierge24.rmstudio.app/chat?struttura_id=${slug}`,
-        dentis: `https://dentis-app.rmstudio.app/config.html`,
-        lexis: `https://dentis-app.rmstudio.app/lexis-config.html`,
         elena: `https://dentis-app.rmstudio.app/elena-config.html?studio_id=${slug}`,
         vittoria: `https://dentis-app.rmstudio.app/vittoria-config.html?studio_id=${slug}`,
+        dentis: `https://dentis-app.rmstudio.app/config.html?studio_id=${slug}`,
+        lexis: `https://dentis-app.rmstudio.app/lexis-config.html?studio_id=${slug}`,
         locanda: `https://locandadigitale.rmstudio.app/menu.html?slug=${slug}`,
         radar: `https://drivemotion-radar.rmstudio.app/dashboard.html`,
         forma_materia: `https://formamateria.rmstudio.app/studio.html`,
