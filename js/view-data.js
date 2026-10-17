@@ -138,7 +138,7 @@ window.SAAS_APP_PROFILES = {
 
 // 🎁 DIZIONARIO DETTAGLI OFFERTA POLIMORFICO PER TUTTI I SAAS E MODULI VOCALI
 window.SAAS_OFFER_DETAILS = {
-    // 🤖 NEXUSAI: CHATBOT SU SITI ESISTENTI (SOMMA CORRETTA: 150 + 100 + 50 + 50 = 350)
+    // 🤖 NEXUSAI: CHATBOT SU SITI ESISTENTI
     nexus: {
         badge: "NexusAI • Agente Venditore & Receptionist H24",
         title: "Cosa Comprende l'Attivazione di NexusAI Pro",
@@ -158,7 +158,7 @@ window.SAAS_OFFER_DETAILS = {
         ctaText: "Attiva NexusAI Pro per il Tuo Sito"
     },
 
-    // 🍽️ ELENA AI: HOSTESS VOCALE RICEVIMENTO TAVOLI RISTORANTI
+    // 🍽️ ELENA AI: HOSTESS VOCALE RISTORANTI
     elena: {
         badge: "Presidio Telefonico Sala & Ricevimento Tavoli",
         title: "Cosa Comprende Elena AI PRO",
@@ -178,7 +178,7 @@ window.SAAS_OFFER_DETAILS = {
         ctaText: "Attiva Elena PRO per il Ristorante"
     },
 
-    // 🚀 VITTORIA AI: SEGRETERIA VOCALE INBOUND AGENZIE & B2B
+    // 🚀 VITTORIA AI: CENTRALINO AGENZIE B2B
     vittoria: {
         badge: "Centralino Esecutivo & Qualifica Lead B2B",
         title: "Cosa Comprende Vittoria AI PRO",
