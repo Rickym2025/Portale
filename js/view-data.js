@@ -1,4 +1,4 @@
-// js/view-data.js - Modulo Dati, Risoluzione URL 21 SaaS, Matrice Settoriale & Offerte Neuromarketing
+// js/view-data.js - Modulo Dati, Risoluzione URL 23 SaaS & Voice, Matrice Settoriale & Offerte Neuromarketing
 
 // 🎯 MATRICE DEI 3 FORMAT CURATI PER SETTORE (SITEENGINE)
 window.SECTOR_TRIO_TEMPLATES = {
@@ -67,7 +67,7 @@ window.detectSectorGroup = function(data) {
     return 'default';
 };
 
-// 🔗 RISOLUZIONE UNIVERSALE LINK DEMO PER TUTTI I 21 SAAS
+// 🔗 RISOLUZIONE UNIVERSALE LINK DEMO PER TUTTI I 23 SAAS E MODULI VOCALI
 window.resolveLiveDemoUrl = function(data) {
     if (!data) return "https://rmstudio.app";
     const type = data.portal_type || 'html';
@@ -82,6 +82,8 @@ window.resolveLiveDemoUrl = function(data) {
         concierge: `https://concierge24.rmstudio.app/chat?struttura_id=${slug}`,
         dentis: `https://dentis-app.rmstudio.app/config.html`,
         lexis: `https://dentis-app.rmstudio.app/lexis-config.html`,
+        elena: `https://dentis-app.rmstudio.app/config.html`,
+        vittoria: `https://dentis-app.rmstudio.app/lexis-config.html`,
         locanda: `https://locandadigitale.rmstudio.app/menu.html?slug=${slug}`,
         radar: `https://drivemotion-radar.rmstudio.app/dashboard.html`,
         forma_materia: `https://formamateria.rmstudio.app/studio.html`,
@@ -106,11 +108,13 @@ window.resolveLiveDemoUrl = function(data) {
     return map[type] || `https://sitengine.rmstudio.app/${slug.replace(/_/g, '-')}`;
 };
 
-// 📋 METADATI ICONE E SCHEDE PREVIEW PER TUTTI I 21 SAAS
+// 📋 METADATI ICONE E SCHEDE PREVIEW PER TUTTI I 23 SAAS E MODULI VOCALI
 window.SAAS_APP_PROFILES = {
     concierge: { icon: "fa-hotel text-orange-400", title: "Concierge24 • Giulia Voice Assistant", desc: "Assistente vocale AI H24 e concierge turistico multilingua per hotel e B&B." },
     dentis: { icon: "fa-tooth text-cyan-400", title: "Dentis AI • Serena Voice Receptionist", desc: "Centralino vocale H24 e triage delle urgenze odontoiatriche su linea dedicata." },
     lexis: { icon: "fa-scale-balanced text-yellow-400", title: "Lexis AI • Chiara Voice Assistant", desc: "Segreteria telefonica formale con trascrizione e sintesi automatica delle prime consulenze." },
+    elena: { icon: "fa-phone-volume text-emerald-400", title: "Elena AI • Hostess Ristoranti H24", desc: "Ricevimento telefonico H24 per prenotazioni tavoli, gestione orari, coperti e intolleranze." },
+    vittoria: { icon: "fa-headset text-blue-400", title: "Vittoria AI • Centralino Agenzie B2B", desc: "Segreteria telefonica inbound H24 per qualificare lead, raccogliere richieste e fissare call strategiche." },
     locanda: { icon: "fa-utensils text-amber-400", title: "Locanda Digitale • Living 3D Menu", desc: "Menu 3D a 60 FPS con comande 1-click su WhatsApp e Bancomat dei Compleanni." },
     radar: { icon: "fa-car-side text-cyan-300", title: "DriveMotion RADAR • Arbitraggio Auto", desc: "Sourcing predittivo di auto da privati con perizia AI del margine lordo." },
     forma_materia: { icon: "fa-monument text-amber-300", title: "Forma & Materia • Studio 4K", desc: "Motore neurale di conversione da schizzo o CAD a render fotorealistico 4K." },
@@ -132,9 +136,9 @@ window.SAAS_APP_PROFILES = {
     nexus: { icon: "fa-robot text-cyan-400", title: "NexusAI • Shadow-Proxy Sales Overlay", desc: "Assistente virtuale iniettato direttamente sul sito web del cliente." }
 };
 
-// 🎁 DIZIONARIO DETTAGLI OFFERTA POLIMORFICO PER TUTTI I SAAS
+// 🎁 DIZIONARIO DETTAGLI OFFERTA POLIMORFICO PER TUTTI I SAAS E MODULI VOCALI
 window.SAAS_OFFER_DETAILS = {
-    // 🤖 NEXUSAI: SPECIFICO PER I CHATBOT SU SITI ESISTENTI
+    // 🤖 NEXUSAI: CHATBOT SU SITI ESISTENTI (SOMMA CORRETTA: 150 + 100 + 50 + 50 = 350)
     nexus: {
         badge: "NexusAI • Agente Venditore & Receptionist H24",
         title: "Cosa Comprende l'Attivazione di NexusAI Pro",
@@ -144,6 +148,7 @@ window.SAAS_OFFER_DETAILS = {
         isRecurring: true,
         periodText: "al mese • disdici quando vuoi",
         cadenceLabel: "/mese",
+        defaultPrice: 99,
         items: [
             { icon: "fa-robot", color: "text-cyan-400", title: "Chatbot AI Addestrato sul Tuo Menu e Servizi", desc: "Accoglie i visitatori h24, risponde a domande su orari, specialità, allergeni e prezzi in 1 secondo.", val: "€ 150" },
             { icon: "fa-calendar-check", color: "text-emerald-400", title: "Modulo Raccolta Prenotazioni Tavoli e Contatti", desc: "Intercetta chi sta per uscire dalla pagina e registra nome, telefono ed email del cliente.", val: "€ 100" },
@@ -151,6 +156,46 @@ window.SAAS_OFFER_DETAILS = {
             { icon: "fa-envelope-open-text", color: "text-blue-400", title: "Report Immediati & Notifiche Trascrizioni via Email", desc: "Ricevi i contatti e il riepilogo delle richieste dei clienti direttamente nella tua casella di posta.", val: "€ 50" }
         ],
         ctaText: "Attiva NexusAI Pro per il Tuo Sito"
+    },
+
+    // 🍽️ ELENA AI: HOSTESS VOCALE RICEVIMENTO TAVOLI RISTORANTI
+    elena: {
+        badge: "Presidio Telefonico Sala & Ricevimento Tavoli",
+        title: "Cosa Comprende Elena AI PRO",
+        desc: "L'assistente vocale H24 che risponde al secondo squillo, gestisce le prenotazioni dei tavoli a sala piena o fuori orario e azzera i no-show.",
+        anchorPrice: 650,
+        discountText: "Abbonamento Mensile Senza Vincoli",
+        isRecurring: true,
+        periodText: "al mese • disdici quando vuoi",
+        cadenceLabel: "/mese",
+        defaultPrice: 149,
+        items: [
+            { icon: "fa-phone-volume", color: "text-emerald-400", title: "Hostess Vocale H24 Elena (Subentro a Linea Occupata)", desc: "Risponde al secondo squillo anche durante il servizio di punta o nei giorni di chiusura.", val: "€ 300" },
+            { icon: "fa-utensils", color: "text-amber-400", title: "Gestione Coperti, Orari, Intolleranze & Seggioloni", desc: "Raccoglie i dettagli dell'ospite, verifica disponibilità tavoli e annota allergie o celiachia.", val: "€ 150" },
+            { icon: "fa-calendar-check", color: "text-cyan-400", title: "Sincronizzazione Automatica Google Calendar", desc: "Fissa i tavoli in tempo reale sull'agenda senza sovrapposizioni con il personale di sala.", val: "€ 100" },
+            { icon: "fa-brands fa-whatsapp", color: "text-green-400", title: "Promemoria WhatsApp Automatici (-70% No-Show)", desc: "Invia promemoria di conferma agli ospiti il giorno prima abbattendo i tavoli lasciati vuoti.", val: "€ 100" }
+        ],
+        ctaText: "Attiva Elena PRO per il Ristorante"
+    },
+
+    // 🚀 VITTORIA AI: SEGRETERIA VOCALE INBOUND AGENZIE & B2B
+    vittoria: {
+        badge: "Centralino Esecutivo & Qualifica Lead B2B",
+        title: "Cosa Comprende Vittoria AI PRO",
+        desc: "La segreteria inbound che accoglie i prospect che chiamano l'agenzia, comprende gli obiettivi di marketing e fissa la discovery call.",
+        anchorPrice: 650,
+        discountText: "Abbonamento Mensile Senza Vincoli",
+        isRecurring: true,
+        periodText: "al mese • disdici quando vuoi",
+        cadenceLabel: "/mese",
+        defaultPrice: 149,
+        items: [
+            { icon: "fa-headset", color: "text-blue-400", title: "Segreteria Vocale Esecutiva Vittoria H24", desc: "Accoglie con tono autorevole e dinamico le richieste inbound di potenziali clienti dell'agenzia.", val: "€ 300" },
+            { icon: "fa-filter", color: "text-purple-400", title: "Triage & Qualifica Obiettivo di Business", desc: "Inquadra subito se cercano campagne ads, restyling sito o gestione social e stima l'interesse.", val: "€ 150" },
+            { icon: "fa-video", color: "text-emerald-400", title: "Fissaggio Automatico Discovery Call (Meet/Calendar)", desc: "Verifica gli slot dei consulenti strategici e riserva la call da 20 minuti senza scambi di email.", val: "€ 100" },
+            { icon: "fa-envelope-open-text", color: "text-cyan-400", title: "Report Istantaneo con Sintesi Trascrizione via Email", desc: "Il team riceve notifica immediata con punti chiave e registrazione prima di entrare in call.", val: "€ 100" }
+        ],
+        ctaText: "Attiva Vittoria PRO per l'Agenzia"
     },
 
     // 🌐 SITEENGINE PRO (SITI WEB COMPLETI)
@@ -206,6 +251,10 @@ window.SAAS_OFFER_DETAILS = {
         desc: "La segreteria vocale per studi dentistici che risponde al secondo squillo e azzera i no-show.",
         anchorPrice: 650,
         discountText: "Promo Dedicata Studi Medici",
+        isRecurring: true,
+        periodText: "al mese • disdici quando vuoi",
+        cadenceLabel: "/mese",
+        defaultPrice: 149,
         items: [
             { icon: "fa-tooth", color: "text-cyan-400", title: "Receptionist Vocale H24 Serena (Subentro su Occupato)", desc: "Accoglie con calore ed empatia anche a linee occupate, durante le visite o a studio chiuso.", val: "€ 300" },
             { icon: "fa-hospital", color: "text-red-400", title: "Triage Urgenze Odontoiatriche", desc: "Riconosce il dolore acuto canalizzandolo con priorità negli slot dell'agenda clinica.", val: "€ 150" },
@@ -222,6 +271,10 @@ window.SAAS_OFFER_DETAILS = {
         desc: "La segreteria vocale qualificata che tutela l'immagine dello studio durante udienze e riunioni.",
         anchorPrice: 650,
         discountText: "Configurazione Istituzionale Riservata",
+        isRecurring: true,
+        periodText: "al mese • disdici quando vuoi",
+        cadenceLabel: "/mese",
+        defaultPrice: 149,
         items: [
             { icon: "fa-scale-balanced", color: "text-yellow-400", title: "Segreteria Vocale Formale Chiara ('del Lei')", desc: "Registro deontologico rigoroso con massima tutela del prestigio e della riservatezza (GDPR).", val: "€ 300" },
             { icon: "fa-file-lines", color: "text-blue-400", title: "Filtro Qualificato Prime Consulenze", desc: "Raccoglie i dettagli del caso, verifica le disponibilità e genera una sintesi per l'avvocato.", val: "€ 150" },
@@ -231,7 +284,7 @@ window.SAAS_OFFER_DETAILS = {
         ctaText: "Attiva Chiara per lo Studio Legale"
     },
 
-    // 🍽️ LOCANDA DIGITALE
+    // 🍕 LOCANDA DIGITALE
     locanda: {
         badge: "Marketing della Ristorazione & Tavoli",
         title: "Cosa Comprende Locanda Digitale",
@@ -270,6 +323,10 @@ window.SAAS_OFFER_DETAILS = {
         desc: "La piattaforma che intercetta le migliori auto da privati prima degli altri concessionari.",
         anchorPrice: 490,
         discountText: "Abbonamento Concessionario Dedicato",
+        isRecurring: true,
+        periodText: "al mese • disdici quando vuoi",
+        cadenceLabel: "/mese",
+        defaultPrice: 99,
         items: [
             { icon: "fa-radar", color: "text-cyan-400", title: "Scansione Continua H24 (Subito + FB + AutoScout)", desc: "Isola gli annunci di privati autentici nella tua provincia entro pochi minuti dalla pubblicazione.", val: "€ 200" },
             { icon: "fa-brain", color: "text-purple-400", title: "Perizia Neurale del Margine Netto Reale", desc: "L'AI stima il valore di rivendita ed esclude difetti occulti evidenziando solo i veri affari.", val: "€ 150" },
@@ -302,6 +359,10 @@ window.SAAS_OFFER_DETAILS = {
         desc: "Il radar vettoriale e chat mesh P2P 100% web senza installazione di app.",
         anchorPrice: 350,
         discountText: "Promo Sicurezza Dedicata",
+        isRecurring: true,
+        periodText: "al mese • disdici quando vuoi",
+        cadenceLabel: "/mese",
+        defaultPrice: 19,
         items: [
             { icon: "fa-crosshairs", color: "text-cyan-400", title: "Radar Vettoriale 3D & Co-Pilota Vocale HD", desc: "Indicazioni audio in vivavoce e bussola per orientarsi nei gruppi in movimento.", val: "€ 150" },
             { icon: "fa-person-falling", color: "text-red-400", title: "Rilevamento Uomo a Terra & Impatti (D.Lgs. 81/08)", desc: "Invio automatico di allarme e coordinate GPS via WhatsApp in caso di caduta o immobilità.", val: "€ 100" },
