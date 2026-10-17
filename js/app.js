@@ -575,7 +575,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🦷 DENTIS, ⚖️ LEXIS, 🍽️ ELENA & 🚀 VITTORIA (CORE MULTI-SETTORE)
+    / 🦷 DENTIS, ⚖️ LEXIS, 🍽️ ELENA & 🚀 VITTORIA (CORE MULTI-SETTORE)
     if (type === 'dentis' || type === 'lexis' || type === 'elena' || type === 'vittoria') {
         btn.innerText = "Configurazione AI & Scraper...";
         let settore = 'odontoiatria';
@@ -602,15 +602,21 @@ async function handleCreateSubmit(e) {
                     "Telefono": phone || '+3904251675950', 
                     "Piano": 'trial', 
                     "Sito Web": siteUrl, 
-                    "Settore": settore, 
+                    "Settore": settore,
+                    "settore": settore,
                     "Fonte": "Command Center Portale (Bozza Speculativa)" 
                 })
             });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             alert(`✨ Assistente Vocale (${type.toUpperCase()}) registrato per ${clientName}!`);
-            closeCreationModal(); setTimeout(loadMasterData, 1500);
-        } catch (err) { alert("⚠️ Errore attivazione vocale: " + err.message); } 
-        finally { btn.disabled = false; btn.innerText = orig; }
+            closeCreationModal(); 
+            setTimeout(loadMasterData, 2000);
+        } catch (err) { 
+            alert("⚠️ Errore attivazione vocale: " + err.message); 
+        } finally { 
+            btn.disabled = false; 
+            btn.innerText = orig; 
+        }
         return;
     }
 
