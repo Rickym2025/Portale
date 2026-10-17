@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Area Clienti - RM Studio</title>
     
+    <!-- Librerie Core Esterne -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,21 +13,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
     
-    <!-- 🎨 STILI MODULARI ISOLATI -->
+    <!-- 🎨 Stili Isolati Modulari -->
     <link rel="stylesheet" href="css/view.css">
 </head>
 <body class="text-gray-200 min-h-[100dvh] w-screen flex flex-col lg:items-center lg:justify-center p-3 md:p-6 overflow-y-auto lg:overflow-hidden selection:bg-purple-600 selection:text-white relative">
 
-    <!-- 👑 BADGE ISPETTORE ADMIN: ATTIVO SOLO CON &admin=true -->
+    <!-- 👑 BADGE ISPETTORE ADMIN: VISIBILE SOLO SE APERTO CON ?admin=true -->
     <div id="admin-indicator-bar" class="hidden fixed top-3 left-1/2 -translate-x-1/2 z-[10000] bg-amber-500/20 border border-amber-500/40 backdrop-blur-xl px-4 py-1.5 rounded-full text-[11px] font-mono font-bold text-amber-300 shadow-2xl items-center gap-2">
         <i class="fa-solid fa-user-shield animate-pulse"></i>
         <span>Modalità Ispettore Admin (Visite non conteggiate)</span>
     </div>
 
-    <!-- MAIN CARD DI CONSEGNA PROGETTO -->
+    <!-- MAIN CARD DI CONSEGNA PROGETTO (DESKTOP E TABLET) -->
     <div class="w-full max-w-5xl h-auto lg:h-full lg:max-h-[96dvh] bg-[#0b0b0f]/95 border border-zinc-900 backdrop-blur-xl rounded-3xl p-5 md:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-10 shrink-0">
         
-        <!-- Header del Portale con Logo Ingrandito -->
+        <!-- Header del Portale con Logo Ingrandito & Neuromarketing del Prezzo -->
         <div class="shrink-0 flex flex-wrap items-center justify-between gap-3 mb-4 pb-4 border-b border-zinc-900 w-full">
             <div class="flex items-center gap-3.5">
                 <a href="https://rmstudio.app/" target="_blank" class="flex items-center shrink-0">
@@ -59,7 +60,7 @@
             </div>
         </div>
 
-        <!-- Render Area Dinamica -->
+        <!-- Render Area Dinamica Multi-SaaS -->
         <div class="player-wrapper flex-1 min-h-[280px] sm:min-h-[350px] lg:min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-zinc-900 overflow-hidden shadow-inner relative">
             <div id="watermark-layer" class="watermark-pattern"></div>
 
@@ -73,8 +74,8 @@
             <!-- 2. CAROSELLO IMMAGINI -->
             <div id="player-carousel" class="hidden w-full h-full relative flex items-center justify-center bg-black">
                 <img id="carousel-img" src="" class="w-full h-full object-contain select-none rounded-2xl" oncontextmenu="return false;">
-                <button onclick="prevSlide()" class="absolute left-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-left text-xs"></i></button>
-                <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90"><i class="fa-solid fa-chevron-right text-xs"></i></button>
+                <button onclick="prevSlide()" class="absolute left-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90 cursor-pointer"><i class="fa-solid fa-chevron-left text-xs"></i></button>
+                <button onclick="nextSlide()" class="absolute right-4 bg-black/60 hover:bg-black/95 p-3.5 rounded-full text-white z-50 transition-all active:scale-90 cursor-pointer"><i class="fa-solid fa-chevron-right text-xs"></i></button>
             </div>
 
             <!-- 3. ANTEPRIMA UNIVERSALE APPLICAZIONI & DEMO AI -->
@@ -95,7 +96,7 @@
                     <i class="fa-solid fa-arrow-up-right-from-square text-lg text-purple-400"></i>
                 </div>
                 <h3 class="text-white text-lg font-bold mb-1">Link Esterno / Demo</h3>
-                <a id="external-link-btn" href="" target="_blank" class="inline-flex items-center gap-2 bg-[#121217] border border-zinc-800 px-5 py-2.5 mt-3 rounded-xl text-xs font-bold hover:border-purple-500 transition-all">Apri Progetto</a>
+                <a id="external-link-btn" href="" target="_blank" class="inline-flex items-center gap-2 bg-[#121217] border border-zinc-800 px-5 py-2.5 mt-3 rounded-xl text-xs font-bold hover:border-purple-500 transition-all cursor-pointer">Apri Progetto</a>
             </div>
         </div>
 
@@ -110,7 +111,7 @@
         </div>
     </div>
 
-    <!-- CONTENITORE PER L'ORBITA -->
+    <!-- CONTENITORE PER L'ECOSISTEMA ORBITALE DA GITHUB -->
     <div id="ecosystem-orbit-container" class="orbit-container"></div>
 
     <!-- ========================================================================= -->
@@ -121,11 +122,12 @@
         <!-- Barra superiore dell'overlay -->
         <div class="h-16 shrink-0 bg-[#0a0b10] border-b border-zinc-800 flex items-center justify-between px-3 sm:px-6">
             <div class="flex items-center gap-3 sm:gap-4 overflow-x-auto max-w-[65%] sm:max-w-none">
+                <!-- LOGO RM STUDIO INGRANDITO E NITIDO -->
                 <a href="https://rmstudio.app" target="_blank" class="shrink-0">
                     <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-8 sm:h-9 w-auto">
                 </a>
                 
-                <!-- 🌐 I 3 PULSANTI FISICI SETTORIALI GENERATI DINAMICAMENTE -->
+                <!-- 🌐 I 3 PULSANTI FISICI SETTORIALI GENERATI DINAMICAMENTE DA JS -->
                 <div id="siteengine-template-switcher" class="hidden items-center gap-1.5 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
                     <span class="text-[9px] font-mono text-zinc-400 px-2 uppercase font-bold hidden md:inline">Varianti Stile:</span>
                     <div id="sector-templates-container" class="flex items-center gap-1"></div>
@@ -133,10 +135,10 @@
 
                 <!-- 🍷 SELETTORE DUAL VISTA RISTORANTI -->
                 <div id="view-mode-selector" class="hidden items-center gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-xl shrink-0">
-                    <button onclick="switchPreviewMode('experience')" id="btn-view-experience" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap">
+                    <button onclick="switchPreviewMode('experience')" id="btn-view-experience" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap cursor-pointer">
                         🍷 Smart Experience Page
                     </button>
-                    <button onclick="switchPreviewMode('website')" id="btn-view-website" class="px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition whitespace-nowrap">
+                    <button onclick="switchPreviewMode('website')" id="btn-view-website" class="px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 hover:text-white transition whitespace-nowrap cursor-pointer">
                         🌐 Vedi sul Vostro Sito Attuale
                     </button>
                 </div>
@@ -149,12 +151,13 @@
             </div>
     
             <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <!-- TASTO COSA COMPRENDE L'OFFERTA SEMPRE VISIBILE -->
                 <button type="button" onclick="openOfferModal()" class="bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-300 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap shadow-sm">
                     <i class="fa-solid fa-gift text-amber-400"></i>
                     <span>Cosa include?</span>
                 </button>
 
-                <!-- TASTO SBLOCCO ANCORAGGIO -->
+                <!-- TASTO SBLOCCO CON DOPPIO PREZZO ANCORAGGIO -->
                 <button id="overlayActionBtn" onclick="handleAction()" class="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:brightness-110 text-white font-extrabold px-3 sm:px-5 py-2 rounded-xl text-xs uppercase tracking-wider transition-all shadow-lg shadow-emerald-500/25 cursor-pointer whitespace-nowrap flex items-center gap-2">
                     <span class="line-through text-emerald-200/60 font-mono text-[11px]">€1.500</span>
                     <span class="text-white font-black">Sblocca a € 400</span>
@@ -174,26 +177,29 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- 🎁 MODALE / POPUP: DETTAGLIO VALORE, ANCORAGGIO & SCARSITÀ TEMPORALE       -->
+    <!-- 🎁 MODALE / POPUP: DETTAGLIO VALORE REALE POLIMORFICO (PER TUTTI I 21 SAAS)-->
     <!-- ========================================================================= -->
-    <div id="offer-modal" class="hidden fixed inset-0 z-[10002] bg-black/85 backdrop-blur-md p-4 flex items-center justify-center overflow-y-auto">
+    <div id="offer-modal" onclick="if(event.target === this) closeOfferModal()" class="hidden fixed inset-0 z-[10002] bg-black/85 backdrop-blur-md p-4 items-center justify-center overflow-y-auto">
         <div class="bg-[#0e1017] border border-zinc-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl relative text-left my-auto space-y-6">
             
+            <!-- Header Modale Dinamico -->
             <div class="flex items-start justify-between border-b border-zinc-800 pb-4">
                 <div class="space-y-1.5">
-                    <div class="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30">
-                        <i class="fa-regular fa-clock"></i> <span id="modal-scarcity-text">Offerta riservata valida per i prossimi 10 giorni</span>
+                    <div id="offer-modal-badge" class="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30">
+                        <i class="fa-solid fa-shield-halved"></i> Pacchetto Ufficiale Chiavi in Mano
                     </div>
-                    <h3 class="text-xl sm:text-2xl font-display font-black text-white">Pacchetto Completo Chiavi in Mano</h3>
-                    <p class="text-xs text-zinc-400">Tutto ciò che serve per la presenza online d'autore del tuo studio, senza complicazioni tecniche.</p>
+                    <h3 id="offer-modal-title" class="text-xl sm:text-2xl font-display font-black text-white">Pacchetto Completo Chiavi in Mano</h3>
+                    <p id="offer-modal-desc" class="text-xs text-zinc-400">Tutto ciò che include la licenza ufficiale, senza costi nascosti o complicazioni tecniche.</p>
                 </div>
                 <button type="button" onclick="closeOfferModal()" class="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white flex items-center justify-center shrink-0 cursor-pointer">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- Stacking Value -->
-            <div class="space-y-3 text-xs sm:text-sm text-zinc-300">
+            <!-- CONTENITORE DEI PUNTI DI VALORE (COMPLETO DI TUTTE E 4 LE SCHEDE + POPOLABILE DA JS) -->
+            <div id="offer-modal-items" class="space-y-3 text-xs sm:text-sm text-zinc-300 max-h-[50vh] overflow-y-auto pr-1">
+                
+                <!-- SCHEDA 1: PROGETTAZIONE & 3 VARIANTI -->
                 <div class="flex items-start justify-between gap-3 p-3 rounded-2xl bg-zinc-900/60 border border-zinc-800/80">
                     <div class="flex items-start gap-3">
                         <div class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0 border border-purple-500/20 text-sm">
@@ -209,6 +215,7 @@
                     <span class="font-mono text-zinc-500 line-through text-xs shrink-0">€ 750</span>
                 </div>
 
+                <!-- SCHEDA 2: INDIRIZZO WEB & HOSTING CLOUD -->
                 <div class="flex items-start justify-between gap-3 p-3 rounded-2xl bg-zinc-900/60 border border-zinc-800/80">
                     <div class="flex items-start gap-3">
                         <div class="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0 border border-blue-500/20 text-sm">
@@ -224,6 +231,7 @@
                     <span class="font-mono text-zinc-500 line-through text-xs shrink-0">€ 250</span>
                 </div>
 
+                <!-- SCHEDA 3: BLOG MOBILE ZERO PASSWORD -->
                 <div class="flex items-start justify-between gap-3 p-3 rounded-2xl bg-zinc-900/60 border border-zinc-800/80">
                     <div class="flex items-start gap-3">
                         <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/20 text-sm">
@@ -239,6 +247,7 @@
                     <span class="font-mono text-zinc-500 line-through text-xs shrink-0">€ 300</span>
                 </div>
 
+                <!-- SCHEDA 4: MAPPA INTERATTIVA & GOOGLE LOCALE -->
                 <div class="flex items-start justify-between gap-3 p-3 rounded-2xl bg-zinc-900/60 border border-zinc-800/80">
                     <div class="flex items-start gap-3">
                         <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/20 text-sm">
@@ -253,37 +262,39 @@
                     </div>
                     <span class="font-mono text-zinc-500 line-through text-xs shrink-0">€ 200</span>
                 </div>
+
             </div>
 
-            <!-- Prezzo Finale con Sconto 73% Evidenziato -->
+            <!-- Prezzo Finale con Ancoraggio Dinamico e Scarsità -->
             <div class="pt-4 border-t border-zinc-800 space-y-4">
                 <div class="bg-[#121622] border border-emerald-500/40 p-4 rounded-2xl flex items-center justify-between">
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-mono text-zinc-500 line-through font-bold">Valore: € 1.500</span>
-                            <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-black uppercase px-2 py-0.5 rounded-full border border-emerald-500/30">Risparmi € 1.100 (-73%)</span>
+                            <span id="offer-modal-anchor" class="text-xs font-mono text-zinc-500 line-through font-bold">Valore: € 1.500</span>
+                            <span id="offer-modal-discount" class="bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-black uppercase px-2 py-0.5 rounded-full border border-emerald-500/30">Risparmi € 1.100 (-73%)</span>
                         </div>
                         <span class="text-xs text-zinc-300 font-medium block mt-1">Prezzo Lancio Riservato:</span>
+                        <span id="modal-scarcity-text" class="text-[10px] font-mono text-emerald-400 block mt-0.5">Offerta riservata valida per i prossimi 10 giorni</span>
                     </div>
                     <div class="text-right">
-                        <span class="font-mono font-black text-3xl text-emerald-400 leading-none">€ 400</span>
-                        <span class="text-[10px] text-zinc-400 font-mono block mt-1">una tantum • 1° anno incluso</span>
+                        <span id="modal-price-display" class="font-mono font-black text-3xl text-emerald-400 leading-none">€ 400</span>
+                        <span class="text-[10px] text-zinc-400 font-mono block mt-1">una tantum • sblocco ufficiale</span>
                     </div>
                 </div>
 
                 <button type="button" onclick="handleAction()" class="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:brightness-110 text-white font-black py-4 rounded-2xl text-sm uppercase tracking-wider transition-all shadow-xl shadow-emerald-500/30 flex items-center justify-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-lock-open"></i> Attiva e Metti Online a € 400
+                    <i class="fa-solid fa-lock-open"></i> <span id="offer-modal-cta-text">Attiva la Soluzione Ufficiale</span>
                 </button>
 
                 <p class="text-[11px] text-zinc-400 text-center font-light">
-                    Hai domande o preferisci concordare dettagli su misura? <a href="https://wa.me/393478951801?text=Ciao%20Riccardo,%20ho%20visto%20la%20bozza%20e%20vorrei%20informazioni%20sullo%20sblocco" target="_blank" class="text-purple-400 underline font-bold">Scrivimi direttamente su WhatsApp</a>
+                    Hai domande o preferisci concordare dettagli su misura? <a href="https://wa.me/393495258418?text=Ciao%20Riccardo,%20ho%20visto%20la%20bozza%20e%20vorrei%20informazioni%20sullo%20sblocco" target="_blank" class="text-purple-400 underline font-bold">Scrivimi direttamente su WhatsApp</a>
                 </p>
             </div>
 
         </div>
     </div>
     
-    <!-- 📦 SCRIPT MODULARI ESTERNI -->
+    <!-- 📦 SCRIPT MODULARI ESTERNI COMPLETI -->
     <script src="js/view-data.js"></script>
     <script src="js/view-ui.js"></script>
 </body>
