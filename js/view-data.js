@@ -1,6 +1,6 @@
-// js/view-data.js - Modulo Dati, Risoluzione URL 21 SaaS & Riconoscimento Settori
+// js/view-data.js - Modulo Dati, Risoluzione URL 21 SaaS, Matrice Settoriale & Offerte Neuromarketing
 
-// 🎯 MATRICE DEI 3 FORMAT CURATI PER SETTORE
+// 🎯 MATRICE DEI 3 FORMAT CURATI PER SETTORE (SITEENGINE)
 window.SECTOR_TRIO_TEMPLATES = {
     psicologia: [
         { id: 7, label: "🌿 07. L'Empatico", desc: "Toni Caldi Salvia & Accoglienza" },
@@ -34,7 +34,7 @@ window.SECTOR_TRIO_TEMPLATES = {
     ]
 };
 
-// 🧠 RICONOSCIMENTO AUTOMATICO SETTORE CON SUPPORTO TITOLI ACCADEMICI
+// 🧠 RICONOSCIMENTO AUTOMATICO SETTORE CON PRIORITÀ GERARCHICA
 window.detectSectorGroup = function(data) {
     if (!data) return 'default';
     const textToScan = `${data.client_name || ''} ${data.title || ''} ${data.notes || ''} ${data.content_url || ''}`.toLowerCase();
@@ -74,7 +74,6 @@ window.resolveLiveDemoUrl = function(data) {
     const name = data.client_name || 'demo';
     const slug = name.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
 
-    // Se ha già un link valido diretto e completo
     if (data.content_url && data.content_url.startsWith('http') && !data.content_url.includes('view?id=') && !data.content_url.includes('view.html')) {
         return data.content_url;
     }
@@ -133,8 +132,25 @@ window.SAAS_APP_PROFILES = {
     nexus: { icon: "fa-robot text-cyan-400", title: "NexusAI • Shadow-Proxy Sales Overlay", desc: "Assistente virtuale iniettato direttamente sul sito web del cliente." }
 };
 
-// 🎁 DIZIONARIO DETTAGLI OFFERTA POLIMORFICO (NEUROMARKETING PER CIASCUN SAAS)
+// 🎁 DIZIONARIO DETTAGLI OFFERTA POLIMORFICO PER TUTTI I SAAS
 window.SAAS_OFFER_DETAILS = {
+    // 🤖 NEXUSAI: SPECIFICO PER I CHATBOT SU SITI ESISTENTI
+    nexus: {
+        badge: "NexusAI • Agente Venditore & Receptionist H24",
+        title: "Cosa Comprende l'Attivazione di NexusAI Pro",
+        desc: "L'assistente AI autonomo che accoglie i visitatori del tuo sito web esistente e converte il traffico passivo in prenotazioni e contatti reali.",
+        anchorPrice: 290,
+        discountText: "Abbonamento Mensile Senza Vincoli",
+        items: [
+            { icon: "fa-robot", color: "text-cyan-400", title: "Chatbot AI Addestrato sul Tuo Menu e Servizi", desc: "Accoglie i visitatori h24, risponde a domande su orari, specialità, allergeni e prezzi in 1 secondo.", val: "€ 150" },
+            { icon: "fa-calendar-check", color: "text-emerald-400", title: "Modulo Raccolta Prenotazioni Tavoli e Contatti", desc: "Intercetta chi sta per uscire dalla pagina e registra nome, telefono ed email del cliente.", val: "€ 100" },
+            { icon: "fa-code", color: "text-purple-400", title: "Integrazione Invisibile (1 Sola Riga di Codice)", desc: "Funziona su qualsiasi sito esistente (WordPress, Wix, custom) senza modificare il codice o il layout grafico.", val: "€ 50" },
+            { icon: "fa-envelope-open-text", color: "text-blue-400", title: "Report Immediati & Notifiche Trascrizioni via Email", desc: "Ricevi i contatti e il riepilogo delle richieste dei clienti direttamente nella tua casella di posta.", val: "€ 50" }
+        ],
+        ctaText: "Attiva NexusAI Pro per il Tuo Sito"
+    },
+
+    // 🌐 SITEENGINE PRO (SITI WEB COMPLETI)
     html: {
         badge: "Pacchetto Sito Web d'Autore",
         title: "Cosa Comprende la Licenza Definitiva",
@@ -149,22 +165,6 @@ window.SAAS_OFFER_DETAILS = {
         ],
         ctaText: "Attiva e Metti Online il Sito"
     },
-
-    nexus: {
-        badge: "NexusAI • Venditore Virtuale H24",
-        title: "Cosa Comprende l'Attivazione di NexusAI Pro",
-        desc: "L'assistente AI autonomo che accoglie i visitatori del tuo sito web esistente e trasforma il traffico passivo in prenotazioni e contatti reali.",
-        anchorPrice: 290,
-        discountText: "Canone Mensile Senza Vincoli",
-        items: [
-            { icon: "fa-robot", color: "text-cyan-400", title: "Chatbot AI Addestrato sul tuo Menu e Servizi", desc: "Accoglie i visitatori h24, risponde a domande su orari, specialità, allergeni e prezzi in 1 secondo.", val: "€ 150" },
-            { icon: "fa-calendar-check", color: "text-emerald-400", title: "Modulo Raccolta Prenotazioni Tavoli e Contatti", desc: "Intercetta chi sta per abbandonare la pagina e raccoglie nome, telefono ed email per la prenotazione.", val: "€ 100" },
-            { icon: "fa-code", color: "text-purple-400", title: "Integrazione Invisibile (1 Sola Riga di Codice)", desc: "Funziona su qualsiasi sito esistente (WordPress, Wix, custom) senza modificare il codice o il layout grafico.", val: "€ 50" },
-            { icon: "fa-envelope-open-text", color: "text-blue-400", title: "Report Immediati & Notifiche Trascrizioni via Email", desc: "Ricevi i contatti e il riepilogo delle richieste dei clienti direttamente nella tua casella di posta.", val: "€ 50" }
-        ],
-        ctaText: "Attiva NexusAI Pro per il Tuo Sito"
-    },
-    
     siteengine: {
         badge: "Pacchetto Sito Web d'Autore",
         title: "Cosa Comprende la Licenza Definitiva",
@@ -179,6 +179,8 @@ window.SAAS_OFFER_DETAILS = {
         ],
         ctaText: "Attiva e Metti Online il Sito"
     },
+
+    // 🏨 CONCIERGE24
     concierge: {
         badge: "Suite Accoglienza Notturna & Turistica",
         title: "Cosa Comprende Concierge24",
@@ -193,6 +195,8 @@ window.SAAS_OFFER_DETAILS = {
         ],
         ctaText: "Attiva Concierge24 per la Struttura"
     },
+
+    // 🦷 DENTIS AI
     dentis: {
         badge: "Presidio Telefonico & Prime Visite",
         title: "Cosa Comprende Dentis AI",
@@ -207,6 +211,8 @@ window.SAAS_OFFER_DETAILS = {
         ],
         ctaText: "Attiva Serena per il Tuo Studio"
     },
+
+    // ⚖️ LEXIS AI
     lexis: {
         badge: "Reperibilità Formale Studio Legale",
         title: "Cosa Comprende Lexis AI",
@@ -221,6 +227,8 @@ window.SAAS_OFFER_DETAILS = {
         ],
         ctaText: "Attiva Chiara per lo Studio Legale"
     },
+
+    // 🍽️ LOCANDA DIGITALE
     locanda: {
         badge: "Marketing della Ristorazione & Tavoli",
         title: "Cosa Comprende Locanda Digitale",
@@ -235,6 +243,8 @@ window.SAAS_OFFER_DETAILS = {
         ],
         ctaText: "Attiva Locanda Digitale per il Locale"
     },
+
+    // 🍷 SMART EXPERIENCE
     experience: {
         badge: "E-Menu Sensoriale con Sommelier AI",
         title: "Cosa Comprende Smart Experience",
@@ -249,6 +259,8 @@ window.SAAS_OFFER_DETAILS = {
         ],
         ctaText: "Attiva Smart Experience per il Ristorante"
     },
+
+    // 🏎️ DRIVEMOTION RADAR
     radar: {
         badge: "Intelligence B2B Sourcing Auto da Privati",
         title: "Cosa Comprende DriveMotion RADAR",
@@ -263,6 +275,8 @@ window.SAAS_OFFER_DETAILS = {
         ],
         ctaText: "Attiva RADAR per la Concessionaria"
     },
+
+    // 🏛️ FORMA & MATERIA
     forma_materia: {
         badge: "Rendering Neurale 4K per Progettisti",
         title: "Cosa Comprende Forma & Materia",
@@ -277,6 +291,8 @@ window.SAAS_OFFER_DETAILS = {
         ],
         ctaText: "Attiva Forma & Materia per lo Studio"
     },
+
+    // 📡 AURA PROXIMITY
     aura: {
         badge: "Radar di Prossimità & Sicurezza Lavoratori",
         title: "Cosa Comprende AURA Proximity",
@@ -290,6 +306,8 @@ window.SAAS_OFFER_DETAILS = {
         ],
         ctaText: "Attiva Stanza AURA Proximity"
     },
+
+    // 🕊️ ETERNIA
     eternia: {
         badge: "Memoriali Digitali d'Autore & Agenzia",
         title: "Cosa Comprende ETERNIA",
@@ -304,6 +322,8 @@ window.SAAS_OFFER_DETAILS = {
         ],
         ctaText: "Attiva ETERNIA per l'Impresa"
     },
+
+    // 💍 LOVE
     love: {
         badge: "Partecipazioni Nozze Interattive 3D",
         title: "Cosa Comprende LOVE",
