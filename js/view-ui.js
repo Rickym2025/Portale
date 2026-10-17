@@ -84,13 +84,61 @@ function switchPreviewMode(mode) {
     }
 }
 
-// 🎁 MODALE COSA COMPRENDE L'OFFERTA
+// 🎁 APERTURA MODALE COSA COMPRENDE L'OFFERTA (DINAMICA PER QUALSIASI SAAS)
 function openOfferModal() {
     const modal = document.getElementById('offer-modal');
-    if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
+    if (!modal) return;
+
+    const type = (videoData && videoData.portal_type) ? videoData.portal_type : 'html';
+    const offer = (window.SAAS_OFFER_DETAILS && window.SAAS_OFFER_DETAILS[type]) 
+        ? window.SAAS_OFFER_DETAILS[type] 
+        : (window.SAAS_OFFER_DETAILS?.html || null);
+
+    if (offer) {
+        // Aggiorna Badge, Titolo e Descrizione
+        const badgeEl = document.getElementById('offer-modal-badge');
+        const titleEl = document.getElementById('offer-modal-title');
+        const descEl = document.getElementById('offer-modal-desc');
+        const anchorEl = document.getElementById('offer-modal-anchor');
+        const discountEl = document.getElementById('offer-modal-discount');
+        const ctaBtnText = document.getElementById('offer-modal-cta-text');
+
+        if (badgeEl) badgeEl.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${offer.badge}`;
+        if (titleEl) titleEl.innerText = offer.title;
+        if (descEl) descEl.innerText = offer.desc;
+        if (anchorEl) anchorEl.innerText = `Valore: € ${offer.anchorPrice.toLocaleString('it-IT')}`;
+        if (discountEl) discountEl.innerText = offer.discountText;
+
+        const priceVal = parseFloat(videoData?.price_euro || 400);
+        const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
+        if (ctaBtnText) ctaBtnText.innerText = `${offer.ctaText} a € ${formattedPrice}`;
+
+        // Genera Dinamicamente i Punti di Valore
+        const container = document.getElementById('offer-modal-items');
+        if (container && offer.items) {
+            container.innerHTML = "";
+            offer.items.forEach(it => {
+                const row = document.createElement('div');
+                row.className = "flex items-start justify-between gap-3 p-3 rounded-2xl bg-zinc-900/60 border border-zinc-800/80";
+                row.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-white/5 ${it.color} flex items-center justify-center shrink-0 border border-white/10 text-sm">
+                            <i class="fa-solid ${it.icon}"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-xs sm:text-sm">${it.title}</h4>
+                            <p class="text-[11px] text-zinc-400 mt-0.5 leading-relaxed font-light">${it.desc}</p>
+                        </div>
+                    </div>
+                    <span class="font-mono text-zinc-500 line-through text-xs shrink-0">${it.val}</span>
+                `;
+                container.appendChild(row);
+            });
+        }
     }
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
 }
 
 function closeOfferModal() {
