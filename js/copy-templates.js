@@ -1,4 +1,4 @@
-// GENERATORE NEUROMARKETING & CENTRO SPEDIZIONE • RM STUDIO
+// js/copy-templates.js - GENERATORE NEUROMARKETING & CENTRO SPEDIZIONE • RM STUDIO
 
 window.activeDispatchProjectId = null;
 
@@ -54,9 +54,15 @@ function resolveDemoLink(item) {
         return `https://concierge24.rmstudio.app/chat?struttura_id=${slug}`;
     }
 
-    // 7. Dentis & Lexis (Configurazione Studio su Hetzner)
-    if ((item.portal_type === 'dentis' || item.portal_type === 'lexis') && item.content_url && item.content_url.includes('dentis-app.rmstudio.app')) {
+    // 7. Dentis, Lexis, Elena e Vittoria (Configurazione Studio / Locale su Hetzner)
+    if (['dentis', 'lexis', 'elena', 'vittoria'].includes(item.portal_type) && item.content_url && item.content_url.includes('dentis-app.rmstudio.app')) {
         return item.content_url;
+    }
+    if (item.portal_type === 'elena') {
+        return `https://dentis-app.rmstudio.app/config.html?studio_id=${slug}`;
+    }
+    if (item.portal_type === 'vittoria') {
+        return `https://dentis-app.rmstudio.app/lexis-config.html?studio_id=${slug}`;
     }
 
     // 8. Forma & Materia
@@ -71,12 +77,11 @@ function resolveDemoLink(item) {
 
     // 10. Smart Experience
     if (item.portal_type === 'experience') {
-        return item.content_url || `https://experience.rmstudio.app`;
+        return item.content_url || `https://experience.rmstudio.app/${slug}`;
     }
 
     // 11. SiteEngine Pro (Sito Web / Landing Professionale)
     if (item.portal_type === 'html' || item.portal_type === 'siteengine') {
-        // Se non è ancora pagato, invia SEMPRE il link protetto da filigrana del Portale!
         if ((item.is_paid === false || item.is_paid === "false") && item.id) {
             return `https://portale.rmstudio.app/view?id=${item.id}`;
         }
@@ -96,11 +101,21 @@ function resolveDemoLink(item) {
     return 'https://rmstudio.app';
 }
 
-// 💬 WHATSAPP COPY: BREVI, ESSENZIALI E FORMALI ("DEL LEI")
+// 💬 WHATSAPP COPY: BREVI, ESSENZIALI E AD ALTA CONVERSIONE
 function generateWhatsAppCopy(item) {
     const name = item.client_name || 'Gentile Professionista';
     const title = item.title || 'Progetto';
     const link = resolveDemoLink(item);
+
+    // 🍽️ Elena AI (Hostess Telefonica Ristoranti H24)
+    if (item.portal_type === 'elena') {
+        return `Buongiorno Direzione di ${name}. Per azzerare le chiamate perse durante il servizio a sala piena o nei giorni di chiusura, abbiamo predisposto per voi Elena, l'assistente vocale telefonica AI che prende prenotazioni per i tavoli, gestisce coperti e intolleranze e invia promemoria su WhatsApp:\n\n👉 ${link}\n\n(Chiamando dal vostro telefono il numero test +39 0425 167 5950 potrete provare una simulazione dal vivo). Resto a disposizione!`;
+    }
+
+    // 🚀 Vittoria AI (Centralino Inbound Agenzie B2B)
+    if (item.portal_type === 'vittoria') {
+        return `Ciao ${name}! Per gestire le richieste inbound e qualificare i prospect senza distogliere il team operativo, abbiamo configurato per la vostra agenzia Vittoria: la segreteria telefonica vocale AI che accoglie i clienti, comprende gli obiettivi di marketing e fissa la discovery call su Google Calendar/Meet:\n\n👉 ${link}\n\n(Potete testarla componendo il numero riservato +39 0425 167 5950). Dategli un'occhiata, a presto!`;
+    }
 
     // 🌐 SiteEngine Pro (Sito Web Professionale d'Autore)
     if (item.portal_type === 'html' || item.portal_type === 'siteengine') {
@@ -110,7 +125,7 @@ function generateWhatsAppCopy(item) {
         return `Buongiorno ${name}. Le scrivo da RM Studio (Ferrara/Rovigo): seguendo i professionisti del territorio, Le ho preparato senza impegno una bozza dimostrativa per il nuovo sito web del Suo studio, ottimizzata a 60 FPS per smartphone:\n\n👉 ${link}\n\nPuò visionarla direttamente dal telefono e testare le varianti di stile. Mi farebbe piacere avere un Suo riscontro!`;
     }
 
-    // 🍽️ Locanda Digitale (Living 3D Menu & Compleanni)
+    // 🍕 Locanda Digitale (Living 3D Menu & Compleanni)
     if (item.portal_type === 'locanda') {
         return `Buongiorno ${name}. Complimenti per la cucina del vostro locale! Vi ho preparato una dimostrazione del Living 3D Menu al tavolo con comande WhatsApp e programma compleanni:\n\n👉 ${link}\n\nSi apre al volo da smartphone senza installare app. Dategli un'occhiata, mi farebbe molto piacere un vostro parere!`;
     }
@@ -177,11 +192,19 @@ function generateEmailCopy(item) {
 
     let text = "";
 
+    // 🍽️ Elena AI (Hostess Vocale Ristoranti)
+    if (item.portal_type === 'elena') {
+        text = `OGGETTO: Ricevimento telefonico H24 e azzeramento chiamate perse per ${name}\n\nGentile Direzione di ${name},\n\nLe scrivo da RM Studio (Ferrara/Rovigo): sviluppiamo tecnologie vocali intelligenti pensate per le strutture di ristorazione e ospitalità di alto livello.\n\nSappiamo bene che durante il servizio di sala (12:30–14:30 e 19:30–22:30) o durante i turni di riposo, il personale è totalmente concentrato sui tavoli e sui clienti presenti in sala. Ogni chiamata che trova la linea occupata o senza risposta rappresenta spesso una comitiva o un tavolo perso che decide di prenotare altrove.\n\nPer supportare il vostro staff ed eliminare questo attrito abbiamo configurato **Elena**, la receptionist vocale AI per la ristorazione:\n\n- **Risposta telefonica immediata al secondo squillo H24:** accoglie l'ospite con tono caloroso, dizione naturale e perfetta padronanza dell'accoglienza di sala;\n- **Gestione completa della prenotazione:** rileva data, orario preferito, numero esatto di coperti, intolleranze alimentari/celiachia e presenza di bambini con seggiolone;\n- **Sincronizzazione su Google Calendar:** registra l'evento in tempo reale evitando sovrapposizioni o overbooking;\n- **Promemoria WhatsApp automatici:** invia un promemoria di cortesia all'ospite il giorno prima, riducendo drasticamente i no-show (tavoli vuoti all'ultimo minuto).\n\nPuò consultare la scheda tecnica e l'ambiente di prova del locale a questo indirizzo:\n👉 ${link}\n\n*(Per effettuare un test vocale immediato dal vostro recapito telefonico, basta comporre il nostro numero di prova nazionale: +39 0425 167 5950)*\n\nResto a vostra completa disposizione per qualsiasi chiarimento o personalizzazione.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Tecnologie per la Ristorazione\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
+    }
+    // 🚀 Vittoria AI (Centralino Inbound Agenzie B2B)
+    else if (item.portal_type === 'vittoria') {
+        text = `OGGETTO: Qualifica lead e gestione telefonica esecutiva per ${name}\n\nGentile Team di ${name},\n\nVi scrivo da RM Studio per presentarvi uno strumento ingegnerizzato appositamente per le agenzie di comunicazione e marketing che gestiscono quotidianamente flussi di richieste inbound da potenziali clienti.\n\nSpesso le chiamate in entrata arrivano mentre il team strategico è in riunione o concentrato sulla consegna di progetti e campagne. Rispondere a prospect non qualificati o perdere contatti ad alto valore è un costo nascosto per qualsiasi agenzia.\n\nAbbiamo sviluppato **Vittoria**, la segreteria telefonica AI con impostazione executive B2B:\n\n- **Accoglienza autorevole e professionale:** rappresenta l'agenzia con tono brillante, dinamico e orientato al business;\n- **Triage e qualifica dell'esigenza:** inquadra se il cliente chiama per campagne Ads, restyling sito web, gestione social o branding, raccogliendo le informazioni chiave prima della call;\n- **Fissaggio automatico Discovery Call:** propone fasce orarie compatibili e inserisce direttamente l'appuntamento su Google Calendar e Google Meet, inviando le conferme via WhatsApp ed Email;\n- **Notifica istantanea del lead:** il vostro team riceve via email la trascrizione, la sintesi dei punti discussi e la registrazione audio prima di entrare nella call conoscitiva.\n\nLa scheda dell'assistente per la vostra agenzia è consultabile qui:\n👉 ${link}\n\n*(Potete testare subito la linea componendo il numero di prova nazionale +39 0425 167 5950 dal vostro cellulare)*\n\nResto a disposizione per qualsiasi confronto strategico o per valutare una collaborazione come partner tecnologico.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Automazioni e Software B2B\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
+    }
     // 🌐 SiteEngine Pro (Sito Web Professionale d'Autore)
-    if (item.portal_type === 'html' || item.portal_type === 'siteengine') {
+    else if (item.portal_type === 'html' || item.portal_type === 'siteengine') {
         text = `OGGETTO: Proposta riservata per la presenza online dello studio - ${name}\n\nGentile ${name},\n\nLe scrivo da RM Studio (Ferrara / Rovigo): affianchiamo professionisti e studi del territorio nello sviluppo di portali web d'autore progettati sulle neuroscienze cognitive, con l'obiettivo di valorizzare la reputazione dello studio e facilitare il contatto diretto con i pazienti e i clienti.\n\nAnalizzando la presenza online del Suo studio, abbiamo elaborato una bozza dimostrativa ad alte prestazioni, consultabile a questo indirizzo riservato:\n👉 ${link}\n\nA differenza dei tradizionali siti web realizzati su WordPress (spesso lenti, vulnerabili e bisognosi di continua manutenzione), la nostra architettura monolitica offre vantaggi concreti immediati:\n\n- Velocità estrema di caricamento (0.3 secondi reali, Core Web Vitals 99/100 certificati da Google);\n- Impaginazione studiata per azzerare l'attrito cognitivo e guidare il visitatore verso il contatto diretto su WhatsApp o via telefono;\n- Dati strutturati integrati per posizionare lo studio nelle ricerche locali di Google e Google Maps;\n- Blog privato aggiornabile in totale mobilità dallo smartphone senza password complesse da ricordare;\n- Nessun abbonamento mensile obbligatorio: licenza una tantum con dominio esclusivo, certificato SSL e manutenzione inclusi per il primo anno.\n\nPuò visionare liberamente l'anteprima anche dal Suo smartphone. Se l'impostazione rispecchia l'identità del Suo studio, possiamo collegarla in poche ore al Suo dominio personale definitivo.\n\nResto a Sua completa disposizione per qualsiasi confronto.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Sviluppo Software B2B\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
     }
-    // 🍽️ Locanda Digitale
+    // 🍕 Locanda Digitale
     else if (item.portal_type === 'locanda') {
         text = `OGGETTO: Proposta operativa per la carta e la clientela di ${name}\n\nGentile Direzione di ${name},\n\nAbbiamo elaborato una dimostrazione interattiva su misura per il vostro locale, accessibile direttamente a questo link riservato:\n👉 ${link}\n\nLocanda Digitale non è un semplice PDF: trasforma i vostri piatti forti in video 3D ad alta fluidità (60 FPS) visibili direttamente dallo smartphone dei clienti al tavolo, velocizza le comande su WhatsApp e integra il sistema automatizzato che fidelizza la clientela con il Bancomat dei Compleanni a -10 giorni, tutelando inoltre la reputazione del locale su Google Maps.\n\nRestiamo a completa disposizione per qualsiasi prova dal vivo o personalizzazione.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Tecnologie per la Ristorazione\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
     }
