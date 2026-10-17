@@ -95,25 +95,41 @@ function openOfferModal() {
         : (window.SAAS_OFFER_DETAILS?.html || null);
 
     if (offer) {
-        // Aggiorna Badge, Titolo e Descrizione
         const badgeEl = document.getElementById('offer-modal-badge');
         const titleEl = document.getElementById('offer-modal-title');
         const descEl = document.getElementById('offer-modal-desc');
         const anchorEl = document.getElementById('offer-modal-anchor');
         const discountEl = document.getElementById('offer-modal-discount');
+        const priceModalEl = document.getElementById('modal-price-display');
+        const periodModalEl = document.getElementById('modal-period-display');
         const ctaBtnText = document.getElementById('offer-modal-cta-text');
+
+        // Calcolo dinamico esatto della somma delle singole voci dell'offerta
+        const computedAnchor = (offer.items && offer.items.length > 0)
+            ? offer.items.reduce((acc, it) => acc + (parseInt((it.val || '').replace(/[^0-9]/g, ''), 10) || 0), 0)
+            : (offer.anchorPrice || 350);
 
         if (badgeEl) badgeEl.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${offer.badge}`;
         if (titleEl) titleEl.innerText = offer.title;
         if (descEl) descEl.innerText = offer.desc;
-        if (anchorEl) anchorEl.innerText = `Valore: € ${offer.anchorPrice.toLocaleString('it-IT')}`;
+        if (anchorEl) anchorEl.innerText = `Valore: € ${computedAnchor.toLocaleString('it-IT')}`;
         if (discountEl) discountEl.innerText = offer.discountText;
 
-        const priceVal = parseFloat(videoData?.price_euro || 400);
+        // Riconoscimento prezzo reale e ricorrenza
+        const isRecurring = offer.isRecurring || ['nexus', 'dentis', 'lexis', 'radar', 'aura', 'ares'].includes(type);
+        const defaultSaasPrice = isRecurring ? (offer.defaultPrice || 99) : 400;
+        const priceVal = parseFloat(videoData?.price_euro || defaultSaasPrice);
         const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
-        if (ctaBtnText) ctaBtnText.innerText = `${offer.ctaText} a € ${formattedPrice}`;
 
-        // Genera Dinamicamente i Punti di Valore
+        const cadenceLabel = offer.cadenceLabel || (isRecurring ? '/mese' : '');
+        const periodText = offer.periodText || (isRecurring ? 'al mese • disdici quando vuoi' : 'una tantum • sblocco ufficiale');
+
+        // Aggiornamento coerente di tutti i campi prezzo del modale
+        if (priceModalEl) priceModalEl.innerText = `€ ${formattedPrice}`;
+        if (periodModalEl) periodModalEl.innerText = periodText;
+        if (ctaBtnText) ctaBtnText.innerText = `${offer.ctaText} a € ${formattedPrice}${cadenceLabel}`;
+
+        // Generazione dinamica dei punti di valore
         const container = document.getElementById('offer-modal-items');
         if (container && offer.items) {
             container.innerHTML = "";
@@ -174,7 +190,7 @@ function openFullscreenWebsite() {
             siteEngineSwitcher.classList.add('flex');
         }
 
-        // 🎯 RILEVA IL SETTORE E GENERA I 3 PULSANTI PERTINENTI
+        // 🎯 Rileva il settore e genera i 3 pulsanti pertinenti
         const sectorGroup = window.detectSectorGroup(videoData);
         const trio = window.SECTOR_TRIO_TEMPLATES[sectorGroup] || window.SECTOR_TRIO_TEMPLATES.default;
         const container = document.getElementById('sector-templates-container');
@@ -193,7 +209,6 @@ function openFullscreenWebsite() {
             });
         }
 
-        // Carica il primo template del trio pertinente
         currentActiveTemplate = trio[0].id;
         const cleanUrl = demoUrl.split('?')[0];
         iframe.src = `${cleanUrl}?template_id=${currentActiveTemplate}&_t=${Date.now()}`;
@@ -209,7 +224,12 @@ function openFullscreenWebsite() {
             contextBadge.classList.remove('hidden');
             contextBadge.classList.add('flex');
             
-            const icons = { concierge: "🏨", dentis: "🦷", lexis: "⚖️", locanda: "🍽️", radar: "🏎️", forma_materia: "🏛️", aura: "📡", eternia: "🕊️", love: "💍", ares: "🏋️", nexus: "🤖" };
+            const icons = { 
+                concierge: "🏨", dentis: "🦷", lexis: "⚖️", locanda: "🍽️", 
+                radar: "🏎️", forma_materia: "🏛️", aura: "📡", eternia: "🕊️", 
+                love: "💍", ares: "🏋️", nexus: "🤖", free_energy: "☀️", 
+                social: "📊", omniastudio: "💼", velomotion: "⚡", ff: "🎵" 
+            };
             if (contextIcon) contextIcon.innerText = icons[type] || "⚡";
             if (contextLabel) contextLabel.innerText = `${videoData.client_name || 'Demo'} (${type})`;
         }
@@ -239,16 +259,42 @@ function prevSlide() {
 
 function updatePriceButtons() {
     if (!videoData) return;
-    const priceVal = parseFloat(videoData.price_euro || 400);
+    const type = videoData.portal_type || 'html';
+    const offer = (window.SAAS_OFFER_DETAILS && window.SAAS_OFFER_DETAILS[type]) 
+        ? window.SAAS_OFFER_DETAILS[type] 
+        : (window.SAAS_OFFER_DETAILS?.html || null);
+
+    const isRecurring = offer?.isRecurring || ['nexus', 'dentis', 'lexis', 'radar', 'aura', 'ares'].includes(type);
+    const defaultPrice = isRecurring ? (offer?.defaultPrice || 99) : 400;
+
+    const priceVal = parseFloat(videoData.price_euro || defaultPrice);
     const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
     const isPaid = videoData.is_paid === true || videoData.is_paid === "true";
 
+    const computedAnchor = (offer && offer.items && offer.items.length > 0)
+        ? offer.items.reduce((acc, it) => acc + (parseInt((it.val || '').replace(/[^0-9]/g, ''), 10) || 0), 0)
+        : (offer?.anchorPrice || 1500);
+
+    const cadenceSuffix = isRecurring ? '/mese' : '';
+
     const btn = document.getElementById('actionBtn');
     const overlayBtn = document.getElementById('overlayActionBtn');
+    const headerAnchor = document.getElementById('header-anchor-display');
+    const overlayAnchor = document.getElementById('overlay-anchor-display');
+    const overlayPriceText = document.getElementById('overlay-price-text');
+
+    if (headerAnchor) {
+        headerAnchor.innerText = `€ ${computedAnchor.toLocaleString('it-IT')}`;
+    }
+    if (overlayAnchor) {
+        overlayAnchor.innerText = `€ ${computedAnchor.toLocaleString('it-IT')}`;
+    }
 
     if (isPaid) {
-        document.getElementById('watermark-layer').classList.add('hidden'); 
-        document.getElementById('overlay-watermark').classList.add('hidden'); 
+        const watermarkLayer = document.getElementById('watermark-layer');
+        const overlayWatermark = document.getElementById('overlay-watermark');
+        if (watermarkLayer) watermarkLayer.classList.add('hidden'); 
+        if (overlayWatermark) overlayWatermark.classList.add('hidden'); 
         
         const paidText = `<i class="fa-solid fa-check"></i> Progetto Sbloccato • Visita Live`;
         if (btn) {
@@ -264,18 +310,13 @@ function updatePriceButtons() {
         if (btn) {
             btn.innerHTML = `
                 <div class="flex items-center gap-3">
-                    <span class="line-through text-emerald-200/50 font-mono text-sm font-bold">€ 1.500</span>
-                    <span class="text-white font-black">Sblocca Offerta a € ${formattedPrice}</span>
+                    <span class="line-through text-emerald-200/50 font-mono text-sm font-bold">€ ${computedAnchor.toLocaleString('it-IT')}</span>
+                    <span class="text-white font-black">Sblocca Offerta a € ${formattedPrice}${cadenceSuffix}</span>
                 </div>
             `;
         }
-        if (overlayBtn) {
-            overlayBtn.innerHTML = `
-                <div class="flex items-center gap-2">
-                    <span class="line-through text-emerald-200/50 font-mono text-[10px]">€1.500</span>
-                    <span>Sblocca a € ${formattedPrice}</span>
-                </div>
-            `;
+        if (overlayBtn && overlayPriceText) {
+            overlayPriceText.innerText = `Sblocca a € ${formattedPrice}${cadenceSuffix}`;
         }
     }
 }
@@ -285,7 +326,10 @@ async function handleAction() {
         if (videoData.portal_type === 'carousel') {
             alert("Download delle immagini in corso...");
             imagesArray.forEach((url, i) => {
-                const a = document.createElement('a'); a.href = url; a.download = `slide_${i + 1}.jpg`; a.click();
+                const a = document.createElement('a'); 
+                a.href = url; 
+                a.download = `slide_${i + 1}.jpg`; 
+                a.click();
             });
         } else {
             window.open(window.resolveLiveDemoUrl(videoData), '_blank');
@@ -293,12 +337,22 @@ async function handleAction() {
     } else {
         const btn = document.getElementById('actionBtn');
         const overlayBtn = document.getElementById('overlayActionBtn');
-        const originalText = btn.innerHTML;
+        const originalText = btn ? btn.innerHTML : "";
         
-        btn.disabled = true;
-        if (overlayBtn) overlayBtn.disabled = true;
-        btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Connessione Stripe...`;
-        if (overlayBtn) overlayBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Attendi...`;
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Connessione Stripe...`;
+        }
+        if (overlayBtn) {
+            overlayBtn.disabled = true;
+            overlayBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Attendi...`;
+        }
+
+        const type = videoData.portal_type || 'siteengine';
+        const offer = (window.SAAS_OFFER_DETAILS && window.SAAS_OFFER_DETAILS[type]) ? window.SAAS_OFFER_DETAILS[type] : null;
+        const isRecurring = offer?.isRecurring || ['nexus', 'dentis', 'lexis', 'radar', 'aura', 'ares'].includes(type);
+        const fallbackPrice = isRecurring ? 99 : 400;
+        const finalPrice = parseFloat(videoData.price_euro || fallbackPrice);
 
         try {
             const res = await fetch('https://n8n.rmstudio.app/webhook/crea-sessione-stripe', {
@@ -308,9 +362,9 @@ async function handleAction() {
                     project_id: videoData.id,
                     email: videoData.client_email || "cliente@rmstudio.app",
                     title: videoData.title || "Sblocco Servizio Definitivo",
-                    price: parseFloat(videoData.price_euro || 400),
+                    price: finalPrice,
                     origin: window.location.origin,
-                    portal_type: videoData.portal_type || 'siteengine'
+                    portal_type: type
                 })
             });
 
@@ -323,11 +377,16 @@ async function handleAction() {
                 throw new Error("URL di pagamento non ricevuto");
             }
         } catch (err) {
-            alert("Impossibile avviare il pagamento. Apertura diretta WhatsApp con Riccardo...");
-            window.open("https://wa.me/393478951801?text=Vorrei%20sbloccare%20la%20proposta%20ID%20" + (videoData.id || ''), "_blank");
-            btn.disabled = false;
-            if (overlayBtn) overlayBtn.disabled = false;
-            btn.innerHTML = originalText;
+            alert("Impossibile avviare il pagamento automatico. Apertura diretta WhatsApp con Riccardo...");
+            window.open("https://wa.me/393495258418?text=Vorrei%20sbloccare%20la%20proposta%20ID%20" + (videoData.id || ''), "_blank");
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+            if (overlayBtn) {
+                overlayBtn.disabled = false;
+            }
+            updatePriceButtons();
         }
     }
 }
@@ -338,7 +397,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     generateWatermarks('overlay-watermark', 24);
     await loadOrbitalEcosystem();
 
-    // Calcolo Scadenza 10 Giorni da oggi
+    // Calcolo Scadenza a 10 Giorni da oggi
     const deadlineDate = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000);
     const deadlineFormatted = deadlineDate.toLocaleDateString('it-IT', { day: 'numeric', month: 'long' });
     const scarcityEl = document.getElementById('modal-scarcity-text');
@@ -352,7 +411,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     if (!id) return alert("ID progetto non valido");
 
-    // 👑 SE È L'ADMIN, MOSTRA IL BADGE E DISATTIVA IL TRACCIAMENTO VISITE
+    // Se admin, mostra il badge e salta il tracciamento visite
     if (isAdminViewer) {
         const indicator = document.getElementById('admin-indicator-bar');
         if (indicator) {
@@ -390,7 +449,12 @@ window.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('sent-date').innerText = "Non ancora inviato";
     }
 
-    const priceVal = parseFloat(data.price_euro || 400);
+    const type = data.portal_type || 'html';
+    const offer = (window.SAAS_OFFER_DETAILS && window.SAAS_OFFER_DETAILS[type]) ? window.SAAS_OFFER_DETAILS[type] : null;
+    const isRecurring = offer?.isRecurring || ['nexus', 'dentis', 'lexis', 'radar', 'aura', 'ares'].includes(type);
+    const defaultPrice = isRecurring ? (offer?.defaultPrice || 99) : 400;
+
+    const priceVal = parseFloat(data.price_euro || defaultPrice);
     const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
     document.getElementById('header-price-display').innerText = `€ ${formattedPrice}`;
     
