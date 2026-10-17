@@ -1,3 +1,5 @@
+// js/app.js - Master Command Center Controller
+
 window.allProjects = [];
 window.sheetPendingRestaurants = [];
 window.loadMasterData = loadMasterData;
@@ -76,7 +78,7 @@ function onRestaurantSelectedFromSheet() {
     document.getElementById('c-price').value = 350;
 }
 
-// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I 21 SAAS UFFICIALI
+// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I 23 SAAS E MODULI VOCALI
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
     const titleInput = document.getElementById('c-title');
@@ -88,6 +90,8 @@ function toggleModalFields() {
         concierge: { title: "Concierge24 • Giulia Voice Assistant H24", price: 179, url: "https://www.hotel.it", label: "Sito Web Struttura Ricettiva (Hotel / B&B)" },
         dentis: { title: "Dentis AI • Serena PRO", price: 149, url: "https://www.sanadent.it/", label: "Sito Web Studio Dentistico (per Scraping AI)" },
         lexis: { title: "Lexis AI • Chiara PRO", price: 149, url: "https://www.studiolegale.it/", label: "Sito Web Studio Legale (per Scraping AI)" },
+        elena: { title: "Elena AI • Hostess Ristoranti H24", price: 149, url: "https://www.ristorante.it", label: "Sito Web del Ristorante / Pizzeria (per Scraping AI)" },
+        vittoria: { title: "Vittoria AI • Centralino Agenzie B2B", price: 149, url: "https://www.agenzia.it", label: "Sito Web dell'Agenzia (per Scraping AI)" },
         locanda: { title: "Locanda Digitale • Living 3D Menu & Compleanni", price: 169, url: "https://www.ristorante.it", label: "Sito Web o Pagina Social del Locale" },
         radar: { title: "DriveMotion RADAR • Starter Salone", price: 99, url: "https://www.autosalone.it", label: "Sito Web dell'Autosalone / Concessionario" },
         forma_materia: { title: "Forma & Materia • Atelier Pro 4K", price: 249, url: "https://formamateria.rmstudio.app/studio", label: "URL Destinazione Studio" },
@@ -147,7 +151,6 @@ function applyFilters() {
     const fType = document.getElementById('filter-type')?.value || 'all';
     const fName = (document.getElementById('filter-name')?.value || '').toLowerCase().trim();
     const fPaid = document.getElementById('filter-paid')?.value || 'all';
-    const fStatus = document.getElementById('filter-status')?.value || 'all';
 
     const filtered = (window.allProjects || []).filter(p => {
         if (fType !== 'all' && p.portal_type !== fType) return false;
@@ -160,20 +163,6 @@ function applyFilters() {
         const isPaid = p.is_paid === true || p.is_paid === "true";
         if (fPaid === 'paid' && !isPaid) return false;
         if (fPaid === 'unpaid' && isPaid) return false;
-
-        if (fStatus !== 'all') {
-            const views = parseInt(p.views_count || 0, 10);
-            const isOpenedFlag = p.is_opened === true || p.is_opened === "true";
-            const isRead = views > 0 && isOpenedFlag;
-
-            const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
-            const waSent = p.is_whatsapp_sent === true || p.is_whatsapp_sent === "true";
-            const isContacted = waSent || emailSent;
-
-            if (fStatus === 'read' && !isRead) return false;
-            if (fStatus === 'sent' && (!isContacted || isRead)) return false;
-            if (fStatus === 'unsent' && (isContacted || isRead)) return false;
-        }
 
         return true;
     });
@@ -267,7 +256,6 @@ function renderMasterTable(data) {
         const isPaid = p.is_paid === true || p.is_paid === "true";
         const views = parseInt(p.views_count || 0, 10);
         
-        // 🔒 Un progetto è letto SOLO se le visite sono > 0 e is_opened è true
         const isOpenedFlag = p.is_opened === true || p.is_opened === "true";
         const isRead = views > 0 && isOpenedFlag;
 
@@ -276,23 +264,22 @@ function renderMasterTable(data) {
         const isContacted = waSent || emailSent;
         const followupSent = p.followup_sent === true || p.followup_sent === "true";
         
-        // 🔒 URL SICURO: Finché non è pagato, apre con filigrana view.html (con admin=true se aperto da te)
         const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}&admin=true`;
         const targetUrl = isPaid ? (p.content_url || portalUrl) : portalUrl;
 
-        // 📅 LETTURA DATA ORIGINALE DI PRIMA APERTURA
         const openDate = p.opened_at || p.updated_at;
         const sendDateFormatted = p.sent_at ? new Date(p.sent_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const sendDaysAgo = getDaysAgo(p.sent_at);
-        const openDateFormatted = openDate ? new Date(openDate).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const openDaysAgo = getDaysAgo(openDate);
 
-        // 🏷️ BADGES COMPLETI PER TUTTI I 21 SAAS
+        // 🏷️ BADGES COMPLETI PER TUTTI I 23 SAAS E MODULI VOCALI
         const badges = {
             concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
             dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
             lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚖️ lexis</span>`,
-            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ locanda</span>`,
+            elena: `<span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ elena</span>`,
+            vittoria: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🚀 vittoria</span>`,
+            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍕 locanda</span>`,
             radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏎️ radar</span>`,
             forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏛️ f&amp;m</span>`,
             aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📡 aura</span>`,
@@ -448,6 +435,10 @@ function openClosingPitchModal(projectId) {
         text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di testare l'anteprima per ${title}.\n\nSe attivate Concierge24 questa settimana, **vi accreditiamo 100 minuti omaggio di conversazione AI** nel vostro portafoglio per la stagione!\n\nPotete sbloccare la proposta da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi prova!`;
     } else if (project.portal_type === 'locanda') {
         text = `Ciao ${name}! 👋\n\nHo visto che hai dato un'occhiata all'anteprima del vostro Living 3D Menu per ${title}.\n\nCi tenevo a farti sapere che sbloccando la proposta questa settimana, oltre ai piatti animati a 60 FPS vi configuriamo **INCLUSO nel pacchetto il Bancomat dei Compleanni automatico su WhatsApp e lo Scudo Recensioni a 5 stelle per Google Maps**! 🎂🍷\n\nPuoi sbloccare il progetto direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi chiarimento!`;
+    } else if (project.portal_type === 'elena') {
+        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di verificare l'anteprima dell'assistente vocale di sala per ${title}.\n\nSe attivate Elena PRO per il ristorante questa settimana, **vi includiamo GRATIS l'integrazione del gateway WhatsApp per i promemoria automatici dei tavoli agli ospiti** (abbatte i no-show del 70%)!\n\nPotete sbloccare la proposta direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi prova!`;
+    } else if (project.portal_type === 'vittoria') {
+        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di esplorare l'anteprima di Vittoria per ${title}.\n\nSe attivate Vittoria PRO per la vostra agenzia questa settimana, **vi configuriamo l'integrazione automatica con Google Calendar e Google Meet per fissare subito le discovery call con i lead qualificati**!\n\nPotete sbloccare il servizio direttamente da qui:\n${portalUrl}\n\nResto a disposizione!`;
     } else {
         text = `Ciao ${name}! 👋\n\nHo visto che hai avuto modo di esplorare l'anteprima creata per ${title}.\n\nSbloccandola questa settimana, **includiamo GRATIS un Jingle Audio d'Autore personalizzato (valore 150€)** realizzato dal nostro studio musicale FF Edizioni!\n\nPuoi rivedere l'anteprima e sbloccarla qui:\n${portalUrl}\n\nResto a disposizione!`;
     }
@@ -479,14 +470,20 @@ async function togglePayment(id, current) {
     loadMasterData();
 }
 
-// 🗑️ ELIMINAZIONE COMPLETA SINCRONIZZATA (S1, S2 E R2)
+// 🗑️ ELIMINAZIONE COMPLETA SINCRONIZZATA TRAMITE N8N MASTER ROUTER
 async function handleDelete(id) {
     if (!confirm("Eliminare definitivamente questo record dal Portale e da tutti i database?")) return;
     try {
+        const proj = (window.allProjects || []).find(p => p.id === id);
         const res = await fetch('https://n8n.rmstudio.app/webhook/delete-portal-video', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id })
+            body: JSON.stringify({ 
+                id: id,
+                portal_type: proj?.portal_type || '',
+                content_url: proj?.content_url || '',
+                client_name: proj?.client_name || ''
+            })
         });
         
         if (!res.ok) {
@@ -515,7 +512,7 @@ function closeCreationModal() {
     if (m) { m.classList.remove('flex'); m.classList.add('hidden'); }
 }
 
-// 4. SUBMIT FORM: DISPATCH UNIVERSALE SU TUTTI I 21 SAAS
+// 4. SUBMIT FORM: DISPATCH UNIVERSALE SU TUTTI I 23 SAAS E MODULI VOCALI
 async function handleCreateSubmit(e) {
     e.preventDefault();
     const btn = document.getElementById('c-btn');
@@ -578,19 +575,41 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🦷 DENTIS & ⚖️ LEXIS
-    if (type === 'dentis' || type === 'lexis') {
+    // 🦷 DENTIS, ⚖️ LEXIS, 🍽️ ELENA & 🚀 VITTORIA (CORE MULTI-SETTORE)
+    if (type === 'dentis' || type === 'lexis' || type === 'elena' || type === 'vittoria') {
         btn.innerText = "Configurazione AI & Scraper...";
+        let settore = 'odontoiatria';
+        let defaultMail = 'info@studio.it';
+
+        if (type === 'lexis') {
+            settore = 'legale';
+            defaultMail = 'info@studiolegale.it';
+        } else if (type === 'elena') {
+            settore = 'ristorazione';
+            defaultMail = 'info@ristorante.it';
+        } else if (type === 'vittoria') {
+            settore = 'agenzia';
+            defaultMail = 'info@agenzia.it';
+        }
+
         try {
             const res = await fetch('https://n8n.rmstudio.app/webhook/studio-registrazione', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ "Nome Agenzia": clientName, "Email": email || 'info@studio.it', "Telefono": phone || '+3904251675950', "Piano": 'trial', "Sito Web": siteUrl, "Settore": type === 'lexis' ? 'legale' : 'odontoiatria', "Fonte": "Command Center Portale (Bozza Speculativa)" })
+                body: JSON.stringify({ 
+                    "Nome Agenzia": clientName, 
+                    "Email": email || defaultMail, 
+                    "Telefono": phone || '+3904251675950', 
+                    "Piano": 'trial', 
+                    "Sito Web": siteUrl, 
+                    "Settore": settore, 
+                    "Fonte": "Command Center Portale (Bozza Speculativa)" 
+                })
             });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            alert(`✨ Assistente AI registrato per ${clientName}!`);
+            alert(`✨ Assistente Vocale (${type.toUpperCase()}) registrato per ${clientName}!`);
             closeCreationModal(); setTimeout(loadMasterData, 1500);
-        } catch (err) { alert("⚠️ Errore attivazione: " + err.message); } 
+        } catch (err) { alert("⚠️ Errore attivazione vocale: " + err.message); } 
         finally { btn.disabled = false; btn.innerText = orig; }
         return;
     }
