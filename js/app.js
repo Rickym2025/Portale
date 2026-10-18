@@ -538,10 +538,20 @@ async function handleCreateSubmit(e) {
         formData.append('file', selectedFile);
         formData.append('title', document.getElementById('c-title').value || `${clientName} • Video UGC`);
         formData.append('client_name', clientName);
-        formData.append('client_email', email);
+        
+        // Invia sia client_email che email con fallback anti-crash per evitare il NOT NULL
+        const safeEmail = email || `${slug}@rmstudio.app`;
+        formData.append('client_email', safeEmail);
+        formData.append('email', safeEmail);
+        
         formData.append('client_phone', phone);
+        formData.append('phone', phone);
         formData.append('portal_type', type);
-        formData.append('price_euro', price || (type === 'vision' ? 120 : 59));
+        
+        // Invia sia price_euro che price
+        const safePrice = price || (type === 'vision' ? 120 : 59);
+        formData.append('price_euro', safePrice);
+        formData.append('price', safePrice);
 
         try {
             const res = await fetch('https://n8n.rmstudio.app/webhook/admin-create-portal', {
