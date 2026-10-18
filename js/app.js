@@ -527,6 +527,43 @@ async function handleCreateSubmit(e) {
     const siteUrl = document.getElementById('c-url').value.trim();
     const slug = clientName.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
 
+    // 🎬 GESTIONE UPLOAD VIDEO FILE (VISION UGC & HOMETOUR VIDEO)
+    const fileInput = document.getElementById('c-file');
+    const selectedFile = fileInput ? fileInput.files[0] : null;
+
+    if ((type === 'vision' || type === 'video') && selectedFile) {
+        btn.innerText = "Caricamento video su Cloudflare R2 in corso...";
+        
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('title', document.getElementById('c-title').value || `${clientName} • Video UGC`);
+        formData.append('client_name', clientName);
+        formData.append('client_email', email);
+        formData.append('client_phone', phone);
+        formData.append('portal_type', type);
+        formData.append('price_euro', price || (type === 'vision' ? 120 : 59));
+
+        try {
+            const res = await fetch('https://n8n.rmstudio.app/webhook/admin-create-portal', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!res.ok) throw new Error(`Errore server HTTP ${res.status}`);
+            
+            alert(`✨ Video caricato con successo per ${clientName}!`);
+            fileInput.value = '';
+            closeCreationModal();
+            loadMasterData();
+        } catch (err) {
+            alert("⚠️ Errore caricamento video su Cloudflare R2: " + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = orig;
+        }
+        return;
+    }
+    
     // 🤖 NEXUSAI
     if (type === 'nexus') {
         btn.innerText = "Generazione Shadow-Proxy (15s)...";
@@ -727,6 +764,20 @@ async function handleCreateSubmit(e) {
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const resizer = document.getElementById('resizer');
+
+    // Mostra il nome del file video selezionato nel riquadro tratteggiato
+    const fileInput = document.getElementById('c-file');
+    const fileBoxText = document.querySelector('#file-upload-box span');
+    if (fileInput && fileBoxText) {
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files && fileInput.files[0]) {
+                const f = fileInput.files[0];
+                const sizeMb = (f.size / (1024 * 1024)).toFixed(1);
+                fileBoxText.innerHTML = `✓ <b>${f.name}</b> (${sizeMb} MB pronto)`;
+                fileBoxText.parentElement.parentElement.classList.add('border-emerald-500', 'bg-emerald-950/20');
+            }
+        });
+    }
     
     if (sidebar && resizer) {
         if (localStorage.getItem('sidebar_collapsed') === 'true') {
