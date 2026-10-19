@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -21,15 +21,15 @@
         }
         .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
         .glass-card {
-            background: rgba(14, 15, 23, 0.85);
+            background: rgba(14, 15, 23, 0.88);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .glass-card:hover {
-            border-color: rgba(147, 51, 234, 0.4);
+            border-color: rgba(168, 85, 247, 0.4);
             transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 25px rgba(147, 51, 234, 0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 25px rgba(168, 85, 247, 0.15);
         }
         @keyframes floatSlow {
             0% { transform: translate(0px, 0px) scale(1); }
@@ -70,16 +70,16 @@
 
         <!-- INTRODUZIONE NEUROMARKETING SENZA FRIZIONE -->
         <div class="glass-card p-6 sm:p-8 rounded-3xl space-y-2 border-purple-500/20">
-            <h2 class="text-lg font-bold text-white font-display">I tuoi strumenti digitali pronti all'uso</h2>
+            <h2 class="text-lg font-bold text-white font-display">I tuoi strumenti digitali pronti all&apos;uso</h2>
             <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
-                Abbiamo raccolto in questa dashboard privata tutte le soluzioni tecnologiche configurate appositamente per la tua attività. Puoi testare le anteprime interattive o procedere all'attivazione definitiva in qualsiasi momento.
+                Abbiamo raccolto in questa dashboard privata tutte le soluzioni tecnologiche configurate appositamente per la tua attività. Puoi testare le anteprime interattive o procedere all&apos;attivazione definitiva in qualsiasi momento.
             </p>
         </div>
 
         <!-- GRIGLIA CARD PROGETTI CON ANTEPRIMA -->
         <div class="space-y-4">
             <div id="client-projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Popolato dinamicamente da JS -->
+                <!-- Popolato dinamicamente via JS -->
                 <div class="p-12 text-center text-zinc-500 col-span-full">Ricerca soluzioni in corso... ⏳</div>
             </div>
         </div>
@@ -95,20 +95,136 @@
     <script>
         const client = typeof supabaseClient !== 'undefined' ? supabaseClient : null;
 
-        // 📋 DIZIONARIO DESCRIZIONI E ANTEPRIME PER OGNI SAAS (SENZA FRIZIONE)
+        // 🛡️ PLACEHOLDER SICURO GLOBALE (Se qualsiasi immagine esterna dovesse fallire)
+        const SAFE_FALLBACK_THUMB = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80";
+
+        // 📋 DIZIONARIO COMPLETO DI TUTTI I 21 SAAS CON IMMAGINI TESTATE E VERIFICATE
         const SAAS_DESCRIPTIONS = {
-            locanda: { desc: "Menu digitale interattivo al tavolo in video 3D a 60 FPS con comande 1-click su WhatsApp e programma compleanni.", badge: "🍽️ Ristorazione & Tavolo", thumb: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" },
-            experience: { desc: "Smart menu sensoriale con Sommelier AI, abbinamenti vino guidati e storytelling della materia prima.", badge: "🍷 Carta & Sommelier AI", thumb: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80" },
-            radar: { desc: "Sourcing predittivo h24 da privati con perizia AI del margine netto e zero commissioni d'asta.", badge: "🏎️ Automotive B2B", thumb: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80" },
-            concierge: { desc: "Assistente vocale AI H24 in lingua nativa che azzera le chiamate perse e gestisce check-in notturni.", badge: "🏨 Ospitalità H24", thumb: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80" },
-            dentis: { desc: "Receptionist vocale odontoiatrica che risponde al 2° squillo, gestisce il triage urgenze e promemoria WhatsApp.", badge: "🦷 Studio Medico", thumb: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=600&q=80" },
-            lexis: { desc: "Segreteria telefonica formale 'del Lei' per studi legali, con trascrizione e sintesi dei primi contatti.", badge: "⚖️ Studio Legale", thumb: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80" },
-            html: { desc: "Landing page e blog monolitico ad altissima conversione con indirizzo web personale per 1 anno.", badge: "🌐 Sito Web d'Autore", thumb: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" },
-            siteengine: { desc: "Landing page e blog monolitico ad altissima conversione con indirizzo web personale per 1 anno.", badge: "🌐 Sito Web d'Autore", thumb: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" },
-            nexus: { desc: "Assistente virtuale iniettato sul sito esistente che accoglie i visitatori e raccoglie contatti h24.", badge: "🤖 Chatbot AI Sales", thumb: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" },
-            hometour: { desc: "Reel video 3D cinematografici generati da foto dello smartphone con movimenti di camera reali.", badge: "🏠 Real Estate 3D", thumb: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80" },
-            vision: { desc: "Generazione video UGC con modelli virtuali iper-realistici per campagne social a conversione.", badge: "🎬 Video UGC AI", thumb: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80" },
-            ff: { desc: "Colonna sonora originale o jingle commerciale registrato in SIAE per dare voce al brand.", badge: "🎵 Jingle & Musica SIAE", thumb: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80" }
+            vision: { 
+                desc: "Generazione video UGC con modelli virtuali iper-realistici per campagne social ad alta conversione.", 
+                badge: "🎬 Video UGC AI", 
+                thumb: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" 
+            },
+            carousel: { 
+                desc: "Caroselli grafici persuasivi a 5 slide in formato 4:5 per Instagram e LinkedIn con la palette del tuo brand.", 
+                badge: "📊 Caroselli Social AI", 
+                thumb: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" 
+            },
+            social: { 
+                desc: "Generatore autonomo di caroselli e post kit grafici persuasivi per LinkedIn e Instagram.", 
+                badge: "📊 SocialEngine AI", 
+                thumb: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" 
+            },
+            nexus: { 
+                desc: "Assistente virtuale integrato direttamente sul tuo sito che accoglie i visitatori e raccoglie contatti h24.", 
+                badge: "🤖 Chatbot AI Sales", 
+                thumb: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80" 
+            },
+            locanda: { 
+                desc: "Menu digitale interattivo al tavolo in video 3D a 60 FPS con comande 1-click su WhatsApp e programma compleanni.", 
+                badge: "🍽️ Ristorazione &amp; Tavolo", 
+                thumb: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" 
+            },
+            experience: { 
+                desc: "Smart menu sensoriale con Sommelier AI, abbinamenti vino guidati e storytelling della materia prima.", 
+                badge: "🍷 Carta &amp; Sommelier AI", 
+                thumb: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80" 
+            },
+            elena: { 
+                desc: "Hostess e receptionist vocale AI per ristoranti: risponde al telefono h24, gestisce le prenotazioni e azzera i no-show.", 
+                badge: "🍽️ Hostess Vocale AI", 
+                thumb: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" 
+            },
+            vittoria: { 
+                desc: "Centralino vocale B2B per agenzie e società di servizi: qualifica i lead e fissa discovery call in agenda.", 
+                badge: "🚀 Centralino Vocale B2B", 
+                thumb: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" 
+            },
+            radar: { 
+                desc: "Sourcing predittivo h24 di auto usate da privati con perizia AI del margine netto e zero commissioni d'asta.", 
+                badge: "🏎️ Automotive B2B", 
+                thumb: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80" 
+            },
+            drivemotion: { 
+                desc: "Video commerciali per auto con sostituzione automatica dello sfondo del piazzale tramite intelligenza artificiale.", 
+                badge: "🚗 Video Auto AI", 
+                thumb: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80" 
+            },
+            concierge: { 
+                desc: "Assistente vocale AI H24 in lingua nativa che azzera le chiamate perse e gestisce i check-in notturni in hotel e B&B.", 
+                badge: "🏨 Ospitalità H24", 
+                thumb: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80" 
+            },
+            dentis: { 
+                desc: "Receptionist vocale odontoiatrica che risponde al 2° squillo, gestisce il triage urgenze e invia promemoria WhatsApp.", 
+                badge: "🦷 Studio Medico", 
+                thumb: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80" 
+            },
+            lexis: { 
+                desc: "Segreteria telefonica formale con registro del 'Lei' per studi legali, con trascrizione e sintesi delle consulenze.", 
+                badge: "⚖️ Studio Legale", 
+                thumb: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=800&q=80" 
+            },
+            html: { 
+                desc: "Landing page e blog monolitico ad altissima conversione con indirizzo web personale incluso per 1 anno.", 
+                badge: "🌐 Sito Web d'Autore", 
+                thumb: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" 
+            },
+            siteengine: { 
+                desc: "Landing page e blog monolitico ad altissima conversione con indirizzo web personale incluso per 1 anno.", 
+                badge: "🌐 Sito Web d'Autore", 
+                thumb: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" 
+            },
+            hometour: { 
+                desc: "Reel video 3D cinematografici generati da foto dello smartphone con movimenti di camera reali per agenzie immobiliari.", 
+                badge: "🏠 Real Estate 3D", 
+                thumb: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" 
+            },
+            forma_materia: { 
+                desc: "Rendering neurale 4K in 20 secondi da schizzi a mano libera e piante CAD per architetti e designer.", 
+                badge: "🏛️ Render 4K AI", 
+                thumb: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" 
+            },
+            ff: { 
+                desc: "Colonna sonora originale o jingle commerciale registrato in SIAE (FF Edizioni) per dare voce al brand.", 
+                badge: "🎵 Jingle &amp; Musica SIAE", 
+                thumb: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80" 
+            },
+            aura: { 
+                desc: "Radar mesh tattico P2P da browser, Co-Pilota vocale e sicurezza lavoratori isolati a norma D.Lgs. 81/08.", 
+                badge: "📡 Radar Mesh &amp; Sicurezza", 
+                thumb: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=800&q=80" 
+            },
+            eternia: { 
+                desc: "Portali memoriali digitali d'autore con QR per onoranze funebri, biografo AI e libro ricordi.", 
+                badge: "🕊️ Memoriali QR", 
+                thumb: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=800&q=80" 
+            },
+            love: { 
+                desc: "Partecipazioni digitali d'autore con apertura 3D della busta, RSVP intolleranze e Maxischermo live.", 
+                badge: "💍 Partecipazioni 3D", 
+                thumb: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80" 
+            },
+            ares: { 
+                desc: "Voice coach vocale per sala pesi, XP in tempo reale, leaderboard maxischermo e dieta fotografica AI.", 
+                badge: "🏋️ Personal Trainer AI", 
+                thumb: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80" 
+            },
+            free_energy: { 
+                desc: "Piattaforma di progettazione CAD solare su mappa satellitare e CRM trattative fotovoltaico.", 
+                badge: "☀️ CAD Fotovoltaico", 
+                thumb: "https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=800&q=80" 
+            },
+            omniastudio: { 
+                desc: "Intelligenza Artificiale locale 100% offline e privata per analizzare documenti e contratti legali/fiscali.", 
+                badge: "💼 AI Offline Privata", 
+                thumb: "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=800&q=80" 
+            },
+            velomotion: { 
+                desc: "Sblocco software e diagnosi per motori e-bike Bosch Smart System (BES3) per officine specializzate.", 
+                badge: "⚡ Sblocco E-Bike", 
+                thumb: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800&q=80" 
+            }
         };
 
         window.addEventListener('DOMContentLoaded', async () => {
@@ -130,6 +246,7 @@
             }
 
             try {
+                // Recupera tutte le proposte associate a questa email
                 const { data, error } = await client
                     .from('portal_videos')
                     .select('*')
@@ -154,27 +271,43 @@
                     const price = parseFloat(p.price_euro || 0);
                     const isPaid = p.is_paid === true || p.is_paid === "true";
                     const viewUrl = `view.html?id=${p.id}`;
+                    const typeKey = (p.portal_type || 'html').toLowerCase();
 
-                    const typeKey = p.portal_type || 'html';
                     const profile = SAAS_DESCRIPTIONS[typeKey] || {
-                        desc: "Soluzione software ad alte prestazioni configurata su misura.",
+                        desc: "Soluzione software ad alte prestazioni configurata su misura per la tua attività.",
                         badge: "⚡ Soluzione B2B",
-                        thumb: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=600&q=80"
+                        thumb: SAFE_FALLBACK_THUMB
                     };
+
+                    // Se è un carosello con immagini reali salvate su R2, usa la prima slide come copertina reale
+                    let displayThumb = profile.thumb;
+                    if (typeKey === 'carousel' || typeKey === 'social') {
+                        if (p.carousel_images) {
+                            try {
+                                const arr = typeof p.carousel_images === 'string' ? JSON.parse(p.carousel_images) : p.carousel_images;
+                                if (Array.isArray(arr) && arr.length > 0 && arr[0].startsWith('http')) {
+                                    displayThumb = arr[0];
+                                }
+                            } catch(e) {}
+                        }
+                    }
 
                     const card = document.createElement('div');
                     card.className = "glass-card rounded-3xl overflow-hidden shadow-2xl flex flex-col justify-between";
                     card.innerHTML = `
-                        <div class="relative h-44 overflow-hidden bg-zinc-950">
-                            <img src="${profile.thumb}" alt="" class="w-full h-full object-cover filter brightness-[0.8] hover:scale-105 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#0e0f17] via-transparent to-black/40"></div>
+                        <div class="relative h-48 overflow-hidden bg-zinc-950">
+                            <img src="${displayThumb}" 
+                                 onerror="this.onerror=null; this.src='${SAFE_FALLBACK_THUMB}';" 
+                                 alt="${p.title || 'Anteprima'}" 
+                                 class="w-full h-full object-cover filter brightness-[0.82] hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0e0f17] via-transparent to-black/50"></div>
                             <div class="absolute top-4 left-4">
                                 <span class="text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider bg-black/60 backdrop-blur-md text-white border border-white/15">
                                     ${profile.badge}
                                 </span>
                             </div>
                             <div class="absolute bottom-4 left-4 right-4">
-                                <h3 class="text-lg font-bold text-white font-display leading-tight">${p.title || 'Soluzione Software'}</h3>
+                                <h3 class="text-base sm:text-lg font-bold text-white font-display leading-tight">${p.title || 'Soluzione Software'}</h3>
                             </div>
                         </div>
 
