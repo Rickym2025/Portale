@@ -235,10 +235,8 @@ function openFullscreenWebsite() {
             iframe.src = `${cleanUrl}?template_id=${currentActiveTemplate}&_t=${Date.now()}`;
 
         } else if (type === 'experience') {
-            if (experienceSwitcher) {
-                experienceSwitcher.classList.remove('hidden');
-                experienceSwitcher.classList.add('flex');
-            }
+            // Elimina il selettore duale rotto: mostra solo la Experience Page pulita
+            if (experienceSwitcher) experienceSwitcher.classList.add('hidden');
             iframe.src = `${demoUrl}?_t=${Date.now()}`;
         } else {
             if (contextBadge) {
