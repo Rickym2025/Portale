@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Area Riservata Clienti • RM Studio</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #030306; color: #f3f4f6; }
+        .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass { background: rgba(11, 11, 15, 0.95); backdrop-filter: blur(16px); }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 flex flex-col justify-between selection:bg-purple-600 selection:text-white">
+
+    <div class="max-w-5xl w-full mx-auto space-y-8">
+        
+        <!-- HEADER CLIENTE -->
+        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-zinc-900">
+            <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-500 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-purple-600/30 shrink-0">
+                    <i class="fa-solid fa-briefcase text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-widest block">Area Riservata &amp; Test Soluzioni</span>
+                    <h1 class="text-xl md:text-2xl font-black text-white font-display" id="client-heading">Caricamento Progetti...</h1>
+                </div>
+            </div>
+            <div class="text-right">
+                <span class="text-xs text-zinc-400 block font-mono" id="client-email-display">...</span>
+                <span class="text-[10px] text-emerald-400 font-bold">✓ Ecosistema Attivo</span>
+            </div>
+        </header>
+
+        <!-- STATO / SOMMARIO INVESTIMENTO -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="p-4 rounded-2xl bg-[#0b0b0f] border border-zinc-900 shadow-lg">
+                <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Soluzioni Configurate</span>
+                <span class="text-2xl font-black text-white mt-1 block font-mono" id="stat-count">0</span>
+            </div>
+            <div class="p-4 rounded-2xl bg-[#0b0b0f] border border-zinc-900 shadow-lg">
+                <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block">Valore Totale Proposte</span>
+                <span class="text-2xl font-black text-amber-300 mt-1 block font-mono" id="stat-value">€0.00</span>
+            </div>
+            <div class="p-4 rounded-2xl bg-[#0b0b0f] border border-zinc-900 shadow-lg">
+                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">Stato Sblocco</span>
+                <span class="text-2xl font-black text-emerald-400 mt-1 block font-mono" id="stat-status">In Attesa</span>
+            </div>
+        </div>
+
+        <!-- GRIGLIA CARD PROGETTI DEL CLIENTE -->
+        <div class="space-y-4">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider font-mono">Le Tue Soluzioni Dedicate</h2>
+            <div id="client-projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Popolato via JS -->
+                <div class="p-8 text-center text-zinc-500 col-span-full">Ricerca progetti associati in corso... ⏳</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="max-w-5xl w-full mx-auto mt-12 pt-6 border-t border-zinc-900 text-center text-xs text-zinc-500 font-mono">
+        © 2026 RM Studio • Centro Consegna &amp; Test Multiprodotto
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script>
+        const client = typeof supabaseClient !== 'undefined' ? supabaseClient : null;
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const emailParam = params.get('email') || params.get('user_email');
+            
+            if (!emailParam) {
+                document.getElementById('client-heading').innerText = "Accesso non autorizzato";
+                document.getElementById('client-projects-grid').innerHTML = `<div class="p-8 text-center text-red-400 col-span-full">Nessun indirizzo email specificato nell'URL.</div>`;
+                return;
+            }
+
+            const cleanEmail = decodeURIComponent(emailParam).trim().toLowerCase();
+            document.getElementById('client-email-display').innerText = cleanEmail;
+
+            if (!client) {
+                alert("Errore di connessione a Supabase.");
+                return;
+            }
+
+            try {
+                // Preleva tutti i record da portal_videos associati a questa email
+                const { data, error } = await client
+                    .from('portal_videos')
+                    .select('*')
+                    .ilike('client_email', cleanEmail)
+                    .order('sent_at', { ascending: false });
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    document.getElementById('client-heading').innerText = "Nessun progetto trovato";
+                    document.getElementById('client-projects-grid').innerHTML = `<p class="text-zinc-500 text-xs col-span-full text-center py-8">Non risultano ancora soluzioni configurate per l'indirizzo ${cleanEmail}.</p>`;
+                    return;
+                }
+
+                // Intestazione con nome del cliente
+                const clientName = data[0].client_name || "Gentile Cliente";
+                document.getElementById('client-heading').innerText = `Dashboard di ${clientName}`;
+                document.getElementById('stat-count').innerText = data.length;
+
+                let totalVal = 0;
+                let paidCount = 0;
+                const grid = document.getElementById('client-projects-grid');
+                grid.innerHTML = '';
+
+                data.forEach(p => {
+                    const price = parseFloat(p.price_euro || 0);
+                    totalVal += price;
+                    const isPaid = p.is_paid === true || p.is_paid === "true";
+                    if (isPaid) paidCount++;
+
+                    // Link protetto con filigrana o link diretto se pagato
+                    const viewUrl = `view.html?id=${p.id}`;
+
+                    const card = document.createElement('div');
+                    card.className = "bg-[#0b0b0f] border border-zinc-800 hover:border-purple-500/50 p-6 rounded-3xl shadow-xl flex flex-col justify-between space-y-4 transition-all";
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider ${isPaid ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-purple-500/10 text-purple-300 border border-purple-500/20'}">
+                                    ${p.portal_type || 'Progetto'}
+                                </span>
+                                <span class="font-mono font-bold text-amber-400 text-sm">€${price.toFixed(0)}</span>
+                            </div>
+                            <h3 class="text-base font-bold text-white mb-1 font-display">${p.title || 'Soluzione Software'}</h3>
+                            <p class="text-xs text-zinc-400 line-clamp-2">Testa l'anteprima interattiva o sblocca la versione definitiva per la tua attività.</p>
+                        </div>
+                        <div class="pt-4 border-t border-zinc-900 flex items-center gap-2">
+                            <a href="${viewUrl}" target="_blank" class="flex-1 text-center bg-purple-600 hover:bg-purple-500 text-white font-extrabold py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-purple-600/20">
+                                🚀 Apri Anteprima Live
+                            </a>
+                            <span class="px-3 py-3 rounded-xl bg-zinc-900 text-zinc-400 text-xs font-bold font-mono">
+                                ${isPaid ? '✓ Attivo' : '● Bozza'}
+                            </span>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+                document.getElementById('stat-value').innerText = `€${totalVal.toFixed(2)}`;
+                document.getElementById('stat-status').innerText = paidCount === data.length ? "Tutti Attivi" : `${paidCount} / ${data.length} Sbloccati`;
+
+            } catch (err) {
+                console.error("Errore caricamento dashboard cliente:", err);
+                document.getElementById('client-projects-grid').innerHTML = `<p class="text-red-400 text-xs col-span-full text-center">Errore di caricamento dati. Riprova più tardi.</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
