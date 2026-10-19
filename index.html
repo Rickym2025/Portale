@@ -502,6 +502,33 @@
             </select>
         </div>
 
+        <!-- UPLOAD MENU CIBO & CARTA VINI (SPECIFICO PER EXPERIENCE) -->
+        <div id="experience-upload-box" class="hidden p-4 bg-purple-950/20 border border-purple-500/40 rounded-2xl space-y-3">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-extrabold uppercase text-amber-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-pdf"></i> Menu Reale &amp; Carta Vini (Opzionale)
+                </span>
+                <span class="text-[10px] text-zinc-400 font-mono">Vision AI OCR</span>
+            </div>
+            <p class="text-[11px] text-zinc-300 leading-relaxed">
+                Carica le foto o i PDF dei menu per estrarre piatti, prezzi e vini reali al 100% (evita piatti finti generici).
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Menu Cibo (PDF / Foto)</label>
+                    <input type="file" id="c-exp-menu-file" accept="image/*,application/pdf" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2 text-xs text-zinc-300 file:mr-2 file:py-1 file:px-2.5 file:bg-amber-500 file:text-slate-950 file:rounded-lg file:border-0 file:font-bold file:text-[10px] cursor-pointer">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Carta dei Vini (PDF / Foto)</label>
+                    <input type="file" id="c-exp-wine-file" accept="image/*,application/pdf" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2 text-xs text-zinc-300 file:mr-2 file:py-1 file:px-2.5 file:bg-purple-500 file:text-white file:rounded-lg file:border-0 file:font-bold file:text-[10px] cursor-pointer">
+                </div>
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Oppure incolla testo / piatti forti</label>
+                <textarea id="c-exp-notes" rows="2" placeholder="Es. Spaghetto Mancini alle canocchie €24, Frittura dell'Adriatico €30..." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-2.5 text-xs text-white outline-none focus:border-purple-500 resize-none font-mono"></textarea>
+            </div>
+        </div>
+          
         <div>
             <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Nome Cliente / Struttura</label>
             <input type="text" id="c-name" required placeholder="Es. Ristorante M4 / Leo Advertising / Studio Rossi" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
