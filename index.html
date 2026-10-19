@@ -359,7 +359,6 @@
               <p class="text-xs text-gray-400 mt-0.5">Gestisci le proposte e i pagamenti di tutti i SaaS in tempo reale.</p>
             </div>
             <div class="flex items-center gap-2">
-              <!-- COMMUTATORE VISTA COMPATTA / ESPANSA -->
               <button onclick="toggleDensity()" id="btn-density-toggle" class="bg-zinc-900 border border-zinc-800 hover:border-purple-500/50 text-zinc-300 hover:text-white font-bold px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-sm">
                   <i class="fa-solid fa-compress text-purple-400" id="density-icon"></i>
                   <span id="density-label">Vista Compatta</span>
@@ -370,7 +369,7 @@
             </div>
         </header>
 
-        <!-- STATISTICHE COMPATTE SU RIGA UNICA (CHIP SLIM DA 38PX) -->
+        <!-- STATISTICHE COMPATTE SU RIGA UNICA -->
         <div id="stats-container" class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 mb-3">
             <div class="bg-[#0b0b0f] border border-zinc-900/90 py-2 px-3.5 rounded-xl flex items-center justify-between shadow-md">
                 <span class="text-zinc-400 text-[10px] uppercase font-bold tracking-wider">Incassi Totali</span>
@@ -492,6 +491,36 @@
 
       <form id="create-project-form" onsubmit="handleCreateSubmit(event)" class="space-y-4">
         
+        <!-- SELECT UNIVERSALE POSTO IN CIMA: COMANDA L'INTERFACCIA DINAMICA -->
+        <div>
+            <label class="block text-xs font-bold uppercase text-purple-400 mb-1">Prodotto Ecosistema (23 SaaS &amp; Voice)</label>
+            <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-purple-500/40 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-400 font-bold cursor-pointer">
+                <option value="html" selected>🌐 SiteEngine Pro (Sito Web / Landing)</option>
+                <option value="concierge">🏨 Concierge24 (Assistente Vocale Hotel &amp; B&amp;B)</option>
+                <option value="dentis">🦷 Dentis AI (Receptionist Telefonica Dentisti)</option>
+                <option value="lexis">⚖️ Lexis AI (Segreteria Vocale Avvocati)</option>
+                <option value="elena">🍽️ Elena AI (Hostess Telefonica Ristoranti H24)</option>
+                <option value="vittoria">🚀 Vittoria AI (Centralino Vocale Agenzie &amp; B2B)</option>
+                <option value="locanda">🍕 Locanda Digitale (Living 3D Menu &amp; Marketing)</option>
+                <option value="radar">🏎️ DriveMotion RADAR (Sourcing Auto Privati)</option>
+                <option value="forma_materia">🏛️ Forma &amp; Materia (Rendering Neurale 4K)</option>
+                <option value="aura">📡 AURA Proximity (Virtual Mesh Radar)</option>
+                <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
+                <option value="love">💍 LOVE (Partecipazioni Digitali Nozze)</option>
+                <option value="experience">🍷 Smart Experience Page (Ristoranti)</option>
+                <option value="hometour">🏠 HomeTour AI (Video Reel Immobiliari 3D)</option>
+                <option value="drivemotion">🚗 DriveMotion Video (Video Auto Sfondo AI)</option>
+                <option value="vision">🎬 Vision UGC (Influencer Virtuali AI)</option>
+                <option value="nexus">🤖 NexusAI (Sales Overlay Shadow-Proxy)</option>
+                <option value="ares">🏋️ AresAI (Fitness Coach &amp; Palestre)</option>
+                <option value="free_energy">☀️ Free Energy (CAD Fotovoltaico &amp; CRM)</option>
+                <option value="social">📊 Carousel Engine (Social Creator)</option>
+                <option value="omniastudio">💼 OmniaStudio PRO (AI Offline Privata)</option>
+                <option value="velomotion">⚡ VeloMotion (Sblocco E-Bike Bosch BES3)</option>
+                <option value="ff">🎵 FF Edizioni (Jingle &amp; Canzoni SIAE)</option>
+            </select>
+        </div>
+
         <div id="experience-sheet-select-box" class="hidden p-3.5 bg-purple-950/30 border border-purple-500/30 rounded-2xl">
             <label class="block text-xs font-extrabold uppercase text-purple-300 mb-1.5 flex items-center justify-between">
                 <span>📊 Seleziona da Foglio Google Experience</span>
@@ -552,36 +581,6 @@
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prezzo (€)</label>
                 <input type="number" id="c-price" value="400" required class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold text-amber-400 font-mono">
             </div>
-        </div>
-
-        <!-- SELECT UNIVERSALE CON TUTTI I 23 SAAS E MODULI VOCALI -->
-        <div>
-            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Prodotto Ecosistema (23 SaaS &amp; Voice)</label>
-            <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-bold cursor-pointer">
-                <option value="html" selected>🌐 SiteEngine Pro (Sito Web / Landing)</option>
-                <option value="concierge">🏨 Concierge24 (Assistente Vocale Hotel &amp; B&amp;B)</option>
-                <option value="dentis">🦷 Dentis AI (Receptionist Telefonica Dentisti)</option>
-                <option value="lexis">⚖️ Lexis AI (Segreteria Vocale Avvocati)</option>
-                <option value="elena">🍽️ Elena AI (Hostess Telefonica Ristoranti H24)</option>
-                <option value="vittoria">🚀 Vittoria AI (Centralino Vocale Agenzie &amp; B2B)</option>
-                <option value="locanda">🍕 Locanda Digitale (Living 3D Menu &amp; Marketing)</option>
-                <option value="radar">🏎️ DriveMotion RADAR (Sourcing Auto Privati)</option>
-                <option value="forma_materia">🏛️ Forma &amp; Materia (Rendering Neurale 4K)</option>
-                <option value="aura">📡 AURA Proximity (Virtual Mesh Radar)</option>
-                <option value="eternia">🕊️ ETERNIA (Memoriali QR &amp; Pet)</option>
-                <option value="love">💍 LOVE (Partecipazioni Digitali Nozze)</option>
-                <option value="experience">🍷 Smart Experience Page (Ristoranti)</option>
-                <option value="hometour">🏠 HomeTour AI (Video Reel Immobiliari 3D)</option>
-                <option value="drivemotion">🚗 DriveMotion Video (Video Auto Sfondo AI)</option>
-                <option value="vision">🎬 Vision UGC (Influencer Virtuali AI)</option>
-                <option value="nexus">🤖 NexusAI (Sales Overlay Shadow-Proxy)</option>
-                <option value="ares">🏋️ AresAI (Fitness Coach &amp; Palestre)</option>
-                <option value="free_energy">☀️ Free Energy (CAD Fotovoltaico &amp; CRM)</option>
-                <option value="social">📊 Carousel Engine (Social Creator)</option>
-                <option value="omniastudio">💼 OmniaStudio PRO (AI Offline Privata)</option>
-                <option value="velomotion">⚡ VeloMotion (Sblocco E-Bike Bosch BES3)</option>
-                <option value="ff">🎵 FF Edizioni (Jingle &amp; Canzoni SIAE)</option>
-            </select>
         </div>
 
         <div id="file-upload-box" class="hidden border-2 border-dashed border-zinc-800 rounded-xl p-4 text-center cursor-pointer hover:border-purple-500/50">
