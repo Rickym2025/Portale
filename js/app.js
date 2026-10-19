@@ -123,6 +123,10 @@ function toggleModalFields() {
     if (sheetBox) sheetBox.classList.toggle('hidden', t !== 'experience');
     if (t === 'experience') fetchPendingRestaurantsFromSheet();
 
+    // Box dedicato per upload Menu e Vini per Smart Experience
+    const expUploadBox = document.getElementById('experience-upload-box');
+    if (expUploadBox) expUploadBox.classList.toggle('hidden', t !== 'experience');
+
     const isFile = (t === 'video' || t === 'vision');
     const fileBox = document.getElementById('file-upload-box');
     const linkBox = document.getElementById('link-input-box');
@@ -769,22 +773,53 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🍷 EXPERIENCE
+    // 🍷 EXPERIENCE (CON SUPPORTO UPLOAD MENU/VINI & VISION OCR)
     if (type === 'experience') {
-        btn.innerText = "Analisi Ristorante (20s)...";
+        btn.innerText = "Analisi Gastronomica & OCR (25s)...";
+
+        const menuFileInput = document.getElementById('c-exp-menu-file');
+        const wineFileInput = document.getElementById('c-exp-wine-file');
+        const rawNotes = document.getElementById('c-exp-notes')?.value.trim() || '';
+
+        const toBase64 = file => new Promise((resolve) => {
+            if (!file) return resolve(null);
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(file);
+        });
+
         try {
+            const menuFileBase64 = menuFileInput?.files[0] ? await toBase64(menuFileInput.files[0]) : null;
+            const wineFileBase64 = wineFileInput?.files[0] ? await toBase64(wineFileInput.files[0]) : null;
+
             const res = await fetch('https://n8n.rmstudio.app/webhook/omnia-taste-generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ site_url: siteUrl, phone: phone, nome_ristorante: clientName })
+                body: JSON.stringify({
+                    site_url: siteUrl,
+                    phone: phone,
+                    nome_ristorante: clientName,
+                    menu_file_base64: menuFileBase64,
+                    wine_file_base64: wineFileBase64,
+                    raw_notes: rawNotes
+                })
             });
+
             const data = await res.json();
             if (data.success) {
-                alert("✨ Smart Experience Page generata!");
-                closeCreationModal(); loadMasterData();
-            } else { throw new Error(data.message || "Errore"); }
-        } catch (err) { alert("⚠️ Errore: " + err.message); } 
-        finally { btn.disabled = false; btn.innerText = orig; }
+                alert(`✨ Smart Experience Page generata con successo per ${clientName}!`);
+                closeCreationModal();
+                loadMasterData();
+            } else {
+                throw new Error(data.message || "Errore elaborazione server");
+            }
+        } catch (err) {
+            alert("⚠️ Errore generazione Experience: " + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = orig;
+        }
         return;
     }
 
