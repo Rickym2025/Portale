@@ -704,7 +704,7 @@ async function handleCreateSubmit(e) {
         const cleanEmail = email || `${slug}@rmstudio.app`;
         
         // Il link punta direttamente all'Index DJ passando l'email come chiave di accesso automatica al Foglio Google
-        const djHubUrl = `https://ff.rmstudio.app/index.html?user_email=${encodeURIComponent(cleanEmail)}`;
+        const djHubUrl = `https://ff.rmstudio.app/dj/index.html?user_email=${encodeURIComponent(cleanEmail)}`;
         
         try {
             const { error } = await supabaseClient.from('portal_videos').insert([{
