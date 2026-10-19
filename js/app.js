@@ -109,7 +109,7 @@ function toggleModalFields() {
         social: { title: "Carousel Engine Pro", price: 79, url: "https://social.rmstudio.app", label: "URL Sito Brand" },
         omniastudio: { title: "OmniaStudio PRO • Licenza Lifetime", price: 699, url: "https://omniastudio.rmstudio.app", label: "URL Studio Professionale" },
         velomotion: { title: "VeloMotion • Sblocco Bosch BES3", price: 290, url: "https://velomotion.rmstudio.app", label: "URL Officina / Rivenditore" },
-        ff: { title: "FF Edizioni • Jingle Commerciale Radio/Social", price: 250, url: "https://ff.rmstudio.app", label: "URL Azienda per Jingle Audio" }
+        ff: { title: "FF Edizioni • Jingle Commerciale Radio/Social", price: 300, url: "https://ff.rmstudio.app", label: "URL Azienda per Jingle Audio" }
     };
 
     if (config[t]) {
