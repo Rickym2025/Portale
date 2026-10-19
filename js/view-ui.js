@@ -104,7 +104,6 @@ function openOfferModal() {
         const periodModalEl = document.getElementById('modal-period-display');
         const ctaBtnText = document.getElementById('offer-modal-cta-text');
 
-        // Calcolo dinamico esatto della somma delle singole voci dell'offerta
         const computedAnchor = (offer.items && offer.items.length > 0)
             ? offer.items.reduce((acc, it) => acc + (parseInt((it.val || '').replace(/[^0-9]/g, ''), 10) || 0), 0)
             : (offer.anchorPrice || 350);
@@ -115,7 +114,6 @@ function openOfferModal() {
         if (anchorEl) anchorEl.innerText = `Valore: € ${computedAnchor.toLocaleString('it-IT')}`;
         if (discountEl) discountEl.innerText = offer.discountText;
 
-        // Riconoscimento prezzo reale e ricorrenza
         const isRecurring = offer.isRecurring || ['nexus', 'dentis', 'lexis', 'radar', 'aura', 'ares'].includes(type);
         const defaultSaasPrice = isRecurring ? (offer.defaultPrice || 99) : 400;
         const priceVal = parseFloat(videoData?.price_euro || defaultSaasPrice);
@@ -124,12 +122,10 @@ function openOfferModal() {
         const cadenceLabel = offer.cadenceLabel || (isRecurring ? '/mese' : '');
         const periodText = offer.periodText || (isRecurring ? 'al mese • disdici quando vuoi' : 'una tantum • sblocco ufficiale');
 
-        // Aggiornamento coerente di tutti i campi prezzo del modale
         if (priceModalEl) priceModalEl.innerText = `€ ${formattedPrice}`;
         if (periodModalEl) periodModalEl.innerText = periodText;
         if (ctaBtnText) ctaBtnText.innerText = `${offer.ctaText} a € ${formattedPrice}${cadenceLabel}`;
 
-        // Generazione dinamica dei punti di valore
         const container = document.getElementById('offer-modal-items');
         if (container && offer.items) {
             container.innerHTML = "";
@@ -165,11 +161,12 @@ function closeOfferModal() {
     }
 }
 
-// 🚀 APERTURA SCHERMO INTERO: CREA FISICAMENTE I 3 PULSANTI SETTORIALI
+// 🚀 APERTURA SCHERMO INTERO: CREA I 3 PULSANTI O IL LETTORE FULLSCREEN
 function openFullscreenWebsite() {
     if (!videoData) return;
     const overlay = document.getElementById('fullscreen-iframe-overlay');
     const iframe = document.getElementById('fullscreen-iframe');
+    const fullscreenVideo = document.getElementById('fullscreen-video');
     
     const siteEngineSwitcher = document.getElementById('siteengine-template-switcher');
     const experienceSwitcher = document.getElementById('view-mode-selector');
@@ -180,60 +177,85 @@ function openFullscreenWebsite() {
     const type = videoData.portal_type || 'html';
     const demoUrl = window.resolveLiveDemoUrl(videoData);
 
+    const isVideoFile = videoData.content_url && (
+        videoData.content_url.endsWith('.mp4') || 
+        videoData.content_url.includes('.mp4') || 
+        videoData.content_url.includes('.r2.dev') || 
+        videoData.content_url.includes('/video/') || 
+        videoData.content_url.includes('/vision/') || 
+        type === 'video' || 
+        type === 'vision'
+    );
+
     if (siteEngineSwitcher) siteEngineSwitcher.classList.add('hidden');
     if (experienceSwitcher) experienceSwitcher.classList.add('hidden');
     if (contextBadge) contextBadge.classList.add('hidden');
 
-    if (type === 'html' || type === 'siteengine') {
-        if (siteEngineSwitcher) {
-            siteEngineSwitcher.classList.remove('hidden');
-            siteEngineSwitcher.classList.add('flex');
+    if (isVideoFile) {
+        if (fullscreenVideo && iframe) {
+            fullscreenVideo.src = videoData.content_url.includes('#') ? videoData.content_url : `${videoData.content_url}#t=0.001`;
+            fullscreenVideo.load();
+            fullscreenVideo.classList.remove('hidden');
+            iframe.classList.add('hidden');
         }
-
-        // 🎯 Rileva il settore e genera i 3 pulsanti pertinenti
-        const sectorGroup = window.detectSectorGroup(videoData);
-        const trio = window.SECTOR_TRIO_TEMPLATES[sectorGroup] || window.SECTOR_TRIO_TEMPLATES.default;
-        const container = document.getElementById('sector-templates-container');
-
-        if (container) {
-            container.innerHTML = "";
-            trio.forEach((t, idx) => {
-                const btn = document.createElement('button');
-                btn.id = `btn-trio-${t.id}`;
-                btn.onclick = () => switchTemplate(t.id);
-                btn.className = idx === 0 
-                    ? "px-3 py-1.5 rounded-lg text-xs font-black bg-purple-600 text-white transition shadow-md cursor-pointer whitespace-nowrap"
-                    : "px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap";
-                btn.innerText = t.label;
-                container.appendChild(btn);
-            });
-        }
-
-        currentActiveTemplate = trio[0].id;
-        const cleanUrl = demoUrl.split('?')[0];
-        iframe.src = `${cleanUrl}?template_id=${currentActiveTemplate}&_t=${Date.now()}`;
-
-    } else if (type === 'experience') {
-        if (experienceSwitcher) {
-            experienceSwitcher.classList.remove('hidden');
-            experienceSwitcher.classList.add('flex');
-        }
-        iframe.src = `${demoUrl}?_t=${Date.now()}`;
     } else {
-        if (contextBadge) {
-            contextBadge.classList.remove('hidden');
-            contextBadge.classList.add('flex');
-            
-            const icons = { 
-                concierge: "🏨", dentis: "🦷", lexis: "⚖️", locanda: "🍽️", 
-                radar: "🏎️", forma_materia: "🏛️", aura: "📡", eternia: "🕊️", 
-                love: "💍", ares: "🏋️", nexus: "🤖", free_energy: "☀️", 
-                social: "📊", omniastudio: "💼", velomotion: "⚡", ff: "🎵" 
-            };
-            if (contextIcon) contextIcon.innerText = icons[type] || "⚡";
-            if (contextLabel) contextLabel.innerText = `${videoData.client_name || 'Demo'} (${type})`;
+        if (fullscreenVideo && iframe) {
+            fullscreenVideo.classList.add('hidden');
+            fullscreenVideo.pause();
+            fullscreenVideo.src = '';
+            iframe.classList.remove('hidden');
         }
-        iframe.src = `${demoUrl}${demoUrl.includes('?') ? '&' : '?'}_t=${Date.now()}`;
+
+        if (type === 'html' || type === 'siteengine') {
+            if (siteEngineSwitcher) {
+                siteEngineSwitcher.classList.remove('hidden');
+                siteEngineSwitcher.classList.add('flex');
+            }
+
+            const sectorGroup = window.detectSectorGroup(videoData);
+            const trio = window.SECTOR_TRIO_TEMPLATES[sectorGroup] || window.SECTOR_TRIO_TEMPLATES.default;
+            const container = document.getElementById('sector-templates-container');
+
+            if (container) {
+                container.innerHTML = "";
+                trio.forEach((t, idx) => {
+                    const btn = document.createElement('button');
+                    btn.id = `btn-trio-${t.id}`;
+                    btn.onclick = () => switchTemplate(t.id);
+                    btn.className = idx === 0 
+                        ? "px-3 py-1.5 rounded-lg text-xs font-black bg-purple-600 text-white transition shadow-md cursor-pointer whitespace-nowrap"
+                        : "px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer whitespace-nowrap";
+                    btn.innerText = t.label;
+                    container.appendChild(btn);
+                });
+            }
+
+            currentActiveTemplate = trio[0].id;
+            const cleanUrl = demoUrl.split('?')[0];
+            iframe.src = `${cleanUrl}?template_id=${currentActiveTemplate}&_t=${Date.now()}`;
+
+        } else if (type === 'experience') {
+            if (experienceSwitcher) {
+                experienceSwitcher.classList.remove('hidden');
+                experienceSwitcher.classList.add('flex');
+            }
+            iframe.src = `${demoUrl}?_t=${Date.now()}`;
+        } else {
+            if (contextBadge) {
+                contextBadge.classList.remove('hidden');
+                contextBadge.classList.add('flex');
+                
+                const icons = { 
+                    concierge: "🏨", dentis: "🦷", lexis: "⚖️", locanda: "🍽️", 
+                    radar: "🏎️", forma_materia: "🏛️", aura: "📡", eternia: "🕊️", 
+                    love: "💍", ares: "🏋️", nexus: "🤖", free_energy: "☀️", 
+                    social: "📊", omniastudio: "💼", velomotion: "⚡", ff: "🎵" 
+                };
+                if (contextIcon) contextIcon.innerText = icons[type] || "⚡";
+                if (contextLabel) contextLabel.innerText = `${videoData.client_name || 'Demo'} (${type})`;
+            }
+            iframe.src = `${demoUrl}${demoUrl.includes('?') ? '&' : '?'}_t=${Date.now()}`;
+        }
     }
 
     overlay.classList.remove('hidden');
@@ -241,8 +263,17 @@ function openFullscreenWebsite() {
 }
 
 function closeFullscreenWebsite() {
-    document.getElementById('fullscreen-iframe-overlay').classList.add('hidden');
-    document.getElementById('fullscreen-iframe').src = "";
+    const overlay = document.getElementById('fullscreen-iframe-overlay');
+    const iframe = document.getElementById('fullscreen-iframe');
+    const fullscreenVideo = document.getElementById('fullscreen-video');
+
+    if (overlay) overlay.classList.add('hidden');
+    if (iframe) iframe.src = "";
+    if (fullscreenVideo) {
+        fullscreenVideo.pause();
+        fullscreenVideo.src = "";
+        fullscreenVideo.classList.add('hidden');
+    }
 }
 
 function nextSlide() {
@@ -458,16 +489,31 @@ window.addEventListener('DOMContentLoaded', async () => {
     const formattedPrice = priceVal % 1 === 0 ? parseInt(priceVal) : priceVal.toFixed(2);
     document.getElementById('header-price-display').innerText = `€ ${formattedPrice}`;
     
-    const isDirectVideo = data.content_url && (data.content_url.endsWith('.mp4') || data.content_url.includes('.r2.dev') || data.content_url.includes('/video_'));
+    // Rilevamento unificato e protetto di qualsiasi contenuto video (Vision, Video MP4 o Cloudflare R2)
+    const isVideoFile = data.content_url && (
+        data.content_url.endsWith('.mp4') || 
+        data.content_url.includes('.mp4') || 
+        data.content_url.includes('.r2.dev') || 
+        data.content_url.includes('/video/') || 
+        data.content_url.includes('/vision/') || 
+        type === 'video' || 
+        type === 'vision'
+    );
 
-    if (data.portal_type === 'video' || (data.portal_type === 'locanda' && isDirectVideo)) {
+    if (isVideoFile) {
         const p = document.getElementById('player-video');
-        p.src = data.content_url;
-        p.classList.remove('hidden');
+        if (p) {
+            p.src = data.content_url.includes('#') ? data.content_url : `${data.content_url}#t=0.001`;
+            p.load();
+            p.classList.remove('hidden');
+        }
+        document.getElementById('player-carousel')?.classList.add('hidden');
+        document.getElementById('html-preview-container')?.classList.add('hidden');
+        document.getElementById('player-link')?.classList.add('hidden');
     } 
     else if (data.portal_type === 'carousel') {
         imagesArray = typeof data.carousel_images === 'string' ? JSON.parse(data.carousel_images) : data.carousel_images;
-        if (imagesArray.length > 0) {
+        if (imagesArray && imagesArray.length > 0) {
             document.getElementById('carousel-img').src = imagesArray[0];
             document.getElementById('player-carousel').classList.remove('hidden');
         }
