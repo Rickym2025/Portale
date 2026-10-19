@@ -78,7 +78,7 @@ function onRestaurantSelectedFromSheet() {
     document.getElementById('c-price').value = 350;
 }
 
-// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I SAAS E MODULI VOCALI
+// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I 23 SAAS E MODULI VOCALI
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
     const titleInput = document.getElementById('c-title');
@@ -408,6 +408,7 @@ function renderMasterTable(data) {
             </td>
             <td class="${cellPadding} text-right space-x-1 whitespace-nowrap">
                 ${closingPitchBtn}
+                <button onclick="openClientDashboardModal('${p.client_email}')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Apri Dashboard Unificata Cliente">👤 Cliente</button>
                 <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Invia WhatsApp">WA</button>
                 <button onclick="openMessageModal('${p.id}', 'mail')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Invia Email">Mail</button>
                 <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded cursor-pointer" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
@@ -417,6 +418,13 @@ function renderMasterTable(data) {
     });
 
     updateDensityButtonUI();
+}
+
+function openClientDashboardModal(email) {
+    if (!email || email.includes('undefined')) {
+        return alert("Questo progetto non ha un'email cliente valida associata.");
+    }
+    window.open(`client.html?email=${encodeURIComponent(email)}`, '_blank');
 }
 
 function openClosingPitchModal(projectId) {
@@ -440,7 +448,7 @@ function openClosingPitchModal(projectId) {
     } else if (project.portal_type === 'vittoria') {
         text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di esplorare l'anteprima di Vittoria per ${title}.\n\nSe attivate Vittoria PRO per la vostra agenzia questa settimana, **vi configuriamo l'integrazione automatica con Google Calendar e Google Meet per fissare subito le discovery call con i lead qualificati**!\n\nPotete sbloccare il servizio direttamente da qui:\n${portalUrl}\n\nResto a disposizione!`;
     } else if (project.portal_type === 'ff') {
-        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di ascoltare l'anteprima del jingle / brano inedito d'autore creato da FF Edizioni per ${title}.\n\nSbloccando la produzione questa settimana, **includiamo nel prezzo la licenza di sincronizzazione commerciale per l'utilizzo su tutti i canali social e radiofonici senza scadenze**.\n\nPotete sbloccare il brano direttamente da qui:\n${portalUrl}\n\nResto a disposizione!`;
+        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di ascoltare l'anteprima del jingle / brano inedito d'autore creato da FF Edizioni per ${title}.\n\nSbloccandola questa settimana, **includiamo nel prezzo la licenza di sincronizzazione commerciale per l'utilizzo su tutti i canali social e radiofonici senza scadenze**.\n\nPotete sbloccare il brano direttamente da qui:\n${portalUrl}\n\nResto a disposizione!`;
     } else {
         text = `Ciao ${name}! 👋\n\nHo visto che hai avuto modo di esplorare l'anteprima creata per ${title}.\n\nSbloccandola questa settimana, **includiamo GRATIS un Jingle Audio d'Autore personalizzato (valore 150€)** realizzato dal nostro studio musicale FF Edizioni!\n\nPuoi rivedere l'anteprima e sbloccarla qui:\n${portalUrl}\n\nResto a disposizione!`;
     }
@@ -698,20 +706,18 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🎵 FF EDIZIONI (CREAZIONE PAGINA DJ RISERVATA CON EMAIL D'ACCESSO)
+    // 🎵 FF EDIZIONI (JINGLE O CANZONE INEDITA)
     if (type === 'ff') {
-        btn.innerText = "Generazione Pagina DJ & Sincronizzazione...";
+        btn.innerText = "Registrazione Brano FF Edizioni...";
         const cleanEmail = email || `${slug}@rmstudio.app`;
-        
-        // Il link punta direttamente all'Index DJ passando l'email come chiave di accesso automatica al Foglio Google
         const djHubUrl = `https://ff.rmstudio.app/dj/index.html?user_email=${encodeURIComponent(cleanEmail)}`;
         
         try {
-            const { error } = await supabaseClient.from('portal_videos').insert([{
+            await supabaseClient.from('portal_videos').insert([{
                 client_name: clientName, 
                 client_email: cleanEmail, 
                 client_phone: phone,
-                title: document.getElementById('c-title').value || "FF Edizioni • Selezione Musicale Dedicata",
+                title: document.getElementById('c-title').value || "FF Edizioni • Jingle Commerciale",
                 price_euro: price || 300, 
                 portal_type: "ff", 
                 content_url: djHubUrl,
@@ -720,18 +726,10 @@ async function handleCreateSubmit(e) {
                 first_email_sent: false, 
                 views_count: 0
             }]);
-
-            if (error) throw error;
-
-            alert(`✨ Pagina DJ generata con successo per ${clientName}!\n\nLink riservato d'ascolto:\n${djHubUrl}\n\n(I brani associati a ${cleanEmail} nel foglio Google compariranno in automatico all'apertura del link).`);
-            closeCreationModal(); 
-            loadMasterData();
-        } catch (err) { 
-            alert("⚠️ Errore creazione FF Edizioni: " + err.message); 
-        } finally { 
-            btn.disabled = false; 
-            btn.innerText = orig; 
-        }
+            alert(`✨ Brano FF Edizioni registrato per ${clientName}!\nLink riservato d'ascolto: ${djHubUrl}`);
+            closeCreationModal(); loadMasterData();
+        } catch (err) { alert("⚠️ Errore FF Edizioni: " + err.message); } 
+        finally { btn.disabled = false; btn.innerText = orig; }
         return;
     }
 
