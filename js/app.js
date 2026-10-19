@@ -698,18 +698,20 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🎵 FF EDIZIONI (JINGLE O CANZONE INEDITA)
+    // 🎵 FF EDIZIONI (CREAZIONE PAGINA DJ RISERVATA CON EMAIL D'ACCESSO)
     if (type === 'ff') {
-        btn.innerText = "Registrazione Brano FF Edizioni...";
+        btn.innerText = "Generazione Pagina DJ & Sincronizzazione...";
         const cleanEmail = email || `${slug}@rmstudio.app`;
+        
+        // Il link punta direttamente all'Index DJ passando l'email come chiave di accesso automatica al Foglio Google
         const djHubUrl = `https://ff.rmstudio.app/index.html?user_email=${encodeURIComponent(cleanEmail)}`;
         
         try {
-            await supabaseClient.from('portal_videos').insert([{
+            const { error } = await supabaseClient.from('portal_videos').insert([{
                 client_name: clientName, 
                 client_email: cleanEmail, 
                 client_phone: phone,
-                title: document.getElementById('c-title').value || "FF Edizioni • Jingle Commerciale",
+                title: document.getElementById('c-title').value || "FF Edizioni • Selezione Musicale Dedicata",
                 price_euro: price || 300, 
                 portal_type: "ff", 
                 content_url: djHubUrl,
@@ -718,10 +720,18 @@ async function handleCreateSubmit(e) {
                 first_email_sent: false, 
                 views_count: 0
             }]);
-            alert(`✨ Brano FF Edizioni registrato per ${clientName}!\nLink riservato d'ascolto: ${djHubUrl}`);
-            closeCreationModal(); loadMasterData();
-        } catch (err) { alert("⚠️ Errore FF Edizioni: " + err.message); } 
-        finally { btn.disabled = false; btn.innerText = orig; }
+
+            if (error) throw error;
+
+            alert(`✨ Pagina DJ generata con successo per ${clientName}!\n\nLink riservato d'ascolto:\n${djHubUrl}\n\n(I brani associati a ${cleanEmail} nel foglio Google compariranno in automatico all'apertura del link).`);
+            closeCreationModal(); 
+            loadMasterData();
+        } catch (err) { 
+            alert("⚠️ Errore creazione FF Edizioni: " + err.message); 
+        } finally { 
+            btn.disabled = false; 
+            btn.innerText = orig; 
+        }
         return;
     }
 
