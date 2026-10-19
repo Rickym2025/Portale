@@ -64,11 +64,10 @@
         <div class="player-wrapper flex-1 min-h-[280px] sm:min-h-[350px] lg:min-h-0 rounded-2xl bg-[#020204] mb-4 flex items-center justify-center border border-zinc-900 overflow-hidden shadow-inner relative">
             <div id="watermark-layer" class="watermark-pattern"></div>
 
-            <!-- 1. VIDEO PLAYER (MP4) -->
+            <!-- 1. VIDEO PLAYER (MP4: RIMOSSO TAG SOURCE VUOTO PER EVITARE IMMAGINE CORROTTA) -->
             <video id="player-video" 
                    class="hidden w-full h-full object-contain rounded-2xl bg-black"
-                   preload="auto" playsinline webkit-playsinline controls controlslist="nodownload" oncontextmenu="return false;">
-                <source src="" type="video/mp4">
+                   preload="metadata" playsinline webkit-playsinline controls controlslist="nodownload" oncontextmenu="return false;">
             </video>
 
             <!-- 2. CAROSELLO IMMAGINI -->
@@ -124,7 +123,7 @@
             <div class="flex items-center gap-3 sm:gap-4 overflow-x-auto max-w-[65%] sm:max-w-none">
                 <!-- Logo RM Studio -->
                 <a href="https://rmstudio.app" target="_blank" class="shrink-0">
-                    <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio" class="h-8 sm:h-9 w-auto">
+                    <img src="https://raw.githubusercontent.com/Rickym2025/mrstudio/main/public/loghi/logo_rm.png" alt="RM Studio Logo" class="h-8 sm:h-9 w-auto">
                 </a>
                 
                 <!-- I 3 Pulsanti Settoriali Dinamici -->
@@ -169,10 +168,11 @@
             </div>
         </div>
     
-        <!-- Iframe con Filigrana Sovrapposta -->
-        <div class="flex-1 w-full h-full relative bg-black overflow-hidden">
+        <!-- Contenitore con Filigrana Sovrapposta (Supporta sia Iframe che Video) -->
+        <div class="flex-1 w-full h-full relative bg-black overflow-hidden flex items-center justify-center">
             <div id="overlay-watermark" class="watermark-pattern"></div>
             <iframe id="fullscreen-iframe" class="w-full h-full border-none bg-[#07080c]" src=""></iframe>
+            <video id="fullscreen-video" class="hidden w-full h-full object-contain bg-black" preload="metadata" playsinline controls controlslist="nodownload" oncontextmenu="return false;"></video>
         </div>
     </div>
 
@@ -197,7 +197,23 @@
             </div>
 
             <!-- Contenitore dei Punti di Valore Popolato Dinamicamente da JS -->
-            <div id="offer-modal-items" class="space-y-3 text-xs sm:text-sm text-zinc-300 max-h-[50vh] overflow-y-auto pr-1"></div>
+            <div id="offer-modal-items" class="space-y-3 text-xs sm:text-sm text-zinc-300 max-h-[50vh] overflow-y-auto pr-1">
+                <!-- Scheda di default -->
+                <div class="flex items-start justify-between gap-3 p-3 rounded-2xl bg-zinc-900/60 border border-zinc-800/80">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0 border border-purple-500/20 text-sm">
+                            <i class="fa-solid fa-compass-drafting"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white text-xs sm:text-sm">Configurazione Architettura &amp; Stile</h4>
+                            <p class="text-[11px] text-zinc-400 mt-0.5 leading-relaxed font-light">
+                                Attivazione della soluzione definitiva con rimozione della filigrana e messa online ufficiale.
+                            </p>
+                        </div>
+                    </div>
+                    <span class="font-mono text-zinc-500 line-through text-xs shrink-0">€ 750</span>
+                </div>
+            </div>
 
             <!-- Prezzo Finale con Ancoraggio Dinamico e Scarsità -->
             <div class="pt-4 border-t border-zinc-800 space-y-4">
