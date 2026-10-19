@@ -64,7 +64,7 @@ function switchTemplate(templateId) {
     });
 }
 
-// 🍷 SELETTORE DUAL VISTA RISTORANTI (EXPERIENCE VS SITO NATIVO)
+// 🍷 SELETTORE VISTA RISTORANTI (ESCLUDE TELEFONI E SITI NON VALIDI)
 function switchPreviewMode(mode) {
     if (!videoData) return;
     const iframe = document.getElementById('fullscreen-iframe');
@@ -72,13 +72,20 @@ function switchPreviewMode(mode) {
     const btnWeb = document.getElementById('btn-view-website');
     const demoUrl = window.resolveLiveDemoUrl(videoData);
 
-    if (mode === 'experience') {
+    if (mode === 'experience' || videoData.portal_type === 'experience') {
         iframe.src = `${demoUrl}?_t=${Date.now()}`;
         if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap";
         if (btnWeb) btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition whitespace-nowrap";
     } else {
-        const originalSite = videoData.client_phone || 'https://www.tenutacastelvenezze.it';
-        iframe.src = `https://demo.rmstudio.app/?site=${encodeURIComponent(originalSite)}&bot_id=${videoData.client_email || 'nexus_bot'}`;
+        // Se non c'è un sito web reale valido (o se c'è un numero di telefono), ricarica l'Experience page
+        const rawSite = videoData.client_phone || '';
+        const isValidUrl = rawSite.startsWith('http://') || rawSite.startsWith('https://');
+        
+        if (isValidUrl) {
+            iframe.src = `https://demo.rmstudio.app/?site=${encodeURIComponent(rawSite)}&bot_id=${videoData.client_email || 'nexus_bot'}`;
+        } else {
+            iframe.src = `${demoUrl}?_t=${Date.now()}`;
+        }
         if (btnWeb) btnWeb.className = "px-3 py-1.5 rounded-lg text-xs font-bold bg-purple-600 text-white transition whitespace-nowrap";
         if (btnExp) btnExp.className = "px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition whitespace-nowrap";
     }
