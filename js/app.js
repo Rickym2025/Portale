@@ -1,4 +1,4 @@
-// js/app.js - Master Command Center Controller
+// js/app.js - Master Command Center Controller (Completo al 100%)
 
 window.allProjects = [];
 window.sheetPendingRestaurants = [];
@@ -78,7 +78,7 @@ function onRestaurantSelectedFromSheet() {
     document.getElementById('c-price').value = 350;
 }
 
-// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I 23 SAAS E MODULI VOCALI
+// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I SAAS E MODULI VOCALI
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
     const titleInput = document.getElementById('c-title');
@@ -103,7 +103,7 @@ function toggleModalFields() {
         hometour: { title: "HomeTour AI • Video Reel 3D", price: 59, url: "https://www.agenziaimmobiliare.it", label: "URL Immobile o Agenzia" },
         drivemotion: { title: "DriveMotion • Video Auto Sfondo AI", price: 59, url: "https://www.autosalone.it", label: "Sito Web Concessionario / Auto" },
         vision: { title: "Vision UGC • Influencer Virtuali AI", price: 120, url: "https://www.brand.it", label: "URL E-Commerce o Prodotto" },
-        nexus: { title: "NexusAI • Sales Overlay Pro", price: 99, url: "https://www.azienda.it", label: "Sito Web Azienda (per Shadow-Proxy)" },
+        nexus: { title: "NexusAI • Sales Overlay Pro", price: 99, url: "https://www.azienda.it", label: "Sito Web Azienda (per Generazione Shadow-Proxy)" },
         ares: { title: "AresAI • Coach Hub B2B", price: 99, url: "https://ares.rmstudio.app", label: "Sito Palestra o Personal Trainer" },
         free_energy: { title: "Free Energy • Start Pack 10.000 Crediti", price: 199, url: "https://free-energy.rmstudio.app", label: "Sito Azienda Installatrice Fotovoltaico" },
         social: { title: "Carousel Engine Pro", price: 79, url: "https://social.rmstudio.app", label: "URL Sito Brand" },
@@ -272,7 +272,7 @@ function renderMasterTable(data) {
         const sendDaysAgo = getDaysAgo(p.sent_at);
         const openDaysAgo = getDaysAgo(openDate);
 
-        // 🏷️ BADGES COMPLETI PER TUTTI I 23 SAAS E MODULI VOCALI
+        // 🏷️ BADGES COMPLETI PER TUTTI I 23 SAAS
         const badges = {
             concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
             dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
@@ -439,6 +439,8 @@ function openClosingPitchModal(projectId) {
         text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di verificare l'anteprima dell'assistente vocale di sala per ${title}.\n\nSe attivate Elena PRO per il ristorante questa settimana, **vi includiamo GRATIS l'integrazione del gateway WhatsApp per i promemoria automatici dei tavoli agli ospiti** (abbatte i no-show del 70%)!\n\nPotete sbloccare la proposta direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi prova!`;
     } else if (project.portal_type === 'vittoria') {
         text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di esplorare l'anteprima di Vittoria per ${title}.\n\nSe attivate Vittoria PRO per la vostra agenzia questa settimana, **vi configuriamo l'integrazione automatica con Google Calendar e Google Meet per fissare subito le discovery call con i lead qualificati**!\n\nPotete sbloccare il servizio direttamente da qui:\n${portalUrl}\n\nResto a disposizione!`;
+    } else if (project.portal_type === 'ff') {
+        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di ascoltare l'anteprima del jingle / brano inedito d'autore creato da FF Edizioni per ${title}.\n\nSbloccando la produzione questa settimana, **includiamo nel prezzo la licenza di sincronizzazione commerciale per l'utilizzo su tutti i canali social e radiofonici senza scadenze**.\n\nPotete sbloccare il brano direttamente da qui:\n${portalUrl}\n\nResto a disposizione!`;
     } else {
         text = `Ciao ${name}! 👋\n\nHo visto che hai avuto modo di esplorare l'anteprima creata per ${title}.\n\nSbloccandola questa settimana, **includiamo GRATIS un Jingle Audio d'Autore personalizzato (valore 150€)** realizzato dal nostro studio musicale FF Edizioni!\n\nPuoi rivedere l'anteprima e sbloccarla qui:\n${portalUrl}\n\nResto a disposizione!`;
     }
@@ -512,7 +514,7 @@ function closeCreationModal() {
     if (m) { m.classList.remove('flex'); m.classList.add('hidden'); }
 }
 
-// 4. SUBMIT FORM: DISPATCH UNIVERSALE SU TUTTI I 23 SAAS E MODULI VOCALI
+// 4. SUBMIT FORM: DISPATCH UNIVERSALE SUI 23 SAAS
 async function handleCreateSubmit(e) {
     e.preventDefault();
     const btn = document.getElementById('c-btn');
@@ -539,7 +541,6 @@ async function handleCreateSubmit(e) {
         formData.append('title', document.getElementById('c-title').value || `${clientName} • Video UGC`);
         formData.append('client_name', clientName);
         
-        // Invia sia client_email che email con fallback anti-crash per evitare il NOT NULL
         const safeEmail = email || `${slug}@rmstudio.app`;
         formData.append('client_email', safeEmail);
         formData.append('email', safeEmail);
@@ -548,7 +549,6 @@ async function handleCreateSubmit(e) {
         formData.append('phone', phone);
         formData.append('portal_type', type);
         
-        // Invia sia price_euro che price
         const safePrice = price || (type === 'vision' ? 120 : 59);
         formData.append('price_euro', safePrice);
         formData.append('price', safePrice);
@@ -622,7 +622,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🦷 DENTIS, ⚖️ LEXIS, 🍽️ ELENA & 🚀 VITTORIA (CORE MULTI-SETTORE CON AUTO-RILEVAMENTO)
+    // 🦷 DENTIS, ⚖️ LEXIS, 🍽️ ELENA & 🚀 VITTORIA
     if (type === 'dentis' || type === 'lexis' || type === 'elena' || type === 'vittoria') {
         btn.innerText = "Configurazione AI & Scraper...";
         
@@ -640,7 +640,6 @@ async function handleCreateSubmit(e) {
             defaultMail = 'info@agenzia.it';
         }
 
-        // 🛡️ Paracadute intelligente: rileva il settore reale dal nome dell'attività
         const lowerName = clientName.toLowerCase();
         if (lowerName.includes('ristoran') || lowerName.includes('pizzeri') || lowerName.includes('osteria') || lowerName.includes('trattoria') || lowerName.includes('bistrot')) {
             settore = 'ristorazione';
@@ -695,6 +694,33 @@ async function handleCreateSubmit(e) {
             alert(`✨ Locanda Digitale registrata! Link tavolo: ${menuUrl}`);
             closeCreationModal(); loadMasterData();
         } catch (err) { alert("⚠️ Errore: " + err.message); } 
+        finally { btn.disabled = false; btn.innerText = orig; }
+        return;
+    }
+
+    // 🎵 FF EDIZIONI (JINGLE O CANZONE INEDITA)
+    if (type === 'ff') {
+        btn.innerText = "Registrazione Brano FF Edizioni...";
+        const cleanEmail = email || `${slug}@rmstudio.app`;
+        const djHubUrl = `https://ff.rmstudio.app/index.html?user_email=${encodeURIComponent(cleanEmail)}`;
+        
+        try {
+            await supabaseClient.from('portal_videos').insert([{
+                client_name: clientName, 
+                client_email: cleanEmail, 
+                client_phone: phone,
+                title: document.getElementById('c-title').value || "FF Edizioni • Jingle Commerciale",
+                price_euro: price || 300, 
+                portal_type: "ff", 
+                content_url: djHubUrl,
+                is_paid: false, 
+                sent_at: new Date().toISOString(), 
+                first_email_sent: false, 
+                views_count: 0
+            }]);
+            alert(`✨ Brano FF Edizioni registrato per ${clientName}!\nLink riservato d'ascolto: ${djHubUrl}`);
+            closeCreationModal(); loadMasterData();
+        } catch (err) { alert("⚠️ Errore FF Edizioni: " + err.message); } 
         finally { btn.disabled = false; btn.innerText = orig; }
         return;
     }
@@ -754,7 +780,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // TUTTI GLI ALTRI PRODOTTI (SITEENGINE, HOMETOUR, DRIVEMOTION, VISION, ARES, FREE ENERGY, OMNIASTUDIO, VELOMOTION, FF, SOCIAL, FORMA&MATERIA, AURA)
+    // TUTTI GLI ALTRI PRODOTTI (SITEENGINE, HOMETOUR, DRIVEMOTION, VISION, ARES, FREE ENERGY, OMNIASTUDIO, VELOMOTION, SOCIAL, FORMA&MATERIA, AURA)
     btn.innerText = "Salvataggio Supabase...";
     try {
         const { error } = await supabaseClient.from('portal_videos').insert([{
@@ -775,7 +801,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const resizer = document.getElementById('resizer');
 
-    // Mostra il nome del file video selezionato nel riquadro tratteggiato
     const fileInput = document.getElementById('c-file');
     const fileBoxText = document.querySelector('#file-upload-box span');
     if (fileInput && fileBoxText) {
