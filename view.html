@@ -15,6 +15,38 @@
     
     <!-- Stili Isolati Modulari -->
     <link rel="stylesheet" href="css/view.css">
+
+    <!-- SCRIPT DI TRACCIAMENTO REALE VISITE (BYPASS PIXEL DI POSTA) -->
+    <script>
+      (function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        let projectId = urlParams.get('id');
+
+        if (!projectId) {
+          const pathParts = window.location.pathname.split('/');
+          const possibleId = pathParts[pathParts.length - 1];
+          if (possibleId && possibleId.length > 10) {
+            projectId = possibleId;
+          }
+        }
+
+        if (projectId) {
+          fetch(`https://jhijfulhntlhcytbhcly.supabase.co/rest/v1/portal_videos?id=eq.${projectId}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ',
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpoaWpmdWxobnRsaGN5dGJoY2x5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzcxODcsImV4cCI6MjA5ODMxMzE4N30.z062NW4ApClll-XWHH2ufmcCleBRNHUUdKO6FiLa0TQ',
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({
+              is_opened: true,
+              opened_at: new Date().toISOString()
+            })
+          }).catch(err => console.warn("Tracciamento vista:", err));
+        }
+      })();
+    </script>
 </head>
 <body class="text-gray-200 min-h-[100dvh] w-screen flex flex-col lg:items-center lg:justify-center p-3 md:p-6 overflow-y-auto lg:overflow-hidden selection:bg-purple-600 selection:text-white relative">
 
