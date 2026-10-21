@@ -1,4 +1,4 @@
-// js/app.js - Master Command Center Controller (Completo al 100% & Ottimizzato a 60 FPS)
+// js/app.js - Master Command Center Controller (Completo al 100% & Data Lettura Corretta)
 
 window.allProjects = [];
 window.sheetPendingRestaurants = [];
@@ -257,7 +257,7 @@ const SAAS_BADGES = {
     ff: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🎵 ff</span>`
 };
 
-// 🔨 COSTRUTTORE RIGA ISOLATO AD ALTA VELOCITÀ (ZERO ANIMAZIONI BLOCCANTI)
+// 🔨 COSTRUTTORE RIGA ISOLATO AD ALTA VELOCITÀ (ZERO DATE FASULLE)
 function buildRow(p, isCompact, cellPadding) {
     const tr = document.createElement('tr');
     tr.className = `hover:bg-[#101015] border-b border-zinc-900/80 ${isCompact ? 'text-xs' : 'text-sm'}`;
@@ -275,10 +275,12 @@ function buildRow(p, isCompact, cellPadding) {
     const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}&admin=true`;
     const targetUrl = isPaid ? (p.content_url || portalUrl) : portalUrl;
 
-    const openDate = p.opened_at || (p.is_opened ? p.updated_at : null);
+    // 🎯 DATA REALE: Usa SOLO opened_at (se assente, NON fa fallback su updated_at per non mostrare date di creazione a caso)
+    const openDate = p.opened_at || null;
+    const openDaysAgo = openDate ? getDaysAgo(openDate) : "";
+
     const sendDateFormatted = p.sent_at ? new Date(p.sent_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
     const sendDaysAgo = getDaysAgo(p.sent_at);
-    const openDaysAgo = getDaysAgo(openDate);
 
     const typeBadge = SAAS_BADGES[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap">${p.portal_type || 'html'}</span>`;
 
@@ -293,10 +295,11 @@ function buildRow(p, isCompact, cellPadding) {
 
     let statusHtml = '';
     if (isRead) {
-        const timeTag = openDaysAgo || sendDaysAgo || 'Oggi';
+        // Se c'è opened_at mostra (Oggi/Ieri/X gg fa), altrimenti mostra solo Letta (1v) pulito
+        const timeTag = openDaysAgo ? `<span class="text-emerald-500 font-bold">(${openDaysAgo})</span>` : '';
         statusHtml = `
             <div class="text-emerald-400 font-extrabold text-[11px] flex items-center gap-1.5">
-                <i class="fa-solid fa-eye text-emerald-400"></i> Letta (${views}v) <span class="text-emerald-500 font-bold">(${timeTag})</span>
+                <i class="fa-solid fa-eye text-emerald-400"></i> Letta (${views}v) ${timeTag}
             </div>
         `;
     } else if (followupSent) {
@@ -856,7 +859,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // TUTTI GLI ALTRI PRODOTTI (SITEENGINE, HOMETOUR, DRIVEMOTION, VISION, ARES, FREE ENERGY, OMNIASTUDIO, VELOMOTION, SOCIAL, FORMA&MATERIA, AURA)
+    // TUTTI GLI ALTRI PRODOTTI
     btn.innerText = "Salvataggio Supabase...";
     try {
         const { error } = await supabaseClient.from('portal_videos').insert([{
