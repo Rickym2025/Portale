@@ -79,7 +79,6 @@
         <!-- GRIGLIA CARD PROGETTI CON ANTEPRIMA -->
         <div class="space-y-4">
             <div id="client-projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Popolato dinamicamente via JS -->
                 <div class="p-12 text-center text-zinc-500 col-span-full">Ricerca soluzioni in corso... ⏳</div>
             </div>
         </div>
@@ -95,10 +94,8 @@
     <script>
         const client = typeof supabaseClient !== 'undefined' ? supabaseClient : null;
 
-        // 🛡️ PLACEHOLDER SICURO GLOBALE (Se qualsiasi immagine esterna dovesse fallire)
         const SAFE_FALLBACK_THUMB = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80";
 
-        // 📋 DIZIONARIO COMPLETO DI TUTTI I 21 SAAS CON IMMAGINI TESTATE E VERIFICATE
         const SAAS_DESCRIPTIONS = {
             vision: { 
                 desc: "Generazione video UGC con modelli virtuali iper-realistici per campagne social ad alta conversione.", 
@@ -230,6 +227,7 @@
         window.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
             const emailParam = params.get('email') || params.get('user_email');
+            const isAdmin = params.get('admin') === 'true';
             
             if (!emailParam) {
                 document.getElementById('client-heading').innerText = "Accesso non autorizzato";
@@ -261,6 +259,22 @@
                     return;
                 }
 
+                // ─── 👁️ TRACCIAMENTO AUTOMATICO REALE DELLE VISITE SUL PORTALE S2 ───
+                // Se non è un admin a guardare, aggiorna all'istante lo stato su Supabase S2
+                if (!isAdmin) {
+                    data.forEach(async (p) => {
+                        const currentViews = parseInt(p.views_count, 10) || 0;
+                        await client
+                            .from('portal_videos')
+                            .update({
+                                is_opened: true,
+                                first_email_sent: true,
+                                views_count: currentViews + 1
+                            })
+                            .eq('id', p.id);
+                    });
+                }
+
                 const clientName = data[0].client_name || "Gentile Cliente";
                 document.getElementById('client-heading').innerText = `Spazio Dedicato a ${clientName}`;
 
@@ -279,7 +293,6 @@
                         thumb: SAFE_FALLBACK_THUMB
                     };
 
-                    // Se è un carosello con immagini reali salvate su R2, usa la prima slide come copertina reale
                     let displayThumb = profile.thumb;
                     if (typeKey === 'carousel' || typeKey === 'social') {
                         if (p.carousel_images) {
