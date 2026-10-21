@@ -58,6 +58,35 @@
             background: rgba(11, 11, 15, 0.95);
             backdrop-filter: blur(16px);
         }
+
+        /* ─── SCROLLBAR ORIZZONTALE COMODA, BEN VISIBILE E REATTIVA ─── */
+        .custom-table-scrollbar::-webkit-scrollbar {
+            height: 10px !important;
+            background-color: #08080c;
+        }
+        .custom-table-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 9999px;
+            margin: 0 16px;
+        }
+        .custom-table-scrollbar::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+            border-radius: 9999px;
+            border: 2px solid #08080c;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .custom-table-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a855f7 !important;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+        }
+        .cursor-grab-active {
+            cursor: grab;
+        }
+        .cursor-grabbing-active {
+            cursor: grabbing !important;
+            user-select: none;
+        }
     </style>
 </head>
 <body class="bg-[#050508] text-gray-200 font-body min-h-screen selection:bg-purple-600 selection:text-white flex overflow-x-hidden">
@@ -120,67 +149,42 @@
           </div>
           
           <div class="space-y-1 font-semibold text-sm">
-            <!-- 1. CONCIERGE24 -->
             <button onclick="quickOpenCreate('concierge')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-orange-600/20 hover:text-white border border-transparent hover:border-orange-500/30 transition text-xs font-bold cursor-pointer" title="Concierge24 (Hotel & B&B)">
               <span class="shrink-0 text-base">🏨</span> <span class="sidebar-text">Concierge24 (Hotel)</span>
             </button>
-
-            <!-- 2. DENTIS AI -->
             <button onclick="quickOpenCreate('dentis')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer" title="Dentis AI (Dentisti)">
               <span class="shrink-0 text-base">🦷</span> <span class="sidebar-text">Dentis AI (Dentisti)</span>
             </button>
-
-            <!-- 3. LEXIS AI -->
             <button onclick="quickOpenCreate('lexis')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-yellow-600/20 hover:text-white border border-transparent hover:border-yellow-500/30 transition text-xs font-bold cursor-pointer" title="Lexis AI (Avvocati)">
               <span class="shrink-0 text-base">⚖️</span> <span class="sidebar-text">Lexis AI (Avvocati)</span>
             </button>
-
-            <!-- 4. ELENA AI (VOCALE RISTORANTI) -->
             <button onclick="quickOpenCreate('elena')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-emerald-600/20 hover:text-white border border-transparent hover:border-emerald-500/30 transition text-xs font-bold cursor-pointer" title="Elena AI (Hostess Ristoranti H24)">
               <span class="shrink-0 text-base">🍽️</span> <span class="sidebar-text">Elena AI (Tavoli Ristoranti)</span>
             </button>
-
-            <!-- 5. VITTORIA AI (VOCALE AGENZIE) -->
             <button onclick="quickOpenCreate('vittoria')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-blue-600/20 hover:text-white border border-transparent hover:border-blue-500/30 transition text-xs font-bold cursor-pointer" title="Vittoria AI (Centralino Agenzie B2B)">
               <span class="shrink-0 text-base">🚀</span> <span class="sidebar-text">Vittoria AI (Lead Agenzie)</span>
             </button>
-
-            <!-- 6. LOCANDA DIGITALE -->
             <button onclick="quickOpenCreate('locanda')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold cursor-pointer" title="Locanda Digitale">
               <span class="shrink-0 text-base">🍕</span> <span class="sidebar-text">Locanda Digitale</span>
             </button>
-
-            <!-- 7. DRIVEMOTION RADAR -->
             <button onclick="quickOpenCreate('radar')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer" title="DriveMotion RADAR (Sourcing)">
               <span class="shrink-0 text-base">🏎️</span> <span class="sidebar-text">DriveMotion RADAR</span>
             </button>
-
-            <!-- 8. FORMA & MATERIA -->
             <button onclick="quickOpenCreate('forma_materia')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold cursor-pointer" title="Forma & Materia (Render 4K)">
               <span class="shrink-0 text-base">🏛️</span> <span class="sidebar-text">Forma &amp; Materia</span>
             </button>
-
-            <!-- 9. AURA PROXIMITY -->
             <button onclick="quickOpenCreate('aura')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer" title="AURA Proximity">
               <span class="shrink-0 text-base">📡</span> <span class="sidebar-text">AURA Proximity</span>
             </button>
-
-            <!-- 10. ETERNIA -->
             <button onclick="quickOpenCreate('eternia')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold cursor-pointer" title="ETERNIA (Memoriali)">
               <span class="shrink-0 text-base">🕊️</span> <span class="sidebar-text">ETERNIA (Memoriali)</span>
             </button>
-
-            <!-- 11. LOVE -->
             <button onclick="quickOpenCreate('love')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-pink-600/20 hover:text-white border border-transparent hover:border-pink-500/30 transition text-xs font-bold cursor-pointer" title="LOVE (Partecipazioni)">
               <span class="shrink-0 text-base">💍</span> <span class="sidebar-text">LOVE (Partecipazioni)</span>
             </button>
-
-            <!-- 12. SMART EXPERIENCE -->
             <button onclick="quickOpenCreate('experience')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold cursor-pointer" title="Smart Experience (Ristoranti)">
               <span class="shrink-0 text-base">🍷</span> <span class="sidebar-text">Smart Experience</span>
             </button>
-
-            <!-- 13. SITEENGINE PRO -->
             <div class="space-y-0.5">
               <button onclick="quickOpenCreate('html')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-blue-600/20 hover:text-white border border-transparent hover:border-blue-500/30 transition text-xs font-bold cursor-pointer" title="SiteEngine Pro (Siti)">
                 <span class="shrink-0 text-base">🌐</span> <span class="sidebar-text">SiteEngine Pro (Siti)</span>
@@ -189,53 +193,33 @@
                 <i class="fa-solid fa-code text-[9px] shrink-0"></i> <span class="sidebar-text">⚡ Generatore Rapido JSON</span>
               </a>
             </div>
-
-            <!-- 14. HOMETOUR AI -->
             <button onclick="quickOpenCreate('hometour')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-emerald-600/20 hover:text-white border border-transparent hover:border-emerald-500/30 transition text-xs font-bold cursor-pointer" title="HomeTour AI (Reel Immobiliari)">
               <span class="shrink-0 text-base">🏠</span> <span class="sidebar-text">HomeTour AI (Immobili)</span>
             </button>
-
-            <!-- 15. DRIVEMOTION VIDEO -->
             <button onclick="quickOpenCreate('drivemotion')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer" title="DriveMotion (Video Auto AI)">
               <span class="shrink-0 text-base">🚗</span> <span class="sidebar-text">DriveMotion Video</span>
             </button>
-
-            <!-- 16. VISION UGC -->
             <button onclick="quickOpenCreate('vision')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-pink-600/20 hover:text-white border border-transparent hover:border-pink-500/30 transition text-xs font-bold cursor-pointer" title="Vision UGC (Influencer Virtuali)">
               <span class="shrink-0 text-base">🎬</span> <span class="sidebar-text">Vision UGC Video</span>
             </button>
-
-            <!-- 17. NEXUSAI -->
             <button onclick="quickOpenCreate('nexus')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer" title="NexusAI (Sales Overlay)">
               <span class="shrink-0 text-base">🤖</span> <span class="sidebar-text">NexusAI (Chatbot)</span>
             </button>
-
-            <!-- 18. ARESAI -->
             <button onclick="quickOpenCreate('ares')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold cursor-pointer" title="AresAI (Palestre & Coach)">
               <span class="shrink-0 text-base">🏋️</span> <span class="sidebar-text">AresAI (Fitness Coach)</span>
             </button>
-
-            <!-- 19. FREE ENERGY -->
             <button onclick="quickOpenCreate('free_energy')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-emerald-600/20 hover:text-white border border-transparent hover:border-emerald-500/30 transition text-xs font-bold cursor-pointer" title="Free Energy (Fotovoltaico)">
               <span class="shrink-0 text-base">☀️</span> <span class="sidebar-text">Free Energy (Solare)</span>
             </button>
-
-            <!-- 20. CAROUSEL SOCIAL -->
             <button onclick="quickOpenCreate('social')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-indigo-600/20 hover:text-white border border-transparent hover:border-indigo-500/30 transition text-xs font-bold cursor-pointer" title="SocialEngine (Carousel)">
               <span class="shrink-0 text-base">📊</span> <span class="sidebar-text">Carousel Engine</span>
             </button>
-
-            <!-- 21. OMNIASTUDIO PRO -->
             <button onclick="quickOpenCreate('omniastudio')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold cursor-pointer" title="OmniaStudio PRO (AI Offline)">
               <span class="shrink-0 text-base">💼</span> <span class="sidebar-text">OmniaStudio PRO</span>
             </button>
-
-            <!-- 22. VELOMOTION -->
             <button onclick="quickOpenCreate('velomotion')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-yellow-600/20 hover:text-white border border-transparent hover:border-yellow-500/30 transition text-xs font-bold cursor-pointer" title="VeloMotion (Sblocco E-Bike)">
               <span class="shrink-0 text-base">⚡</span> <span class="sidebar-text">VeloMotion (E-Bike)</span>
             </button>
-
-            <!-- 23. FF EDIZIONI -->
             <button onclick="quickOpenCreate('ff')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold cursor-pointer" title="FF Edizioni (Musica SIAE)">
               <span class="shrink-0 text-base">🎵</span> <span class="sidebar-text">FF Edizioni (Jingle SIAE)</span>
             </button>
@@ -389,7 +373,7 @@
             </div>
         </div>
 
-        <!-- BARRA FILTRI SLIM CON TUTTI I 23 SAAS E MODULI VOCALI -->
+        <!-- BARRA FILTRI SLIM -->
         <div id="filters-container" class="grid grid-cols-1 md:grid-cols-4 gap-2 mb-3 bg-[#0b0b0f] border border-zinc-900 p-2 rounded-2xl shadow-xl items-center">
             <div>
                 <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#13141c] border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-purple-500 font-bold cursor-pointer">
@@ -434,12 +418,12 @@
             </div>
         </div>
 
-        <!-- MASTER TABLE COMPLETA CON MIN-WIDTH E COLONNA NOTE CRM -->
+        <!-- ─── MASTER TABLE CON SCROLLBAR COMODA DA 10PX E SUPPORTO DRAG & MIDDLE-CLICK ─── -->
         <div class="bg-[#0b0b0f] border border-zinc-900 rounded-3xl overflow-hidden shadow-2xl">
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto custom-table-scrollbar cursor-grab-active" id="table-scroll-container">
                 <table class="w-full text-left border-collapse min-w-[1450px]">
                     <thead>
-                        <tr class="border-b border-zinc-900 bg-black/40 text-xs uppercase tracking-wider text-gray-400 font-extrabold">
+                        <tr class="border-b border-zinc-900 bg-black/40 text-xs uppercase tracking-wider text-gray-400 font-extrabold select-none">
                             <th class="p-4 w-[8%] min-w-[110px] text-center">Tipo / ID</th>
                             <th class="p-4 w-[18%]">Cliente / Contatti</th>
                             <th class="p-4 w-[14%]">Progetto / Titolo</th>
@@ -481,7 +465,7 @@
     </main>
   </div>
 
-  <!-- MODALE CREAZIONE PROGETTO COMPLETA (TUTTI I 23 SAAS E MODULI VOCALI) -->
+  <!-- MODALE CREAZIONE PROGETTO COMPLETA -->
   <div id="creation-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
     <div class="glass p-8 rounded-3xl max-w-lg w-full border border-zinc-800 shadow-2xl">
       <div class="flex justify-between items-center mb-6">
@@ -490,8 +474,6 @@
       </div>
 
       <form id="create-project-form" onsubmit="handleCreateSubmit(event)" class="space-y-4">
-        
-        <!-- SELECT UNIVERSALE POSTO IN CIMA: COMANDA L'INTERFACCIA DINAMICA -->
         <div>
             <label class="block text-xs font-bold uppercase text-purple-400 mb-1">Prodotto Ecosistema (23 SaaS &amp; Voice)</label>
             <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-purple-500/40 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-400 font-bold cursor-pointer">
@@ -531,7 +513,6 @@
             </select>
         </div>
 
-        <!-- UPLOAD MENU CIBO & CARTA VINI (SPECIFICO PER EXPERIENCE) -->
         <div id="experience-upload-box" class="hidden p-4 bg-purple-950/20 border border-purple-500/40 rounded-2xl space-y-3">
             <div class="flex items-center justify-between">
                 <span class="text-xs font-extrabold uppercase text-amber-400 flex items-center gap-1.5">
@@ -601,11 +582,9 @@
     </div>
   </div>
 
-  <!-- MODALE CENTRO SPEDIZIONE: RESEND & WHATSAPP (CON ANTI-SPAM GDPR) -->
+  <!-- MODALE CENTRO SPEDIZIONE -->
   <div id="copy-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
     <div class="glass p-6 md:p-8 rounded-3xl max-w-xl w-full border border-zinc-800 shadow-2xl space-y-4">
-      
-      <!-- HEADER MODALE -->
       <div class="flex justify-between items-center border-b border-zinc-800 pb-3">
         <div class="flex items-center gap-2.5">
             <div class="w-9 h-9 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-sm">
@@ -619,7 +598,6 @@
         <button onclick="closeCopyModal()" class="text-gray-400 hover:text-white text-xl font-bold cursor-pointer">&times;</button>
       </div>
 
-      <!-- DESTINATARIO E OGGETTO MODIFICABILI AL VOLO -->
       <div id="modal-email-fields" class="space-y-3">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
@@ -637,7 +615,6 @@
           </div>
       </div>
 
-      <!-- CORPO DEL MESSAGGIO -->
       <div>
           <label class="block text-[10px] font-black uppercase tracking-wider text-zinc-400 mb-1 flex items-center justify-between">
               <span>Testo del Messaggio</span>
@@ -646,22 +623,18 @@
           <textarea id="copy-text-area" rows="8" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-xs text-gray-200 outline-none resize-y font-mono leading-relaxed focus:border-blue-500"></textarea>
       </div>
 
-      <!-- BADGE ANTI-SPAM & GDPR -->
       <div class="p-3 bg-emerald-950/20 border border-emerald-500/30 rounded-xl flex items-center gap-2.5 text-[11px] text-emerald-400">
           <i class="fa-solid fa-shield-halved text-sm shrink-0"></i>
           <span><b>Protezione Anti-Spam Resend:</b> Rapporto testo/link naturale, clausola di opt-out GDPR e autenticazione DKIM/SPF attiva.</span>
       </div>
 
-      <!-- PULSANTI AZIONE -->
       <div class="flex gap-2 pt-2">
           <button id="btn-send-resend" onclick="executeResendDirectSend()" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-extrabold py-3.5 rounded-xl text-xs uppercase tracking-wider transition shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 cursor-pointer active:scale-95">
               <i class="fa-solid fa-paper-plane"></i> Spedisci con Resend
           </button>
-
           <a id="copy-wa-direct-link" target="_blank" href="#" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-extrabold py-3.5 rounded-xl text-xs text-center transition flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95">
               <i class="fa-brands fa-whatsapp text-sm"></i> Apri WhatsApp
           </a>
-
           <button onclick="executeCopyText()" class="px-4 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold py-3.5 rounded-xl text-xs transition cursor-pointer" title="Copia testo negli appunti">
               <i class="fa-solid fa-copy"></i>
           </button>
@@ -677,5 +650,59 @@
   <script src="js/supabase-api.js"></script>
   <script src="js/n8n-api.js"></script>
   <script src="js/app.js"></script>
+
+  <!-- ─── SCRIPT TRASCINAMENTO NATURALE E GESTIONE ROTELLINA DEL MOUSE ─── -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const slider = document.getElementById('table-scroll-container');
+        if (!slider) return;
+
+        let isDown = false;
+        let startX = 0;
+        let scrollLeft = 0;
+
+        // Supporto Trascinamento con Tasto Centrale (Rotella) o Tasto Sinistro su aree vuote
+        slider.addEventListener('mousedown', (e) => {
+            const isInteractive = ['INPUT', 'BUTTON', 'A', 'TEXTAREA', 'SELECT'].includes(e.target.tagName);
+            
+            // Clic con la rotella (button === 1) o clic sinistro su aree non interattive
+            if (e.button === 1 || (!isInteractive && e.button === 0)) {
+                isDown = true;
+                slider.classList.remove('cursor-grab-active');
+                slider.classList.add('cursor-grabbing-active');
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+                if (e.button === 1) e.preventDefault(); // Previene il blocco del cursore a 4 frecce di Chrome
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (isDown) {
+                isDown = false;
+                slider.classList.remove('cursor-grabbing-active');
+                slider.classList.add('cursor-grab-active');
+            }
+        });
+
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 1.6; // Moltiplicatore di scorrimento naturale
+            slider.scrollLeft = scrollLeft - walk;
+        });
+
+        // Shift + Rotellina naturale o Scorrimento orizzontale assistito
+        slider.addEventListener('wheel', (e) => {
+            if (e.shiftKey) return; // Lascia il comportamento nativo se tiene premuto Shift
+            if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
+                // Se il mouse si trova sopra la tabella ma non si sta scorrendo in verticale la pagina
+                if (slider.scrollWidth > slider.clientWidth) {
+                    slider.scrollLeft += e.deltaY * 0.9;
+                }
+            }
+        }, { passive: true });
+    });
+  </script>
 </body>
 </html>
