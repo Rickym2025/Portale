@@ -123,7 +123,6 @@ function toggleModalFields() {
     if (sheetBox) sheetBox.classList.toggle('hidden', t !== 'experience');
     if (t === 'experience') fetchPendingRestaurantsFromSheet();
 
-    // Box dedicato per upload Menu e Vini per Smart Experience
     const expUploadBox = document.getElementById('experience-upload-box');
     if (expUploadBox) expUploadBox.classList.toggle('hidden', t !== 'experience');
 
@@ -134,10 +133,20 @@ function toggleModalFields() {
     if (linkBox) linkBox.classList.toggle('hidden', isFile);
 }
 
+// 🗓️ CALCOLO GIORNI SOLARI REALE (OGGI, IERI, X GG FA)
 function getDaysAgo(dateStr) {
     if (!dateStr) return "";
-    const diff = Math.floor(Math.abs(new Date() - new Date(dateStr)) / (1000 * 60 * 60 * 24));
-    return diff === 0 ? "Oggi" : (diff === 1 ? "1 gg fa" : `${diff} gg fa`);
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return "";
+
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startOfTarget = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const diffDays = Math.round((startOfToday - startOfTarget) / (1000 * 60 * 60 * 24));
+
+    if (diffDays <= 0) return "Oggi";
+    if (diffDays === 1) return "Ieri";
+    return `${diffDays} gg fa`;
 }
 
 function toggleSidebar() {
@@ -174,7 +183,7 @@ function applyFilters() {
     renderMasterTable(filtered);
 }
 
-// 🎯 GESTIONE RESET VISITE & STATO LETTURA PULITO
+// 🎯 GESTIONE RESET VISITE & STATO LETTURA
 async function handleViewsChange(id, value) {
     const count = parseInt(value, 10);
     const validCount = isNaN(count) || count < 0 ? 0 : count;
@@ -271,6 +280,7 @@ function renderMasterTable(data) {
         const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}&admin=true`;
         const targetUrl = isPaid ? (p.content_url || portalUrl) : portalUrl;
 
+        // Data reale di lettura o invio
         const openDate = p.opened_at || p.updated_at;
         const sendDateFormatted = p.sent_at ? new Date(p.sent_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const sendDaysAgo = getDaysAgo(p.sent_at);
@@ -315,12 +325,13 @@ function renderMasterTable(data) {
         if (waSent) channelIndicators += `<i class="fa-brands fa-whatsapp text-emerald-400 text-xs" title="Inviato su WhatsApp"></i>`;
         if (emailSent) channelIndicators += `<i class="fa-solid fa-envelope text-blue-400 text-xs" title="Inviato via Email"></i>`;
 
-        // 🚦 PIPELINE STATI LETTURA & INVIO (CON SUPPORTO 2° SOLLECITO 7GG)
+        // 🚦 PIPELINE STATI LETTURA CON TEMPO REALE DINAMICO
         let statusHtml = '';
         if (isRead) {
+            const timeTag = openDaysAgo || sendDaysAgo || 'Oggi';
             statusHtml = `
                 <div class="text-emerald-400 font-extrabold text-[11px]">
-                    <i class="fa-solid fa-eye animate-pulse"></i> Letta (${views}v) <span class="text-emerald-500 font-bold">(${openDaysAgo || 'Oggi'})</span>
+                    <i class="fa-solid fa-eye animate-pulse"></i> Letta (${views}v) <span class="text-emerald-500 font-bold">(${timeTag})</span>
                 </div>
             `;
         } else if (followupSent) {
@@ -541,7 +552,6 @@ async function handleCreateSubmit(e) {
     const siteUrl = document.getElementById('c-url').value.trim();
     const slug = clientName.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
 
-    // 🎬 GESTIONE UPLOAD VIDEO FILE (VISION UGC & HOMETOUR VIDEO)
     const fileInput = document.getElementById('c-file');
     const selectedFile = fileInput ? fileInput.files[0] : null;
 
@@ -710,7 +720,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🎵 FF EDIZIONI (JINGLE O CANZONE INEDITA)
+    // 🎵 FF EDIZIONI
     if (type === 'ff') {
         btn.innerText = "Registrazione Brano FF Edizioni...";
         const cleanEmail = email || `${slug}@rmstudio.app`;
@@ -773,7 +783,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🍷 EXPERIENCE (CON SUPPORTO UPLOAD MENU/VINI & VISION OCR)
+    // 🍷 EXPERIENCE
     if (type === 'experience') {
         btn.innerText = "Analisi Gastronomica & OCR (25s)...";
 
@@ -823,7 +833,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // TUTTI GLI ALTRI PRODOTTI (SITEENGINE, HOMETOUR, DRIVEMOTION, VISION, ARES, FREE ENERGY, OMNIASTUDIO, VELOMOTION, SOCIAL, FORMA&MATERIA, AURA)
+    // TUTTI GLI ALTRI PRODOTTI
     btn.innerText = "Salvataggio Supabase...";
     try {
         const { error } = await supabaseClient.from('portal_videos').insert([{
