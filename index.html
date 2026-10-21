@@ -59,37 +59,33 @@
             backdrop-filter: blur(16px);
         }
 
-        /* ─── SCROLLBAR ORIZZONTALE COMODA, BEN VISIBILE E REATTIVA ─── */
-        .custom-table-scrollbar::-webkit-scrollbar {
-            height: 10px !important;
+        /* ─── SCROLLBAR ORIZZONTALE E VERTICALE COMODA E COSTANTEMENTE VISIBILE ─── */
+        .table-viewport-container {
+            max-height: calc(100vh - 275px);
+            overflow-x: auto !important;
+            overflow-y: auto !important;
+        }
+        .table-viewport-container::-webkit-scrollbar {
+            width: 8px;
+            height: 11px;
             background-color: #08080c;
         }
-        .custom-table-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 9999px;
-            margin: 0 16px;
+        .table-viewport-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
         }
-        .custom-table-scrollbar::-webkit-scrollbar-thumb {
-            background: #3f3f46;
-            border-radius: 9999px;
+        .table-viewport-container::-webkit-scrollbar-thumb {
+            background: #52525b;
+            border-radius: 8px;
             border: 2px solid #08080c;
             cursor: pointer;
-            transition: background-color 0.2s;
         }
-        .custom-table-scrollbar::-webkit-scrollbar-thumb:hover {
+        .table-viewport-container::-webkit-scrollbar-thumb:hover {
             background: #a855f7 !important;
-            box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
-        }
-        .cursor-grab-active {
-            cursor: grab;
-        }
-        .cursor-grabbing-active {
-            cursor: grabbing !important;
-            user-select: none;
         }
     </style>
 </head>
-<body class="bg-[#050508] text-gray-200 font-body min-h-screen selection:bg-purple-600 selection:text-white flex overflow-x-hidden">
+<body class="bg-[#050508] text-gray-200 font-body min-h-screen selection:bg-purple-600 selection:text-white flex overflow-hidden">
 
   <!-- LOCK SCREEN DI AUTENTICAZIONE -->
   <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#050508]/98 backdrop-blur-xl">
@@ -111,7 +107,7 @@
   </div>
 
   <!-- MAIN DASHBOARD -->
-  <div id="main-content" class="hidden flex-1 flex w-full min-h-screen relative">
+  <div id="main-content" class="hidden flex-1 flex w-full h-screen overflow-hidden relative">
     
     <!-- SIDEBAR RIDIMENSIONABILE -->
     <aside id="sidebar" class="w-72 bg-[#08080c] border-r border-zinc-900/80 p-4 flex flex-col justify-between relative z-30 shrink-0 select-none transition-all duration-200" style="min-width: 68px; max-width: 480px;">
@@ -149,89 +145,85 @@
           </div>
           
           <div class="space-y-1 font-semibold text-sm">
-            <button onclick="quickOpenCreate('concierge')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-orange-600/20 hover:text-white border border-transparent hover:border-orange-500/30 transition text-xs font-bold cursor-pointer" title="Concierge24 (Hotel & B&B)">
+            <button onclick="quickOpenCreate('concierge')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-orange-600/20 hover:text-white border border-transparent hover:border-orange-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🏨</span> <span class="sidebar-text">Concierge24 (Hotel)</span>
             </button>
-            <button onclick="quickOpenCreate('dentis')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer" title="Dentis AI (Dentisti)">
+            <button onclick="quickOpenCreate('dentis')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🦷</span> <span class="sidebar-text">Dentis AI (Dentisti)</span>
             </button>
-            <button onclick="quickOpenCreate('lexis')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-yellow-600/20 hover:text-white border border-transparent hover:border-yellow-500/30 transition text-xs font-bold cursor-pointer" title="Lexis AI (Avvocati)">
+            <button onclick="quickOpenCreate('lexis')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-yellow-600/20 hover:text-white border border-transparent hover:border-yellow-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">⚖️</span> <span class="sidebar-text">Lexis AI (Avvocati)</span>
             </button>
-            <button onclick="quickOpenCreate('elena')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-emerald-600/20 hover:text-white border border-transparent hover:border-emerald-500/30 transition text-xs font-bold cursor-pointer" title="Elena AI (Hostess Ristoranti H24)">
+            <button onclick="quickOpenCreate('elena')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-emerald-600/20 hover:text-white border border-transparent hover:border-emerald-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🍽️</span> <span class="sidebar-text">Elena AI (Tavoli Ristoranti)</span>
             </button>
-            <button onclick="quickOpenCreate('vittoria')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-blue-600/20 hover:text-white border border-transparent hover:border-blue-500/30 transition text-xs font-bold cursor-pointer" title="Vittoria AI (Centralino Agenzie B2B)">
+            <button onclick="quickOpenCreate('vittoria')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-blue-600/20 hover:text-white border border-transparent hover:border-blue-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🚀</span> <span class="sidebar-text">Vittoria AI (Lead Agenzie)</span>
             </button>
-            <button onclick="quickOpenCreate('locanda')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold cursor-pointer" title="Locanda Digitale">
+            <button onclick="quickOpenCreate('locanda')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🍕</span> <span class="sidebar-text">Locanda Digitale</span>
             </button>
-            <button onclick="quickOpenCreate('radar')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer" title="DriveMotion RADAR (Sourcing)">
+            <button onclick="quickOpenCreate('radar')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🏎️</span> <span class="sidebar-text">DriveMotion RADAR</span>
             </button>
-            <button onclick="quickOpenCreate('forma_materia')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold cursor-pointer" title="Forma & Materia (Render 4K)">
+            <button onclick="quickOpenCreate('forma_materia')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🏛️</span> <span class="sidebar-text">Forma &amp; Materia</span>
             </button>
-            <button onclick="quickOpenCreate('aura')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer" title="AURA Proximity">
+            <button onclick="quickOpenCreate('aura')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">📡</span> <span class="sidebar-text">AURA Proximity</span>
             </button>
-            <button onclick="quickOpenCreate('eternia')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold cursor-pointer" title="ETERNIA (Memoriali)">
+            <button onclick="quickOpenCreate('eternia')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-amber-600/20 hover:text-white border border-transparent hover:border-amber-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🕊️</span> <span class="sidebar-text">ETERNIA (Memoriali)</span>
             </button>
-            <button onclick="quickOpenCreate('love')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-pink-600/20 hover:text-white border border-transparent hover:border-pink-500/30 transition text-xs font-bold cursor-pointer" title="LOVE (Partecipazioni)">
+            <button onclick="quickOpenCreate('love')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-pink-600/20 hover:text-white border border-transparent hover:border-pink-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">💍</span> <span class="sidebar-text">LOVE (Partecipazioni)</span>
             </button>
-            <button onclick="quickOpenCreate('experience')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold cursor-pointer" title="Smart Experience (Ristoranti)">
+            <button onclick="quickOpenCreate('experience')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🍷</span> <span class="sidebar-text">Smart Experience</span>
             </button>
             <div class="space-y-0.5">
-              <button onclick="quickOpenCreate('html')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-blue-600/20 hover:text-white border border-transparent hover:border-blue-500/30 transition text-xs font-bold cursor-pointer" title="SiteEngine Pro (Siti)">
+              <button onclick="quickOpenCreate('html')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-blue-600/20 hover:text-white border border-transparent hover:border-blue-500/30 transition text-xs font-bold cursor-pointer">
                 <span class="shrink-0 text-base">🌐</span> <span class="sidebar-text">SiteEngine Pro (Siti)</span>
               </button>
-              <a href="crea.html" target="_blank" class="w-full ml-1 pl-3 py-1 border-l-2 border-purple-500/50 flex items-center gap-2 text-purple-300 hover:text-white text-[10px] font-bold transition" title="Generatore Rapido JSON">
-                <i class="fa-solid fa-code text-[9px] shrink-0"></i> <span class="sidebar-text">⚡ Generatore Rapido JSON</span>
-              </a>
             </div>
-            <button onclick="quickOpenCreate('hometour')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-emerald-600/20 hover:text-white border border-transparent hover:border-emerald-500/30 transition text-xs font-bold cursor-pointer" title="HomeTour AI (Reel Immobiliari)">
+            <button onclick="quickOpenCreate('hometour')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-emerald-600/20 hover:text-white border border-transparent hover:border-emerald-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🏠</span> <span class="sidebar-text">HomeTour AI (Immobili)</span>
             </button>
-            <button onclick="quickOpenCreate('drivemotion')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer" title="DriveMotion (Video Auto AI)">
+            <button onclick="quickOpenCreate('drivemotion')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🚗</span> <span class="sidebar-text">DriveMotion Video</span>
             </button>
-            <button onclick="quickOpenCreate('vision')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-pink-600/20 hover:text-white border border-transparent hover:border-pink-500/30 transition text-xs font-bold cursor-pointer" title="Vision UGC (Influencer Virtuali)">
+            <button onclick="quickOpenCreate('vision')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-pink-600/20 hover:text-white border border-transparent hover:border-pink-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🎬</span> <span class="sidebar-text">Vision UGC Video</span>
             </button>
-            <button onclick="quickOpenCreate('nexus')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer" title="NexusAI (Sales Overlay)">
+            <button onclick="quickOpenCreate('nexus')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-cyan-600/20 hover:text-white border border-transparent hover:border-cyan-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🤖</span> <span class="sidebar-text">NexusAI (Chatbot)</span>
             </button>
-            <button onclick="quickOpenCreate('ares')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold cursor-pointer" title="AresAI (Palestre & Coach)">
+            <button onclick="quickOpenCreate('ares')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🏋️</span> <span class="sidebar-text">AresAI (Fitness Coach)</span>
             </button>
-            <button onclick="quickOpenCreate('free_energy')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-emerald-600/20 hover:text-white border border-transparent hover:border-emerald-500/30 transition text-xs font-bold cursor-pointer" title="Free Energy (Fotovoltaico)">
+            <button onclick="quickOpenCreate('free_energy')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-emerald-600/20 hover:text-white border border-transparent hover:border-emerald-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">☀️</span> <span class="sidebar-text">Free Energy (Solare)</span>
             </button>
-            <button onclick="quickOpenCreate('social')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-indigo-600/20 hover:text-white border border-transparent hover:border-indigo-500/30 transition text-xs font-bold cursor-pointer" title="SocialEngine (Carousel)">
+            <button onclick="quickOpenCreate('social')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-indigo-600/20 hover:text-white border border-transparent hover:border-indigo-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">📊</span> <span class="sidebar-text">Carousel Engine</span>
             </button>
-            <button onclick="quickOpenCreate('omniastudio')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold cursor-pointer" title="OmniaStudio PRO (AI Offline)">
+            <button onclick="quickOpenCreate('omniastudio')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">💼</span> <span class="sidebar-text">OmniaStudio PRO</span>
             </button>
-            <button onclick="quickOpenCreate('velomotion')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-yellow-600/20 hover:text-white border border-transparent hover:border-yellow-500/30 transition text-xs font-bold cursor-pointer" title="VeloMotion (Sblocco E-Bike)">
+            <button onclick="quickOpenCreate('velomotion')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-yellow-600/20 hover:text-white border border-transparent hover:border-yellow-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">⚡</span> <span class="sidebar-text">VeloMotion (E-Bike)</span>
             </button>
-            <button onclick="quickOpenCreate('ff')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold cursor-pointer" title="FF Edizioni (Musica SIAE)">
+            <button onclick="quickOpenCreate('ff')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-purple-600/20 hover:text-white border border-transparent hover:border-purple-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🎵</span> <span class="sidebar-text">FF Edizioni (Jingle SIAE)</span>
             </button>
           </div>
         </div>
 
-        <!-- 🗄️ SEZIONE SUPABASE PROJECTS (7 ACCOUNT) -->
+        <!-- 🗄️ SUPABASE PROJECTS (7 ACCOUNT) -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-[11px] uppercase font-bold text-gray-500 tracking-wider mb-2 flex items-center justify-between sidebar-text">
             <span>Supabase Projects</span> <i class="fa-solid fa-database text-xs"></i>
           </div>
-          
           <div class="space-y-1 text-xs">
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
@@ -312,32 +304,31 @@
           </div>
         </div>
 
-        <!-- UTILITY AUTOMAZIONI & STRIPE -->
         <div class="pt-2 border-t border-zinc-900/80 space-y-1">
           <div class="text-[11px] uppercase font-bold text-gray-500 tracking-wider mb-2 sidebar-text">Automazioni</div>
-          <a href="https://n8n.rmstudio.app" target="_blank" class="w-full px-2 py-1.5 rounded-lg flex items-center gap-2.5 text-gray-300 hover:text-white text-xs font-medium transition cursor-pointer" title="n8n Engine Automazioni">
+          <a href="https://n8n.rmstudio.app" target="_blank" class="w-full px-2 py-1.5 rounded-lg flex items-center gap-2.5 text-gray-300 hover:text-white text-xs font-medium transition cursor-pointer">
             <i class="fa-solid fa-diagram-project text-orange-400 shrink-0"></i> <span class="sidebar-text">n8n Engine</span>
           </a>
-          <a href="https://dashboard.stripe.com" target="_blank" class="w-full px-2 py-1.5 rounded-lg flex items-center gap-2.5 text-gray-300 hover:text-white text-xs font-medium transition cursor-pointer" title="Stripe Master Dashboard">
+          <a href="https://dashboard.stripe.com" target="_blank" class="w-full px-2 py-1.5 rounded-lg flex items-center gap-2.5 text-gray-300 hover:text-white text-xs font-medium transition cursor-pointer">
             <i class="fa-solid fa-credit-card text-indigo-400 shrink-0"></i> <span class="sidebar-text">Stripe Master</span>
           </a>
         </div>
       </div>
 
-      <button onclick="logout()" class="w-full px-3.5 py-3 rounded-xl flex items-center gap-3 text-gray-400 hover:text-red-400 hover:bg-red-500/10 text-xs font-bold transition mt-4 cursor-pointer" title="Disconnetti Account">
+      <button onclick="logout()" class="w-full px-3.5 py-3 rounded-xl flex items-center gap-3 text-gray-400 hover:text-red-400 hover:bg-red-500/10 text-xs font-bold transition mt-4 cursor-pointer">
         <i class="fa-solid fa-right-from-bracket shrink-0"></i> <span class="sidebar-text">Disconnetti</span>
       </button>
     </aside>
 
-    <!-- MANIGLIA DI RIDIMENSIONAMENTO -->
     <div id="resizer"></div>
 
     <!-- CONTENT AREA -->
-    <main class="flex-1 p-5 md:p-8 overflow-y-auto min-w-0">
+    <main class="flex-1 p-5 md:p-8 flex flex-col h-screen overflow-hidden min-w-0">
       
       <!-- TAB 1: MASTER HUB -->
-      <section id="tab-master">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-3.5">
+      <section id="tab-master" class="flex-1 flex flex-col h-full overflow-hidden">
+        
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-3.5 shrink-0">
             <div>
               <h1 class="text-xl md:text-2xl font-display font-black text-white">Master <span class="grad-text">Command Center</span></h1>
               <p class="text-xs text-gray-400 mt-0.5">Gestisci le proposte e i pagamenti di tutti i SaaS in tempo reale.</p>
@@ -353,8 +344,8 @@
             </div>
         </header>
 
-        <!-- STATISTICHE COMPATTE SU RIGA UNICA -->
-        <div id="stats-container" class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 mb-3">
+        <!-- STATISTICHE COMPATTE -->
+        <div id="stats-container" class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 mb-3 shrink-0">
             <div class="bg-[#0b0b0f] border border-zinc-900/90 py-2 px-3.5 rounded-xl flex items-center justify-between shadow-md">
                 <span class="text-zinc-400 text-[10px] uppercase font-bold tracking-wider">Incassi Totali</span>
                 <span class="text-base font-black text-emerald-400 font-mono" id="stat-revenue">€0.00</span>
@@ -374,7 +365,7 @@
         </div>
 
         <!-- BARRA FILTRI SLIM -->
-        <div id="filters-container" class="grid grid-cols-1 md:grid-cols-4 gap-2 mb-3 bg-[#0b0b0f] border border-zinc-900 p-2 rounded-2xl shadow-xl items-center">
+        <div id="filters-container" class="grid grid-cols-1 md:grid-cols-4 gap-2 mb-3 bg-[#0b0b0f] border border-zinc-900 p-2 rounded-2xl shadow-xl items-center shrink-0">
             <div>
                 <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#13141c] border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-purple-500 font-bold cursor-pointer">
                     <option value="all">📁 Tutti i Prodotti (23 SaaS &amp; Voice)</option>
@@ -418,12 +409,12 @@
             </div>
         </div>
 
-        <!-- ─── MASTER TABLE CON SCROLLBAR COMODA DA 10PX E SUPPORTO DRAG & MIDDLE-CLICK ─── -->
-        <div class="bg-[#0b0b0f] border border-zinc-900 rounded-3xl overflow-hidden shadow-2xl">
-            <div class="overflow-x-auto custom-table-scrollbar cursor-grab-active" id="table-scroll-container">
+        <!-- ─── MASTER TABLE: SCROLLBAR SEMPRE VISIBILE IN BASSO + THEAD STICKY ─── -->
+        <div class="bg-[#0b0b0f] border border-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex-1 flex flex-col min-h-0">
+            <div class="table-viewport-container flex-1" id="table-scroll-container">
                 <table class="w-full text-left border-collapse min-w-[1450px]">
-                    <thead>
-                        <tr class="border-b border-zinc-900 bg-black/40 text-xs uppercase tracking-wider text-gray-400 font-extrabold select-none">
+                    <thead class="sticky top-0 z-20 bg-[#0c0d14] border-b border-zinc-800 shadow-md">
+                        <tr class="text-xs uppercase tracking-wider text-gray-400 font-extrabold select-none">
                             <th class="p-4 w-[8%] min-w-[110px] text-center">Tipo / ID</th>
                             <th class="p-4 w-[18%]">Cliente / Contatti</th>
                             <th class="p-4 w-[14%]">Progetto / Titolo</th>
@@ -650,59 +641,5 @@
   <script src="js/supabase-api.js"></script>
   <script src="js/n8n-api.js"></script>
   <script src="js/app.js"></script>
-
-  <!-- ─── SCRIPT TRASCINAMENTO NATURALE E GESTIONE ROTELLINA DEL MOUSE ─── -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const slider = document.getElementById('table-scroll-container');
-        if (!slider) return;
-
-        let isDown = false;
-        let startX = 0;
-        let scrollLeft = 0;
-
-        // Supporto Trascinamento con Tasto Centrale (Rotella) o Tasto Sinistro su aree vuote
-        slider.addEventListener('mousedown', (e) => {
-            const isInteractive = ['INPUT', 'BUTTON', 'A', 'TEXTAREA', 'SELECT'].includes(e.target.tagName);
-            
-            // Clic con la rotella (button === 1) o clic sinistro su aree non interattive
-            if (e.button === 1 || (!isInteractive && e.button === 0)) {
-                isDown = true;
-                slider.classList.remove('cursor-grab-active');
-                slider.classList.add('cursor-grabbing-active');
-                startX = e.pageX - slider.offsetLeft;
-                scrollLeft = slider.scrollLeft;
-                if (e.button === 1) e.preventDefault(); // Previene il blocco del cursore a 4 frecce di Chrome
-            }
-        });
-
-        window.addEventListener('mouseup', () => {
-            if (isDown) {
-                isDown = false;
-                slider.classList.remove('cursor-grabbing-active');
-                slider.classList.add('cursor-grab-active');
-            }
-        });
-
-        slider.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 1.6; // Moltiplicatore di scorrimento naturale
-            slider.scrollLeft = scrollLeft - walk;
-        });
-
-        // Shift + Rotellina naturale o Scorrimento orizzontale assistito
-        slider.addEventListener('wheel', (e) => {
-            if (e.shiftKey) return; // Lascia il comportamento nativo se tiene premuto Shift
-            if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
-                // Se il mouse si trova sopra la tabella ma non si sta scorrendo in verticale la pagina
-                if (slider.scrollWidth > slider.clientWidth) {
-                    slider.scrollLeft += e.deltaY * 0.9;
-                }
-            }
-        }, { passive: true });
-    });
-  </script>
 </body>
 </html>
