@@ -1,4 +1,4 @@
-// js/app.js - Master Command Center Controller (Ottimizzato con DocumentFragment & Calcolo Solare)
+// js/app.js - Master Command Center Controller (Completo al 100% & Ottimizzato a 60 FPS)
 
 window.allProjects = [];
 window.sheetPendingRestaurants = [];
@@ -78,7 +78,7 @@ function onRestaurantSelectedFromSheet() {
     document.getElementById('c-price').value = 350;
 }
 
-// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I 23 SAAS
+// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I 23 SAAS E MODULI VOCALI
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
     const titleInput = document.getElementById('c-title');
@@ -159,6 +159,14 @@ function toggleSidebar() {
     localStorage.setItem('sidebar_collapsed', isCol ? 'true' : 'false');
 }
 
+// 🎯 DEBOUNCE FILTRI
+let _filterTimer = null;
+function debouncedFilters() {
+    clearTimeout(_filterTimer);
+    _filterTimer = setTimeout(applyFilters, 180);
+}
+window.debouncedFilters = debouncedFilters;
+
 // 🎯 APPLICAZIONE FILTRI
 function applyFilters() {
     const fType = document.getElementById('filter-type')?.value || 'all';
@@ -183,55 +191,212 @@ function applyFilters() {
     renderMasterTable(filtered);
 }
 
-// 🎯 GESTIONE RESET VISITE & STATO LETTURA
+// 🎯 GESTIONE RESET VISITE & STATO LETTURA SENZA REFETCH
 async function handleViewsChange(id, value) {
     const count = parseInt(value, 10);
     const validCount = isNaN(count) || count < 0 ? 0 : count;
     const isOpened = validCount > 0;
 
-    const payload = {
-        views_count: validCount,
-        is_opened: isOpened
-    };
+    const proj = (window.allProjects || []).find(p => p.id === id);
+    if (proj) {
+        proj.views_count = validCount;
+        proj.is_opened = isOpened;
+    }
+    applyFilters();
 
     try {
-        const { error } = await supabaseClient.from('portal_videos').update(payload).eq('id', id);
-        if (error) throw error;
-
-        const proj = (window.allProjects || []).find(p => p.id === id);
-        if (proj) {
-            proj.views_count = validCount;
-            proj.is_opened = isOpened;
-        }
-        applyFilters();
+        await updateSupabaseField(id, 'views_count', validCount);
+        await updateSupabaseField(id, 'is_opened', isOpened);
     } catch (err) {
-        alert("Errore aggiornamento visite: " + err.message);
+        console.error("Errore salvataggio visite:", err);
     }
 }
 
-// 🎯 GESTIONE UNIFICATA CHECKBOX OUTREACH (WHATSAPP O EMAIL)
+// 🎯 GESTIONE UNIFICATA CHECKBOX OUTREACH SENZA REFETCH
 async function handleOutreachToggle(id, isChecked) {
-    const payload = {
-        is_whatsapp_sent: isChecked,
-        first_email_sent: isChecked
-    };
+    const proj = (window.allProjects || []).find(p => p.id === id);
+    if (proj) {
+        proj.is_whatsapp_sent = isChecked;
+        proj.first_email_sent = isChecked;
+    }
+    applyFilters();
 
     try {
-        const { error } = await supabaseClient.from('portal_videos').update(payload).eq('id', id);
-        if (error) throw error;
-
-        const proj = (window.allProjects || []).find(p => p.id === id);
-        if (proj) {
-            proj.is_whatsapp_sent = isChecked;
-            proj.first_email_sent = isChecked;
-        }
-        applyFilters();
+        await updateSupabaseField(id, 'is_whatsapp_sent', isChecked);
+        await updateSupabaseField(id, 'first_email_sent', isChecked);
     } catch (err) {
-        alert("Errore aggiornamento stato invio: " + err.message);
+        console.error("Errore salvataggio outreach:", err);
     }
 }
 
-// ⚡ RENDER AD ALTISSIME PRESTAZIONI CON DOCUMENT FRAGMENT (ZERO BLOCCHI DOM)
+// 🏷️ BADGES ESTRATTI FUORI DA RENDERMASTER TABLE (ZERO OVERHEAD PER RIGA)
+const SAAS_BADGES = {
+    concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
+    dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
+    lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚖️ lexis</span>`,
+    elena: `<span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ elena</span>`,
+    vittoria: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🚀 vittoria</span>`,
+    locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍕 locanda</span>`,
+    radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏎️ radar</span>`,
+    forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏛️ f&amp;m</span>`,
+    aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📡 aura</span>`,
+    eternia: `<span class="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🕊️ eternia</span>`,
+    love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💍 love</span>`,
+    experience: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍷 experience</span>`,
+    html: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`,
+    siteengine: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`,
+    hometour: `<span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏠 hometour</span>`,
+    drivemotion: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🚗 drivemotion</span>`,
+    vision: `<span class="bg-pink-500/15 text-pink-300 border border-pink-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🎬 vision</span>`,
+    nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🤖 nexus</span>`,
+    ares: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏋️ ares</span>`,
+    free_energy: `<span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">☀️ solar</span>`,
+    social: `<span class="bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📊 social</span>`,
+    omniastudio: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💼 omniastudio</span>`,
+    velomotion: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚡ velomotion</span>`,
+    ff: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🎵 ff</span>`
+};
+
+// 🔨 COSTRUTTORE RIGA ISOLATO AD ALTA VELOCITÀ (ZERO ANIMAZIONI BLOCCANTI)
+function buildRow(p, isCompact, cellPadding) {
+    const tr = document.createElement('tr');
+    tr.className = `hover:bg-[#101015] border-b border-zinc-900/80 ${isCompact ? 'text-xs' : 'text-sm'}`;
+
+    const isPaid = p.is_paid === true || p.is_paid === "true";
+    const views = parseInt(p.views_count || 0, 10);
+    const isOpenedFlag = p.is_opened === true || p.is_opened === "true";
+    const isRead = views > 0 && isOpenedFlag;
+
+    const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
+    const waSent = p.is_whatsapp_sent === true || p.is_whatsapp_sent === "true";
+    const isContacted = waSent || emailSent;
+    const followupSent = p.followup_sent === true || p.followup_sent === "true";
+    
+    const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}&admin=true`;
+    const targetUrl = isPaid ? (p.content_url || portalUrl) : portalUrl;
+
+    const openDate = p.opened_at || (p.is_opened ? p.updated_at : null);
+    const sendDateFormatted = p.sent_at ? new Date(p.sent_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
+    const sendDaysAgo = getDaysAgo(p.sent_at);
+    const openDaysAgo = getDaysAgo(openDate);
+
+    const typeBadge = SAAS_BADGES[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap">${p.portal_type || 'html'}</span>`;
+
+    let closingPitchBtn = '';
+    if (isRead && !isPaid) {
+        closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2 py-1 rounded-lg text-xs font-black cursor-pointer" title="Pitch Chiusura Dedicato"><i class="fa-solid fa-fire"></i> VIP</button>`;
+    }
+
+    let channelIndicators = '';
+    if (waSent) channelIndicators += `<i class="fa-brands fa-whatsapp text-emerald-400 text-xs" title="Inviato su WhatsApp"></i>`;
+    if (emailSent) channelIndicators += `<i class="fa-solid fa-envelope text-blue-400 text-xs" title="Inviato via Email"></i>`;
+
+    let statusHtml = '';
+    if (isRead) {
+        const timeTag = openDaysAgo || sendDaysAgo || 'Oggi';
+        statusHtml = `
+            <div class="text-emerald-400 font-extrabold text-[11px] flex items-center gap-1.5">
+                <i class="fa-solid fa-eye text-emerald-400"></i> Letta (${views}v) <span class="text-emerald-500 font-bold">(${timeTag})</span>
+            </div>
+        `;
+    } else if (followupSent) {
+        statusHtml = `
+            <div class="space-y-0.5">
+                <div class="text-purple-400 font-black text-[11px] flex items-center gap-1.5">
+                    <i class="fa-solid fa-repeat text-purple-400"></i> 2° Sollecito (7gg)
+                </div>
+                <div class="text-zinc-500 text-[10px] pl-4 font-medium">In attesa di apertura</div>
+            </div>
+        `;
+    } else if (isContacted) {
+        statusHtml = `
+            <div class="space-y-0.5">
+                <div class="text-amber-400 font-bold text-[11px]">
+                    <i class="fa-solid fa-paper-plane"></i> Inviata ${sendDateFormatted || ''} 
+                    <span class="text-zinc-500 font-normal">(${sendDaysAgo || 'Oggi'})</span>
+                </div>
+                <div class="text-zinc-500 text-[10px] font-medium pl-4">In attesa di apertura</div>
+            </div>
+        `;
+    } else {
+        statusHtml = `
+            <div class="text-zinc-500 text-[11px] font-semibold flex items-center gap-1.5">
+                <i class="fa-regular fa-clock text-zinc-600"></i> Non ancora inviata
+            </div>
+        `;
+    }
+
+    const clientCellContent = isCompact ? `
+        <div class="flex items-center gap-2">
+            <input type="text" value="${p.client_name || ''}" placeholder="Nome" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-bold text-white text-xs w-[140px] truncate">
+            <span class="text-zinc-600">•</span>
+            <input type="email" value="${p.client_email || ''}" placeholder="Email" onchange="updateSupabaseField('${p.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-[11px] text-zinc-400 w-[150px] truncate font-mono">
+            <span class="text-zinc-600">•</span>
+            <input type="text" value="${p.client_phone || ''}" placeholder="Tel" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-[11px] text-zinc-400 w-[110px] truncate font-mono">
+        </div>
+    ` : `
+        <input type="text" value="${p.client_name || ''}" placeholder="Nome Cliente" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-extrabold text-white text-sm block w-full mb-1">
+        <input type="email" value="${p.client_email || ''}" placeholder="Email" onchange="updateSupabaseField('${p.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block">
+        <input type="text" value="${p.client_phone || ''}" placeholder="Telefono" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block font-mono">
+    `;
+
+    const notesCellContent = isCompact ? `
+        <input type="text" value="${p.notes || ''}" placeholder="Nota CRM..." onchange="updateSupabaseField('${p.id}', 'notes', this.value)" class="bg-[#13141c] border border-zinc-800 rounded-lg p-1.5 text-xs text-zinc-300 w-full focus:border-purple-500 outline-none truncate" title="${p.notes || 'Aggiungi nota CRM'}">
+    ` : `
+        <textarea rows="2" placeholder="Aggiungi nota CRM..." onchange="updateSupabaseField('${p.id}', 'notes', this.value)" class="bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-xs text-zinc-200 w-full focus:border-purple-500 outline-none resize-none leading-relaxed font-sans" title="Appunti e note trattativa">${p.notes || ''}</textarea>
+    `;
+
+    tr.innerHTML = `
+        <td class="${cellPadding} text-center whitespace-nowrap min-w-[110px]">
+            ${typeBadge}
+            <span class="font-mono text-[10px] text-gray-500 block font-bold">#${p.id ? p.id.substring(0, 4).toUpperCase() : '---'}</span>
+        </td>
+        <td class="${cellPadding}">
+            ${clientCellContent}
+        </td>
+        <td class="${cellPadding}">
+            <input type="text" value="${p.title || ''}" placeholder="Titolo" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none ${isCompact ? 'text-xs' : 'text-xs font-bold'} text-gray-200 w-full truncate">
+        </td>
+        <td class="${cellPadding} whitespace-nowrap">
+            <a href="${targetUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 ${isPaid ? 'text-emerald-400 border-emerald-500/30' : 'text-purple-300 border-zinc-800'} border px-2.5 py-1 rounded-lg text-xs font-bold transition truncate max-w-[130px] shadow-sm whitespace-nowrap">
+                <i class="fa-solid ${isPaid ? 'fa-globe' : 'fa-eye'} text-[10px]"></i> ${isPaid ? 'Sito Live' : 'Bozza'}
+            </a>
+        </td>
+        <td class="${cellPadding}">
+            <input type="number" value="${p.price_euro || 0}" onchange="updateSupabaseField('${p.id}', 'price_euro', this.value)" class="w-14 bg-[#15151a] border border-zinc-800 rounded-lg p-1 text-center font-bold text-purple-400 focus:border-purple-500 text-xs font-mono">
+        </td>
+        <td class="${cellPadding} text-center">
+            <input type="number" value="${views}" min="0" onchange="handleViewsChange('${p.id}', this.value)" class="w-11 bg-[#15151a] border border-zinc-800 rounded-lg p-1 text-center font-bold text-blue-400 focus:border-purple-500 text-xs font-mono cursor-pointer" title="Modifica visite (imposta 0 per resettare)">
+        </td>
+        <td class="${cellPadding} text-center whitespace-nowrap">
+            <div class="flex items-center justify-center gap-1">
+                <input type="checkbox" ${isContacted ? 'checked' : ''} onchange="handleOutreachToggle('${p.id}', this.checked)" class="w-3.5 h-3.5 text-purple-600 bg-zinc-900 border-zinc-800 rounded cursor-pointer" title="Segna inviato (WA o Mail)">
+                ${channelIndicators}
+            </div>
+        </td>
+        <td class="${cellPadding} text-xs whitespace-nowrap">
+            ${statusHtml}
+        </td>
+        <td class="${cellPadding}">
+            <button onclick="togglePayment('${p.id}', ${isPaid})" class="px-2 py-0.5 rounded-full text-[10px] font-bold transition cursor-pointer ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
+                ${isPaid ? '✓ Pagato' : '● Attesa'}
+            </button>
+        </td>
+        <td class="${cellPadding} min-w-[220px]">
+            ${notesCellContent}
+        </td>
+        <td class="${cellPadding} text-right space-x-1 whitespace-nowrap">
+            ${closingPitchBtn}
+            <button onclick="openClientDashboardModal('${p.client_email}')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Apri Dashboard Unificata Cliente">👤 Cliente</button>
+            <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Invia WhatsApp">WA</button>
+            <button onclick="openMessageModal('${p.id}', 'mail')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Invia Email">Mail</button>
+            <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded cursor-pointer" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
+        </td>
+    `;
+    return tr;
+}
+
+// ⚡ RENDERING PROGRESSIVO A BLOCCHI CON CHUNKING (ZERO CONGELAMENTI DEL MAIN THREAD)
 function renderMasterTable(data) {
     let rev = 0, paidCount = 0, total = data.length;
     data.forEach(p => {
@@ -263,180 +428,26 @@ function renderMasterTable(data) {
     const isCompact = window.currentDensity === 'compact';
     const cellPadding = isCompact ? 'py-1.5 px-3' : 'p-4';
 
-    // 🚀 DOCUMENT FRAGMENT: Accumula tutti i nodi ed esegue un SOLO repaint del DOM
-    const fragment = document.createDocumentFragment();
+    window._renderToken = (window._renderToken || 0) + 1;
+    const token = window._renderToken;
+    const CHUNK = 40;
+    let i = 0;
 
-    data.forEach(p => {
-        const tr = document.createElement('tr');
-        tr.className = `hover:bg-[#101015] transition border-b border-zinc-900/80 ${isCompact ? 'text-xs' : 'text-sm'}`;
-
-        const isPaid = p.is_paid === true || p.is_paid === "true";
-        const views = parseInt(p.views_count || 0, 10);
-        
-        const isOpenedFlag = p.is_opened === true || p.is_opened === "true";
-        const isRead = views > 0 && isOpenedFlag;
-
-        const emailSent = p.first_email_sent === true || p.first_email_sent === "true";
-        const waSent = p.is_whatsapp_sent === true || p.is_whatsapp_sent === "true";
-        const isContacted = waSent || emailSent;
-        const followupSent = p.followup_sent === true || p.followup_sent === "true";
-        
-        const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}&admin=true`;
-        const targetUrl = isPaid ? (p.content_url || portalUrl) : portalUrl;
-
-        // Data reale di lettura prioritaria (opened_at) con fallback intelligente
-        const openDate = p.opened_at || (p.is_opened ? p.updated_at : null);
-        const sendDateFormatted = p.sent_at ? new Date(p.sent_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
-        const sendDaysAgo = getDaysAgo(p.sent_at);
-        const openDaysAgo = getDaysAgo(openDate);
-
-        // 🏷️ BADGES COMPLETI PER TUTTI I 23 SAAS
-        const badges = {
-            concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
-            dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
-            lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚖️ lexis</span>`,
-            elena: `<span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍽️ elena</span>`,
-            vittoria: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🚀 vittoria</span>`,
-            locanda: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍕 locanda</span>`,
-            radar: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏎️ radar</span>`,
-            forma_materia: `<span class="bg-amber-500/15 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏛️ f&amp;m</span>`,
-            aura: `<span class="bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📡 aura</span>`,
-            eternia: `<span class="bg-amber-500/10 text-amber-300 border border-amber-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🕊️ eternia</span>`,
-            love: `<span class="bg-pink-500/10 text-pink-300 border border-pink-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💍 love</span>`,
-            experience: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🍷 experience</span>`,
-            html: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`,
-            siteengine: `<span class="bg-blue-500/15 text-blue-300 border border-blue-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🌐 siteengine</span>`,
-            hometour: `<span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏠 hometour</span>`,
-            drivemotion: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🚗 drivemotion</span>`,
-            vision: `<span class="bg-pink-500/15 text-pink-300 border border-pink-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🎬 vision</span>`,
-            nexus: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🤖 nexus</span>`,
-            ares: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏋️ ares</span>`,
-            free_energy: `<span class="bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">☀️ solar</span>`,
-            social: `<span class="bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">📊 social</span>`,
-            omniastudio: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">💼 omniastudio</span>`,
-            velomotion: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚡ velomotion</span>`,
-            ff: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🎵 ff</span>`
-        };
-
-        const typeBadge = badges[p.portal_type] || `<span class="bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap">${p.portal_type || 'html'}</span>`;
-
-        let closingPitchBtn = '';
-        if (isRead && !isPaid) {
-            closingPitchBtn = `<button onclick="openClosingPitchModal('${p.id}')" class="bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 px-2 py-1 rounded-lg text-xs font-black transition animate-pulse cursor-pointer" title="Pitch Chiusura Dedicato"><i class="fa-solid fa-fire"></i> VIP</button>`;
+    function renderChunk() {
+        if (token !== window._renderToken) return;
+        const fragment = document.createDocumentFragment();
+        const end = Math.min(i + CHUNK, data.length);
+        for (; i < end; i++) {
+            fragment.appendChild(buildRow(data[i], isCompact, cellPadding));
         }
-
-        let channelIndicators = '';
-        if (waSent) channelIndicators += `<i class="fa-brands fa-whatsapp text-emerald-400 text-xs" title="Inviato su WhatsApp"></i>`;
-        if (emailSent) channelIndicators += `<i class="fa-solid fa-envelope text-blue-400 text-xs" title="Inviato via Email"></i>`;
-
-        // 🚦 PIPELINE STATI LETTURA CON DATA REALE (OGGI, IERI, X GG FA)
-        let statusHtml = '';
-        if (isRead) {
-            const timeTag = openDaysAgo || sendDaysAgo || 'Oggi';
-            statusHtml = `
-                <div class="text-emerald-400 font-extrabold text-[11px]">
-                    <i class="fa-solid fa-eye animate-pulse"></i> Letta (${views}v) <span class="text-emerald-500 font-bold">(${timeTag})</span>
-                </div>
-            `;
-        } else if (followupSent) {
-            statusHtml = `
-                <div class="space-y-0.5">
-                    <div class="text-purple-400 font-black text-[11px] flex items-center gap-1.5">
-                        <i class="fa-solid fa-repeat text-purple-400"></i> 2° Sollecito (7gg)
-                    </div>
-                    <div class="text-zinc-500 text-[10px] pl-4 font-medium">In attesa di apertura</div>
-                </div>
-            `;
-        } else if (isContacted) {
-            statusHtml = `
-                <div class="space-y-0.5">
-                    <div class="text-amber-400 font-bold text-[11px]">
-                        <i class="fa-solid fa-paper-plane"></i> Inviata ${sendDateFormatted || ''} 
-                        <span class="text-zinc-500 font-normal">(${sendDaysAgo || 'Oggi'})</span>
-                    </div>
-                    <div class="text-zinc-500 text-[10px] font-medium pl-4">In attesa di apertura</div>
-                </div>
-            `;
+        container.appendChild(fragment);
+        if (i < data.length) {
+            requestAnimationFrame(renderChunk);
         } else {
-            statusHtml = `
-                <div class="text-zinc-500 text-[11px] font-semibold flex items-center gap-1.5">
-                    <i class="fa-regular fa-clock text-zinc-600"></i> Non ancora inviata
-                </div>
-            `;
+            updateDensityButtonUI();
         }
-
-        const clientCellContent = isCompact ? `
-            <div class="flex items-center gap-2">
-                <input type="text" value="${p.client_name || ''}" placeholder="Nome" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-bold text-white text-xs w-[140px] truncate">
-                <span class="text-zinc-600">•</span>
-                <input type="email" value="${p.client_email || ''}" placeholder="Email" onchange="updateSupabaseField('${p.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-[11px] text-zinc-400 w-[150px] truncate font-mono">
-                <span class="text-zinc-600">•</span>
-                <input type="text" value="${p.client_phone || ''}" placeholder="Tel" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-[11px] text-zinc-400 w-[110px] truncate font-mono">
-            </div>
-        ` : `
-            <input type="text" value="${p.client_name || ''}" placeholder="Nome Cliente" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-extrabold text-white text-sm block w-full mb-1">
-            <input type="email" value="${p.client_email || ''}" placeholder="Email" onchange="updateSupabaseField('${p.id}', 'client_email', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block">
-            <input type="text" value="${p.client_phone || ''}" placeholder="Telefono" onchange="updateSupabaseField('${p.id}', 'client_phone', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none text-xs text-gray-400 w-full block font-mono">
-        `;
-
-        const notesCellContent = isCompact ? `
-            <input type="text" value="${p.notes || ''}" placeholder="Nota CRM..." onchange="updateSupabaseField('${p.id}', 'notes', this.value)" class="bg-[#13141c] border border-zinc-800 rounded-lg p-1.5 text-xs text-zinc-300 w-full focus:border-purple-500 outline-none truncate" title="${p.notes || 'Aggiungi nota CRM'}">
-        ` : `
-            <textarea rows="2" placeholder="Aggiungi nota CRM..." onchange="updateSupabaseField('${p.id}', 'notes', this.value)" class="bg-[#15151a] border border-zinc-800 rounded-lg p-2 text-xs text-zinc-200 w-full focus:border-purple-500 outline-none resize-none leading-relaxed font-sans" title="Appunti e note trattativa">${p.notes || ''}</textarea>
-        `;
-
-        tr.innerHTML = `
-            <td class="${cellPadding} text-center whitespace-nowrap min-w-[110px]">
-                ${typeBadge}
-                <span class="font-mono text-[10px] text-gray-500 block font-bold">#${p.id ? p.id.substring(0, 4).toUpperCase() : '---'}</span>
-            </td>
-            <td class="${cellPadding}">
-                ${clientCellContent}
-            </td>
-            <td class="${cellPadding}">
-                <input type="text" value="${p.title || ''}" placeholder="Titolo" onchange="updateSupabaseField('${p.id}', 'title', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none ${isCompact ? 'text-xs' : 'text-xs font-bold'} text-gray-200 w-full truncate">
-            </td>
-            <td class="${cellPadding} whitespace-nowrap">
-                <a href="${targetUrl}" target="_blank" class="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 ${isPaid ? 'text-emerald-400 border-emerald-500/30' : 'text-purple-300 border-zinc-800'} border px-2.5 py-1 rounded-lg text-xs font-bold transition truncate max-w-[130px] shadow-sm whitespace-nowrap">
-                    <i class="fa-solid ${isPaid ? 'fa-globe' : 'fa-eye'} text-[10px]"></i> ${isPaid ? 'Sito Live' : 'Bozza'}
-                </a>
-            </td>
-            <td class="${cellPadding}">
-                <input type="number" value="${p.price_euro || 0}" onchange="updateSupabaseField('${p.id}', 'price_euro', this.value)" class="w-14 bg-[#15151a] border border-zinc-800 rounded-lg p-1 text-center font-bold text-purple-400 focus:border-purple-500 text-xs font-mono">
-            </td>
-            <td class="${cellPadding} text-center">
-                <input type="number" value="${views}" min="0" onchange="handleViewsChange('${p.id}', this.value)" class="w-11 bg-[#15151a] border border-zinc-800 rounded-lg p-1 text-center font-bold text-blue-400 focus:border-purple-500 text-xs font-mono cursor-pointer" title="Modifica visite (imposta 0 per resettare)">
-            </td>
-            <td class="${cellPadding} text-center whitespace-nowrap">
-                <div class="flex items-center justify-center gap-1">
-                    <input type="checkbox" ${isContacted ? 'checked' : ''} onchange="handleOutreachToggle('${p.id}', this.checked)" class="w-3.5 h-3.5 text-purple-600 bg-zinc-900 border-zinc-800 rounded cursor-pointer" title="Segna inviato (WA o Mail)">
-                    ${channelIndicators}
-                </div>
-            </td>
-            <td class="${cellPadding} text-xs whitespace-nowrap">
-                ${statusHtml}
-            </td>
-            <td class="${cellPadding}">
-                <button onclick="togglePayment('${p.id}', ${isPaid})" class="px-2 py-0.5 rounded-full text-[10px] font-bold transition cursor-pointer ${isPaid ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20'}">
-                    ${isPaid ? '✓ Pagato' : '● Attesa'}
-                </button>
-            </td>
-            <td class="${cellPadding} min-w-[220px]">
-                ${notesCellContent}
-            </td>
-            <td class="${cellPadding} text-right space-x-1 whitespace-nowrap">
-                ${closingPitchBtn}
-                <button onclick="openClientDashboardModal('${p.client_email}')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Apri Dashboard Unificata Cliente">👤 Cliente</button>
-                <button onclick="openMessageModal('${p.id}', 'wa')" class="bg-green-600/20 text-green-400 border border-green-500/30 hover:bg-green-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Invia WhatsApp">WA</button>
-                <button onclick="openMessageModal('${p.id}', 'mail')" class="bg-purple-600/20 text-purple-300 border border-purple-500/30 hover:bg-purple-600/40 px-2 py-1 rounded-lg text-xs font-bold cursor-pointer" title="Invia Email">Mail</button>
-                <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded cursor-pointer" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
-            </td>
-        `;
-        fragment.appendChild(tr);
-    });
-
-    container.appendChild(fragment);
-    updateDensityButtonUI();
+    }
+    requestAnimationFrame(renderChunk);
 }
 
 function openClientDashboardModal(email) {
@@ -495,8 +506,16 @@ function quickOpenCreate(typeKey) {
 }
 
 async function togglePayment(id, current) {
-    await updateSupabaseField(id, 'is_paid', !current);
-    loadMasterData();
+    const nextVal = !current;
+    const proj = (window.allProjects || []).find(p => p.id === id);
+    if (proj) proj.is_paid = nextVal;
+    applyFilters();
+
+    try {
+        await updateSupabaseField(id, 'is_paid', nextVal);
+    } catch (err) {
+        console.error("Errore salvataggio pagamento:", err);
+    }
 }
 
 // 🗑️ ELIMINAZIONE COMPLETA SINCRONIZZATA TRAMITE N8N MASTER ROUTER
@@ -541,7 +560,7 @@ function closeCreationModal() {
     if (m) { m.classList.remove('flex'); m.classList.add('hidden'); }
 }
 
-// 4. SUBMIT FORM: DISPATCH UNIVERSALE SUI 23 SAAS
+// 4. SUBMIT FORM: DISPATCH UNIVERSALE SUI 23 SAAS (COMPLETO SENZA TAGLI)
 async function handleCreateSubmit(e) {
     e.preventDefault();
     const btn = document.getElementById('c-btn');
@@ -724,7 +743,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🎵 FF EDIZIONI
+    // 🎵 FF EDIZIONI (JINGLE O CANZONE INEDITA)
     if (type === 'ff') {
         btn.innerText = "Registrazione Brano FF Edizioni...";
         const cleanEmail = email || `${slug}@rmstudio.app`;
@@ -787,7 +806,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // 🍷 EXPERIENCE
+    // 🍷 EXPERIENCE (CON SUPPORTO UPLOAD MENU/VINI & VISION OCR)
     if (type === 'experience') {
         btn.innerText = "Analisi Gastronomica & OCR (25s)...";
 
@@ -837,7 +856,7 @@ async function handleCreateSubmit(e) {
         return;
     }
 
-    // TUTTI GLI ALTRI PRODOTTI
+    // TUTTI GLI ALTRI PRODOTTI (SITEENGINE, HOMETOUR, DRIVEMOTION, VISION, ARES, FREE ENERGY, OMNIASTUDIO, VELOMOTION, SOCIAL, FORMA&MATERIA, AURA)
     btn.innerText = "Salvataggio Supabase...";
     try {
         const { error } = await supabaseClient.from('portal_videos').insert([{
