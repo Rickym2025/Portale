@@ -1,4 +1,4 @@
-// js/app.js - Master Command Center Controller (Completo al 100%)
+// js/app.js - Master Command Center Controller (Ottimizzato con DocumentFragment & Calcolo Solare)
 
 window.allProjects = [];
 window.sheetPendingRestaurants = [];
@@ -78,7 +78,7 @@ function onRestaurantSelectedFromSheet() {
     document.getElementById('c-price').value = 350;
 }
 
-// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I 23 SAAS E MODULI VOCALI
+// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I 23 SAAS
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
     const titleInput = document.getElementById('c-title');
@@ -231,6 +231,7 @@ async function handleOutreachToggle(id, isChecked) {
     }
 }
 
+// ⚡ RENDER AD ALTISSIME PRESTAZIONI CON DOCUMENT FRAGMENT (ZERO BLOCCHI DOM)
 function renderMasterTable(data) {
     let rev = 0, paidCount = 0, total = data.length;
     data.forEach(p => {
@@ -262,6 +263,9 @@ function renderMasterTable(data) {
     const isCompact = window.currentDensity === 'compact';
     const cellPadding = isCompact ? 'py-1.5 px-3' : 'p-4';
 
+    // 🚀 DOCUMENT FRAGMENT: Accumula tutti i nodi ed esegue un SOLO repaint del DOM
+    const fragment = document.createDocumentFragment();
+
     data.forEach(p => {
         const tr = document.createElement('tr');
         tr.className = `hover:bg-[#101015] transition border-b border-zinc-900/80 ${isCompact ? 'text-xs' : 'text-sm'}`;
@@ -280,8 +284,8 @@ function renderMasterTable(data) {
         const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}&admin=true`;
         const targetUrl = isPaid ? (p.content_url || portalUrl) : portalUrl;
 
-        // Data reale di lettura o invio
-        const openDate = p.opened_at || p.updated_at;
+        // Data reale di lettura prioritaria (opened_at) con fallback intelligente
+        const openDate = p.opened_at || (p.is_opened ? p.updated_at : null);
         const sendDateFormatted = p.sent_at ? new Date(p.sent_at).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' }) : null;
         const sendDaysAgo = getDaysAgo(p.sent_at);
         const openDaysAgo = getDaysAgo(openDate);
@@ -325,7 +329,7 @@ function renderMasterTable(data) {
         if (waSent) channelIndicators += `<i class="fa-brands fa-whatsapp text-emerald-400 text-xs" title="Inviato su WhatsApp"></i>`;
         if (emailSent) channelIndicators += `<i class="fa-solid fa-envelope text-blue-400 text-xs" title="Inviato via Email"></i>`;
 
-        // 🚦 PIPELINE STATI LETTURA CON TEMPO REALE DINAMICO
+        // 🚦 PIPELINE STATI LETTURA CON DATA REALE (OGGI, IERI, X GG FA)
         let statusHtml = '';
         if (isRead) {
             const timeTag = openDaysAgo || sendDaysAgo || 'Oggi';
@@ -361,7 +365,6 @@ function renderMasterTable(data) {
             `;
         }
 
-        // 🗜️ DIFFERENZIAZIONE VISIVA: COMPATTA VS ESPANSA
         const clientCellContent = isCompact ? `
             <div class="flex items-center gap-2">
                 <input type="text" value="${p.client_name || ''}" placeholder="Nome" onchange="updateSupabaseField('${p.id}', 'client_name', this.value)" class="bg-transparent border-b border-transparent hover:border-zinc-700 focus:border-purple-500 focus:outline-none font-bold text-white text-xs w-[140px] truncate">
@@ -429,9 +432,10 @@ function renderMasterTable(data) {
                 <button onclick="handleDelete('${p.id}')" class="text-gray-500 hover:text-red-500 p-1 rounded cursor-pointer" title="Elimina"><i class="fa-solid fa-trash-can text-xs"></i></button>
             </td>
         `;
-        container.appendChild(tr);
+        fragment.appendChild(tr);
     });
 
+    container.appendChild(fragment);
     updateDensityButtonUI();
 }
 
