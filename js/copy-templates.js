@@ -121,7 +121,7 @@ function generateWhatsAppCopy(item) {
     // 🎵 FF Edizioni (Squadre di Calcio & Inni Ufficiali) - ZERO STALKER
     if (item.portal_type === 'ff') {
         const teamClean = name.replace(/^inno\s+/i, '').trim();
-        return `Buongiorno ${teamClean}, sono Riccardo Modena di FF Edizioni (siamo di Ariano nel Polesine).\n\nQualche giorno fa vi avevamo girato un'email con una proposta per l'Inno della squadra, ma sapendo che le caselle societarie sono spesso intasate da circolari e comunicazioni della Federazione, vi lascio il link comodo qui su WhatsApp per ascoltarlo dal telefono (dura solo 2 minuti):\n\n👉 ${link}\n\nCi farebbe davvero piacere avere un vostro parere sulla carica del brano. A presto e buon campionato!`;
+        return `Buongiorno ${teamClean}, sono Riccardo Modena di FF Edizioni, in collaborazione con Fausto Fusetti (siamo di Ariano nel Polesine).\n\nQualche giorno fa vi avevamo inviato un'email con una proposta musicale Inno della vostra squadra, ma sapendo che le caselle societarie sono spesso intasate da circolari e comunicazioni della Federazione, vi lascio il link comodo qui su WhatsApp per ascoltarlo dal telefono (dura solo 2 minuti):\n\n👉 ${link}\n\nCi farebbe davvero piacere sapere cosa ne pensate. A presto e buon campionato!`;
     }
 
     // 🍽️ Elena AI (Hostess Telefonica Ristoranti H24)
