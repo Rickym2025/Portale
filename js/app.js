@@ -295,7 +295,6 @@ function buildRow(p, isCompact, cellPadding) {
 
     let statusHtml = '';
     if (isRead) {
-        // Se c'è opened_at mostra (Oggi/Ieri/X gg fa), altrimenti mostra solo Letta (1v) pulito
         const timeTag = openDaysAgo ? `<span class="text-emerald-500 font-bold">(${openDaysAgo})</span>` : '';
         statusHtml = `
             <div class="text-emerald-400 font-extrabold text-[11px] flex items-center gap-1.5">
@@ -460,6 +459,7 @@ function openClientDashboardModal(email) {
     window.open(`client.html?email=${encodeURIComponent(email)}`, '_blank');
 }
 
+// 🎯 CLOSING PITCH MODAL (VIP) - ZERO EFFETTO STALKER
 function openClosingPitchModal(projectId) {
     const project = window.allProjects.find(p => p.id === projectId);
     if (!project) return;
@@ -470,7 +470,10 @@ function openClosingPitchModal(projectId) {
     const phone = project.client_phone ? project.client_phone.replace(/\D/g, '') : '';
 
     let text = "";
-    if (project.portal_type === 'dentis') {
+    if (project.portal_type === 'ff') {
+        const teamClean = name.replace(/^inno\s+/i, '').trim();
+        text = `Ciao ${teamClean}! 👋\n\nSiamo Riccardo e Fausto di FF Edizioni (Ariano nel Polesine).\n\nIn merito alla bozza dell'Inno composto per la ${teamClean}, ci tenevamo a confermarvi che la proposta include la fornitura completa dei master audio WAV e MP3 in alta definizione, le basi musicali senza voce per lo stadio e la licenza d'uso ufficiale per le partite e tutti i vostri canali social senza scadenze.\n\nPotete sbloccare il pacchetto completo della squadra direttamente da qui:\n${portalUrl}\n\nRestiamo a disposizione per qualsiasi accordo o personalizzazione del testo. A presto e buon campionato!`;
+    } else if (project.portal_type === 'dentis') {
         text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di verificare la scheda tecnica di Serena per ${title}.\n\nSe attivate Serena PRO questa settimana, **vi includiamo GRATIS l'integrazione del gateway WhatsApp per i promemoria automatici ai pazienti del giorno prima** (abbatte le disdette del 72%)!\n\nPotete sbloccare il servizio direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi supporto!`;
     } else if (project.portal_type === 'concierge') {
         text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di testare l'anteprima per ${title}.\n\nSe attivate Concierge24 questa settimana, **vi accreditiamo 100 minuti omaggio di conversazione AI** nel vostro portafoglio per la stagione!\n\nPotete sbloccare la proposta da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi prova!`;
@@ -480,8 +483,6 @@ function openClosingPitchModal(projectId) {
         text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di verificare l'anteprima dell'assistente vocale di sala per ${title}.\n\nSe attivate Elena PRO per il ristorante questa settimana, **vi includiamo GRATIS l'integrazione del gateway WhatsApp per i promemoria automatici dei tavoli agli ospiti** (abbatte i no-show del 70%)!\n\nPotete sbloccare la proposta direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi prova!`;
     } else if (project.portal_type === 'vittoria') {
         text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di esplorare l'anteprima di Vittoria per ${title}.\n\nSe attivate Vittoria PRO per la vostra agenzia questa settimana, **vi configuriamo l'integrazione automatica con Google Calendar e Google Meet per fissare subito le discovery call con i lead qualificati**!\n\nPotete sbloccare il servizio direttamente da qui:\n${portalUrl}\n\nResto a disposizione!`;
-    } else if (project.portal_type === 'ff') {
-        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di ascoltare l'anteprima del jingle / brano inedito d'autore creato da FF Edizioni per ${title}.\n\nSbloccandola questa settimana, **includiamo nel prezzo la licenza di sincronizzazione commerciale per l'utilizzo su tutti i canali social e radiofonici senza scadenze**.\n\nPotete sbloccare il brano direttamente da qui:\n${portalUrl}\n\nResto a disposizione!`;
     } else {
         text = `Ciao ${name}! 👋\n\nHo visto che hai avuto modo di esplorare l'anteprima creata per ${title}.\n\nSbloccandola questa settimana, **includiamo GRATIS un Jingle Audio d'Autore personalizzato (valore 150€)** realizzato dal nostro studio musicale FF Edizioni!\n\nPuoi rivedere l'anteprima e sbloccarla qui:\n${portalUrl}\n\nResto a disposizione!`;
     }
