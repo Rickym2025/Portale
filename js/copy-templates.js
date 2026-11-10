@@ -15,6 +15,17 @@ function resolveDemoLink(item) {
         .replace(/_+/g, '_')
         .replace(/^_|_$/g, '');
 
+    // 0. 🎵 FF Edizioni (Inni Squadre Calcio & Jukebox)
+    if (item.portal_type === 'ff') {
+        if (item.content_url && item.content_url.includes('jukebox')) {
+            return item.content_url;
+        }
+        if (item.client_email) {
+            return `https://ff.rmstudio.app/jukebox/index.html?user_email=${encodeURIComponent(item.client_email.toLowerCase().trim())}`;
+        }
+        return item.content_url || 'https://ff.rmstudio.app';
+    }
+
     // 1. Locanda Digitale (Living 3D Menu al tavolo)
     if (item.portal_type === 'locanda') {
         return `https://locandadigitale.rmstudio.app/menu.html?slug=${slug}`;
@@ -107,6 +118,12 @@ function generateWhatsAppCopy(item) {
     const title = item.title || 'Progetto';
     const link = resolveDemoLink(item);
 
+    // 🎵 FF Edizioni (Squadre di Calcio & Inni Ufficiali) - ZERO STALKER
+    if (item.portal_type === 'ff') {
+        const teamClean = name.replace(/^inno\s+/i, '').trim();
+        return `Buongiorno ${teamClean}, sono Riccardo Modena di FF Edizioni (siamo di Ariano nel Polesine).\n\nQualche giorno fa vi avevamo girato un'email con una proposta per l'Inno della squadra, ma sapendo che le caselle societarie sono spesso intasate da circolari e comunicazioni della Federazione, vi lascio il link comodo qui su WhatsApp per ascoltarlo dal telefono (dura solo 2 minuti):\n\n👉 ${link}\n\nCi farebbe davvero piacere avere un vostro parere sulla carica del brano. A presto e buon campionato!`;
+    }
+
     // 🍽️ Elena AI (Hostess Telefonica Ristoranti H24)
     if (item.portal_type === 'elena') {
         return `Buongiorno Direzione di ${name}. Per azzerare le chiamate perse durante il servizio a sala piena o nei giorni di chiusura, abbiamo predisposto per voi Elena, l'assistente vocale telefonica AI che prende prenotazioni per i tavoli, gestisce coperti e intolleranze e invia promemoria su WhatsApp:\n\n👉 ${link}\n\n(Chiamando dal vostro telefono il numero test +39 0425 167 5950 potrete provare una simulazione dal vivo). Resto a disposizione!`;
@@ -192,8 +209,13 @@ function generateEmailCopy(item) {
 
     let text = "";
 
+    // 🎵 FF Edizioni (Squadre di Calcio & Inni Ufficiali)
+    if (item.portal_type === 'ff') {
+        const teamClean = name.replace(/^inno\s+/i, '').trim();
+        text = `OGGETTO: Proposta Inno Ufficiale per ${teamClean} • FF Edizioni\n\nAlla cortese attenzione della Dirigenza ${teamClean},\n\nVi scriviamo da FF Edizioni (Ariano nel Polesine): da musicisti e compositori del territorio conosciamo bene il valore identitario di scendere in campo accompagnati dai propri colori sociali.\n\nAbbiamo composto una bozza inedita di Inno pensata esclusivamente per la vostra squadra e per la tifoseria, accessibile a questo link riservato:\n👉 ${link}\n\nLa proposta comprende la fornitura completa dei master audio WAV e MP3 in alta definizione, le basi musicali, i testi e la licenza d'uso per lo stadio, gli eventi e i canali social ufficiali senza limitazioni temporali.\n\nRestiamo a completa disposizione qualora desideriate personalizzare il testo, la durata o l'arrangiamento.\n\nUn cordiale saluto e buon campionato,\nRiccardo Modena & Fausto Fusetti\nFF Edizioni • Sound Identity & Music Production\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
+    }
     // 🍽️ Elena AI (Hostess Vocale Ristoranti)
-    if (item.portal_type === 'elena') {
+    else if (item.portal_type === 'elena') {
         text = `OGGETTO: Ricevimento telefonico H24 e azzeramento chiamate perse per ${name}\n\nGentile Direzione di ${name},\n\nLe scrivo da RM Studio (Ferrara/Rovigo): sviluppiamo tecnologie vocali intelligenti pensate per le strutture di ristorazione e ospitalità di alto livello.\n\nSappiamo bene che durante il servizio di sala (12:30–14:30 e 19:30–22:30) o durante i turni di riposo, il personale è totalmente concentrato sui tavoli e sui clienti presenti in sala. Ogni chiamata che trova la linea occupata o senza risposta rappresenta spesso una comitiva o un tavolo perso che decide di prenotare altrove.\n\nPer supportare il vostro staff ed eliminare questo attrito abbiamo configurato **Elena**, la receptionist vocale AI per la ristorazione:\n\n- **Risposta telefonica immediata al secondo squillo H24:** accoglie l'ospite con tono caloroso, dizione naturale e perfetta padronanza dell'accoglienza di sala;\n- **Gestione completa della prenotazione:** rileva data, orario preferito, numero esatto di coperti, intolleranze alimentari/celiachia e presenza di bambini con seggiolone;\n- **Sincronizzazione su Google Calendar:** registra l'evento in tempo reale evitando sovrapposizioni o overbooking;\n- **Promemoria WhatsApp automatici:** invia un promemoria di cortesia all'ospite il giorno prima, riducendo drasticamente i no-show (tavoli vuoti all'ultimo minuto).\n\nPuò consultare la scheda tecnica e l'ambiente di prova del locale a questo indirizzo:\n👉 ${link}\n\n*(Per effettuare un test vocale immediato dal vostro recapito telefonico, basta comporre il nostro numero di prova nazionale: +39 0425 167 5950)*\n\nResto a vostra completa disposizione per qualsiasi chiarimento o personalizzazione.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Tecnologie per la Ristorazione\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
     }
     // 🚀 Vittoria AI (Centralino Inbound Agenzie B2B)
