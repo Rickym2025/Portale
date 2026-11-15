@@ -128,14 +128,17 @@
           </a>
         </nav>
 
-        <!-- ⚡ CREA PROGETTO RAPIDO (23 SAAS & VOICE) -->
+        <!-- ⚡ CREA PROGETTO RAPIDO (24 SAAS & VOICE) -->
         <div class="pt-2 border-t border-zinc-900/80">
           <div class="text-xs uppercase font-bold text-purple-400 tracking-wider mb-2 flex items-center justify-between sidebar-text">
-            <span>+ Crea Progetto Rapido (23)</span>
+            <span>+ Crea Progetto Rapido (24)</span>
             <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
           </div>
           
           <div class="space-y-1 font-semibold text-sm">
+            <button onclick="quickOpenCreate('superprof')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-indigo-600/20 hover:text-white border border-transparent hover:border-indigo-500/30 transition text-xs font-bold cursor-pointer">
+              <span class="shrink-0 text-base">🎓</span> <span class="sidebar-text">SuperProf (Docenti)</span>
+            </button>
             <button onclick="quickOpenCreate('concierge')" class="w-full px-3 py-1.5 rounded-xl flex items-center gap-2.5 text-gray-200 hover:bg-orange-600/20 hover:text-white border border-transparent hover:border-orange-500/30 transition text-xs font-bold cursor-pointer">
               <span class="shrink-0 text-base">🏨</span> <span class="sidebar-text">Concierge24 (Hotel)</span>
             </button>
@@ -218,22 +221,23 @@
           <div class="space-y-1 text-xs">
             <details class="group">
                 <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
+                    <span class="truncate sidebar-text">modena.riccardo@...</span>
+                    <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
+                </summary>
+                <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 sidebar-text">
+                    <a href="https://supabase.com/dashboard/project/ygkxxgnhvyzdsyqceduv" target="_blank" class="block text-indigo-400 font-bold hover:underline">🎓 SuperProf</a>
+                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-yellow-400 hover:underline">⚡ VeloMotion</a>
+                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-blue-400 hover:underline">🌐 Website-Builder (S1)</a>
+                </div>
+            </details>
+            <details class="group">
+                <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
                     <span class="truncate sidebar-text">lamesola.riccardo@...</span>
                     <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
                 </summary>
                 <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 sidebar-text">
                     <a href="https://supabase.com/dashboard/project/scoiflppeeosbknxeslw" target="_blank" class="block text-amber-400 font-bold hover:underline">🏛️ Forma &amp; Materia</a>
                     <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-cyan-400 hover:underline">🏎️ DriveMotion RADAR</a>
-                </div>
-            </details>
-            <details class="group">
-                <summary class="cursor-pointer px-2 py-1.5 rounded-lg hover:bg-white/5 text-gray-300 font-medium flex items-center justify-between">
-                    <span class="truncate sidebar-text">modena.riccardo@...</span>
-                    <i class="fa-solid fa-angle-down text-[10px] transition group-open:rotate-180"></i>
-                </summary>
-                <div class="pl-3 py-1 space-y-1 border-l border-zinc-800 ml-2 mt-1 sidebar-text">
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-yellow-400 hover:underline">⚡ VeloMotion</a>
-                    <a href="https://supabase.com/dashboard/projects" target="_blank" class="block text-blue-400 hover:underline">🌐 Website-Builder (S1)</a>
                 </div>
             </details>
             <details class="group">
@@ -352,7 +356,8 @@
         <div id="filters-container" class="grid grid-cols-1 md:grid-cols-4 gap-2 mb-3 bg-[#0b0b0f] border border-zinc-900 p-2 rounded-2xl shadow-xl items-center">
             <div>
                 <select id="filter-type" onchange="applyFilters()" class="w-full bg-[#13141c] border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-purple-500 font-bold cursor-pointer">
-                    <option value="all">📁 Tutti i Prodotti (23 SaaS &amp; Voice)</option>
+                    <option value="all">📁 Tutti i Prodotti (24 SaaS &amp; Voice)</option>
+                    <option value="superprof">🎓 SuperProf (Docenti &amp; Scuola)</option>
                     <option value="concierge">🏨 Concierge24</option>
                     <option value="dentis">🦷 Dentis AI</option>
                     <option value="lexis">⚖️ Lexis AI</option>
@@ -442,16 +447,18 @@
 
   <!-- MODALE CREAZIONE PROGETTO COMPLETA -->
   <div id="creation-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 p-4">
-    <div class="glass p-8 rounded-3xl max-w-lg w-full border border-zinc-800 shadow-2xl">
+    <div class="glass p-8 rounded-3xl max-w-lg w-full border border-zinc-800 shadow-2xl max-h-[92vh] overflow-y-auto">
       <div class="flex justify-between items-center mb-6">
         <h3 class="text-xl font-display font-bold text-white">Crea Nuovo Progetto / Proposta</h3>
         <button onclick="closeCreationModal()" class="text-gray-400 hover:text-white text-xl font-bold cursor-pointer">&times;</button>
       </div>
 
       <form id="create-project-form" onsubmit="handleCreateSubmit(event)" class="space-y-4">
+        <!-- SELETTORE PRODOTTO ECOSISTEMA (24 SAAS & VOICE) -->
         <div>
-            <label class="block text-xs font-bold uppercase text-purple-400 mb-1">Prodotto Ecosistema (23 SaaS &amp; Voice)</label>
+            <label class="block text-xs font-bold uppercase text-purple-400 mb-1">Prodotto Ecosistema (24 SaaS &amp; Voice)</label>
             <select id="c-type" onchange="toggleModalFields()" class="w-full bg-[#15151a] border border-purple-500/40 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-400 font-bold cursor-pointer">
+                <option value="superprof">🎓 SuperProf (AI Didattica &amp; Correzione Compiti)</option>
                 <option value="html" selected>🌐 SiteEngine Pro (Sito Web / Landing)</option>
                 <option value="concierge">🏨 Concierge24 (Assistente Vocale Hotel &amp; B&amp;B)</option>
                 <option value="dentis">🦷 Dentis AI (Receptionist Telefonica Dentisti)</option>
@@ -475,6 +482,17 @@
                 <option value="omniastudio">💼 OmniaStudio PRO (AI Offline Privata)</option>
                 <option value="velomotion">⚡ VeloMotion (Sblocco E-Bike Bosch BES3)</option>
                 <option value="ff">🎵 FF Edizioni (Jingle &amp; Canzoni SIAE)</option>
+            </select>
+        </div>
+
+        <!-- 🎯 NUOVO SELETTORE DINAMICO PIANO / PACCHETTO -->
+        <div id="plan-select-box" class="p-3 bg-purple-950/25 border border-purple-500/30 rounded-xl">
+            <label class="block text-xs font-black uppercase text-purple-300 mb-1 flex items-center justify-between">
+                <span>⚡ Seleziona Piano / Pacchetto</span>
+                <span class="text-[10px] text-zinc-400 font-normal">Auto-compila Prezzo &amp; Titolo</span>
+            </label>
+            <select id="c-plan" onchange="onPlanSelected()" class="w-full bg-[#15151a] border border-purple-500/40 rounded-xl p-3 text-sm text-white font-bold outline-none focus:border-purple-400 cursor-pointer">
+                <!-- Popolato dinamicamente da app.js -->
             </select>
         </div>
 
@@ -515,13 +533,13 @@
         </div>
           
         <div>
-            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Nome Cliente / Struttura</label>
-            <input type="text" id="c-name" required placeholder="Es. Ristorante M4 / Leo Advertising / Studio Rossi" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
+            <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Nome Cliente / Struttura / Docente</label>
+            <input type="text" id="c-name" required placeholder="Es. Prof.ssa Rossi / Leo Advertising / Ristorante M4" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-semibold">
         </div>
         <div class="grid grid-cols-2 gap-4">
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Email Ufficiale</label>
-                <input type="email" id="c-email" placeholder="info@azienda.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
+                <input type="email" id="c-email" placeholder="docente@posta.istruzione.it" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500">
             </div>
             <div>
                 <label class="block text-xs font-bold uppercase text-gray-400 mb-1">Telefono / WhatsApp</label>
@@ -547,8 +565,8 @@
             </div>
         </div>
         <div id="link-input-box">
-            <label class="block text-xs font-bold uppercase text-gray-400 mb-1" id="c-url-label">Sito Web Struttura / Lead (per Demo &amp; Scraping)</label>
-            <input type="url" id="c-url" placeholder="https://sitengine.rmstudio.app/lead" class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-mono">
+            <label class="block text-xs font-bold uppercase text-gray-400 mb-1" id="c-url-label">Sito Web / Link Destinazione</label>
+            <input type="url" id="c-url" placeholder="https://..." class="w-full bg-[#15151a] border border-zinc-800 rounded-xl p-3.5 text-sm text-white outline-none focus:border-purple-500 font-mono">
         </div>
         <button type="submit" id="c-btn" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-extrabold py-4 rounded-xl text-xs uppercase tracking-wider mt-4 shadow-lg shadow-purple-600/30 active:scale-95 transition cursor-pointer">
             Salva Bozza Speculativa (Zero Email)
