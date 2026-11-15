@@ -15,7 +15,18 @@ function resolveDemoLink(item) {
         .replace(/_+/g, '_')
         .replace(/^_|_$/g, '');
 
-    // 0. 🎵 FF Edizioni (Inni Squadre Calcio & Jukebox)
+    // 0. 🎓 SuperProf (Pannello Didattica & Correzione Docenti)
+    if (item.portal_type === 'superprof') {
+        if (item.content_url && item.content_url.includes('superprof.rmstudio.app')) {
+            return item.content_url;
+        }
+        if (item.client_email) {
+            return `https://superprof.rmstudio.app/dashboard.html?email=${encodeURIComponent(item.client_email.toLowerCase().trim())}`;
+        }
+        return `https://superprof.rmstudio.app`;
+    }
+
+    // 1. 🎵 FF Edizioni (Inni Squadre Calcio & Jukebox)
     if (item.portal_type === 'ff') {
         if (item.content_url && item.content_url.includes('jukebox')) {
             return item.content_url;
@@ -26,27 +37,27 @@ function resolveDemoLink(item) {
         return item.content_url || 'https://ff.rmstudio.app';
     }
 
-    // 1. Locanda Digitale (Living 3D Menu al tavolo)
+    // 2. Locanda Digitale (Living 3D Menu al tavolo)
     if (item.portal_type === 'locanda') {
         return `https://locandadigitale.rmstudio.app/menu.html?slug=${slug}`;
     }
 
-    // 2. DriveMotion RADAR (Dashboard sourcing privato)
+    // 3. DriveMotion RADAR (Dashboard sourcing privato)
     if (item.portal_type === 'radar') {
         return `https://drivemotion-radar.rmstudio.app/dashboard.html`;
     }
 
-    // 3. ETERNIA (Hub B2B Agenzie Funebri)
+    // 4. ETERNIA (Hub B2B Agenzie Funebri)
     if (item.portal_type === 'eternia') {
         return `https://eternia.rmstudio.app/agency/${slug}`;
     }
 
-    // 4. LOVE (Hub B2B Wedding Planner)
+    // 5. LOVE (Hub B2B Wedding Planner)
     if (item.portal_type === 'love') {
         return `https://love.rmstudio.app/agency/${slug}`;
     }
 
-    // 5. NexusAI (Shadow-Proxy sul sito del cliente)
+    // 6. NexusAI (Shadow-Proxy sul sito del cliente)
     if (item.portal_type === 'nexus') {
         if (item.content_url && item.content_url.includes('demo.rmstudio.app')) {
             return item.content_url;
@@ -57,7 +68,7 @@ function resolveDemoLink(item) {
         return `https://demo.rmstudio.app`;
     }
 
-    // 6. Concierge24 (Chiamata Vocale Giulia)
+    // 7. Concierge24 (Chiamata Vocale Giulia)
     if (item.portal_type === 'concierge') {
         if (item.content_url && item.content_url.includes('chat?struttura_id=')) {
             return item.content_url;
@@ -65,7 +76,7 @@ function resolveDemoLink(item) {
         return `https://concierge24.rmstudio.app/chat?struttura_id=${slug}`;
     }
 
-    // 7. Dentis, Lexis, Elena e Vittoria (Configurazione Studio / Locale su Hetzner)
+    // 8. Dentis, Lexis, Elena e Vittoria (Configurazione Studio / Locale su Hetzner)
     if (['dentis', 'lexis', 'elena', 'vittoria'].includes(item.portal_type) && item.content_url && item.content_url.includes('dentis-app.rmstudio.app')) {
         return item.content_url;
     }
@@ -76,22 +87,22 @@ function resolveDemoLink(item) {
         return `https://dentis-app.rmstudio.app/lexis-config.html?studio_id=${slug}`;
     }
 
-    // 8. Forma & Materia
+    // 9. Forma & Materia
     if (item.portal_type === 'forma_materia') {
         return item.content_url || `https://formamateria.rmstudio.app/studio`;
     }
 
-    // 9. AURA Proximity
+    // 10. AURA Proximity
     if (item.portal_type === 'aura') {
         return item.content_url || `https://aura.rmstudio.app/radar.html`;
     }
 
-    // 10. Smart Experience
+    // 11. Smart Experience
     if (item.portal_type === 'experience') {
         return item.content_url || `https://experience.rmstudio.app/${slug}`;
     }
 
-    // 11. SiteEngine Pro (Sito Web / Landing Professionale)
+    // 12. SiteEngine Pro (Sito Web / Landing Professionale)
     if (item.portal_type === 'html' || item.portal_type === 'siteengine') {
         if ((item.is_paid === false || item.is_paid === "false") && item.id) {
             return `https://portale.rmstudio.app/view?id=${item.id}`;
@@ -99,12 +110,12 @@ function resolveDemoLink(item) {
         return item.content_url || `https://sitengine.rmstudio.app/${slug}`;
     }
 
-    // 12. Se punta già a un link valido rmstudio
+    // 13. Se punta già a un link valido rmstudio
     if (item.content_url && item.content_url.includes('rmstudio.app') && !item.content_url.includes('view') && !item.content_url.includes('google')) {
         return item.content_url;
     }
 
-    // 13. Link tracciato Portale di default
+    // 14. Link tracciato Portale di default
     if (item.id) {
         return `https://portale.rmstudio.app/view?id=${item.id}`;
     }
@@ -117,6 +128,11 @@ function generateWhatsAppCopy(item) {
     const name = item.client_name || 'Gentile Professionista';
     const title = item.title || 'Progetto';
     const link = resolveDemoLink(item);
+
+    // 🎓 SuperProf (AI Didattica & Correzione Compiti per Docenti)
+    if (item.portal_type === 'superprof') {
+        return `Gentile ${name}, buongiorno! Le scrivo da RM Studio in merito a SuperProf: la piattaforma AI per docenti che compila PDP e PEI ministeriali (L. 170/2010) in 60 secondi, genera verifiche parametriche anti-copia (Fila A/B/C) e valuta compiti a penna scattando una foto dal telefono:\n\n👉 ${link}\n\nFunziona direttamente da browser senza installare nulla. Può accedere all'ambiente dimostrativo dal link. Resto a Sua completa disposizione per qualsiasi chiarimento!`;
+    }
 
     // 🎵 FF Edizioni (Squadre di Calcio & Inni Ufficiali) - ZERO STALKER
     if (item.portal_type === 'ff') {
@@ -209,8 +225,12 @@ function generateEmailCopy(item) {
 
     let text = "";
 
+    // 🎓 SuperProf (AI Didattica & Produttività Docenti)
+    if (item.portal_type === 'superprof') {
+        text = `OGGETTO: Semplificazione burocratica didattica, verifiche anti-copia e correzione compiti - ${name}\n\nGentile ${name},\n\nLe scrivo da RM Studio (Ferrara / Rovigo): sviluppiamo soluzioni software dedicate all'automazione e all'abbattimento del carico burocratico per i docenti e gli istituti scolastici italiani.\n\nSappiamo bene quante ore extrascolastiche richiedano la stesura dei documenti per l'inclusione, la preparazione di verifiche differenziate per evitare la copiatura tra banchi e la correzione manuale di decine di compiti cartacei.\n\nAbbiamo sviluppato **SuperProf**, l'ecosistema neurale progettato specificamente per le esigenze dei docenti:\n\n- **PDP & PEI Wizard (Legge 170/2010):** genera in 60 secondi bozze conformi di Piani Didattici Personalizzati partendo dalla diagnosi clinica (DSA/BES), con strumenti compensativi e misure dispensative coerenti pronte da stampare in Word (.doc);\n- **Snap-to-Grade (Vision OCR):** consente di scattare una foto alla verifica a penna o a crocette dal proprio smartphone e ottenere in 3 secondi il calcolo del voto in decimi, l'analisi degli errori riga per riga e il giudizio sintetico pronto per il registro elettronico (Spaggiari e ClasseViva);\n- **Verifiche Parametriche Anti-Copia:** genera verifiche con la medesima difficoltà concettuale ma con dati numerici, formule o tracce sfalsate per Fila A e Fila B, con versione guidata facilitata per studenti DSA (Fila C);\n- **Discipline Specialistiche:** include i moduli per la lingua inglese con dialoghi graduati e pronuncia vocale madrelingua, disegno tecnico con perizia ottica sugli allineamenti e versioni inedite di latino classico introvabili online;\n- **Nessun software da installare:** la piattaforma opera al 100% online da qualsiasi PC, tablet o smartphone con accesso riservato.\n\nPuò accedere al Suo ambiente riservato e verificare il funzionamento da questo link:\n👉 ${link}\n\nResto a Sua completa disposizione per qualsiasi confronto o per attivare una prova con crediti didattici gratuiti per Lei o per il Suo dipartimento.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Tecnologie per la Scuola & Didattica\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
+    }
     // 🎵 FF Edizioni (Squadre di Calcio & Inni Ufficiali)
-    if (item.portal_type === 'ff') {
+    else if (item.portal_type === 'ff') {
         const teamClean = name.replace(/^inno\s+/i, '').trim();
         text = `OGGETTO: Proposta Inno Ufficiale per ${teamClean} • FF Edizioni\n\nAlla cortese attenzione della Dirigenza ${teamClean},\n\nVi scriviamo da FF Edizioni (Ariano nel Polesine): da musicisti e compositori del territorio conosciamo bene il valore identitario di scendere in campo accompagnati dai propri colori sociali.\n\nAbbiamo composto una bozza inedita di Inno pensata esclusivamente per la vostra squadra e per la tifoseria, accessibile a questo link riservato:\n👉 ${link}\n\nLa proposta comprende la fornitura completa dei master audio WAV e MP3 in alta definizione, le basi musicali, i testi e la licenza d'uso per lo stadio, gli eventi e i canali social ufficiali senza limitazioni temporali.\n\nRestiamo a completa disposizione qualora desideriate personalizzare il testo, la durata o l'arrangiamento.\n\nUn cordiale saluto e buon campionato,\nRiccardo Modena & Fausto Fusetti\nFF Edizioni • Sound Identity & Music Production\nTel / WhatsApp: ${MY_PHONE_DISPLAY}`;
     }
