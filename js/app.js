@@ -1,4 +1,4 @@
-// js/app.js - Master Command Center Controller (Completo al 100% & Data Lettura Corretta)
+// js/app.js - Master Command Center Controller (Completo al 100% & Gestione Piani Dinamici per 24 SaaS)
 
 window.allProjects = [];
 window.sheetPendingRestaurants = [];
@@ -78,45 +78,238 @@ function onRestaurantSelectedFromSheet() {
     document.getElementById('c-price').value = 350;
 }
 
-// 3. AGGIORNAMENTO DINAMICO CAMPI MODALE PER TUTTI I 23 SAAS E MODULI VOCALI
+// 3. MATRICE PIANI & CONFIGURAZIONE UFFICIALE DEI 24 PRODOTTI (MASTER BRAIN)
+const SAAS_CONFIG = {
+    superprof: {
+        url: "https://superprof.rmstudio.app",
+        label: "Sito Web / Piattaforma Docente (opzionale)",
+        plans: [
+            { id: "starter", price: 19, title: "SuperProf • Starter Prof (250 Crediti)", label: "Starter Prof — €19.00 (250 Crediti)" },
+            { id: "pro", price: 49, title: "SuperProf • Anno Scolastico Pro (1.000 Crediti)", label: "Anno Scolastico Pro — €49.00 (1.000 Crediti, Consigliato)" },
+            { id: "school", price: 119, title: "SuperProf • Dipartimento & Team (3.000 Crediti)", label: "Dipartimento & Team — €119.00 (3.000 Crediti Condivisibili)" }
+        ]
+    },
+    nexus: {
+        url: "https://www.azienda.it",
+        label: "Sito Web Azienda (per Generazione Shadow-Proxy)",
+        plans: [
+            { id: "base", price: 49, title: "NexusAI • Starter Base (Chatbot 10 pag.)", label: "Piano Base — €49.00/mese (1 Chatbot, fino a 10 pag.)" },
+            { id: "pro", price: 99, title: "NexusAI • Sales Overlay Pro (Prenotazioni + Email)", label: "Nexus Pro — €99.00/mese (Prenotazioni + Trascrizioni Email)" }
+        ]
+    },
+    concierge: {
+        url: "https://www.hotel.it",
+        label: "Sito Web Struttura Ricettiva (Hotel / B&B)",
+        plans: [
+            { id: "pro", price: 179, title: "Concierge24 • Giulia Voice Pro (450 min)", label: "Ricarica Pro — €179.00 (450 min, Più Scelto)" },
+            { id: "base", price: 49, title: "Concierge24 • Ricarica Base (100 min)", label: "Ricarica Base — €49.00 (100 min)" },
+            { id: "max", price: 349, title: "Concierge24 • Ricarica Max (1000 min)", label: "Ricarica Max — €349.00 (1000 min)" },
+            { id: "setup", price: 149, title: "Concierge24 • Setup Chiavi in Mano", label: "Setup Una Tantum — €149.00" }
+        ]
+    },
+    dentis: {
+        url: "https://www.sanadent.it/",
+        label: "Sito Web Studio Dentistico (per Scraping AI)",
+        plans: [
+            { id: "pro", price: 149, title: "Dentis AI • Serena PRO (H24 + WhatsApp)", label: "Serena PRO — €149.00/mese (Risposta H24 + Promemoria WA)" },
+            { id: "starter", price: 79, title: "Dentis AI • Serena Starter (Fuori Orario)", label: "Serena Starter — €79.00/mese (Solo Fuori Orario & Notti)" },
+            { id: "elite", price: 299, title: "Dentis AI • Clinic Elite (Multi-Sede)", label: "Clinic Elite — €299.00/mese (Multi-Sede & Multi-Medici)" }
+        ]
+    },
+    lexis: {
+        url: "https://www.studiolegale.it/",
+        label: "Sito Web Studio Legale (per Scraping AI)",
+        plans: [
+            { id: "pro", price: 149, title: "Lexis AI • Chiara PRO (H24 Formale)", label: "Chiara PRO — €149.00/mese (H24 Formale + Calendar)" },
+            { id: "starter", price: 79, title: "Lexis AI • Chiara Starter (Filtro Chiamate)", label: "Chiara Starter — €79.00/mese (Solo Fuori Orario)" },
+            { id: "elite", price: 299, title: "Lexis AI • Studio Elite (Multi-Avvocati)", label: "Studio Elite — €299.00/mese (Multi-Avvocati)" }
+        ]
+    },
+    elena: {
+        url: "https://www.ristorante.it",
+        label: "Sito Web del Ristorante / Pizzeria (per Scraping AI)",
+        plans: [
+            { id: "pro", price: 149, title: "Elena AI • Hostess PRO (H24 Sala + WhatsApp)", label: "Elena PRO — €149.00/mese (H24 Sala + Promemoria Tavoli WA)" },
+            { id: "starter", price: 79, title: "Elena AI • Hostess Starter (Fuori Orario)", label: "Elena Starter — €79.00/mese (Solo Chiusure e Riposi)" },
+            { id: "elite", price: 299, title: "Elena AI • Ristorante Elite (Multi-Sala)", label: "Ristorante Elite — €299.00/mese (Multi-Locale)" }
+        ]
+    },
+    vittoria: {
+        url: "https://www.agenzia.it",
+        label: "Sito Web dell'Agenzia (per Scraping AI)",
+        plans: [
+            { id: "pro", price: 149, title: "Vittoria AI • Centralino PRO (Discovery Call H24)", label: "Vittoria PRO — €149.00/mese (Discovery Call Google Meet H24)" },
+            { id: "starter", price: 79, title: "Vittoria AI • Centralino Starter", label: "Vittoria Starter — €79.00/mese (Filtro e Triage Orario Ufficio)" },
+            { id: "elite", price: 299, title: "Vittoria AI • Agency Elite (Multi-Team)", label: "Agency Elite — €299.00/mese (Team Esteso)" }
+        ]
+    },
+    locanda: {
+        url: "https://www.ristorante.it",
+        label: "Sito Web o Pagina Social del Locale",
+        plans: [
+            { id: "visual", price: 169, title: "Locanda Digitale • Living 3D Menu & Compleanni", label: "Gourmet 12 — €169.00 una tantum (12 Piatti 3D a 60 FPS)" },
+            { id: "starter", price: 89, title: "Locanda Digitale • Signature 5 (Living 3D)", label: "Signature 5 — €89.00 una tantum (5 Piatti Forti 3D)" },
+            { id: "allin", price: 290, title: "Locanda Digitale • Grand Carta 25+ & Marketing Suite", label: "Grand Carta — €290.00 una tantum (25+ Piatti + Bancomat Compleanni)" }
+        ]
+    },
+    radar: {
+        url: "https://www.autosalone.it",
+        label: "Sito Web dell'Autosalone / Concessionario",
+        plans: [
+            { id: "pro", price: 179, title: "DriveMotion RADAR • PRO Regionale (5 Prov.)", label: "Radar PRO Regionale — €179.00/mese (Fino a 5 Province, Più Scelto)" },
+            { id: "starter", price: 99, title: "DriveMotion RADAR • Starter Salone (1 Prov.)", label: "Starter Salone — €99.00/mese (1 Provincia)" },
+            { id: "enterprise", price: 349, title: "DriveMotion RADAR • Enterprise Nazionale (107 Prov.)", label: "Enterprise Nazionale — €349.00/mese (Italia Completa)" }
+        ]
+    },
+    forma_materia: {
+        url: "https://formamateria.rmstudio.app/studio",
+        label: "URL Destinazione Studio",
+        plans: [
+            { id: "pro", price: 249, title: "Forma & Materia • Atelier Pro 4K (20 Render)", label: "Atelier Pro 4K — €249.00 una tantum (20 Render + Note a mano)" },
+            { id: "starter", price: 99, title: "Forma & Materia • Progetto Singolo (6 Render HD)", label: "Progetto Singolo — €99.00 una tantum (6 Render HD)" },
+            { id: "studio", price: 590, title: "Forma & Materia • Grand Studio 4K (60 Render)", label: "Grand Studio — €590.00 una tantum (60 Render + Tavole A3)" }
+        ]
+    },
+    aura: {
+        url: "https://aura.rmstudio.app/radar.html",
+        label: "URL Stanza Radar",
+        plans: [
+            { id: "pro_monthly", price: 19, title: "AURA • Pro Mensile (Crash Guard SOS)", label: "AURA Pro Mensile — €19.00/mese (Raggio illimitato + SOS WhatsApp)" },
+            { id: "pass_viaggio", price: 4.90, title: "AURA • Pass Viaggio Singolo 24h", label: "Pass Viaggio Singolo — €4.90 (24h, fino a 10 dispositivi)" },
+            { id: "studio_hub", price: 79, title: "AURA • Aziende & Vigilanza B2B (D.Lgs. 81/08)", label: "Aziende & Vigilanza — €79.00/mese (Lavoratori Isolati D.Lgs. 81/08)" }
+        ]
+    },
+    eternia: {
+        url: "https://www.onoranzefunebri.it",
+        label: "Sito Web dell'Impresa Funebre",
+        plans: [
+            { id: "hub", price: 690, title: "ETERNIA • Hub Agenzia B2B (10 Cerimonie)", label: "Agency Hub B2B — €690.00 (10 Cerimonie, Marchio White-Label)" },
+            { id: "starter", price: 79, title: "ETERNIA • Credit Starter (1 Cerimonia)", label: "Credit Starter — €79.00 (1 Memoriale attivo 1 anno)" },
+            { id: "vip", price: 199, title: "ETERNIA • Servizio VIP Chiavi in Mano", label: "Servizio VIP — €199.00 (Allestimento e consegna in 2 ore)" },
+            { id: "echi", price: 300, title: "ETERNIA • Add-On Echi (Brano Inedito SIAE)", label: "Add-On Echi — €300.00 (Brano d'Autore Inedito SIAE)" }
+        ]
+    },
+    love: {
+        url: "https://www.weddingplanner.it",
+        label: "Sito Web Agenzia Wedding Planner",
+        plans: [
+            { id: "hub", price: 490, title: "LOVE • Agency Hub B2B (10 Nozze)", label: "Agency Hub B2B — €490.00 (10 Nozze, Invio WA 1-Tap)" },
+            { id: "self", price: 149, title: "LOVE • Sposi Self-Service", label: "Sposi Self-Service — €149.00 una tantum" },
+            { id: "vip", price: 249, title: "LOVE • Sposi VIP Chiavi in Mano", label: "Sposi Chiavi in Mano — €249.00 una tantum" }
+        ]
+    },
+    experience: {
+        url: "https://www.ristorante.it",
+        label: "Sito Web Ristorante (per Scraping AI)",
+        plans: [
+            { id: "sblocco", price: 350, title: "Smart Experience Page • Menù & Sommelier AI", label: "Smart Experience Standard — €350.00 una tantum" },
+            { id: "vip", price: 390, title: "Smart Experience Page • VIP Suite + Jingle SIAE", label: "Experience VIP Suite — €390.00 una tantum (Include Jingle SIAE)" }
+        ]
+    },
+    html: {
+        url: "https://sitengine.rmstudio.app/lead",
+        label: "URL Sito Web",
+        plans: [
+            { id: "unlock", price: 400, title: "SiteEngine Pro • Sito Web d'Autore", label: "Sblocco Sito Completo — €400.00 una tantum (1° Anno Incluso)" },
+            { id: "renewal", price: 200, title: "SiteEngine Pro • Rinnovo Annuale & Hosting", label: "Rinnovo Annuale — €200.00/anno" }
+        ]
+    },
+    hometour: {
+        url: "https://www.agenziaimmobiliare.it",
+        label: "URL Immobile o Agenzia",
+        plans: [
+            { id: "pro", price: 59, title: "HomeTour AI • Pro Pack (10 Video Reel 3D)", label: "Pro Pack — €59.00 (10 Video Reel 3D, Più Scelto)" },
+            { id: "starter", price: 14.90, title: "HomeTour AI • Starter Pack (2 Video Reel)", label: "Starter Pack — €14.90 (2 Video Reel)" },
+            { id: "max", price: 129, title: "HomeTour AI • Maxi Pack (25 Video Reel)", label: "Maxi Pack — €129.00 (25 Video Reel)" }
+        ]
+    },
+    drivemotion: {
+        url: "https://www.autosalone.it",
+        label: "Sito Web Concessionario / Auto",
+        plans: [
+            { id: "pro", price: 59, title: "DriveMotion • Pro Pack (5 Video Credits Sfondo AI)", label: "Pro Pack — €59.00 (5 Video Credits con Sfondo AI)" },
+            { id: "starter", price: 14.90, title: "DriveMotion • Starter Pack (1 Video HD)", label: "Starter Pack — €14.90 (1 Video HD)" },
+            { id: "max", price: 129, title: "DriveMotion • Maxi Pack (15 Video Credits)", label: "Maxi Pack — €129.00 (15 Video Credits)" }
+        ]
+    },
+    vision: {
+        url: "https://www.brand.it",
+        label: "URL E-Commerce o Prodotto",
+        plans: [
+            { id: "pro", price: 120, title: "Vision UGC • Pro Bundle (3 Video AI Hook)", label: "Vision Pro Bundle — €120.00 (3 Video AI, Più Consigliato)" },
+            { id: "starter", price: 50, title: "Vision UGC • Starter Pack (1 Video AI 15s)", label: "Starter Pack — €50.00 (1 Video AI 15s)" },
+            { id: "maxi", price: 340, title: "Vision UGC • Agency Maxi Pack (10 Video AI)", label: "Agency Maxi Pack — €340.00 (10 Video AI HD)" }
+        ]
+    },
+    ares: {
+        url: "https://ares.rmstudio.app",
+        label: "Sito Palestra o Personal Trainer",
+        plans: [
+            { id: "coach", price: 99, title: "AresAI • Coach Hub B2B (30 Atleti)", label: "Coach Hub B2B — €99.00/mese (Fino a 30 Atleti)" },
+            { id: "base", price: 19, title: "AresAI • Atleta PRO Mensile", label: "Atleta PRO — €19.00/mese (Accesso Vocale H24)" },
+            { id: "elite", price: 199, title: "AresAI • Gym Arena Maxischermo", label: "Gym Arena — €199.00/mese (Controllo Maxischermo Sala)" }
+        ]
+    },
+    free_energy: {
+        url: "https://free-energy.rmstudio.app",
+        label: "Sito Azienda Installatrice Fotovoltaico",
+        plans: [
+            { id: "base", price: 199, title: "Free Energy • Start Pack 10.000 Crediti", label: "Start Pack — €199.00 (10.000 Crediti)" },
+            { id: "max", price: 449, title: "Free Energy • Maxi Pack 25.000 Crediti", label: "Maxi Pack — €449.00 (25.000 Crediti)" }
+        ]
+    },
+    social: {
+        url: "https://social.rmstudio.app",
+        label: "URL Sito Brand",
+        plans: [
+            { id: "pro", price: 79, title: "Carousel Engine Pro", label: "Pro Pack — €79.00" },
+            { id: "starter", price: 29, title: "Carousel Engine Starter", label: "Starter Pack — €29.00" },
+            { id: "agency", price: 199, title: "Carousel Engine Agency Unlimited", label: "Agency Unlimited — €199.00" }
+        ]
+    },
+    omniastudio: {
+        url: "https://omniastudio.rmstudio.app",
+        label: "URL Studio Professionale",
+        plans: [
+            { id: "lifetime", price: 699, title: "OmniaStudio PRO • Licenza Lifetime", label: "Licenza Lifetime Offline — €699.00 una tantum" }
+        ]
+    },
+    velomotion: {
+        url: "https://velomotion.rmstudio.app",
+        label: "URL Officina / Rivenditore",
+        plans: [
+            { id: "software", price: 290, title: "VeloMotion • Sblocco Software Bosch BES3 (32 km/h)", label: "Sblocco Software (32 km/h) — €290.00 / credito" },
+            { id: "hardware", price: 320, title: "VeloMotion • Sblocco Hardware (45 km/h)", label: "Sblocco Hardware (45 km/h) — €320.00 / credito" }
+        ]
+    },
+    ff: {
+        url: "https://ff.rmstudio.app",
+        label: "URL Azienda per Jingle Audio",
+        plans: [
+            { id: "custom", price: 300, title: "FF Edizioni • Inno / Brano Inedito d'Autore SIAE", label: "Inno / Brano Inedito d'Autore SIAE — €300.00" },
+            { id: "jingle", price: 250, title: "FF Edizioni • Jingle Commerciale Radio/Social", label: "Jingle Commerciale Radio/Social — €250.00" }
+        ]
+    }
+};
+
+// 4. AGGIORNAMENTO DINAMICO CAMPI MODALE
 function toggleModalFields() {
     const t = document.getElementById('c-type').value;
-    const titleInput = document.getElementById('c-title');
-    const priceInput = document.getElementById('c-price');
+    const planSelect = document.getElementById('c-plan');
     const urlInput = document.getElementById('c-url');
     const urlLabel = document.getElementById('c-url-label');
 
-    const config = {
-        concierge: { title: "Concierge24 • Giulia Voice Assistant H24", price: 179, url: "https://www.hotel.it", label: "Sito Web Struttura Ricettiva (Hotel / B&B)" },
-        dentis: { title: "Dentis AI • Serena PRO", price: 149, url: "https://www.sanadent.it/", label: "Sito Web Studio Dentistico (per Scraping AI)" },
-        lexis: { title: "Lexis AI • Chiara PRO", price: 149, url: "https://www.studiolegale.it/", label: "Sito Web Studio Legale (per Scraping AI)" },
-        elena: { title: "Elena AI • Hostess Ristoranti H24", price: 149, url: "https://www.ristorante.it", label: "Sito Web del Ristorante / Pizzeria (per Scraping AI)" },
-        vittoria: { title: "Vittoria AI • Centralino Agenzie B2B", price: 149, url: "https://www.agenzia.it", label: "Sito Web dell'Agenzia (per Scraping AI)" },
-        locanda: { title: "Locanda Digitale • Living 3D Menu & Compleanni", price: 169, url: "https://www.ristorante.it", label: "Sito Web o Pagina Social del Locale" },
-        radar: { title: "DriveMotion RADAR • Starter Salone", price: 99, url: "https://www.autosalone.it", label: "Sito Web dell'Autosalone / Concessionario" },
-        forma_materia: { title: "Forma & Materia • Atelier Pro 4K", price: 249, url: "https://formamateria.rmstudio.app/studio", label: "URL Destinazione Studio" },
-        aura: { title: "AURA • Pro Mensile", price: 19, url: "https://aura.rmstudio.app/radar.html", label: "URL Stanza Radar" },
-        eternia: { title: "ETERNIA • Hub Agenzia B2B (10 Cerimonie)", price: 690, url: "https://www.onoranzefunebri.it", label: "Sito Web dell'Impresa Funebre" },
-        love: { title: "LOVE • Agency Hub B2B (10 Nozze)", price: 490, url: "https://www.weddingplanner.it", label: "Sito Web Agenzia Wedding Planner" },
-        experience: { title: "Smart Experience Page", price: 350, url: "https://www.ristorante.it", label: "Sito Web Ristorante (per Scraping AI)" },
-        html: { title: "SiteEngine Pro • Sito Web", price: 400, url: "https://sitengine.rmstudio.app/lead", label: "URL Sito Web" },
-        hometour: { title: "HomeTour AI • Video Reel 3D", price: 59, url: "https://www.agenziaimmobiliare.it", label: "URL Immobile o Agenzia" },
-        drivemotion: { title: "DriveMotion • Video Auto Sfondo AI", price: 59, url: "https://www.autosalone.it", label: "Sito Web Concessionario / Auto" },
-        vision: { title: "Vision UGC • Influencer Virtuali AI", price: 120, url: "https://www.brand.it", label: "URL E-Commerce o Prodotto" },
-        nexus: { title: "NexusAI • Sales Overlay Pro", price: 99, url: "https://www.azienda.it", label: "Sito Web Azienda (per Generazione Shadow-Proxy)" },
-        ares: { title: "AresAI • Coach Hub B2B", price: 99, url: "https://ares.rmstudio.app", label: "Sito Palestra o Personal Trainer" },
-        free_energy: { title: "Free Energy • Start Pack 10.000 Crediti", price: 199, url: "https://free-energy.rmstudio.app", label: "Sito Azienda Installatrice Fotovoltaico" },
-        social: { title: "Carousel Engine Pro", price: 79, url: "https://social.rmstudio.app", label: "URL Sito Brand" },
-        omniastudio: { title: "OmniaStudio PRO • Licenza Lifetime", price: 699, url: "https://omniastudio.rmstudio.app", label: "URL Studio Professionale" },
-        velomotion: { title: "VeloMotion • Sblocco Bosch BES3", price: 290, url: "https://velomotion.rmstudio.app", label: "URL Officina / Rivenditore" },
-        ff: { title: "FF Edizioni • Jingle Commerciale Radio/Social", price: 300, url: "https://ff.rmstudio.app", label: "URL Azienda per Jingle Audio" }
-    };
+    const cfg = SAAS_CONFIG[t] || SAAS_CONFIG.html;
 
-    if (config[t]) {
-        if (titleInput) titleInput.value = config[t].title;
-        if (priceInput) priceInput.value = config[t].price;
-        if (urlInput) urlInput.placeholder = config[t].url;
-        if (urlLabel) urlLabel.innerText = config[t].label;
+    if (urlInput) urlInput.placeholder = cfg.url;
+    if (urlLabel) urlLabel.innerText = cfg.label;
+
+    // Popolamento dinamico delle opzioni del Piano
+    if (planSelect && cfg.plans) {
+        planSelect.innerHTML = cfg.plans.map(p => 
+            `<option value="${p.id}" data-price="${p.price}" data-title="${p.title}">${p.label}</option>`
+        ).join('');
+        onPlanSelected();
     }
 
     const sheetBox = document.getElementById('experience-sheet-select-box');
@@ -131,6 +324,22 @@ function toggleModalFields() {
     const linkBox = document.getElementById('link-input-box');
     if (fileBox) fileBox.classList.toggle('hidden', !isFile);
     if (linkBox) linkBox.classList.toggle('hidden', isFile);
+}
+
+// 🎯 REAZIONE AL CAMBIO DEL PIANO SELEZIONATO
+function onPlanSelected() {
+    const planSelect = document.getElementById('c-plan');
+    const titleInput = document.getElementById('c-title');
+    const priceInput = document.getElementById('c-price');
+    if (!planSelect || !titleInput || !priceInput) return;
+
+    const selectedOption = planSelect.options[planSelect.selectedIndex];
+    if (selectedOption) {
+        const title = selectedOption.getAttribute('data-title');
+        const price = selectedOption.getAttribute('data-price');
+        if (title) titleInput.value = title;
+        if (price) priceInput.value = price;
+    }
 }
 
 // 🗓️ CALCOLO GIORNI SOLARI REALE (OGGI, IERI, X GG FA)
@@ -231,6 +440,7 @@ async function handleOutreachToggle(id, isChecked) {
 
 // 🏷️ BADGES ESTRATTI FUORI DA RENDERMASTER TABLE (ZERO OVERHEAD PER RIGA)
 const SAAS_BADGES = {
+    superprof: `<span class="bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🎓 superprof</span>`,
     concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
     dentis: `<span class="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🦷 dentis</span>`,
     lexis: `<span class="bg-yellow-500/15 text-yellow-300 border border-yellow-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">⚖️ lexis</span>`,
@@ -275,7 +485,6 @@ function buildRow(p, isCompact, cellPadding) {
     const portalUrl = `https://portale.rmstudio.app/view?id=${p.id}&admin=true`;
     const targetUrl = isPaid ? (p.content_url || portalUrl) : portalUrl;
 
-    // 🎯 DATA REALE: Usa SOLO opened_at (se assente, NON fa fallback su updated_at per non mostrare date di creazione a caso)
     const openDate = p.opened_at || null;
     const openDaysAgo = openDate ? getDaysAgo(openDate) : "";
 
@@ -459,20 +668,22 @@ function openClientDashboardModal(email) {
     window.open(`client.html?email=${encodeURIComponent(email)}`, '_blank');
 }
 
-// 🎯 CLOSING PITCH MODAL (VIP) - ZERO EFFETTO STALKER
+// 🎯 CLOSING PITCH MODAL (VIP) - ZERO STALKER
 function openClosingPitchModal(projectId) {
     const project = window.allProjects.find(p => p.id === projectId);
     if (!project) return;
 
     const name = project.client_name || 'Titolare';
-    const title = project.title || 'il vostro locale';
+    const title = project.title || 'il vostro progetto';
     const portalUrl = `https://portale.rmstudio.app/view?id=${project.id}`;
     const phone = project.client_phone ? project.client_phone.replace(/\D/g, '') : '';
 
     let text = "";
     if (project.portal_type === 'ff') {
         const teamClean = name.replace(/^inno\s+/i, '').trim();
-        text = `Ciao ${teamClean}! 👋\n\nSiamo Riccardo e Fausto di FF Edizioni (Ariano nel Polesine).\n\nIn merito alla bozza dell'Inno composto per la ${teamClean}, ci tenevamo a confermarvi che la proposta include la fornitura completa dei master audio WAV e MP3 in alta definizione, le basi musicali senza voce per lo stadio e la licenza d'uso ufficiale per le partite e tutti i vostri canali social senza scadenze.\n\nPotete sbloccare il pacchetto completo della squadra direttamente da qui:\n${portalUrl}\n\nRestiamo a disposizione per qualsiasi accordo o personalizzazione del testo. A presto e buon campionato!`;
+        text = `Ciao ${teamClean}! 👋\n\nSiamo Riccardo e Fausto di FF Edizioni (Ariano nel Polesine).\n\nIn merito alla bozza dell'Inno per la ${teamClean}, ci tenevamo a confermarvi che la proposta include la fornitura completa dei master audio WAV e MP3 in alta definizione, le basi musicali senza voce per lo stadio e la licenza d'uso ufficiale per le partite e tutti i vostri canali social senza scadenze.\n\nPotete sbloccare il pacchetto completo della squadra direttamente da qui:\n${portalUrl}\n\nRestiamo a disposizione per qualsiasi accordo o personalizzazione del testo. A presto e buon campionato!`;
+    } else if (project.portal_type === 'superprof') {
+        text = `Gentile ${name}, buongiorno! 👋\n\nLe scrivo da SuperProf in merito alla suite didattica per la Sua docenza: Le confermiamo che il pacchetto sblocca il generatore di PDP/PEI in 60 secondi conformi alla L. 170/2010, la correzione fotografica dei compiti con Vision AI e le verifiche parametriche anti-copia.\n\nPuò attivare la Sua dotazione di crediti da questo link protetto:\n${portalUrl}\n\nResto a Sua completa disposizione per qualsiasi supporto!`;
     } else if (project.portal_type === 'dentis') {
         text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di verificare la scheda tecnica di Serena per ${title}.\n\nSe attivate Serena PRO questa settimana, **vi includiamo GRATIS l'integrazione del gateway WhatsApp per i promemoria automatici ai pazienti del giorno prima** (abbatte le disdette del 72%)!\n\nPotete sbloccare il servizio direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi supporto!`;
     } else if (project.portal_type === 'concierge') {
@@ -564,7 +775,7 @@ function closeCreationModal() {
     if (m) { m.classList.remove('flex'); m.classList.add('hidden'); }
 }
 
-// 4. SUBMIT FORM: DISPATCH UNIVERSALE SUI 23 SAAS (COMPLETO SENZA TAGLI)
+// 5. SUBMIT FORM: DISPATCH UNIVERSALE SUI 24 SAAS
 async function handleCreateSubmit(e) {
     e.preventDefault();
     const btn = document.getElementById('c-btn');
@@ -577,17 +788,51 @@ async function handleCreateSubmit(e) {
     const phone = document.getElementById('c-phone').value.trim();
     const price = parseFloat(document.getElementById('c-price').value) || 0;
     const siteUrl = document.getElementById('c-url').value.trim();
+    const titleVal = document.getElementById('c-title').value.trim();
     const slug = clientName.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
 
     const fileInput = document.getElementById('c-file');
     const selectedFile = fileInput ? fileInput.files[0] : null;
 
+    // 🎓 SUPERPROF (AI DIDATTICA PER DOCENTI)
+    if (type === 'superprof') {
+        btn.innerText = "Registrazione Docente SuperProf...";
+        const cleanEmail = email || `${slug}@istruzione.it`;
+        const dashboardUrl = `https://superprof.rmstudio.app/dashboard.html?email=${encodeURIComponent(cleanEmail)}`;
+
+        try {
+            await supabaseClient.from('portal_videos').insert([{
+                client_name: clientName,
+                client_email: cleanEmail,
+                client_phone: phone,
+                title: titleVal || "SuperProf • Suite Didattica",
+                price_euro: price || 49,
+                portal_type: "superprof",
+                content_url: dashboardUrl,
+                is_paid: false,
+                sent_at: new Date().toISOString(),
+                first_email_sent: false,
+                views_count: 0
+            }]);
+            alert(`✨ Docente SuperProf registrato con successo!\nAccesso: ${dashboardUrl}`);
+            closeCreationModal();
+            loadMasterData();
+        } catch (err) {
+            alert("⚠️ Errore salvataggio SuperProf: " + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = orig;
+        }
+        return;
+    }
+
+    // 🎬 VIDEO & VISION UGC (CLOUDFLARE R2)
     if ((type === 'vision' || type === 'video') && selectedFile) {
         btn.innerText = "Caricamento video su Cloudflare R2 in corso...";
         
         const formData = new FormData();
         formData.append('file', selectedFile);
-        formData.append('title', document.getElementById('c-title').value || `${clientName} • Video UGC`);
+        formData.append('title', titleVal || `${clientName} • Video UGC`);
         formData.append('client_name', clientName);
         
         const safeEmail = email || `${slug}@rmstudio.app`;
@@ -629,20 +874,29 @@ async function handleCreateSubmit(e) {
         let targetUrl = siteUrl;
         if (!/^https?:\/\//i.test(targetUrl)) targetUrl = 'https://' + targetUrl;
         const botId = 'bot_' + Math.random().toString(36).slice(2, 9);
+        const selectedPlan = document.getElementById('c-plan')?.value || 'pro';
 
         try {
             const res = await fetch('https://n8n.rmstudio.app/webhook/chatbot-creator', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ site_url: targetUrl, bot_id: botId, nome_struttura: clientName, email: email, is_paid: false })
+                body: JSON.stringify({
+                    site_url: targetUrl,
+                    bot_id: botId,
+                    nome_struttura: clientName,
+                    email: email,
+                    piano: selectedPlan,
+                    is_paid: false
+                })
             });
             const data = await res.json();
             const demoUrl = (data.success && data.demo_url) ? data.demo_url : `https://demo.rmstudio.app/?site=${encodeURIComponent(targetUrl)}&bot_id=${botId}`;
 
             await supabaseClient.from('portal_videos').insert([{
                 client_name: clientName, client_email: email, client_phone: phone,
-                title: document.getElementById('c-title').value || "NexusAI • Sales Overlay",
-                price_euro: price || 99, portal_type: "nexus", content_url: demoUrl,
+                title: titleVal || "NexusAI • Sales Overlay",
+                price_euro: price || (selectedPlan === 'base' ? 49 : 99),
+                portal_type: "nexus", content_url: demoUrl,
                 is_paid: false, sent_at: new Date().toISOString(), first_email_sent: false, views_count: 0
             }]);
 
@@ -736,7 +990,7 @@ async function handleCreateSubmit(e) {
         try {
             await supabaseClient.from('portal_videos').insert([{
                 client_name: clientName, client_email: email, client_phone: phone,
-                title: document.getElementById('c-title').value || "Locanda Digitale • Living 3D Menu",
+                title: titleVal || "Locanda Digitale • Living 3D Menu",
                 price_euro: price || 169, portal_type: "locanda", content_url: menuUrl,
                 is_paid: false, sent_at: new Date().toISOString(), first_email_sent: false, views_count: 0
             }]);
@@ -758,7 +1012,7 @@ async function handleCreateSubmit(e) {
                 client_name: clientName, 
                 client_email: cleanEmail, 
                 client_phone: phone,
-                title: document.getElementById('c-title').value || "FF Edizioni • Jingle Commerciale",
+                title: titleVal || "FF Edizioni • Inno / Brano d'Autore",
                 price_euro: price || 300, 
                 portal_type: "ff", 
                 content_url: djHubUrl,
@@ -781,7 +1035,7 @@ async function handleCreateSubmit(e) {
         try {
             await supabaseClient.from('portal_videos').insert([{
                 client_name: clientName, client_email: email, client_phone: phone,
-                title: document.getElementById('c-title').value || "DriveMotion RADAR • Starter Salone",
+                title: titleVal || "DriveMotion RADAR • Starter Salone",
                 price_euro: price || 99, portal_type: "radar", content_url: radarUrl,
                 is_paid: false, sent_at: new Date().toISOString(), first_email_sent: false, views_count: 0
             }]);
@@ -799,7 +1053,7 @@ async function handleCreateSubmit(e) {
         try {
             await supabaseClient.from('portal_videos').insert([{
                 client_name: clientName, client_email: email, client_phone: phone,
-                title: document.getElementById('c-title').value,
+                title: titleVal,
                 price_euro: price || (type === 'eternia' ? 690 : 490), portal_type: type, content_url: hubUrl,
                 is_paid: false, sent_at: new Date().toISOString(), first_email_sent: false, views_count: 0
             }]);
@@ -865,7 +1119,7 @@ async function handleCreateSubmit(e) {
     try {
         const { error } = await supabaseClient.from('portal_videos').insert([{
             client_name: clientName, client_email: email, client_phone: phone,
-            title: document.getElementById('c-title').value, price_euro: price,
+            title: titleVal, price_euro: price,
             portal_type: type, content_url: siteUrl, is_paid: false,
             sent_at: new Date().toISOString(), first_email_sent: false, views_count: 0
         }]);
@@ -876,7 +1130,7 @@ async function handleCreateSubmit(e) {
     finally { btn.disabled = false; btn.innerText = orig; }
 }
 
-// INIZIALIZZAZIONE SIDEBAR RESIZER & CARICAMENTO
+// 6. INIZIALIZZAZIONE SIDEBAR RESIZER & CARICAMENTO AL DOMCONTENTLOADED
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     const resizer = document.getElementById('resizer');
