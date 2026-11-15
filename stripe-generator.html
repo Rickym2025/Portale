@@ -26,8 +26,8 @@
                     <p class="text-xs text-gray-400 font-semibold">Crea sessioni di pagamento dinamiche senza prodotti Stripe fissi</p>
                 </div>
             </div>
-            <a href="mobile.html" class="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-bold border border-zinc-800">
-                ← Torna al Launcher
+            <a href="index.html" class="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-bold border border-zinc-800">
+                ← Torna al Command Center
             </a>
         </div>
 
@@ -35,29 +35,33 @@
         <form id="stripe-form" onsubmit="generateStripeLink(event)" class="p-6 rounded-3xl bg-[#0b0b0f] border border-zinc-900 space-y-5 shadow-2xl">
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <!-- SELEZIONE SAAS -->
+                <!-- SELEZIONE SAAS (24 OPZIONI) -->
                 <div>
                     <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">1. Progetto SaaS *</label>
                     <select id="sel-progetto" onchange="autoFillPresets()" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white font-bold outline-none focus:border-purple-500">
-                        <option value="Elena" selected>🍽️ Elena AI (Hostess Ristoranti H24)</option>
+                        <option value="SuperProf" selected>🎓 SuperProf (Docenti &amp; Didattica)</option>
+                        <option value="Nexus">🤖 NexusAI (Sales Overlay)</option>
+                        <option value="Elena">🍽️ Elena AI (Hostess Ristoranti H24)</option>
                         <option value="Vittoria">🚀 Vittoria AI (Centralino Agenzie B2B)</option>
                         <option value="Locanda">🍕 Locanda Digitale (Living Menu 3D &amp; Marketing)</option>
                         <option value="Experience">🍷 Experience (Smart Menu &amp; Maître AI)</option>
                         <option value="Dentis">🦷 Dentis AI (Voice Receptionist)</option>
                         <option value="Lexis">⚖️ Lexis AI (Voice Receptionist)</option>
+                        <option value="RADAR">🏎️ DriveMotion RADAR (Sourcing Privati)</option>
                         <option value="Forma & Materia">🏛️ Forma &amp; Materia (Rendering Neurale)</option>
                         <option value="AURA">📡 AURA Proximity (Virtual Mesh Radar)</option>
                         <option value="ETERNIA">🕊️ ETERNIA (Onoranze Funebri &amp; Pet)</option>
                         <option value="LOVE">💍 LOVE (Partecipazioni Digitali)</option>
                         <option value="Concierge24">🏨 Concierge24 (Voice AI Hotel)</option>
                         <option value="Free Energy">☀️ Free Energy (CRM Fotovoltaico)</option>
-                        <option value="SiteEngine">🌐 SiteEngine Pro (Landing)</option>
+                        <option value="SiteEngine">🌐 SiteEngine Pro (Landing &amp; Siti)</option>
                         <option value="VeloMotion">⚡ VeloMotion (Sblocco E-Bike)</option>
                         <option value="Vision">🎬 Vision UGC (Video AI)</option>
                         <option value="HomeTour">🏠 HomeTour (Video Immobili)</option>
-                        <option value="DriveMotion">🏎️ DriveMotion (Video Auto)</option>
+                        <option value="DriveMotion">🚗 DriveMotion (Video Auto)</option>
                         <option value="Ares">🏋️ AresAI (Fitness &amp; Dieta)</option>
-                        <option value="FFausto">🎵 FF Edizioni (Musica &amp; Jingle)</option>
+                        <option value="Social">📊 Carousel Engine (Social Creator)</option>
+                        <option value="FF">🎵 FF Edizioni (Musica &amp; Inni SIAE)</option>
                         <option value="OmniaStudio">💼 OmniaStudio (IA Offline)</option>
                     </select>
                 </div>
@@ -75,27 +79,27 @@
                 <!-- TITOLO SCONTRINO / RICEVUTA -->
                 <div class="sm:col-span-2">
                     <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Titolo Prodotto (Visibile su Ricevuta Stripe) *</label>
-                    <input type="text" id="inp-title" required value="Elena AI - PRO (H24 & WhatsApp Tavoli)" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white font-bold outline-none focus:border-purple-500">
+                    <input type="text" id="inp-title" required value="SuperProf - Anno Scolastico Pro (1.000 Crediti)" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white font-bold outline-none focus:border-purple-500">
                 </div>
 
                 <!-- IMPORTO EURO -->
                 <div>
                     <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Prezzo (€) *</label>
-                    <input type="number" step="0.01" id="inp-price" required value="149.00" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-base text-amber-400 font-extrabold outline-none focus:border-purple-500 font-mono">
+                    <input type="number" step="0.01" id="inp-price" required value="49.00" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-base text-amber-400 font-extrabold outline-none focus:border-purple-500 font-mono">
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <!-- EMAIL CLIENTE -->
                 <div>
-                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Email Locale / Agenzia / Lead</label>
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">Email Cliente / Lead / Docente</label>
                     <input type="email" id="inp-email" placeholder="cliente@azienda.it" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-mono">
                 </div>
 
                 <!-- ID PROGETTO / SLUG -->
                 <div>
                     <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-1.5">ID Progetto / Slug Attività</label>
-                    <input type="text" id="inp-agency" placeholder="es. ristorante-m4" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-mono">
+                    <input type="text" id="inp-agency" placeholder="es. prof-rossi / agenzia-damare" class="w-full bg-[#15151e] border border-zinc-800 rounded-xl p-3 text-sm text-white outline-none focus:border-purple-500 font-mono">
                 </div>
             </div>
 
@@ -132,6 +136,15 @@
 
     <script>
         const PRESETS = {
+            SuperProf: [
+                { val: "19|SuperProf - Starter Prof (250 Crediti)|starter", label: "Starter Prof (€19)" },
+                { val: "49|SuperProf - Anno Scolastico Pro (1.000 Crediti)|pro", label: "Anno Scolastico Pro (€49)" },
+                { val: "119|SuperProf - Dipartimento & Team (3.000 Crediti)|school", label: "Dipartimento & Team (€119)" }
+            ],
+            Nexus: [
+                { val: "49|NexusAI - Starter Base (Chatbot 10 pag.)|base", label: "Piano Base (€49/m)" },
+                { val: "99|NexusAI - Sales Overlay Pro (Prenotazioni + Email)|pro", label: "Nexus Pro (€99/m)" }
+            ],
             Elena: [
                 { val: "79|Elena AI - Starter (Risposta Fuori Orario)|starter", label: "Elena Starter (€79/m)" },
                 { val: "149|Elena AI - PRO (H24 & WhatsApp Tavoli)|pro", label: "Elena PRO (€149/m)" },
@@ -153,14 +166,19 @@
                 { val: "600|Smart Experience - Royal SIAE|royal", label: "Royal SIAE (€600)" }
             ],
             Dentis: [
-                { val: "79|Dentis AI - Piano Starter|starter", label: "Serena Starter (€79/m)" },
-                { val: "149|Dentis AI - Piano PRO|pro", label: "Serena PRO (€149/m)" },
+                { val: "79|Dentis AI - Serena Starter|starter", label: "Serena Starter (€79/m)" },
+                { val: "149|Dentis AI - Serena PRO|pro", label: "Serena PRO (€149/m)" },
                 { val: "299|Dentis AI - Clinic Elite|elite", label: "Clinic Elite (€299/m)" }
             ],
             Lexis: [
                 { val: "79|Lexis AI - Chiara Starter|starter", label: "Chiara Starter (€79/m)" },
                 { val: "149|Lexis AI - Chiara PRO|pro", label: "Chiara PRO (€149/m)" },
                 { val: "299|Lexis AI - Studio Elite|elite", label: "Studio Elite (€299/m)" }
+            ],
+            RADAR: [
+                { val: "99|DriveMotion RADAR - Starter Salone (1 Prov.)|starter", label: "Starter Salone 1 Prov. (€99/m)" },
+                { val: "179|DriveMotion RADAR - PRO Regionale (5 Prov.)|pro", label: "PRO Regionale 5 Prov. (€179/m)" },
+                { val: "349|DriveMotion RADAR - Enterprise Nazionale (107 Prov.)|enterprise", label: "Enterprise 107 Prov. (€349/m)" }
             ],
             "Forma & Materia": [
                 { val: "99|Forma & Materia - Progetto Singolo (6 Render)|starter", label: "Progetto Singolo 6 Render (€99)" },
@@ -173,10 +191,10 @@
                 { val: "79|AURA - Studio & Gym Hub B2B|studio_hub", label: "Studio & Gym Hub (€79/m)" }
             ],
             ETERNIA: [
-                { val: "79|Credit Starter (1 Cerimonia)|starter", label: "Credit Starter (€79)" },
-                { val: "199|Servizio VIP «Chiavi in Mano»|vip", label: "VIP Chiavi in Mano (€199)" },
-                { val: "690|Agency Hub B2B (10 Cerimonie)|hub", label: "Agency Hub 10 Cerimonie (€690)" },
-                { val: "300|Brano Musicale d'Autore (Echi)|echi", label: "Brano d'Autore Echi (€300)" }
+                { val: "79|ETERNIA - Credit Starter (1 Cerimonia)|starter", label: "Credit Starter (€79)" },
+                { val: "199|ETERNIA - Servizio VIP «Chiavi in Mano»|vip", label: "VIP Chiavi in Mano (€199)" },
+                { val: "690|ETERNIA - Agency Hub B2B (10 Cerimonie)|hub", label: "Agency Hub 10 Cerimonie (€690)" },
+                { val: "300|ETERNIA - Brano Musicale d'Autore (Echi)|echi", label: "Brano d'Autore Echi (€300)" }
             ],
             LOVE: [
                 { val: "149|LOVE - Sposi Self-Service (1 Anno)|self", label: "Sposi Self-Service (€149)" },
@@ -184,6 +202,7 @@
                 { val: "490|LOVE - Agency Hub B2B (10 Matrimoni)|hub", label: "Agency Hub 10 Matrimoni (€490)" }
             ],
             Concierge24: [
+                { val: "149|Concierge24 - Setup Chiavi in Mano|setup", label: "Setup Chiavi in Mano (€149)" },
                 { val: "49|Concierge24 - Ricarica Base (100 min)|base", label: "Ricarica Base (€49)" },
                 { val: "179|Concierge24 - Ricarica Pro (450 min)|pro", label: "Ricarica Pro (€179)" },
                 { val: "349|Concierge24 - Ricarica Max (1000 min)|max", label: "Ricarica Max (€349)" }
@@ -192,10 +211,45 @@
                 { val: "199|Free Energy - Start Pack (10.000 Crediti)|base", label: "Start Pack 10k (€199)" },
                 { val: "449|Free Energy - Pro Pack (25.000 Crediti)|max", label: "Pro Pack 25k (€449)" }
             ],
+            SiteEngine: [
+                { val: "400|SiteEngine Pro - Sblocco Sito d'Autore|unlock", label: "Sblocco Sito Completo (€400)" },
+                { val: "200|SiteEngine Pro - Rinnovo Annuale & Hosting|renewal", label: "Rinnovo Annuale (€200/anno)" }
+            ],
+            VeloMotion: [
+                { val: "290|VeloMotion - Sblocco Software (32 km/h)|software", label: "Sblocco Software 32 km/h (€290)" },
+                { val: "320|VeloMotion - Sblocco Hardware (45 km/h)|hardware", label: "Sblocco Hardware 45 km/h (€320)" }
+            ],
+            Vision: [
+                { val: "50|Vision UGC - Starter Pack (1 Video)|starter", label: "Starter Pack 1 Video (€50)" },
+                { val: "120|Vision UGC - Pro Bundle (3 Video)|pro", label: "Pro Bundle 3 Video (€120)" },
+                { val: "340|Vision UGC - Agency Maxi Pack (10 Video)|maxi", label: "Agency Maxi Pack (€340)" }
+            ],
+            HomeTour: [
+                { val: "14.90|HomeTour AI - Starter Pack (2 Video)|starter", label: "Starter Pack 2 Video (€14.90)" },
+                { val: "59|HomeTour AI - Pro Pack (10 Video)|pro", label: "Pro Pack 10 Video (€59)" },
+                { val: "129|HomeTour AI - Maxi Pack (25 Video)|max", label: "Maxi Pack 25 Video (€129)" }
+            ],
+            DriveMotion: [
+                { val: "14.90|DriveMotion - Starter Pack (1 Video HD)|starter", label: "Starter Pack 1 Video (€14.90)" },
+                { val: "59|DriveMotion - Pro Pack (5 Video Credits)|pro", label: "Pro Pack 5 Video Credits (€59)" },
+                { val: "129|DriveMotion - Maxi Pack (15 Video Credits)|max", label: "Maxi Pack 15 Video Credits (€129)" }
+            ],
             Ares: [
                 { val: "19|AresAI - Atleta PRO (Mensile)|base", label: "Atleta PRO (€19/m)" },
-                { val: "199|AresAI - Arena Coach Hub (Mensile)|coach", label: "Arena Coach Hub (€199/m)" },
-                { val: "399|AresAI - ELITE Multi-Palestra|elite", label: "ELITE Multi-Palestra (€399/m)" }
+                { val: "99|AresAI - Coach Hub B2B (30 Atleti)|coach", label: "Coach Hub B2B (€99/m)" },
+                { val: "199|AresAI - Gym Arena Maxischermo|elite", label: "Gym Arena Maxischermo (€199/m)" }
+            ],
+            Social: [
+                { val: "29|Carousel Engine - Starter Pack|starter", label: "Starter Pack (€29)" },
+                { val: "79|Carousel Engine - Pro Pack|pro", label: "Pro Pack (€79)" },
+                { val: "199|Carousel Engine - Agency Unlimited|agency", label: "Agency Unlimited (€199)" }
+            ],
+            FF: [
+                { val: "300|FF Edizioni - Inno / Brano d'Autore SIAE|custom", label: "Inno / Brano Inedito SIAE (€300)" },
+                { val: "250|FF Edizioni - Jingle Commerciale Radio/Social|jingle", label: "Jingle Commerciale Radio/Social (€250)" }
+            ],
+            OmniaStudio: [
+                { val: "699|OmniaStudio PRO - Licenza Lifetime Offline|lifetime", label: "Licenza Lifetime Offline (€699)" }
             ]
         };
 
@@ -203,9 +257,9 @@
             const prog = document.getElementById('sel-progetto').value;
             const selPreset = document.getElementById('sel-preset');
             const list = PRESETS[prog] || [
-                { val: "79|Piano Starter|starter", label: "Starter (€79)" },
-                { val: "149|Piano Pro|pro", label: "PRO (€149)" },
-                { val: "299|Piano Elite|elite", label: "Elite (€299)" }
+                { val: "49|Piano Starter|starter", label: "Starter (€49)" },
+                { val: "99|Piano Pro|pro", label: "PRO (€99)" },
+                { val: "199|Piano Elite|elite", label: "Elite (€199)" }
             ];
 
             selPreset.innerHTML = list.map(p => `<option value="${p.val}">${p.label}</option>`).join('') + `<option value="custom">-- Importo Personalizzato --</option>`;
@@ -238,7 +292,15 @@
             let originUrl = "https://portale.rmstudio.app";
             let portalType = "html";
 
-            if (prog === 'Elena') { 
+            if (prog === 'SuperProf') {
+                originUrl = 'https://superprof.rmstudio.app';
+                portalType = 'superprof';
+            }
+            else if (prog === 'Nexus') {
+                originUrl = 'https://nexus.rmstudio.app';
+                portalType = 'nexus';
+            }
+            else if (prog === 'Elena') { 
                 originUrl = 'https://dentis-app.rmstudio.app'; 
                 portalType = 'elena'; 
             }
@@ -253,6 +315,10 @@
             else if (prog === 'Lexis') { 
                 originUrl = 'https://lexis.rmstudio.app'; 
                 portalType = 'lexis'; 
+            }
+            else if (prog === 'RADAR') { 
+                originUrl = 'https://drivemotion-radar.rmstudio.app'; 
+                portalType = 'radar'; 
             }
             else if (prog === 'Locanda') { 
                 originUrl = 'https://locandadigitale.rmstudio.app'; 
@@ -269,6 +335,58 @@
             else if (prog === 'Forma & Materia') { 
                 originUrl = 'https://formamateria.rmstudio.app'; 
                 portalType = 'forma_materia'; 
+            }
+            else if (prog === 'ETERNIA') {
+                originUrl = 'https://eternia.rmstudio.app';
+                portalType = 'eternia';
+            }
+            else if (prog === 'LOVE') {
+                originUrl = 'https://love.rmstudio.app';
+                portalType = 'love';
+            }
+            else if (prog === 'Concierge24') {
+                originUrl = 'https://concierge24.rmstudio.app';
+                portalType = 'concierge';
+            }
+            else if (prog === 'Free Energy') {
+                originUrl = 'https://free-energy.rmstudio.app';
+                portalType = 'free_energy';
+            }
+            else if (prog === 'SiteEngine') {
+                originUrl = 'https://sitengine.rmstudio.app';
+                portalType = 'siteengine';
+            }
+            else if (prog === 'VeloMotion') {
+                originUrl = 'https://velomotion.rmstudio.app';
+                portalType = 'velomotion';
+            }
+            else if (prog === 'Vision') {
+                originUrl = 'https://vision.rmstudio.app';
+                portalType = 'vision';
+            }
+            else if (prog === 'HomeTour') {
+                originUrl = 'https://hometour.rmstudio.app';
+                portalType = 'hometour';
+            }
+            else if (prog === 'DriveMotion') {
+                originUrl = 'https://drivemotion.rmstudio.app';
+                portalType = 'drivemotion';
+            }
+            else if (prog === 'Ares') {
+                originUrl = 'https://ares.rmstudio.app';
+                portalType = 'ares';
+            }
+            else if (prog === 'Social') {
+                originUrl = 'https://social.rmstudio.app';
+                portalType = 'social';
+            }
+            else if (prog === 'FF') {
+                originUrl = 'https://ff.rmstudio.app';
+                portalType = 'ff';
+            }
+            else if (prog === 'OmniaStudio') {
+                originUrl = 'https://omniastudio.rmstudio.app';
+                portalType = 'omniastudio';
             }
             else { 
                 originUrl = `https://${prog.toLowerCase().replace(/\s+/g, '')}.rmstudio.app`; 
@@ -295,7 +413,7 @@
                     document.getElementById('txt-stripe-url').innerText = data.url;
                     document.getElementById('result-box').classList.remove('hidden');
 
-                    const textWa = `Salve! Ecco il link sicuro di Stripe per l'attivazione di ${title} (€${price}):\n${data.url}`;
+                    const textWa = `Salve! Ecco il link sicuro di Stripe per l'attivazione di ${title} (€${price.toFixed(2)}):\n${data.url}`;
                     document.getElementById('btn-wa').href = `https://wa.me/?text=${encodeURIComponent(textWa)}`;
                     
                     document.getElementById('result-box').scrollIntoView({ behavior: 'smooth' });
