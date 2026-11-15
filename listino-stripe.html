@@ -31,7 +31,7 @@
                 </div>
                 <div>
                     <h1 class="text-2xl md:text-3xl font-black text-white font-display">Command Center Prezzi &amp; Affiliati</h1>
-                    <p class="text-sm text-gray-400 mt-0.5">Controllo in tempo reale per tutti i 22 SaaS e moduli vocali dell&apos;ecosistema RM Studio.</p>
+                    <p class="text-sm text-gray-400 mt-0.5">Controllo in tempo reale per tutti i 24 SaaS e moduli vocali dell&apos;ecosistema RM Studio.</p>
                 </div>
             </div>
             <a href="index.html" class="px-5 py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-xs font-bold border border-zinc-800 transition">
@@ -42,7 +42,7 @@
         <!-- BARRA FILTRI CATEGORIE + TAB AFFILIATI -->
         <div class="flex flex-wrap gap-2 pb-2 border-b border-zinc-900/60">
             <button onclick="filterCategory('all')" id="tab-all" class="tab-btn active px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold transition cursor-pointer">
-                Tutti i Prodotti (22)
+                Tutti i Prodotti (24)
             </button>
             <button onclick="filterCategory('medico_legale')" id="tab-medico_legale" class="tab-btn px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-gray-400 transition cursor-pointer">
                 🏛️ Medici &amp; Legali (3)
@@ -51,13 +51,13 @@
                 🏨 Turismo, Horeca &amp; Tavoli (5)
             </button>
             <button onclick="filterCategory('media_auto')" id="tab-media_auto" class="tab-btn px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-gray-400 transition cursor-pointer">
-                🚗 Real Estate, Architettura &amp; Auto (5)
+                🚗 Real Estate, Architettura &amp; Auto (6)
             </button>
             <button onclick="filterCategory('eventi_musica')" id="tab-eventi_musica" class="tab-btn px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-gray-400 transition cursor-pointer">
                 💍 Eventi &amp; Memoriali (3)
             </button>
             <button onclick="filterCategory('software_crm')" id="tab-software_crm" class="tab-btn px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-bold text-gray-400 transition cursor-pointer">
-                ⚡ Software, Agency &amp; Proximity (6)
+                ⚡ Software, Didattica &amp; Proximity (7)
             </button>
             <button onclick="filterCategory('affiliati')" id="tab-affiliati" class="tab-btn px-4 py-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/40 text-xs font-black text-amber-300 transition cursor-pointer ml-auto">
                 ⭐ Hub Statistiche &amp; Provvigioni Affiliati
@@ -96,7 +96,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
                     <input type="text" id="new-affiliate-code" placeholder="Codice (es. MARCO10)" class="bg-[#151520] border border-zinc-700 rounded-xl p-3 text-xs font-bold text-white uppercase outline-none focus:border-amber-400 font-mono">
-                    <input type="text" id="new-affiliate-name" placeholder="Nome Amico (es. Marco)" class="bg-[#151520] border border-zinc-700 rounded-xl p-3 text-xs font-bold text-white outline-none focus:border-amber-400">
+                    <input type="text" id="new-affiliate-name" placeholder="Nome Affiliato (es. Marco)" class="bg-[#151520] border border-zinc-700 rounded-xl p-3 text-xs font-bold text-white outline-none focus:border-amber-400">
                     <input type="number" id="new-affiliate-discount" placeholder="Sconto Cliente % (es. 10)" class="bg-[#151520] border border-zinc-700 rounded-xl p-3 text-xs font-bold text-white outline-none focus:border-amber-400">
                     <input type="number" id="new-affiliate-commission" placeholder="Provvigione % (es. 15)" class="bg-[#151520] border border-zinc-700 rounded-xl p-3 text-xs font-bold text-white outline-none focus:border-amber-400">
                 </div>
@@ -129,13 +129,38 @@
             </div>
         </div>
 
-        <!-- GRIGLIA PREZZI: TUTTI I 22 SAAS E MODULI VOCALI -->
+        <!-- GRIGLIA PREZZI: TUTTI I 24 SAAS E MODULI VOCALI -->
         <div id="pricing-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <!-- 1. ETERNIA -->
+            <!-- 1. SUPERPROF -->
+            <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-indigo-500/40 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">🎓</span><h2 class="text-sm font-black text-indigo-200 font-display">1. SuperProf (Docenti)</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">superprof</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Starter 250c</span>
+                        <input type="number" id="price-superprof-starter" value="19" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-indigo-300 outline-none">
+                        <button onclick="saveLivePrice('superprof', 'starter', 'price-superprof-starter')" class="w-full py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Anno Pro 1k</span>
+                        <input type="number" id="price-superprof-pro" value="49" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-indigo-300 outline-none">
+                        <button onclick="saveLivePrice('superprof', 'pro', 'price-superprof-pro')" class="w-full py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Team 3k</span>
+                        <input type="number" id="price-superprof-school" value="119" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-indigo-300 outline-none">
+                        <button onclick="saveLivePrice('superprof', 'school', 'price-superprof-school')" class="w-full py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. ETERNIA -->
             <div data-cat="eventi_musica" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-amber-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🕊️</span><h2 class="text-sm font-black text-amber-200 font-display">1. ETERNIA</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🕊️</span><h2 class="text-sm font-black text-amber-200 font-display">2. ETERNIA</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">eternia</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs">
@@ -162,10 +187,10 @@
                 </div>
             </div>
 
-            <!-- 2. LOVE -->
+            <!-- 3. LOVE -->
             <div data-cat="eventi_musica" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-pink-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">💍</span><h2 class="text-sm font-black text-pink-200 font-display">2. LOVE</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">💍</span><h2 class="text-sm font-black text-pink-200 font-display">3. LOVE</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">love</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -187,10 +212,10 @@
                 </div>
             </div>
 
-            <!-- 3. CONCIERGE24 -->
+            <!-- 4. CONCIERGE24 -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-orange-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🏨</span><h2 class="text-sm font-black text-orange-200 font-display">3. Concierge24</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🏨</span><h2 class="text-sm font-black text-orange-200 font-display">4. Concierge24</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-500/30">concierge</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs">
@@ -217,10 +242,10 @@
                 </div>
             </div>
 
-            <!-- 4. DENTIS AI -->
+            <!-- 5. DENTIS AI -->
             <div data-cat="medico_legale" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🦷</span><h2 class="text-sm font-black text-cyan-200 font-display">4. Dentis AI</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🦷</span><h2 class="text-sm font-black text-cyan-200 font-display">5. Dentis AI</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">dentis</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -242,10 +267,10 @@
                 </div>
             </div>
 
-            <!-- 5. LEXIS AI -->
+            <!-- 6. LEXIS AI -->
             <div data-cat="medico_legale" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-yellow-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">⚖️</span><h2 class="text-sm font-black text-yellow-200 font-display">5. Lexis AI</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">⚖️</span><h2 class="text-sm font-black text-yellow-200 font-display">6. Lexis AI</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-300 border border-yellow-500/30">lexis</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -267,10 +292,10 @@
                 </div>
             </div>
 
-            <!-- 6. ELENA AI (VOCALE RISTORANTI) -->
+            <!-- 7. ELENA AI (VOCALE RISTORANTI) -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-emerald-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🍽️</span><h2 class="text-sm font-black text-emerald-300 font-display">6. Elena AI (Ristoranti)</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🍽️</span><h2 class="text-sm font-black text-emerald-300 font-display">7. Elena AI (Ristoranti)</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">elena</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -292,10 +317,10 @@
                 </div>
             </div>
 
-            <!-- 7. VITTORIA AI (VOCALE AGENZIE B2B) -->
+            <!-- 8. VITTORIA AI (VOCALE AGENZIE B2B) -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-blue-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🚀</span><h2 class="text-sm font-black text-blue-300 font-display">7. Vittoria AI (Agenzie)</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🚀</span><h2 class="text-sm font-black text-blue-300 font-display">8. Vittoria AI (Agenzie)</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/30">vittoria</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -317,10 +342,35 @@
                 </div>
             </div>
 
-            <!-- 8. HOMETOUR AI -->
+            <!-- 9. DRIVEMOTION RADAR -->
+            <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/40 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
+                    <div class="flex items-center gap-2"><span class="text-xl">🏎️</span><h2 class="text-sm font-black text-cyan-300 font-display">9. DriveMotion RADAR</h2></div>
+                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">radar</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Starter 1 Prov</span>
+                        <input type="number" id="price-radar-starter" value="99" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('radar', 'starter', 'price-radar-starter')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">PRO 5 Prov</span>
+                        <input type="number" id="price-radar-pro" value="179" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('radar', 'pro', 'price-radar-pro')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
+                        <span class="text-gray-400 block text-[10px]">Enterprise 107</span>
+                        <input type="number" id="price-radar-enterprise" value="349" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('radar', 'enterprise', 'price-radar-enterprise')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. HOMETOUR AI -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-emerald-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🏠</span><h2 class="text-sm font-black text-emerald-200 font-display">8. HomeTour AI</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🏠</span><h2 class="text-sm font-black text-emerald-200 font-display">10. HomeTour AI</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">hometour</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -342,10 +392,10 @@
                 </div>
             </div>
 
-            <!-- 9. DRIVEMOTION AI -->
+            <!-- 11. DRIVEMOTION AI VIDEO -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🏎️</span><h2 class="text-sm font-black text-cyan-300 font-display">9. DriveMotion</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🚗</span><h2 class="text-sm font-black text-cyan-300 font-display">11. DriveMotion Video</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">drivemotion</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -367,10 +417,10 @@
                 </div>
             </div>
 
-            <!-- 10. VISION UGC -->
+            <!-- 12. VISION UGC -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-pink-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🎬</span><h2 class="text-sm font-black text-pink-300 font-display">10. Vision UGC</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🎬</span><h2 class="text-sm font-black text-pink-300 font-display">12. Vision UGC</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">vision</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -392,10 +442,10 @@
                 </div>
             </div>
 
-            <!-- 11. VELOMOTION -->
+            <!-- 13. VELOMOTION -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-yellow-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">⚡</span><h2 class="text-sm font-black text-yellow-300 font-display">11. VeloMotion</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">⚡</span><h2 class="text-sm font-black text-yellow-300 font-display">13. VeloMotion</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-300 border border-yellow-500/30">velomotion</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs">
@@ -412,10 +462,10 @@
                 </div>
             </div>
 
-            <!-- 12. OMNIASTUDIO -->
+            <!-- 14. OMNIASTUDIO -->
             <div data-cat="medico_legale" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-purple-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">💼</span><h2 class="text-sm font-black text-purple-200 font-display">12. OmniaStudio PRO</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">💼</span><h2 class="text-sm font-black text-purple-200 font-display">14. OmniaStudio PRO</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30">omniastudio</span>
                 </div>
                 <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
@@ -425,35 +475,30 @@
                 </div>
             </div>
 
-            <!-- 13. EXPERIENCE -->
+            <!-- 15. EXPERIENCE -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-amber-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🍷</span><h2 class="text-sm font-black text-amber-300 font-display">13. Smart Experience</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🍷</span><h2 class="text-sm font-black text-amber-300 font-display">15. Smart Experience</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">experience</span>
                 </div>
-                <div class="grid grid-cols-3 gap-2 text-xs">
+                <div class="grid grid-cols-2 gap-2 text-xs">
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
-                        <span class="text-gray-400 block text-[10px]">Starter (€)</span>
-                        <input type="number" id="price-experience-starter" value="190" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
-                        <button onclick="saveLivePrice('experience', 'starter', 'price-experience-starter')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                        <span class="text-gray-400 block text-[10px]">Standard (€)</span>
+                        <input type="number" id="price-experience-sblocco" value="350" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('experience', 'sblocco', 'price-experience-sblocco')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
-                        <span class="text-gray-400 block text-[10px]">Signature (€)</span>
-                        <input type="number" id="price-experience-pro" value="350" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
-                        <button onclick="saveLivePrice('experience', 'pro', 'price-experience-pro')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
-                    </div>
-                    <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
-                        <span class="text-gray-400 block text-[10px]">Royal SIAE (€)</span>
-                        <input type="number" id="price-experience-royal" value="600" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
-                        <button onclick="saveLivePrice('experience', 'royal', 'price-experience-royal')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                        <span class="text-gray-400 block text-[10px]">VIP Suite + SIAE (€)</span>
+                        <input type="number" id="price-experience-vip" value="390" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <button onclick="saveLivePrice('experience', 'vip', 'price-experience-vip')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 14. NEXUSAI -->
+            <!-- 16. NEXUSAI -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🤖</span><h2 class="text-sm font-black text-cyan-200 font-display">14. NexusAI</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🤖</span><h2 class="text-sm font-black text-cyan-200 font-display">16. NexusAI</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">nexus</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs">
@@ -470,10 +515,10 @@
                 </div>
             </div>
 
-            <!-- 15. FREE ENERGY -->
+            <!-- 17. FREE ENERGY -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-emerald-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">☀️</span><h2 class="text-sm font-black text-emerald-200 font-display">15. Free Energy</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">☀️</span><h2 class="text-sm font-black text-emerald-200 font-display">17. Free Energy</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">free_energy</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs">
@@ -490,10 +535,10 @@
                 </div>
             </div>
 
-            <!-- 16. ARESAI -->
+            <!-- 18. ARESAI -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🏋️</span><h2 class="text-sm font-black text-cyan-300 font-display">16. AresAI</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🏋️</span><h2 class="text-sm font-black text-cyan-300 font-display">18. AresAI</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">ares</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -503,22 +548,22 @@
                         <button onclick="saveLivePrice('ares', 'base', 'price-ares-base')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
-                        <span class="text-gray-400 block text-[10px]">Arena Std (€/m)</span>
-                        <input type="number" id="price-ares-coach" value="199" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <span class="text-gray-400 block text-[10px]">Coach Hub (€/m)</span>
+                        <input type="number" id="price-ares-coach" value="99" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
                         <button onclick="saveLivePrice('ares', 'coach', 'price-ares-coach')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
-                        <span class="text-gray-400 block text-[10px]">ELITE (€/m)</span>
-                        <input type="number" id="price-ares-elite" value="399" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
+                        <span class="text-gray-400 block text-[10px]">Gym Arena (€/m)</span>
+                        <input type="number" id="price-ares-elite" value="199" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-amber-300 outline-none">
                         <button onclick="saveLivePrice('ares', 'elite', 'price-ares-elite')" class="w-full py-1 bg-amber-600 hover:bg-amber-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 17. SOCIALENGINE -->
+            <!-- 19. SOCIALENGINE -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-indigo-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">📊</span><h2 class="text-sm font-black text-indigo-300 font-display">17. SocialEngine</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">📊</span><h2 class="text-sm font-black text-indigo-300 font-display">19. SocialEngine</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">social</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -540,10 +585,10 @@
                 </div>
             </div>
 
-            <!-- 18. SITEENGINE PRO -->
+            <!-- 20. SITEENGINE PRO -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-blue-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🌐</span><h2 class="text-sm font-black text-blue-200 font-display">18. SiteEngine Pro</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🌐</span><h2 class="text-sm font-black text-blue-200 font-display">20. SiteEngine Pro</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/30">siteengine</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs">
@@ -560,15 +605,15 @@
                 </div>
             </div>
 
-            <!-- 19. FF EDIZIONI -->
+            <!-- 21. FF EDIZIONI -->
             <div data-cat="eventi_musica" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-purple-500/30 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🎵</span><h2 class="text-sm font-black text-purple-200 font-display">19. FF Edizioni</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🎵</span><h2 class="text-sm font-black text-purple-200 font-display">21. FF Edizioni</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30">ff</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs">
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
-                        <span class="text-gray-400 block text-[11px]">Canzone Custom (€)</span>
+                        <span class="text-gray-400 block text-[11px]">Inno / Brano d'Autore (€)</span>
                         <input type="number" id="price-ff-custom" value="300" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-purple-300 outline-none">
                         <button onclick="saveLivePrice('ff', 'custom', 'price-ff-custom')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
@@ -580,10 +625,10 @@
                 </div>
             </div>
 
-            <!-- 20. LOCANDA DIGITALE -->
+            <!-- 22. LOCANDA DIGITALE -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-amber-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🍕</span><h2 class="text-sm font-black text-amber-200 font-display">20. Locanda Digitale</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🍕</span><h2 class="text-sm font-black text-amber-200 font-display">22. Locanda Digitale</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">locanda</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -605,10 +650,10 @@
                 </div>
             </div>
 
-            <!-- 21. AURA PROXIMITY -->
+            <!-- 23. AURA PROXIMITY -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">📡</span><h2 class="text-sm font-black text-cyan-300 font-display">21. AURA Proximity</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">📡</span><h2 class="text-sm font-black text-cyan-300 font-display">23. AURA Proximity</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">aura</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -630,10 +675,10 @@
                 </div>
             </div>
 
-            <!-- 22. FORMA & MATERIA -->
+            <!-- 24. FORMA & MATERIA -->
             <div data-cat="media_auto" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-amber-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
-                    <div class="flex items-center gap-2"><span class="text-xl">🏛️</span><h2 class="text-sm font-black text-amber-200 font-display">22. Forma &amp; Materia</h2></div>
+                    <div class="flex items-center gap-2"><span class="text-xl">🏛️</span><h2 class="text-sm font-black text-amber-200 font-display">24. Forma &amp; Materia</h2></div>
                     <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">forma_materia</span>
                 </div>
                 <div class="grid grid-cols-3 gap-2 text-xs">
@@ -674,7 +719,7 @@
                 </div>
                 <div>
                     <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Importo Bonificato (€) *</label>
-                    <input type="number" step="0.01" id="payout-amount" required class="w-full bg-[#151520] border border-zinc-700 rounded-xl p-2.5 text-sm text-white font-extrabold outline-none focus:border-emerald-400">
+                    <input type="number" step="0.01" id="payout-amount" required class="w-full bg-[#151520] border border-zinc-700 rounded-xl p-2.5 text-sm text-white font-extrabold outline-none focus:border-emerald-400 font-mono">
                 </div>
             </div>
             <button onclick="confermaRegistrazionePayout()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-lg cursor-pointer">
@@ -738,10 +783,12 @@
         }
 
         async function saveLivePrice(saas, plan_id, inputId) {
-            const newPrice = parseFloat(document.getElementById(inputId).value);
+            const inputEl = document.getElementById(inputId);
+            if (!inputEl) return;
+            const newPrice = parseFloat(inputEl.value);
             if (isNaN(newPrice)) return alert("Inserisci una cifra valida.");
 
-            if (!client) return alert("Impossibile connettersi a Supabase.");
+            if (!client) return alert("Impossibile connettersi a Supabase S2.");
 
             try {
                 const { error } = await client
@@ -756,7 +803,7 @@
 
                 if (!error) {
                     const toast = document.getElementById('toast');
-                    toast.innerText = `✓ Prezzo ${saas.toUpperCase()} (${plan_id}) aggiornato a €${newPrice.toFixed(2)}!`;
+                    toast.innerText = `✓ Prezzo ${saas.toUpperCase()} (${plan_id}) salvato a €${newPrice.toFixed(2)}!`;
                     toast.classList.remove('hidden');
                     setTimeout(() => toast.classList.add('hidden'), 2500);
                 } else {
@@ -765,6 +812,22 @@
             } catch (err) {
                 alert("Errore: " + err.message);
             }
+        }
+
+        function apriModalePayout(code, name, pending) {
+            activePayoutAffiliateCode = code;
+            document.getElementById('payout-affiliate-name').value = `${name} (${code})`;
+            document.getElementById('payout-amount').value = pending > 0 ? pending.toFixed(2) : '';
+            const modal = document.getElementById('payout-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function chiudiModalePayout() {
+            const modal = document.getElementById('payout-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            activePayoutAffiliateCode = null;
         }
 
         async function caricaDatiAffiliati() {
