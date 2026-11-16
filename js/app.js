@@ -885,6 +885,7 @@ async function handleCreateSubmit(e) {
                     bot_id: botId,
                     nome_struttura: clientName,
                     email: email,
+                    phone: phone,
                     piano: selectedPlan,
                     is_paid: false
                 })
