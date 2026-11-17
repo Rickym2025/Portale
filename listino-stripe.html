@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RM Studio — Controllo Prezzi Live & Hub Affiliati</title>
+    <title>RM Studio — Controllo Prezzi Live &amp; Hub Affiliati</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -89,7 +89,7 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-white/10 pb-4">
                     <div>
                         <h2 class="text-lg font-black text-amber-300 font-display">Registra Nuovo Codice Promo</h2>
-                        <p class="text-xs text-zinc-400">Crea automaticamente il coupon su Stripe e registra l'affiliato nel database.</p>
+                        <p class="text-xs text-zinc-400">Crea automaticamente il coupon su Stripe e registra l&apos;affiliato nel database.</p>
                     </div>
                     <span class="text-xs font-bold px-3 py-1 rounded-full bg-green-500/15 text-green-400 border border-green-500/30">Stripe Live API + Supabase S2</span>
                 </div>
@@ -243,7 +243,7 @@
                 </div>
             </div>
 
-            <!-- 5. DENTIS AI -->
+            <!-- 5. DENTIS AI (ABBONAMENTI + CREDITI MINUTI) -->
             <div data-cat="medico_legale" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-cyan-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🦷</span><h2 class="text-sm font-black text-cyan-200 font-display">5. Dentis AI</h2></div>
@@ -265,10 +265,25 @@
                         <input type="number" id="price-dentis-elite" value="299" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
                         <button onclick="saveLivePrice('dentis', 'elite', 'price-dentis-elite')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-cyan-500/25 space-y-1">
+                        <span class="text-cyan-300 block text-[10px]">⚡ 100 min</span>
+                        <input type="number" id="price-dentis-pack_100" value="49" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('dentis', 'pack_100', 'price-dentis-pack_100')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-cyan-500/25 space-y-1">
+                        <span class="text-cyan-300 block text-[10px]">⚡ 450 min</span>
+                        <input type="number" id="price-dentis-pack_450" value="179" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('dentis', 'pack_450', 'price-dentis-pack_450')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-cyan-500/25 space-y-1">
+                        <span class="text-cyan-300 block text-[10px]">⚡ 1000 min</span>
+                        <input type="number" id="price-dentis-pack_1000" value="349" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
+                        <button onclick="saveLivePrice('dentis', 'pack_1000', 'price-dentis-pack_1000')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 6. LEXIS AI -->
+            <!-- 6. LEXIS AI (ABBONAMENTI + CREDITI MINUTI) -->
             <div data-cat="medico_legale" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-yellow-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">⚖️</span><h2 class="text-sm font-black text-yellow-200 font-display">6. Lexis AI</h2></div>
@@ -290,10 +305,25 @@
                         <input type="number" id="price-lexis-elite" value="299" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
                         <button onclick="saveLivePrice('lexis', 'elite', 'price-lexis-elite')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-yellow-500/25 space-y-1">
+                        <span class="text-yellow-300 block text-[10px]">⚡ 100 min</span>
+                        <input type="number" id="price-lexis-pack_100" value="49" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
+                        <button onclick="saveLivePrice('lexis', 'pack_100', 'price-lexis-pack_100')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-yellow-500/25 space-y-1">
+                        <span class="text-yellow-300 block text-[10px]">⚡ 450 min</span>
+                        <input type="number" id="price-lexis-pack_450" value="179" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
+                        <button onclick="saveLivePrice('lexis', 'pack_450', 'price-lexis-pack_450')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-yellow-500/25 space-y-1">
+                        <span class="text-yellow-300 block text-[10px]">⚡ 1000 min</span>
+                        <input type="number" id="price-lexis-pack_1000" value="349" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-yellow-300 outline-none">
+                        <button onclick="saveLivePrice('lexis', 'pack_1000', 'price-lexis-pack_1000')" class="w-full py-1 bg-yellow-600 hover:bg-yellow-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 7. ELENA AI (VOCALE RISTORANTI) -->
+            <!-- 7. ELENA AI (ABBONAMENTI + CREDITI MINUTI) -->
             <div data-cat="turismo_horeca" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-emerald-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🍽️</span><h2 class="text-sm font-black text-emerald-300 font-display">7. Elena AI (Ristoranti)</h2></div>
@@ -315,10 +345,25 @@
                         <input type="number" id="price-elena-elite" value="299" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
                         <button onclick="saveLivePrice('elena', 'elite', 'price-elena-elite')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-emerald-500/25 space-y-1">
+                        <span class="text-emerald-300 block text-[10px]">⚡ 100 min</span>
+                        <input type="number" id="price-elena-pack_100" value="49" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
+                        <button onclick="saveLivePrice('elena', 'pack_100', 'price-elena-pack_100')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-emerald-500/25 space-y-1">
+                        <span class="text-emerald-300 block text-[10px]">⚡ 450 min</span>
+                        <input type="number" id="price-elena-pack_450" value="179" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
+                        <button onclick="saveLivePrice('elena', 'pack_450', 'price-elena-pack_450')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-emerald-500/25 space-y-1">
+                        <span class="text-emerald-300 block text-[10px]">⚡ 1000 min</span>
+                        <input type="number" id="price-elena-pack_1000" value="349" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-emerald-300 outline-none">
+                        <button onclick="saveLivePrice('elena', 'pack_1000', 'price-elena-pack_1000')" class="w-full py-1 bg-emerald-600 hover:bg-emerald-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 8. VITTORIA AI (VOCALE AGENZIE B2B) -->
+            <!-- 8. VITTORIA AI (ABBONAMENTI + CREDITI MINUTI) -->
             <div data-cat="software_crm" class="saas-card p-5 rounded-3xl bg-[#0b0b0f] border border-blue-500/40 shadow-xl space-y-3">
                 <div class="flex items-center justify-between border-b border-zinc-900 pb-2.5">
                     <div class="flex items-center gap-2"><span class="text-xl">🚀</span><h2 class="text-sm font-black text-blue-300 font-display">8. Vittoria AI (Agenzie)</h2></div>
@@ -339,6 +384,21 @@
                         <span class="text-gray-400 block text-[10px]">Elite /m</span>
                         <input type="number" id="price-vittoria-elite" value="299" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-blue-300 outline-none">
                         <button onclick="saveLivePrice('vittoria', 'elite', 'price-vittoria-elite')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-blue-500/25 space-y-1">
+                        <span class="text-blue-300 block text-[10px]">⚡ 100 min</span>
+                        <input type="number" id="price-vittoria-pack_100" value="49" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-blue-300 outline-none">
+                        <button onclick="saveLivePrice('vittoria', 'pack_100', 'price-vittoria-pack_100')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-blue-500/25 space-y-1">
+                        <span class="text-blue-300 block text-[10px]">⚡ 450 min</span>
+                        <input type="number" id="price-vittoria-pack_450" value="179" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-blue-300 outline-none">
+                        <button onclick="saveLivePrice('vittoria', 'pack_450', 'price-vittoria-pack_450')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                    </div>
+                    <div class="p-2 bg-[#12121a] rounded-xl border border-blue-500/25 space-y-1">
+                        <span class="text-blue-300 block text-[10px]">⚡ 1000 min</span>
+                        <input type="number" id="price-vittoria-pack_1000" value="349" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-blue-300 outline-none">
+                        <button onclick="saveLivePrice('vittoria', 'pack_1000', 'price-vittoria-pack_1000')" class="w-full py-1 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
@@ -504,12 +564,12 @@
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs">
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
-                        <span class="text-gray-400 block text-[10px]">Base (€/m)</span>
+                        <span class="text-gray-400 block text-[10px]">Base 1 Pag (€/m)</span>
                         <input type="number" id="price-nexus-base" value="49" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
                         <button onclick="saveLivePrice('nexus', 'base', 'price-nexus-base')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
-                        <span class="text-gray-400 block text-[10px]">Pro (€/m)</span>
+                        <span class="text-gray-400 block text-[10px]">Pro Intero Sito (€/m)</span>
                         <input type="number" id="price-nexus-pro" value="99" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-cyan-300 outline-none">
                         <button onclick="saveLivePrice('nexus', 'pro', 'price-nexus-pro')" class="w-full py-1 bg-cyan-600 hover:bg-cyan-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
@@ -614,14 +674,14 @@
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs">
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
-                        <span class="text-gray-400 block text-[11px]">Inno / Brano d'Autore (€)</span>
+                        <span class="text-gray-400 block text-[11px]">Inno / Brano d&apos;Autore (€)</span>
                         <input type="number" id="price-ff-custom" value="300" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-purple-300 outline-none">
                         <button onclick="saveLivePrice('ff', 'custom', 'price-ff-custom')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                     <div class="p-2 bg-[#12121a] rounded-xl border border-zinc-800 space-y-1">
                         <span class="text-gray-400 block text-[11px]">Jingle Spot (€)</span>
                         <input type="number" id="price-ff-jingle" value="250" class="w-full bg-[#1c1c28] border border-zinc-700 rounded-lg p-1 text-xs font-bold text-purple-300 outline-none">
-                        <button onclick="saveLivePrice('ff', 'jingle', 'price-ff-jingle')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-black font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
+                        <button onclick="saveLivePrice('ff', 'jingle', 'price-ff-jingle')" class="w-full py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-[9px] rounded uppercase cursor-pointer">Salva</button>
                     </div>
                 </div>
             </div>
@@ -712,7 +772,7 @@
                 <h3 class="text-sm font-bold text-white font-display">Registra Bonifico Provvigione</h3>
                 <button onclick="chiudiModalePayout()" class="text-gray-400 hover:text-white text-xs cursor-pointer">✕</button>
             </div>
-            <p class="text-xs text-gray-400">Inserisci l'importo che hai bonificato all'affiliato per azzerare o scalare il saldo residuo:</p>
+            <p class="text-xs text-gray-400">Inserisci l&apos;importo che hai bonificato all&apos;affiliato per azzerare o scalare il saldo residuo:</p>
             <div class="space-y-3">
                 <div>
                     <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Affiliato</label>
@@ -771,7 +831,7 @@
         async function loadPricesFromDB() {
             if (!client) return;
             try {
-                const { data, error } = await client.from('saas_pricing').select('*');
+                const { data } = await client.from('saas_pricing').select('*');
                 if (data) {
                     data.forEach(p => {
                         const el = document.getElementById(`price-${p.saas}-${p.plan_id}`);
@@ -788,30 +848,42 @@
             if (!inputEl) return;
             const newPrice = parseFloat(inputEl.value);
             if (isNaN(newPrice)) return alert("Inserisci una cifra valida.");
-
             if (!client) return alert("Impossibile connettersi a Supabase S2.");
 
-            try {
-                const { error } = await client
-                    .from('saas_pricing')
-                    .upsert({ 
-                        id: `${saas}_${plan_id}`,
-                        saas: saas, 
-                        plan_id: plan_id, 
-                        price: newPrice, 
-                        updated_at: new Date().toISOString() 
-                    }, { onConflict: 'id' });
+            const rowId = `${saas}_${plan_id}`;
+            const nowIso = new Date().toISOString();
+            const labelEl = inputEl.previousElementSibling;
+            const fallbackName = labelEl ? labelEl.textContent.trim() : plan_id;
 
-                if (!error) {
-                    const toast = document.getElementById('toast');
-                    toast.innerText = `✓ Prezzo ${saas.toUpperCase()} (${plan_id}) salvato a €${newPrice.toFixed(2)}!`;
-                    toast.classList.remove('hidden');
-                    setTimeout(() => toast.classList.add('hidden'), 2500);
-                } else {
-                    alert("Errore salvataggio: " + error.message);
+            try {
+                const { data: updated, error: upErr } = await client
+                    .from('saas_pricing')
+                    .update({ price: newPrice, updated_at: nowIso })
+                    .eq('id', rowId)
+                    .select();
+
+                if (upErr) throw upErr;
+
+                if (!updated || updated.length === 0) {
+                    const { error: insErr } = await client
+                        .from('saas_pricing')
+                        .insert({
+                            id: rowId,
+                            saas: saas,
+                            plan_id: plan_id,
+                            name: fallbackName,
+                            price: newPrice,
+                            updated_at: nowIso
+                        });
+                    if (insErr) throw insErr;
                 }
+
+                const toast = document.getElementById('toast');
+                toast.innerText = `✓ Prezzo ${saas.toUpperCase()} (${plan_id}) salvato a €${newPrice.toFixed(2)}!`;
+                toast.classList.remove('hidden');
+                setTimeout(() => toast.classList.add('hidden'), 2500);
             } catch (err) {
-                alert("Errore: " + err.message);
+                alert("Errore salvataggio: " + err.message);
             }
         }
 
@@ -929,7 +1001,7 @@
             }
 
             try {
-                const res = await fetch("https://n8n.rmstudio.app/webhook/crea-coupon-stripe", {
+                await fetch("https://n8n.rmstudio.app/webhook/crea-coupon-stripe", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ code, name, discount, commission })
