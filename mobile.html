@@ -24,9 +24,7 @@
             min-height: 100px;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .saas-card:active {
-            transform: scale(0.96);
-        }
+        .saas-card:active { transform: scale(0.96); }
         .saas-card.selected {
             border-color: #a855f7 !important;
             background: #131024 !important;
@@ -46,9 +44,7 @@
             filter: grayscale(80%);
         }
 
-        .bundle-chip {
-            transition: all 0.15s ease;
-        }
+        .bundle-chip { transition: all 0.15s ease; }
         .bundle-chip.active {
             background-color: #9333ea;
             color: #ffffff;
@@ -85,13 +81,14 @@
         <div class="bg-[#0b0b12] border border-zinc-800 p-3.5 rounded-2xl space-y-2 shadow-xl">
             <label class="block text-xs font-black uppercase tracking-wider text-purple-300 flex items-center justify-between">
                 <span>🎯 Settore di Attività del Lead</span>
-                <span id="sector-count-badge" class="text-[10px] font-mono text-zinc-400">23 Prodotti</span>
+                <span id="sector-count-badge" class="text-[10px] font-mono text-zinc-400">24 Prodotti</span>
             </label>
             <select id="sector-advisor" onchange="applySectorFilter()" class="w-full bg-[#13141f] border border-purple-500/40 focus:border-purple-400 rounded-xl p-3 text-xs text-white font-bold outline-none cursor-pointer">
-                <option value="all">-- Tutti i 23 SaaS &amp; Voice (Nessun Filtro) --</option>
+                <option value="all">-- Tutti i 24 SaaS &amp; Voice (Nessun Filtro) --</option>
                 <option value="auto" selected>🏎️ Concessionarie Auto &amp; Saloni Usato</option>
                 <option value="ristorazione">🍽️ Ristoranti, Pizzerie, Bistrot &amp; Wine Bar</option>
                 <option value="agenzia">🚀 Agenzie di Marketing, Comunicazione &amp; Pubblicità</option>
+                <option value="scuola">🎓 Scuole, Docenti &amp; Formazione</option>
                 <option value="architettura">🏛️ Architetti, Interior Designer &amp; Geometri</option>
                 <option value="immobiliare">🏠 Agenzie Immobiliari &amp; Costruttori</option>
                 <option value="medico">🦷 Studi Medici, Odontoiatri &amp; Cliniche</option>
@@ -110,10 +107,8 @@
             </select>
         </div>
 
-        <!-- GRIGLIA UNIFORME DINAMICA DEI 23 SAAS -->
-        <div class="grid grid-cols-2 gap-2.5" id="saas-grid">
-            <!-- Popolato e riordinato dinamicamente via JS -->
-        </div>
+        <!-- GRIGLIA UNIFORME DINAMICA DEI 24 SAAS -->
+        <div class="grid grid-cols-2 gap-2.5" id="saas-grid"></div>
 
     </main>
 
@@ -121,7 +116,7 @@
     <div class="fixed bottom-0 left-0 right-0 bg-[#08090f]/98 border-t border-purple-500/40 backdrop-blur-2xl p-3 z-40 shadow-2xl">
         <div class="max-w-md mx-auto space-y-2.5">
             
-            <!-- Riga 1: Commutatore Tab (Invia Demo vs Chiudi Offerta) -->
+            <!-- Riga 1: Commutatore Tab -->
             <div class="flex items-center justify-between gap-2 border-b border-zinc-800 pb-2">
                 <div class="flex items-center gap-1.5 bg-[#12131d] p-1 rounded-xl border border-zinc-800">
                     <button type="button" id="tab-btn-demo" onclick="switchLauncherTab('demo')" class="px-3 py-1 rounded-lg text-xs font-bold bg-purple-600 text-white transition cursor-pointer">
@@ -145,23 +140,19 @@
                 </div>
             </div>
 
-            <!-- Riga 2: Dati del Prospect (Nome, Cellulare, Email) -->
+            <!-- Riga 2: Dati del Prospect -->
             <div class="space-y-1.5">
                 <div class="grid grid-cols-2 gap-2">
                     <input type="text" id="deal-lead-name" placeholder="Nome Lead o Azienda" class="w-full bg-[#12131d] border border-zinc-800 focus:border-purple-400 rounded-xl px-3 py-1.5 text-xs text-white outline-none">
                     <input type="tel" id="deal-lead-phone" placeholder="Cell. WhatsApp (es: 340...)" class="w-full bg-[#12131d] border border-zinc-800 focus:border-purple-400 rounded-xl px-3 py-1.5 text-xs text-white outline-none font-mono">
                 </div>
-                <input type="email" id="deal-lead-email" placeholder="Email del titolare (opzionale per invio Resend)" class="w-full bg-[#12131d] border border-zinc-800 focus:border-purple-400 rounded-xl px-3 py-1.5 text-xs text-white outline-none">
+                <input type="email" id="deal-lead-email" placeholder="Email del titolare (per Stripe e invio Resend)" class="w-full bg-[#12131d] border border-zinc-800 focus:border-purple-400 rounded-xl px-3 py-1.5 text-xs text-white outline-none">
             </div>
 
-            <!-- CONTENUTO TAB 1: INVIO DEMO & MULTI-LINK AL CLIENTE -->
+            <!-- TAB 1: INVIO DEMO -->
             <div id="panel-tab-demo" class="space-y-2">
-                <!-- Chip di Selezione Multi-Link da Includere -->
-                <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 no-scrollbar" id="bundle-chips-container">
-                    <!-- Popolato dinamicamente in base al settore -->
-                </div>
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 no-scrollbar" id="bundle-chips-container"></div>
 
-                <!-- Pulsanti Azione Invio -->
                 <div class="flex items-center gap-2 pt-0.5">
                     <button type="button" onclick="sendDemoWhatsApp()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs py-2.5 rounded-xl uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
                         <i class="fa-brands fa-whatsapp text-base"></i>
@@ -174,12 +165,12 @@
                 </div>
             </div>
 
-            <!-- CONTENUTO TAB 2: CHIUSURA TRATTATIVA STRIPE -->
+            <!-- TAB 2: CHIUSURA TRATTATIVA STRIPE -->
             <div id="panel-tab-deal" class="hidden space-y-2">
                 <div class="flex items-center justify-between gap-3 bg-[#12131d] border border-purple-500/30 rounded-xl p-2">
                     <span class="text-xs text-zinc-300 font-bold truncate" id="deal-selected-saas-name">Prodotto</span>
                     <div class="flex items-center gap-1">
-                        <span class="text-[10px] text-zinc-400 font-mono">Prezzo Offerta: €</span>
+                        <span class="text-[10px] text-zinc-400 font-mono" id="deal-billing-label">Prezzo Offerta: €</span>
                         <input type="number" id="special-price-input" class="w-16 bg-transparent text-emerald-400 font-mono font-black text-sm text-center outline-none" value="149">
                     </div>
                 </div>
@@ -199,7 +190,7 @@
         </div>
     </div>
 
-    <!-- MODALE POPUP QR CODE IN-PERSON CLOSER -->
+    <!-- MODALE POPUP QR CODE -->
     <div id="qr-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md p-4 flex items-center justify-center">
         <div class="bg-[#0e1017] border border-zinc-800 rounded-3xl max-w-xs w-full p-6 text-center space-y-4 shadow-2xl relative">
             <button type="button" onclick="closeQrModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white flex items-center justify-center cursor-pointer">
@@ -219,119 +210,76 @@
         </div>
     </div>
 
-    <!-- TOAST NOTIFICA COPIA -->
+    <!-- TOAST -->
     <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 bg-purple-600 text-white text-xs font-black px-4 py-2 rounded-full shadow-2xl z-50 hidden transition-all">
         Link copiato negli appunti!
     </div>
 
     <script>
-        // 📚 I 23 SAAS E MODULI VOCALI ATTIVI DI RM STUDIO
+        // 📚 I 24 SAAS E MODULI VOCALI ATTIVI DI RM STUDIO
         const SAAS_CATALOG = {
-            radar: { id: "radar", name: "DriveMotion RADAR", emoji: "🏎️", defaultPrice: 179, url: "https://drivemotion-radar.rmstudio.app", tag: "Sourcing Privati h24", cat: "Auto" },
-            drivemotion: { id: "drivemotion", name: "DriveMotion Video", emoji: "🚗", defaultPrice: 59, url: "https://drivemotion.rmstudio.app", tag: "Video Auto Sfondo AI", cat: "Auto" },
-            locanda: { id: "locanda", name: "Locanda Digitale", emoji: "🍕", defaultPrice: 169, url: "https://locandadigitale.rmstudio.app", tag: "Living 3D & Compleanni", cat: "Horeca" },
-            experience: { id: "experience", name: "Smart Experience", emoji: "🍷", defaultPrice: 390, url: "https://experience.rmstudio.app", tag: "E-Menu con Maître AI", cat: "Horeca" },
-            elena: { id: "elena", name: "Elena AI Voice", emoji: "🍽️", defaultPrice: 149, url: "https://dentis-app.rmstudio.app/config.html", tag: "Hostess Tavoli H24", cat: "Voice Horeca" },
-            vittoria: { id: "vittoria", name: "Vittoria AI Voice", emoji: "🚀", defaultPrice: 149, url: "https://dentis-app.rmstudio.app/lexis-config.html", tag: "Centralino Lead Agenzie", cat: "Voice B2B" },
-            forma_materia: { id: "forma_materia", name: "Forma & Materia", emoji: "🏛️", defaultPrice: 249, url: "https://formamateria.rmstudio.app", tag: "Schizzo to Render 4K", cat: "Architettura" },
-            sitengine: { id: "sitengine", name: "SiteEngine Pro", emoji: "🌐", defaultPrice: 400, url: "https://sitengine.rmstudio.app", tag: "Landing & Blog Smart", cat: "Web B2B" },
-            dentis: { id: "dentis", name: "Dentis AI", emoji: "🦷", defaultPrice: 149, url: "https://dentis.rmstudio.app", tag: "Receptionist Dentisti", cat: "Sanità" },
-            lexis: { id: "lexis", name: "Lexis AI", emoji: "⚖️", defaultPrice: 149, url: "https://lexis.rmstudio.app", tag: "Segreteria Legale H24", cat: "Legale" },
-            concierge: { id: "concierge", name: "Concierge24", emoji: "🏨", defaultPrice: 179, url: "https://concierge24.rmstudio.app", tag: "Voce H24 Hotel & B&B", cat: "Turismo" },
-            hometour: { id: "hometour", name: "HomeTour", emoji: "🏠", defaultPrice: 59, url: "https://hometour.rmstudio.app", tag: "Reel Immobiliari 3D", cat: "Immobiliare" },
-            vision: { id: "vision", name: "Vision UGC", emoji: "🎬", defaultPrice: 120, url: "https://vision.rmstudio.app", tag: "Influencer Virtuali AI", cat: "Video Marketing" },
-            nexus: { id: "nexus", name: "NexusAI", emoji: "🤖", defaultPrice: 99, url: "https://nexus.rmstudio.app", tag: "Sales Overlay Chatbot", cat: "Lead Gen" },
-            eternia: { id: "eternia", name: "ETERNIA", emoji: "🕊️", defaultPrice: 199, url: "https://eternia.rmstudio.app", tag: "Memoriali QR & Pet", cat: "Memorial" },
-            love: { id: "love", name: "LOVE", emoji: "💍", defaultPrice: 249, url: "https://love.rmstudio.app", tag: "Partecipazioni 3D Nozze", cat: "Wedding" },
-            ares: { id: "ares", name: "AresAI", emoji: "🏋️", defaultPrice: 99, url: "https://ares.rmstudio.app", tag: "Voice Trainer & Dieta AI", cat: "Fitness" },
-            social: { id: "social", name: "SocialEngine", emoji: "📊", defaultPrice: 79, url: "https://social.rmstudio.app", tag: "Carousel Creator AI", cat: "Social" },
-            omniastudio: { id: "omniastudio", name: "OmniaStudio", emoji: "💼", defaultPrice: 699, url: "https://omniastudio.rmstudio.app", tag: "IA Offline Privata 100%", cat: "Fisco/Legal" },
-            free_energy: { id: "free_energy", name: "Free Energy", emoji: "☀️", defaultPrice: 199, url: "https://free-energy.rmstudio.app", tag: "CAD Fotovoltaico & CRM", cat: "Solar" },
-            velomotion: { id: "velomotion", name: "VeloMotion", emoji: "⚡", defaultPrice: 290, url: "https://velomotion.rmstudio.app", tag: "Sblocco Bosch BES3", cat: "E-Bike" },
-            aura: { id: "aura", name: "AURA Proximity", emoji: "📡", defaultPrice: 19, url: "https://aura.rmstudio.app", tag: "Radar Mesh & Man-Down", cat: "Sicurezza" },
-            ff_edizioni: { id: "ff_edizioni", name: "FF Edizioni", emoji: "🎵", defaultPrice: 300, url: "https://ff-edizioni.rmstudio.app", tag: "Jingle & Canzoni SIAE", cat: "Musica" }
+            superprof:     { id: "superprof",     portalType: "superprof",     billing: "oneoff",  name: "SuperProf",         emoji: "🎓", defaultPrice: 49,  url: "https://superprof.rmstudio.app",                  tag: "AI Didattica & PDP/PEI",      cat: "Scuola" },
+            radar:         { id: "radar",         portalType: "radar",         billing: "monthly", name: "DriveMotion RADAR", emoji: "🏎️", defaultPrice: 179, url: "https://drivemotion-radar.rmstudio.app",          tag: "Sourcing Privati h24",        cat: "Auto" },
+            drivemotion:   { id: "drivemotion",   portalType: "drivemotion",   billing: "oneoff",  name: "DriveMotion Video", emoji: "🚗", defaultPrice: 59,  url: "https://drivemotion.rmstudio.app",                tag: "Video Auto Sfondo AI",        cat: "Auto" },
+            locanda:       { id: "locanda",       portalType: "locanda",       billing: "oneoff",  name: "Locanda Digitale",  emoji: "🍕", defaultPrice: 169, url: "https://locandadigitale.rmstudio.app",           tag: "Living 3D & Compleanni",      cat: "Horeca" },
+            experience:    { id: "experience",    portalType: "experience",    billing: "oneoff",  name: "Smart Experience",  emoji: "🍷", defaultPrice: 390, url: "https://experience.rmstudio.app",                 tag: "E-Menu con Maître AI",        cat: "Horeca" },
+            elena:         { id: "elena",         portalType: "elena",         billing: "oneoff",  name: "Elena AI Voice",    emoji: "🍽️", defaultPrice: 179, url: "https://dentis-app.rmstudio.app/elena-config.html", tag: "Hostess Tavoli H24 (Crediti/Abb.)", cat: "Voice Horeca" },
+            vittoria:      { id: "vittoria",      portalType: "vittoria",      billing: "oneoff",  name: "Vittoria AI Voice", emoji: "🚀", defaultPrice: 179, url: "https://dentis-app.rmstudio.app/vittoria-config.html", tag: "Centralino Lead (Crediti/Abb.)", cat: "Voice B2B" },
+            forma_materia: { id: "forma_materia", portalType: "forma_materia", billing: "oneoff",  name: "Forma & Materia",   emoji: "🏛️", defaultPrice: 249, url: "https://formamateria.rmstudio.app",               tag: "Schizzo to Render 4K",        cat: "Architettura" },
+            sitengine:     { id: "sitengine",     portalType: "siteengine",    billing: "oneoff",  name: "SiteEngine Pro",    emoji: "🌐", defaultPrice: 400, url: "https://sitengine.rmstudio.app",                  tag: "Landing & Blog Smart",        cat: "Web B2B" },
+            dentis:        { id: "dentis",        portalType: "dentis",        billing: "monthly", name: "Dentis AI",         emoji: "🦷", defaultPrice: 149, url: "https://dentis.rmstudio.app",                     tag: "Receptionist Dentisti",       cat: "Sanità" },
+            lexis:         { id: "lexis",         portalType: "lexis",         billing: "monthly", name: "Lexis AI",          emoji: "⚖️", defaultPrice: 149, url: "https://lexis.rmstudio.app",                      tag: "Segreteria Legale H24",       cat: "Legale" },
+            concierge:     { id: "concierge",     portalType: "concierge",     billing: "oneoff",  name: "Concierge24",       emoji: "🏨", defaultPrice: 179, url: "https://concierge24.rmstudio.app",                tag: "Voce H24 Hotel & B&B",        cat: "Turismo" },
+            hometour:      { id: "hometour",      portalType: "hometour",      billing: "oneoff",  name: "HomeTour",          emoji: "🏠", defaultPrice: 59,  url: "https://hometour.rmstudio.app",                   tag: "Reel Immobiliari 3D",         cat: "Immobiliare" },
+            vision:        { id: "vision",        portalType: "vision",        billing: "oneoff",  name: "Vision UGC",        emoji: "🎬", defaultPrice: 120, url: "https://vision.rmstudio.app",                     tag: "Influencer Virtuali AI",      cat: "Video Marketing" },
+            nexus:         { id: "nexus",         portalType: "nexus",         billing: "monthly", name: "NexusAI",           emoji: "🤖", defaultPrice: 99,  url: "https://nexus.rmstudio.app",                      tag: "Sales Overlay Chatbot",       cat: "Lead Gen" },
+            eternia:       { id: "eternia",       portalType: "eternia",       billing: "oneoff",  name: "ETERNIA",           emoji: "🕊️", defaultPrice: 199, url: "https://eternia.rmstudio.app",                    tag: "Memoriali QR & Pet",          cat: "Memorial" },
+            love:          { id: "love",          portalType: "love",          billing: "oneoff",  name: "LOVE",              emoji: "💍", defaultPrice: 249, url: "https://love.rmstudio.app",                       tag: "Partecipazioni 3D Nozze",     cat: "Wedding" },
+            ares:          { id: "ares",          portalType: "ares",          billing: "monthly", name: "AresAI",            emoji: "🏋️", defaultPrice: 99,  url: "https://ares.rmstudio.app",                       tag: "Voice Trainer & Dieta AI",    cat: "Fitness" },
+            social:        { id: "social",        portalType: "social",        billing: "oneoff",  name: "SocialEngine",      emoji: "📊", defaultPrice: 79,  url: "https://social.rmstudio.app",                     tag: "Carousel Creator AI",         cat: "Social" },
+            omniastudio:   { id: "omniastudio",   portalType: "omniastudio",   billing: "oneoff",  name: "OmniaStudio",       emoji: "💼", defaultPrice: 699, url: "https://omniastudio.rmstudio.app",                tag: "IA Offline Privata 100%",     cat: "Fisco/Legal" },
+            free_energy:   { id: "free_energy",   portalType: "free_energy",   billing: "oneoff",  name: "Free Energy",       emoji: "☀️", defaultPrice: 199, url: "https://free-energy.rmstudio.app",                tag: "CAD Fotovoltaico & CRM",      cat: "Solar" },
+            velomotion:    { id: "velomotion",    portalType: "velomotion",    billing: "oneoff",  name: "VeloMotion",        emoji: "⚡", defaultPrice: 290, url: "https://velomotion.rmstudio.app",                 tag: "Sblocco Bosch BES3",          cat: "E-Bike" },
+            aura:          { id: "aura",          portalType: "aura",          billing: "monthly", name: "AURA Proximity",    emoji: "📡", defaultPrice: 19,  url: "https://aura.rmstudio.app",                       tag: "Radar Mesh & Man-Down",       cat: "Sicurezza" },
+            ff_edizioni:   { id: "ff_edizioni",   portalType: "ff",            billing: "oneoff",  name: "FF Edizioni",       emoji: "🎵", defaultPrice: 300, url: "https://ff.rmstudio.app",                         tag: "Jingle & Canzoni SIAE",       cat: "Musica" }
         };
 
-        // 🎯 MATRICE DI RACCOMANDAZIONE PER SETTORE (PRIMARI + UPSELL)
+        // 🎯 MATRICE DI RACCOMANDAZIONE PER SETTORE
         const SECTOR_RECOMMENDATIONS = {
-            auto: {
-                primary: ['radar', 'drivemotion'],
-                upsell: ['nexus', 'social']
-            },
-            ristorazione: {
-                primary: ['locanda', 'experience', 'elena'],
-                upsell: ['nexus', 'ff_edizioni', 'social']
-            },
-            agenzia: {
-                primary: ['vittoria', 'nexus'],
-                upsell: ['vision', 'social', 'sitengine', 'ff_edizioni']
-            },
-            architettura: {
-                primary: ['forma_materia', 'sitengine'],
-                upsell: ['social', 'hometour']
-            },
-            immobiliare: {
-                primary: ['hometour', 'forma_materia'],
-                upsell: ['sitengine', 'social']
-            },
-            medico: {
-                primary: ['dentis', 'sitengine'],
-                upsell: ['nexus']
-            },
-            legale: {
-                primary: ['lexis', 'omniastudio'],
-                upsell: ['sitengine', 'nexus']
-            },
-            hotel: {
-                primary: ['concierge', 'aura'],
-                upsell: ['nexus', 'social']
-            },
-            funebre: {
-                primary: ['eternia', 'ff_edizioni'],
-                upsell: ['nexus']
-            },
-            wedding: {
-                primary: ['love', 'ff_edizioni'],
-                upsell: ['vision']
-            },
-            palestra: {
-                primary: ['ares', 'vision'],
-                upsell: ['social', 'aura']
-            },
-            ecommerce: {
-                primary: ['vision', 'nexus'],
-                upsell: ['social', 'ff_edizioni']
-            },
-            fotovoltaico: {
-                primary: ['free_energy', 'nexus'],
-                upsell: ['dentis']
-            },
-            ebike: {
-                primary: ['velomotion', 'nexus'],
-                upsell: ['social']
-            },
-            cantieri: {
-                primary: ['aura', 'forma_materia'],
-                upsell: ['free_energy']
-            },
-            vigilanza: {
-                primary: ['aura', 'omniastudio'],
-                upsell: ['sitengine', 'nexus']
-            },
-            outdoor: {
-                primary: ['aura', 'ares'],
-                upsell: ['drivemotion']
-            },
-            pmi: {
-                primary: ['sitengine', 'nexus'],
-                upsell: ['omniastudio', 'social']
-            }
+            auto:         { primary: ['radar', 'drivemotion'],         upsell: ['nexus', 'social'] },
+            ristorazione: { primary: ['locanda', 'experience', 'elena'], upsell: ['nexus', 'ff_edizioni', 'social'] },
+            agenzia:      { primary: ['vittoria', 'nexus'],            upsell: ['vision', 'social', 'sitengine', 'ff_edizioni'] },
+            scuola:       { primary: ['superprof', 'sitengine'],       upsell: ['nexus', 'social'] },
+            architettura: { primary: ['forma_materia', 'sitengine'],   upsell: ['social', 'hometour'] },
+            immobiliare:  { primary: ['hometour', 'forma_materia'],    upsell: ['sitengine', 'social', 'vittoria'] },
+            medico:       { primary: ['dentis', 'sitengine'],          upsell: ['nexus'] },
+            legale:       { primary: ['lexis', 'omniastudio'],         upsell: ['sitengine', 'nexus'] },
+            hotel:        { primary: ['concierge', 'aura'],            upsell: ['nexus', 'social'] },
+            funebre:      { primary: ['eternia', 'ff_edizioni'],       upsell: ['nexus'] },
+            wedding:      { primary: ['love', 'ff_edizioni'],          upsell: ['vision'] },
+            palestra:     { primary: ['ares', 'vision'],               upsell: ['social', 'aura'] },
+            ecommerce:    { primary: ['vision', 'nexus'],              upsell: ['social', 'ff_edizioni'] },
+            fotovoltaico: { primary: ['free_energy', 'nexus'],         upsell: ['dentis'] },
+            ebike:        { primary: ['velomotion', 'nexus'],          upsell: ['social'] },
+            cantieri:     { primary: ['aura', 'forma_materia'],        upsell: ['free_energy'] },
+            vigilanza:    { primary: ['aura', 'omniastudio'],          upsell: ['sitengine', 'nexus'] },
+            outdoor:      { primary: ['aura', 'ares'],                 upsell: ['drivemotion'] },
+            pmi:          { primary: ['sitengine', 'nexus'],           upsell: ['omniastudio', 'social'] }
         };
 
         let currentActiveKey = "radar";
         let activeBundleKeys = new Set(["radar", "drivemotion"]);
 
-        // RENDER DELLA GRIGLIA
+        function cleanWaPhone(raw) {
+            let digits = String(raw || '').replace(/[^0-9]/g, '');
+            if (!digits) return '';
+            if (digits.startsWith('00')) digits = digits.slice(2);
+            if ((digits.length === 9 || digits.length === 10) && (digits.startsWith('3') || digits.startsWith('0'))) {
+                digits = '39' + digits;
+            }
+            return digits;
+        }
+
         function renderGrid(orderedKeys = Object.keys(SAAS_CATALOG), primarySet = new Set(), upsellSet = new Set(), hasSectorFilter = false) {
             const container = document.getElementById('saas-grid');
             container.innerHTML = "";
@@ -372,12 +320,10 @@
                         <span class="text-[10px] text-zinc-400 font-medium leading-tight block truncate mt-0.5">${item.tag}</span>
                     </div>
                 `;
-
                 container.appendChild(card);
             });
         }
 
-        // AGGIORNAMENTO SELEZIONE SAAS
         function selectSaas(key) {
             currentActiveKey = key;
             const item = SAAS_CATALOG[key];
@@ -389,23 +335,20 @@
 
             document.getElementById('bar-open-btn').href = item.url;
             document.getElementById('deal-selected-saas-name').innerText = `${item.emoji} ${item.name}`;
+            document.getElementById('deal-billing-label').innerText = item.billing === 'monthly' ? 'Offerta/mese: €' : 'Offerta: €';
+            document.getElementById('special-price-input').value = item.defaultPrice;
 
-            const priceInput = document.getElementById('special-price-input');
-            priceInput.value = item.defaultPrice;
-
-            // Se non è nel bundle, lo aggiunge al volo
             if (!activeBundleKeys.has(key)) {
                 activeBundleKeys.add(key);
                 renderBundleChips();
             }
         }
 
-        // CAMBIO SETTORE CON AGGIORNAMENTO BUNDLE PREDEFINITO
         function applySectorFilter() {
             const sector = document.getElementById('sector-advisor').value;
             
             if (!sector || sector === 'all') {
-                document.getElementById('sector-count-badge').innerText = "23 Prodotti";
+                document.getElementById('sector-count-badge').innerText = "24 Prodotti";
                 activeBundleKeys = new Set([currentActiveKey]);
                 renderGrid();
                 renderBundleChips();
@@ -417,8 +360,6 @@
 
             const primarySet = new Set(reco.primary);
             const upsellSet = new Set(reco.upsell);
-
-            // Preimposta il bundle con i prodotti primari del settore
             activeBundleKeys = new Set(reco.primary);
 
             const allKeys = Object.keys(SAAS_CATALOG);
@@ -431,13 +372,10 @@
             document.getElementById('sector-count-badge').innerText = `${reco.primary.length} Consigliati + ${reco.upsell.length} Up-sell`;
             renderGrid(sortedKeys, primarySet, upsellSet, true);
 
-            if (reco.primary[0]) {
-                selectSaas(reco.primary[0]);
-            }
+            if (reco.primary[0]) selectSaas(reco.primary[0]);
             renderBundleChips();
         }
 
-        // CHIP DI SELEZIONE DEI PRODOTTI DA INCLUDERE NELLA DEMO
         function renderBundleChips() {
             const container = document.getElementById('bundle-chips-container');
             container.innerHTML = "";
@@ -462,29 +400,24 @@
                         ? 'active bg-purple-600 text-white border-purple-400' 
                         : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:text-white'
                 }`;
-
                 chip.innerHTML = `
                     <span>${item.emoji}</span>
                     <span>${item.name.replace('DriveMotion', 'DM')}</span>
                     ${isChecked ? '<i class="fa-solid fa-check text-[9px] ml-0.5"></i>' : ''}
                 `;
-
                 container.appendChild(chip);
             });
         }
 
         function toggleBundleKey(key) {
             if (activeBundleKeys.has(key)) {
-                if (activeBundleKeys.size > 1) {
-                    activeBundleKeys.delete(key);
-                }
+                if (activeBundleKeys.size > 1) activeBundleKeys.delete(key);
             } else {
                 activeBundleKeys.add(key);
             }
             renderBundleChips();
         }
 
-        // COMMUTATORE TRA MODALITÀ "INVIA DEMO" E "CHIUDI CON STRIPE"
         function switchLauncherTab(tab) {
             const isDemo = tab === 'demo';
             document.getElementById('panel-tab-demo').classList.toggle('hidden', !isDemo);
@@ -499,11 +432,9 @@
                 : "px-3 py-1 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer";
         }
 
-        // 💬 1. INVIO DEMO SU WHATSAPP (CON SUPPORTO MULTI-LINK PULITO)
         function sendDemoWhatsApp() {
             const leadName = document.getElementById('deal-lead-name').value.trim() || "Gentile Titolare";
-            const leadPhone = document.getElementById('deal-lead-phone').value.trim();
-            const cleanPhone = leadPhone ? leadPhone.replace(/[^0-9]/g, '') : '';
+            const cleanPhone = cleanWaPhone(document.getElementById('deal-lead-phone').value);
 
             const selectedItems = Array.from(activeBundleKeys).map(k => SAAS_CATALOG[k]).filter(Boolean);
             if (selectedItems.length === 0) return alert("Seleziona almeno un prodotto.");
@@ -511,7 +442,7 @@
             let msg = "";
             if (selectedItems.length === 1) {
                 const item = selectedItems[0];
-                msg = `Buongiorno ${leadName}. È stato un piacere incontrarla di persona! Come concordato, Le lascio il link per testare la piattaforma direttamente dal Suo smartphone senza installare nulla:\n\n${item.emoji} *${item.name}* (${item.tag}):\n👉 ${item.url}\n\nDagli un'occhiata con calma e mi faccia sapere cosa ne pensa! A presto, Riccardo Modena • RM Studio`;
+                msg = `Buongiorno ${leadName}. È stato un piacere incontrarla di persona! Come concordato, Le lascio il link per testare la piattaforma direttamente dal Suo smartphone senza installare nulla:\n\n${item.emoji} *${item.name}* (${item.tag}):\n👉 ${item.url}\n\nCi dia un'occhiata con calma e mi faccia sapere cosa ne pensa! A presto, Riccardo Modena • RM Studio`;
             } else {
                 msg = `Buongiorno ${leadName}. È stato un piacere incontrarla di persona! Come concordato, Le lascio i link diretti per testare le soluzioni di cui abbiamo parlato, direttamente dal Suo smartphone senza installare nulla:\n\n`;
                 selectedItems.forEach(item => {
@@ -523,11 +454,9 @@
             const waUrl = cleanPhone 
                 ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`
                 : `https://wa.me/?text=${encodeURIComponent(msg)}`;
-
             window.open(waUrl, '_blank');
         }
 
-        // ✉️ 2. INVIO DEMO VIA EMAIL (RESEND VIA N8N)
         async function sendDemoEmail() {
             const leadName = document.getElementById('deal-lead-name').value.trim() || "Gentile Titolare";
             const leadEmail = document.getElementById('deal-lead-email').value.trim();
@@ -545,7 +474,6 @@
             });
 
             const bodyText = `Gentile ${leadName},\n\nÈ stato un vero piacere incontrarla di persona oggi.\n\nCome concordato, Le trasmetto di seguito i link dedicati per accedere e testare direttamente le nostre piattaforme, ottimizzate per smartphone e desktop:\n\n${linksText}\nPuò provarle liberamente senza impegno. Resto a Sua completa disposizione per qualsiasi chiarimento tecnico.\n\nUn cordiale saluto,\nRiccardo Modena\nRM Studio • Soluzioni Software B2B\nTel / WhatsApp: +39 349 525 8418\nhttps://rmstudio.app`;
-
             const subject = `Link di prova e accesso alle piattaforme per ${leadName} • RM Studio`;
 
             try {
@@ -562,7 +490,6 @@
                         title: selectedItems.map(i => i.name).join(" + ")
                     })
                 });
-
                 if (res.ok) {
                     alert(`✨ Email con i link di prova recapitata con successo a: ${leadEmail}`);
                 } else {
@@ -573,15 +500,13 @@
             }
         }
 
-        // 📱 3. POPUP QR CODE ISTANTANEO (PER FARLO INQUADRARE SUBITO CON LA FOTOCAMERA)
         function openQrModal() {
             const item = SAAS_CATALOG[currentActiveKey];
             if (!item) return;
 
-            const qrUrl = item.url;
             document.getElementById('qr-modal-title').innerText = `${item.emoji} ${item.name}`;
-            document.getElementById('qr-modal-url').innerText = qrUrl;
-            document.getElementById('qr-code-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=10&data=${encodeURIComponent(qrUrl)}`;
+            document.getElementById('qr-modal-url').innerText = item.url;
+            document.getElementById('qr-code-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=10&data=${encodeURIComponent(item.url)}`;
 
             document.getElementById('qr-modal').classList.remove('hidden');
             document.getElementById('qr-modal').classList.add('flex');
@@ -593,14 +518,14 @@
             m.classList.add('hidden');
         }
 
-        // 💳 4. GENERAZIONE LINK STRIPE ON-THE-FLY CON PREZZO CONCORDATO
         async function generateSpecialStripeLink() {
             const item = SAAS_CATALOG[currentActiveKey];
             if (!item) return;
 
             const specialPrice = parseFloat(document.getElementById('special-price-input').value) || item.defaultPrice;
             const leadName = document.getElementById('deal-lead-name').value.trim() || "Cliente Riservato";
-            const leadPhone = document.getElementById('deal-lead-phone').value.trim();
+            const leadEmail = document.getElementById('deal-lead-email').value.trim();
+            const cleanPhone = cleanWaPhone(document.getElementById('deal-lead-phone').value);
 
             const btn = document.getElementById('btn-stripe-deal');
             const origHtml = btn.innerHTML;
@@ -613,16 +538,16 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         progetto: item.name,
-                        portal_type: item.id,
-                        title: `${item.name} • Offerta Speciale per ${leadName}`,
+                        portal_type: item.portalType || item.id,
+                        title: `${item.name} • Offerta Riservata per ${leadName}`,
                         price: specialPrice,
-                        ricarica_tipo: `deal_${item.id}`,
-                        email: "cliente@rmstudio.app",
-                        agency_id: leadName,
-                        project_id: leadName,
+                        ricarica_tipo: `deal_${item.portalType || item.id}`,
+                        email: leadEmail || undefined,
+                        agency_id: leadEmail || leadName,
+                        project_id: leadEmail || leadName,
                         origin: item.url,
-                        success_url: `${item.url}/?success=true`,
-                        cancel_url: `${item.url}/#prezzi`
+                        success_url: item.url,
+                        cancel_url: item.url
                     })
                 });
 
@@ -631,9 +556,9 @@
                     await navigator.clipboard.writeText(data.url);
                     showToast(`✓ Link Stripe da €${specialPrice} copiato!`);
 
-                    if (leadPhone) {
-                        const cleanPhone = leadPhone.replace(/[^0-9]/g, '');
-                        const msg = `Buongiorno ${leadName}. Come concordato di persona, Le ho generato il link per l'attivazione ufficiale di *${item.name}* alla tariffa speciale concordata di €${specialPrice}:\n👉 ${data.url}\n\nLa procedura si completa in 30 secondi con fattura immediata. Resto a disposizione!`;
+                    if (cleanPhone) {
+                        const suffix = item.billing === 'monthly' ? '/mese' : '';
+                        const msg = `Buongiorno ${leadName}. Come concordato di persona, Le ho generato il link per l'attivazione ufficiale di *${item.name}* alla tariffa riservata di €${specialPrice}${suffix}:\n👉 ${data.url}\n\nLa procedura si completa in 30 secondi con ricevuta immediata. Resto a disposizione!`;
                         if (confirm(`Link generato! Vuoi aprire la chat WhatsApp con ${leadName}?`)) {
                             window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`, '_blank');
                         }
@@ -649,22 +574,21 @@
             }
         }
 
-        // 💬 5. INVIO MESSAGGIO OFFERTA SCONTATA
         function sendWhatsAppSpecialDeal() {
             const item = SAAS_CATALOG[currentActiveKey];
             if (!item) return;
 
             const specialPrice = parseFloat(document.getElementById('special-price-input').value) || item.defaultPrice;
             const leadName = document.getElementById('deal-lead-name').value.trim() || "Gentile Titolare";
-            const leadPhone = document.getElementById('deal-lead-phone').value.trim();
-            const cleanPhone = leadPhone ? leadPhone.replace(/[^0-9]/g, '') : '';
+            const cleanPhone = cleanWaPhone(document.getElementById('deal-lead-phone').value);
 
             const isDiscounted = specialPrice < item.defaultPrice;
+            const suffix = item.billing === 'monthly' ? ' al mese' : ' una tantum, senza canoni mensili vincolanti';
             const priceText = isDiscounted 
-                ? `alla tariffa agevolata di soli *€${specialPrice}* (anziché €${item.defaultPrice} di listino)`
-                : `a soli *€${specialPrice}*`;
+                ? `alla tariffa agevolata di soli *€${specialPrice}*${suffix} (anziché €${item.defaultPrice} di listino)`
+                : `a soli *€${specialPrice}*${suffix}`;
 
-            const msg = `Buongiorno ${leadName}. In merito al nostro incontro odierno per *${item.name}*:\n👉 ${item.url}\n\nLe confermo la piena disponibilità ad attivare la soluzione per la Sua attività ${priceText} una tantum, senza canoni mensili vincolanti.\n\nResto a Sua disposizione per avviare la configurazione!`;
+            const msg = `Buongiorno ${leadName}. In merito al nostro incontro odierno per *${item.name}*:\n👉 ${item.url}\n\nLe confermo la piena disponibilità ad attivare la soluzione per la Sua attività ${priceText}.\n\nResto a Sua disposizione per avviare la configurazione!`;
 
             const waUrl = cleanPhone 
                 ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`
