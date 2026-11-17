@@ -93,8 +93,8 @@ const SAAS_CONFIG = {
         url: "https://www.azienda.it",
         label: "Sito Web Azienda (per Generazione Shadow-Proxy)",
         plans: [
-            { id: "base", price: 49, title: "NexusAI • Starter Base (Chatbot 10 pag.)", label: "Piano Base — €49.00/mese (1 Chatbot, fino a 10 pag.)" },
-            { id: "pro", price: 99, title: "NexusAI • Sales Overlay Pro (Prenotazioni + Email)", label: "Nexus Pro — €99.00/mese (Prenotazioni + Trascrizioni Email)" }
+            { id: "pro", price: 99, title: "NexusAI • Sales Overlay Pro (Intero Sito + Prenotazioni)", label: "Nexus Pro — €99.00/mese (Scansione Intero Sito + Prenotazioni)" },
+            { id: "base", price: 49, title: "NexusAI • Starter Base (Scansione 1 Pagina)", label: "Piano Base — €49.00/mese (1 Chatbot, Scansione 1 Pagina)" }
         ]
     },
     concierge: {
@@ -111,36 +111,48 @@ const SAAS_CONFIG = {
         url: "https://www.sanadent.it/",
         label: "Sito Web Studio Dentistico (per Scraping AI)",
         plans: [
-            { id: "pro", price: 149, title: "Dentis AI • Serena PRO (H24 + WhatsApp)", label: "Serena PRO — €149.00/mese (Risposta H24 + Promemoria WA)" },
-            { id: "starter", price: 79, title: "Dentis AI • Serena Starter (Fuori Orario)", label: "Serena Starter — €79.00/mese (Solo Fuori Orario & Notti)" },
-            { id: "elite", price: 299, title: "Dentis AI • Clinic Elite (Multi-Sede)", label: "Clinic Elite — €299.00/mese (Multi-Sede & Multi-Medici)" }
+            { id: "pro", price: 149, title: "Dentis AI • Serena PRO (H24 + WhatsApp)", label: "Serena PRO — €149.00/mese (Abbonamento H24 + WA)" },
+            { id: "starter", price: 79, title: "Dentis AI • Serena Starter (Fuori Orario)", label: "Serena Starter — €79.00/mese (Abbonamento Fuori Orario)" },
+            { id: "elite", price: 299, title: "Dentis AI • Clinic Elite (Multi-Sede)", label: "Clinic Elite — €299.00/mese (Abbonamento Multi-Sede)" },
+            { id: "pack_100", price: 49, title: "Dentis AI • Ricarica Base (100 min)", label: "⚡ Ricarica Base — €49.00 una tantum (100 min, No Canone)" },
+            { id: "pack_450", price: 179, title: "Dentis AI • Ricarica Pro (450 min)", label: "⚡ Ricarica Pro — €179.00 una tantum (450 min, Più Scelto)" },
+            { id: "pack_1000", price: 349, title: "Dentis AI • Ricarica Max (1000 min)", label: "⚡ Ricarica Max — €349.00 una tantum (1000 min, No Canone)" }
         ]
     },
     lexis: {
         url: "https://www.studiolegale.it/",
         label: "Sito Web Studio Legale (per Scraping AI)",
         plans: [
-            { id: "pro", price: 149, title: "Lexis AI • Chiara PRO (H24 Formale)", label: "Chiara PRO — €149.00/mese (H24 Formale + Calendar)" },
-            { id: "starter", price: 79, title: "Lexis AI • Chiara Starter (Filtro Chiamate)", label: "Chiara Starter — €79.00/mese (Solo Fuori Orario)" },
-            { id: "elite", price: 299, title: "Lexis AI • Studio Elite (Multi-Avvocati)", label: "Studio Elite — €299.00/mese (Multi-Avvocati)" }
+            { id: "pro", price: 149, title: "Lexis AI • Chiara PRO (H24 Formale)", label: "Chiara PRO — €149.00/mese (Abbonamento H24 + Calendar)" },
+            { id: "starter", price: 79, title: "Lexis AI • Chiara Starter (Filtro Chiamate)", label: "Chiara Starter — €79.00/mese (Abbonamento Fuori Orario)" },
+            { id: "elite", price: 299, title: "Lexis AI • Studio Elite (Multi-Avvocati)", label: "Studio Elite — €299.00/mese (Abbonamento Multi-Avvocati)" },
+            { id: "pack_100", price: 49, title: "Lexis AI • Ricarica Base (100 min)", label: "⚡ Ricarica Base — €49.00 una tantum (100 min, No Canone)" },
+            { id: "pack_450", price: 179, title: "Lexis AI • Ricarica Pro (450 min)", label: "⚡ Ricarica Pro — €179.00 una tantum (450 min, Più Scelto)" },
+            { id: "pack_1000", price: 349, title: "Lexis AI • Ricarica Max (1000 min)", label: "⚡ Ricarica Max — €349.00 una tantum (1000 min, No Canone)" }
         ]
     },
     elena: {
         url: "https://www.ristorante.it",
         label: "Sito Web del Ristorante / Pizzeria (per Scraping AI)",
         plans: [
-            { id: "pro", price: 149, title: "Elena AI • Hostess PRO (H24 Sala + WhatsApp)", label: "Elena PRO — €149.00/mese (H24 Sala + Promemoria Tavoli WA)" },
-            { id: "starter", price: 79, title: "Elena AI • Hostess Starter (Fuori Orario)", label: "Elena Starter — €79.00/mese (Solo Chiusure e Riposi)" },
-            { id: "elite", price: 299, title: "Elena AI • Ristorante Elite (Multi-Sala)", label: "Ristorante Elite — €299.00/mese (Multi-Locale)" }
+            { id: "pro", price: 149, title: "Elena AI • Hostess PRO (H24 Sala + WhatsApp)", label: "Elena PRO — €149.00/mese (Abbonamento H24 + WA)" },
+            { id: "starter", price: 79, title: "Elena AI • Hostess Starter (Fuori Orario)", label: "Elena Starter — €79.00/mese (Abbonamento Chiusure)" },
+            { id: "elite", price: 299, title: "Elena AI • Ristorante Elite (Multi-Sala)", label: "Ristorante Elite — €299.00/mese (Abbonamento Multi-Locale)" },
+            { id: "pack_100", price: 49, title: "Elena AI • Ricarica Base (100 min)", label: "⚡ Ricarica Base — €49.00 una tantum (100 min, No Canone)" },
+            { id: "pack_450", price: 179, title: "Elena AI • Ricarica Pro (450 min)", label: "⚡ Ricarica Pro — €179.00 una tantum (450 min, Più Scelto)" },
+            { id: "pack_1000", price: 349, title: "Elena AI • Ricarica Max (1000 min)", label: "⚡ Ricarica Max — €349.00 una tantum (1000 min, No Canone)" }
         ]
     },
     vittoria: {
         url: "https://www.agenzia.it",
         label: "Sito Web dell'Agenzia (per Scraping AI)",
         plans: [
-            { id: "pro", price: 149, title: "Vittoria AI • Centralino PRO (Discovery Call H24)", label: "Vittoria PRO — €149.00/mese (Discovery Call Google Meet H24)" },
-            { id: "starter", price: 79, title: "Vittoria AI • Centralino Starter", label: "Vittoria Starter — €79.00/mese (Filtro e Triage Orario Ufficio)" },
-            { id: "elite", price: 299, title: "Vittoria AI • Agency Elite (Multi-Team)", label: "Agency Elite — €299.00/mese (Team Esteso)" }
+            { id: "pack_450", price: 179, title: "Vittoria AI • Ricarica Pro (450 min)", label: "⚡ Ricarica Pro — €179.00 una tantum (450 min, Consigliato)" },
+            { id: "pack_100", price: 49, title: "Vittoria AI • Ricarica Base (100 min)", label: "⚡ Ricarica Base — €49.00 una tantum (100 min, No Canone)" },
+            { id: "pack_1000", price: 349, title: "Vittoria AI • Ricarica Max (1000 min)", label: "⚡ Ricarica Max — €349.00 una tantum (1000 min, No Canone)" },
+            { id: "pro", price: 149, title: "Vittoria AI • Centralino PRO (Discovery Call H24)", label: "Vittoria PRO — €149.00/mese (Abbonamento H24)" },
+            { id: "starter", price: 79, title: "Vittoria AI • Centralino Starter", label: "Vittoria Starter — €79.00/mese (Abbonamento Ufficio)" },
+            { id: "elite", price: 299, title: "Vittoria AI • Agency Elite (Multi-Team)", label: "Agency Elite — €299.00/mese (Abbonamento Team)" }
         ]
     },
     locanda: {
@@ -255,7 +267,7 @@ const SAAS_CONFIG = {
         label: "Sito Azienda Installatrice Fotovoltaico",
         plans: [
             { id: "base", price: 199, title: "Free Energy • Start Pack 10.000 Crediti", label: "Start Pack — €199.00 (10.000 Crediti)" },
-            { id: "max", price: 449, title: "Free Energy • Maxi Pack 25.000 Crediti", label: "Maxi Pack — €449.00 (25.000 Crediti)" }
+            { id: "max", price: 449, title: "Free Energy • Pro Pack 25.000 Crediti", label: "Pro Pack — €449.00 (25.000 Crediti)" }
         ]
     },
     social: {
@@ -304,7 +316,6 @@ function toggleModalFields() {
     if (urlInput) urlInput.placeholder = cfg.url;
     if (urlLabel) urlLabel.innerText = cfg.label;
 
-    // Popolamento dinamico delle opzioni del Piano
     if (planSelect && cfg.plans) {
         planSelect.innerHTML = cfg.plans.map(p => 
             `<option value="${p.id}" data-price="${p.price}" data-title="${p.title}">${p.label}</option>`
@@ -438,7 +449,7 @@ async function handleOutreachToggle(id, isChecked) {
     }
 }
 
-// 🏷️ BADGES ESTRATTI FUORI DA RENDERMASTER TABLE (ZERO OVERHEAD PER RIGA)
+// 🏷️ BADGES ESTRATTI FUORI DA RENDERMASTER TABLE
 const SAAS_BADGES = {
     superprof: `<span class="bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🎓 superprof</span>`,
     concierge: `<span class="bg-orange-500/15 text-orange-300 border border-orange-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🏨 concierge</span>`,
@@ -467,7 +478,7 @@ const SAAS_BADGES = {
     ff: `<span class="bg-purple-500/15 text-purple-300 border border-purple-500/30 text-[9px] font-bold px-2 py-0.5 rounded-full uppercase whitespace-nowrap inline-flex items-center gap-1">🎵 ff</span>`
 };
 
-// 🔨 COSTRUTTORE RIGA ISOLATO AD ALTA VELOCITÀ (ZERO DATE FASULLE)
+// 🔨 COSTRUTTORE RIGA ISOLATO AD ALTA VELOCITÀ
 function buildRow(p, isCompact, cellPadding) {
     const tr = document.createElement('tr');
     tr.className = `hover:bg-[#101015] border-b border-zinc-900/80 ${isCompact ? 'text-xs' : 'text-sm'}`;
@@ -607,7 +618,7 @@ function buildRow(p, isCompact, cellPadding) {
     return tr;
 }
 
-// ⚡ RENDERING PROGRESSIVO A BLOCCHI CON CHUNKING (ZERO CONGELAMENTI DEL MAIN THREAD)
+// ⚡ RENDERING PROGRESSIVO A BLOCCHI CON CHUNKING
 function renderMasterTable(data) {
     let rev = 0, paidCount = 0, total = data.length;
     data.forEach(p => {
@@ -685,15 +696,15 @@ function openClosingPitchModal(projectId) {
     } else if (project.portal_type === 'superprof') {
         text = `Gentile ${name}, buongiorno! 👋\n\nLe scrivo da SuperProf in merito alla suite didattica per la Sua docenza: Le confermiamo che il pacchetto sblocca il generatore di PDP/PEI in 60 secondi conformi alla L. 170/2010, la correzione fotografica dei compiti con Vision AI e le verifiche parametriche anti-copia.\n\nPuò attivare la Sua dotazione di crediti da questo link protetto:\n${portalUrl}\n\nResto a Sua completa disposizione per qualsiasi supporto!`;
     } else if (project.portal_type === 'dentis') {
-        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di verificare la scheda tecnica di Serena per ${title}.\n\nSe attivate Serena PRO questa settimana, **vi includiamo GRATIS l'integrazione del gateway WhatsApp per i promemoria automatici ai pazienti del giorno prima** (abbatte le disdette del 72%)!\n\nPotete sbloccare il servizio direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi supporto!`;
+        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di verificare la scheda tecnica di Serena per ${title}.\n\nPotete attivarla anche **a minuti prepagati senza alcun abbonamento mensile** (a partire da €49 per 100 minuti) oppure in abbonamento H24 con i promemoria automatici su WhatsApp inclusi!\n\nPotete sbloccare il servizio direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi supporto!`;
     } else if (project.portal_type === 'concierge') {
         text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di testare l'anteprima per ${title}.\n\nSe attivate Concierge24 questa settimana, **vi accreditiamo 100 minuti omaggio di conversazione AI** nel vostro portafoglio per la stagione!\n\nPotete sbloccare la proposta da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi prova!`;
     } else if (project.portal_type === 'locanda') {
         text = `Ciao ${name}! 👋\n\nHo visto che hai dato un'occhiata all'anteprima del vostro Living 3D Menu per ${title}.\n\nCi tenevo a farti sapere che sbloccando la proposta questa settimana, oltre ai piatti animati a 60 FPS vi configuriamo **INCLUSO nel pacchetto il Bancomat dei Compleanni automatico su WhatsApp e lo Scudo Recensioni a 5 stelle per Google Maps**! 🎂🍷\n\nPuoi sbloccare il progetto direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi chiarimento!`;
     } else if (project.portal_type === 'elena') {
-        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di verificare l'anteprima dell'assistente vocale di sala per ${title}.\n\nSe attivate Elena PRO per il ristorante questa settimana, **vi includiamo GRATIS l'integrazione del gateway WhatsApp per i promemoria automatici dei tavoli agli ospiti** (abbatte i no-show del 70%)!\n\nPotete sbloccare la proposta direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi prova!`;
+        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di verificare l'anteprima dell'assistente vocale di sala per ${title}.\n\nPotete attivare Elena anche **a ricarica minuti senza canone mensile** (a partire da €49 per 100 minuti) oppure con piano H24 e promemoria automatici dei tavoli su WhatsApp!\n\nPotete sbloccare la proposta direttamente da qui:\n${portalUrl}\n\nResto a disposizione per qualsiasi prova!`;
     } else if (project.portal_type === 'vittoria') {
-        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di esplorare l'anteprima di Vittoria per ${title}.\n\nSe attivate Vittoria PRO per la vostra agenzia questa settimana, **vi configuriamo l'integrazione automatica con Google Calendar e Google Meet per fissare subito le discovery call con i lead qualificati**!\n\nPotete sbloccare il servizio direttamente da qui:\n${portalUrl}\n\nResto a disposizione!`;
+        text = `Ciao ${name}! 👋\n\nHo visto che avete avuto modo di esplorare l'anteprima di Vittoria per ${title}.\n\nCome richiesto, potete attivarla **a ricarica minuti senza alcun abbonamento mensile** (validità 12 mesi, così nei periodi di bassa stagione non spendete nulla) oppure in modalità mensile H24!\n\nPotete sbloccare il servizio direttamente da qui:\n${portalUrl}\n\nResto a disposizione!`;
     } else {
         text = `Ciao ${name}! 👋\n\nHo visto che hai avuto modo di esplorare l'anteprima creata per ${title}.\n\nSbloccandola questa settimana, **includiamo GRATIS un Jingle Audio d'Autore personalizzato (valore 150€)** realizzato dal nostro studio musicale FF Edizioni!\n\nPuoi rivedere l'anteprima e sbloccarla qui:\n${portalUrl}\n\nResto a disposizione!`;
     }
@@ -783,6 +794,7 @@ async function handleCreateSubmit(e) {
     btn.disabled = true;
 
     const type = document.getElementById('c-type').value;
+    const selectedPlan = document.getElementById('c-plan')?.value || '';
     const clientName = document.getElementById('c-name').value.trim();
     const email = document.getElementById('c-email').value.trim();
     const phone = document.getElementById('c-phone').value.trim();
@@ -874,7 +886,7 @@ async function handleCreateSubmit(e) {
         let targetUrl = siteUrl;
         if (!/^https?:\/\//i.test(targetUrl)) targetUrl = 'https://' + targetUrl;
         const botId = 'bot_' + Math.random().toString(36).slice(2, 9);
-        const selectedPlan = document.getElementById('c-plan')?.value || 'pro';
+        const nexusPlan = selectedPlan || 'pro';
 
         try {
             const res = await fetch('https://n8n.rmstudio.app/webhook/chatbot-creator', {
@@ -886,7 +898,7 @@ async function handleCreateSubmit(e) {
                     nome_struttura: clientName,
                     email: email,
                     phone: phone,
-                    piano: selectedPlan,
+                    piano: nexusPlan,
                     is_paid: false
                 })
             });
@@ -896,7 +908,7 @@ async function handleCreateSubmit(e) {
             await supabaseClient.from('portal_videos').insert([{
                 client_name: clientName, client_email: email, client_phone: phone,
                 title: titleVal || "NexusAI • Sales Overlay",
-                price_euro: price || (selectedPlan === 'base' ? 49 : 99),
+                price_euro: price || (nexusPlan === 'base' ? 49 : 99),
                 portal_type: "nexus", content_url: demoUrl,
                 is_paid: false, sent_at: new Date().toISOString(), first_email_sent: false, views_count: 0
             }]);
@@ -944,18 +956,6 @@ async function handleCreateSubmit(e) {
             defaultMail = 'info@agenzia.it';
         }
 
-        const lowerName = clientName.toLowerCase();
-        if (lowerName.includes('ristoran') || lowerName.includes('pizzeri') || lowerName.includes('osteria') || lowerName.includes('trattoria') || lowerName.includes('bistrot')) {
-            settore = 'ristorazione';
-            defaultMail = 'info@ristorante.it';
-        } else if (lowerName.includes('avvocat') || lowerName.includes('legale') || lowerName.includes('studio leg')) {
-            settore = 'legale';
-            defaultMail = 'info@studiolegale.it';
-        } else if (lowerName.includes('agenzia') || lowerName.includes('marketing') || lowerName.includes('advertising') || lowerName.includes('media')) {
-            settore = 'agenzia';
-            defaultMail = 'info@agenzia.it';
-        }
-
         try {
             const res = await fetch('https://n8n.rmstudio.app/webhook/studio-registrazione', {
                 method: 'POST',
@@ -965,6 +965,9 @@ async function handleCreateSubmit(e) {
                     "Email": email || defaultMail, 
                     "Telefono": phone || '+3904251675950', 
                     "Piano": 'trial', 
+                    "PlanId": selectedPlan,
+                    "Titolo": titleVal,
+                    "Prezzo": price,
                     "Sito Web": siteUrl, 
                     "Settore": settore,
                     "settore": settore,
